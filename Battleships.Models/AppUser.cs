@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace M_K.Models
+namespace Battleships.Models
 {
     public class AppUser : IdentityUser
     {

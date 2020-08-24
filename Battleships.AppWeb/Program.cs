@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace M_K_Online
+namespace Battleships_Online
 {
     public class Program
     {

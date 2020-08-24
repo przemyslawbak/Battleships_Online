@@ -16,10 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\M_K.DAL\Battleships.DAL.csproj" />
-    <ProjectReference Include="..\M_K.Hubs\Battleships.Hubs.csproj" />
-    <ProjectReference Include="..\M_K.Models\Battleships.Models.csproj" />
-    <ProjectReference Include="..\M_K.Services\Battleships.Services.csproj" />
+    <ProjectReference Include="..\Battleships.DAL\Battleships.DAL.csproj" />
+    <ProjectReference Include="..\Battleships.Hubs\Battleships.Hubs.csproj" />
+    <ProjectReference Include="..\Battleships.Models\Battleships.Models.csproj" />
+    <ProjectReference Include="..\Battleships.Services\Battleships.Services.csproj" />
   </ItemGroup>
 
 </Project>

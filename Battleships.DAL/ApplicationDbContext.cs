@@ -1,8 +1,8 @@
-﻿using M_K.Models;
+﻿using Battleships.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace M_K.DAL
+namespace Battleships.DAL
 {
     public class ApplicationDbContext : IdentityDbContext<AppUser>
     {
