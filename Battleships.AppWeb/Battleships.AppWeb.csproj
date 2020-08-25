@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="AppClient\src\app\models\token.response.ts" />
+    <None Remove="AppClient\src\app\services\auth.interceptor.ts" />
     <None Remove="AppClient\src\app\services\auth.service.ts" />
   </ItemGroup>
 
@@ -27,7 +29,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="AppClient\src\app\models\token.response.ts" />
     <TypeScriptCompile Include="AppClient\src\app\services\auth.service.ts" />
+    <TypeScriptCompile Include="AppClient\src\app\services\auth.interceptor.ts" />
   </ItemGroup>
 
 </Project>
