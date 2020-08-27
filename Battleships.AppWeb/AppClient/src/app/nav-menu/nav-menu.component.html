@@ -1,7 +1,7 @@
 <header>
   <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
     <div class="container">
-      <a class="navbar-brand" [routerLink]="['/']">WorldCities</a>
+      <a class="navbar-brand" [routerLink]="['/']">Battleships Online</a>
       <button class="navbar-toggler"
               type="button"
               data-toggle="collapse"
@@ -19,26 +19,8 @@
               [routerLinkActiveOptions]="{ exact: true }">
             <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
           </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/cities']">Cities</a>
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/countries']">Countries</a>
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/login']">Login / Register</a>
-          </li>
-          <li *ngIf="!this.auth.isLoggedIn()"
-              [routerLinkActive]="['link-active']">
-            <a [routerLink]="['/login']">
-              <span class='glyphicon glyphicon-log-in'></span> NIE JEST ZALOGOWANY
-            </a>
-          </li>
-          <li *ngIf="this.auth.isLoggedIn()"
-              [routerLinkActive]="['link-active']">
-            <a [routerLink]="['/quiz/create']">
-              <span class='glyphicon glyphicon-plus'></span> JEST ZALOGOWANY
-            </a>
+          <li *ngIf="!this.auth.isLoggedIn()">
+            <a class="nav-link text-dark" [routerLink]="['/join']">Join</a>
           </li>
           <li *ngIf="this.auth.isLoggedIn()">
             <a (click)="logout()">
