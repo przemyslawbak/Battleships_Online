@@ -1,7 +1,9 @@
 <div class="container">
   <div class="row">
     <div class="login-container col-md-6">
-      <h2 class="login-title">{{title}}</h2>
+      <h2 class="login-title">Join us instantly with</h2>
+      <login-externalproviders></login-externalproviders>
+      <h2 class="login-title">or Login with</h2>
       <form [formGroup]="form" (ngSubmit)="onSubmit()" class="login-form">
         <div *ngIf="form.errors?.auth" class="error-panel help-block">
           {{form.errors.auth}}
@@ -40,8 +42,5 @@
         </a>
       </div>
     </div>
-    <div class="col-md-6">
-      <login-externalproviders></login-externalproviders>
-    </div>
   </div>
-  </div>
+</div>

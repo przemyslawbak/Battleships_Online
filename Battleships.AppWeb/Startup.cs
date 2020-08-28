@@ -26,11 +26,10 @@ namespace Battleships_Online
             services.AddIdentity<AppUser, IdentityRole>(opts => {
                 opts.User.RequireUniqueEmail = true;
                 opts.User.AllowedUserNameCharacters = null; //disable validation
-                opts.Password.RequiredLength = 8;
                 opts.Password.RequireNonAlphanumeric = false;
                 opts.Password.RequireLowercase = false;
                 opts.Password.RequireUppercase = false;
-                opts.Password.RequireDigit = true;
+                opts.Password.RequireDigit = false;
             })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();

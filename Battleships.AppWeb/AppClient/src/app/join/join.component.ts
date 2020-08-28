@@ -11,7 +11,6 @@ export class JoinComponent {
   title: string;
   form: FormGroup;
   constructor(private router: Router, private fb: FormBuilder, private authService: AuthService) {
-    this.title = "User Join";
     //initialize the form
     this.createForm();
   }
