@@ -6,8 +6,8 @@ import { HttpClient } from "@angular/common/http";
 import { User } from "../models/user";
 
 @Component({
-  selector: "register",
-  templateUrl: "./register.component.html",
+  selector: 'register',
+  templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
@@ -39,26 +39,26 @@ export class RegisterComponent {
     tempUser.Password = this.form.value.Password;
     tempUser.DisplayName = this.form.value.DisplayName;
     console.log('sending: ' + tempUser);
-    var url = 'http://localhost:50962/' + "api/user/register";
+    var url = 'http://localhost:50962/' + 'api/user/register';
     this.http
       .post<User>(url, tempUser) //dać post jak w auth.service.ts??
       .subscribe(res => {
         if (res) {
           var v = res;
-          console.log("User " + v.Username + " has been created.");
+          console.log('User ' + v.Username + ' has been created.');
           // redirect to login page
-          this.router.navigate(["login"]);
+          this.router.navigate(['login']);
         }
         else {
           // registration failed
           this.form.setErrors({
-            "register": "User registration failed."
+            'register': 'User registration failed.'
           });
         }
       }, error => console.log(error));
   }
   onBack() {
-    this.router.navigate(["home"]);
+    this.router.navigate(["join"]);
   }
   passwordConfirmValidator(control: FormControl): any {
     let p = control.root.get('Password');
@@ -66,7 +66,7 @@ export class RegisterComponent {
     if (p && pc) {
       if (p.value !== pc.value) {
         pc.setErrors(
-          { "PasswordMismatch": true }
+          { 'PasswordMismatch': true }
         );
       }
       else {
