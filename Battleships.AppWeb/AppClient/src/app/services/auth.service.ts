@@ -11,8 +11,7 @@ export class AuthService {
   authKey: string = "auth";
   clientId: string = "TestMakerFree";
 
-  constructor(private http: HttpClient,
-    @Inject(PLATFORM_ID) private platformId: any) {
+  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: any) {
   }
   // performs the login
   login(username: string, password: string): Observable<boolean> {

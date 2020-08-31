@@ -31,10 +31,12 @@ export class JoinComponent {
         alert("Login successful! "
           + "USERNAME: "
           + username
-          + " TOKEN: "
+          + "\nTOKEN: "
           + this.authService.getAuth()!.token
+          + "\nEMAIL: "
+          + this.authService.getAuth()!.email
         );
-        this.router.navigate(["home"]);
+        this.router.navigate(['']);
       },
         err => {
           // login failed
@@ -45,7 +47,7 @@ export class JoinComponent {
         });
   }
   onBack() {
-    this.router.navigate(["home"]);
+    this.router.navigate(['']);
   }
   // retrieve a FormControl
   getFormControl(name: string) {

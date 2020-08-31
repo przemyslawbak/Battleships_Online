@@ -7,7 +7,7 @@ import { RegisterComponent } from './register/register.component';
 const routes: Routes = [
   { path: 'join', component: JoinComponent },
   { path: 'register', component: RegisterComponent },
-  //{ path: 'login-facebook', component: LoginFacebookComponent }
+  { path: '', redirectTo: '/', pathMatch: 'full' },
 ];
 
 @NgModule({

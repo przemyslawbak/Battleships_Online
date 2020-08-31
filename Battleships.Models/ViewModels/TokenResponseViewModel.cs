@@ -6,7 +6,8 @@ namespace Battleships.Models.ViewModels
     [JsonObject(MemberSerialization.OptOut)]
     public class TokenResponseViewModel
     {
-        public string token { get; set; }
-        public int expiration { get; set; }
+        public string Token { get; set; }
+        public string Email { get; set; }
+        public int Expiration { get; set; }
     }
 }

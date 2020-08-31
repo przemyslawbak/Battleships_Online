@@ -46,7 +46,7 @@ namespace Battleships.AppWeb.Controllers
             try
             {
                 // check if there's an user with the given username
-                var user = await _userManager.FindByNameAsync(model.username);
+                AppUser user = await _userManager.FindByNameAsync(model.username);
                 // fallback to support e-mail address instead of username
                 if (user == null && model.username.Contains("@"))
                     user = await _userManager.FindByEmailAsync(model.username);
@@ -60,32 +60,29 @@ namespace Battleships.AppWeb.Controllers
                 DateTime now = DateTime.UtcNow;
                 // add the registered claims for JWT (RFC7519).
                 // For more info, see https://tools.ietf.org/html/rfc7519#section-4.1
-                var claims = new[] {
+
+                Claim[] claims = new[] {
                     new Claim(JwtRegisteredClaimNames.Sub, user.Id),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                     new Claim(JwtRegisteredClaimNames.Iat, new DateTimeOffset(now).ToUnixTimeSeconds().ToString())
                     // TODO: add additional claims here
                     };
-                var tokenExpirationMins = _configuration.GetValue<int>("Auth:Jwt:TokenExpirationInMinutes");
-                var issuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Auth:Jwt:Key"]));
-                var token = new JwtSecurityToken(
-                issuer: _configuration["Auth:Jwt:Issuer"],
-                audience: _configuration["Auth:Jwt:Audience"],
-                claims: claims,
-                notBefore: now,
-                expires:
-                now.Add(TimeSpan.FromMinutes(tokenExpirationMins)),
-                signingCredentials: new SigningCredentials(
-                issuerSigningKey,
-                SecurityAlgorithms.HmacSha256)
-                );
-                var encodedToken = new
-                JwtSecurityTokenHandler().WriteToken(token);
+
+                int tokenExpirationMins = _configuration.GetValue<int>("Auth:JsonWebToken:TokenExpirationInMinutes");
+                SymmetricSecurityKey issuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Auth:JsonWebToken:Key"]));
+
+                JwtSecurityToken token = new JwtSecurityToken(
+                    issuer: _configuration["Auth:JsonWebToken:Issuer"],
+                    audience: _configuration["Auth:JsonWebToken:Audience"], claims: claims, notBefore: now,
+                    expires: now.Add(TimeSpan.FromMinutes(tokenExpirationMins)), signingCredentials: new SigningCredentials( issuerSigningKey, SecurityAlgorithms.HmacSha256));
+                string encodedToken = new JwtSecurityTokenHandler().WriteToken(token);
+
                 // build & return the response
-                var response = new TokenResponseViewModel()
+                TokenResponseViewModel response = new TokenResponseViewModel()
                 {
-                    token = encodedToken,
-                    expiration = tokenExpirationMins
+                    Token = encodedToken,
+                    Expiration = tokenExpirationMins,
+                    Email = user.Email
                 };
                 return Json(response);
             }

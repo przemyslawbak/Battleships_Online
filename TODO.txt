@@ -1,8 +1,10 @@
-- register new user
+OK - register new user
 - login after registering
-- join with facebook
+OK - join with facebook
 - join with twitter
-- login user
+OK - login user
 - forgot pass
 - mock UserManager
 - creating user identity result https://4programmers.net/Forum/C_i_.NET/343563-nowy_uzytkownik_api_endpoint?p=1703857#comment-625167
+- refactorize TokenController
+- register cancel btn
