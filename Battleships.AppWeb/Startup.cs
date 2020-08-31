@@ -1,5 +1,6 @@
 ﻿using Battleships.DAL;
 using Battleships.Models;
+using Battleships.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -42,6 +43,9 @@ namespace Battleships_Online
                     .AllowCredentials()
                     .SetIsOriginAllowed((host) => true));
             });
+
+            services.AddTransient<IUserValidation, UserValidation>();
+            services.AddTransient<IInputSanitizer, InputSanitizer>();
 
             services.AddMvc();
         }
