@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 
 import { User } from "../models/user";
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'register',
@@ -12,7 +13,7 @@ import { User } from "../models/user";
 })
 export class RegisterComponent {
   form: FormGroup;
-  constructor(private router: Router, private fb: FormBuilder, private http: HttpClient) {
+  constructor(private router: Router, private fb: FormBuilder, private http: HttpClient, private authService: AuthService) {
 
     // initialize the form
     this.createForm();
@@ -38,25 +39,45 @@ export class RegisterComponent {
     tempUser.Email = this.form.value.Email;
     tempUser.Password = this.form.value.Password;
     tempUser.DisplayName = this.form.value.DisplayName;
-    console.log('sending: ' + tempUser);
     var url = 'http://localhost:50962/' + 'api/user/register';
-    this.http
-      .post<User>(url, tempUser) //dać post jak w auth.service.ts??
-      .subscribe(res => {
-        if (res) {
-          var v = res;
-          console.log('User ' + v.Username + ' has been created.');
-          // redirect to login page
-          this.router.navigate(['login']);
-        }
-        else {
-          // registration failed
-          this.form.setErrors({
-            'register': 'User registration failed.'
-          });
-        }
-      }, error => console.log(error));
+    console.log('sending req');
+    this.http.post(url, tempUser)
+      .subscribe(
+        (val) => {
+          console.log("POST call successful value returned in body", val);
+          this.onRegisteredLogin(tempUser);
+          this.router.navigate(['']);
+        },
+        response => {
+          console.log("POST call in error", response);
+        },
+        () => {
+          console.log("The POST observable is now completed.");
+        });
   }
+
+  onRegisteredLogin(tempUser: User) {
+    this.authService.login(tempUser.Username, tempUser.Password)
+      .subscribe(res => {
+        alert("Login successful! "
+          + "USERNAME: "
+          + tempUser.Username
+          + "\nTOKEN: "
+          + this.authService.getAuth()!.token
+          + "\nEMAIL: "
+          + this.authService.getAuth()!.email
+        );
+        this.router.navigate(['']);
+      },
+        err => {
+          // login failed
+          console.log(err)
+          this.form.setErrors({
+            "auth": "Incorrect username or password"
+          });
+        });
+  }
+
   onBack() {
     this.router.navigate(["join"]);
   }

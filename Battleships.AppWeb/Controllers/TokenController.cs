@@ -103,7 +103,7 @@ namespace Battleships.AppWeb.Controllers
                     // todo: add all supported providers here
                     // Redirect the request to the external provider.
                     var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Token", new { ReturnUrl = returnUrl });
-                    var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, "http://localhost:53242" + redirectUrl);
+                    var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, "http://localhost:50962" + redirectUrl);
                     return new ChallengeResult(provider, properties);
                 default:
                     // provider not supported

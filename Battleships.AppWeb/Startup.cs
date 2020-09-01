@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Battleships_Online
 {
@@ -23,6 +24,19 @@ namespace Battleships_Online
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication()
+               .AddFacebook(options =>
+               {
+                   options.AppId = Configuration["Auth:Facebook:AppId"];
+                   options.AppSecret = Configuration["Auth:Facebook:AppSecret"];
+               })
+               //just for identity
+               .Services.ConfigureApplicationCookie(options =>
+               {
+                //previous cookies not valid
+                options.SlidingExpiration = true;
+                   options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
+               });
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration["Data:M_K_Server:ConnectionString"]));
             services.AddIdentity<AppUser, IdentityRole>(opts => {
                 opts.User.RequireUniqueEmail = true;

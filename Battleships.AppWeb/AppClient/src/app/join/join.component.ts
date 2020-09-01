@@ -1,6 +1,7 @@
 import { Component, Inject } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
+
 import { AuthService } from '../services/auth.service';
 @Component({
   selector: "join",
@@ -25,9 +26,6 @@ export class JoinComponent {
     var password = this.form.value.Password;
     this.authService.login(username, password)
       .subscribe(res => {
-        // login successful
-        // outputs the login info through a JS alert.
-        // IMPORTANT: remove this when test is done.
         alert("Login successful! "
           + "USERNAME: "
           + username

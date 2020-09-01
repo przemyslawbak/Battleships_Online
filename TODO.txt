@@ -1,9 +1,11 @@
 OK - register new user
-- login after registering
+- after login display user name
+OK - login after registering
 OK - join with facebook
 OK - login user
 - forgot pass
 OK - register cancel btn
+- protecting routes https://fullstackmark.com/post/13/jwt-authentication-with-aspnet-core-2-web-api-angular-5-net-core-identity-and-facebook-login
 
 later:
 
