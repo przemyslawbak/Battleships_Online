@@ -18,18 +18,96 @@ namespace Battleships.AppWeb.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IUserValidation _validator;
         private readonly IInputSanitizer _sanitizer;
+        private readonly IEmailSender _emailSender;
 
-        public UserController(UserManager<AppUser> userMgr, IUserValidation validator, IInputSanitizer sanitizer)
+        public UserController(UserManager<AppUser> userMgr, IUserValidation validator, IInputSanitizer sanitizer, IEmailSender emailSender)
         {
             _userManager = userMgr;
             _validator = validator;
             _sanitizer = sanitizer;
+            _emailSender = emailSender;
+        }
+
+        /// <summary>
+        /// POST: api/user/reset
+        /// </summary>
+        /// <returns>Status code.</returns>
+        [HttpPost("Reset")]
+        public async Task<IActionResult> PassChange(PassResetEmailViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.Email = _sanitizer.Process(model.Email);
+
+                AppUser user = await _userManager.FindByEmailAsync(model.Email);
+
+                if (user != null)
+                {
+                    string token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    string email = model.Email;
+
+                    string resetLink = "http://localhost:4200/reset?token=" + token + ";email=" + model.Email;
+
+                    try
+                    {
+                        await _emailSender.SendEmailAsync(model.Email, "Reset your password", "Please click or copy the password reset link to your browser: " + resetLink);
+                        return Ok();
+                    }
+                    catch
+                    {
+                        return new ObjectResult("Email could not be sent.") { StatusCode = 502 };
+                    }
+                }
+                else
+                {
+                    return new ObjectResult("Wrong email address.") { StatusCode = 409 };
+                }
+            }
+            else
+            {
+                return new ObjectResult("Wrong email address.") { StatusCode = 409 };
+            }
+        }
+
+        //TODO: after link being clicked
+        public async Task<IActionResult> PassReset(ResetPasswordViewModel details)
+        {
+            if (ModelState.IsValid)
+            {
+                details.Email = _sanitizer.Process(details.Email);
+                details.NewPassword = _sanitizer.Process(details.NewPassword);
+
+                AppUser user = await _userManager.FindByEmailAsync(details.Email);
+
+                if (user != null)
+                {
+                    IdentityResult result = await _userManager.ResetPasswordAsync(user, details.Token, details.NewPassword);
+
+                    if (result.Succeeded)
+                    {
+                        await _userManager.UpdateAsync(user);
+                        return Ok();
+                    }
+                    else
+                    {
+                        return new ObjectResult("Error when updating password.") { StatusCode = 500 };
+                    }
+                }
+                else
+                {
+                    return new ObjectResult("Wrong email address.") { StatusCode = 409 };
+                }
+            }
+            else
+            {
+                return View(details);
+            }
         }
 
         /// <summary>
         /// POST: api/user/register
         /// </summary>
-        /// <returns>Creates a new User and return it accordingly.</returns>
+        /// <returns>Status code.</returns>
         [HttpPost("Register")]
         public async Task<IActionResult> AddNewUser([FromBody]UserViewModel userRegisterVm)
         {
@@ -65,7 +143,7 @@ namespace Battleships.AppWeb.Controllers
 
             if (!result)
             {
-                return new ObjectResult("Error when creating new user.") { StatusCode = 409 };
+                return new ObjectResult("Error when creating new user.") { StatusCode = 500 };
             }
 
             return Ok();

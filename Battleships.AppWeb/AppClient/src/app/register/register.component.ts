@@ -13,13 +13,13 @@ import { AuthService } from '../services/auth.service';
 })
 export class RegisterComponent {
   form: FormGroup;
-  constructor(private router: Router, private fb: FormBuilder, private http: HttpClient, private authService: AuthService) {
+  constructor(private router: Router, private formBuilder: FormBuilder, private http: HttpClient, private authService: AuthService) {
 
     // initialize the form
     this.createForm();
   }
   createForm() {
-    this.form = this.fb.group({
+    this.form = this.formBuilder.group({
       Username: ['', Validators.required],
       Email: ['',
         [Validators.required,
@@ -40,7 +40,6 @@ export class RegisterComponent {
     tempUser.Password = this.form.value.Password;
     tempUser.DisplayName = this.form.value.DisplayName;
     var url = 'http://localhost:50962/' + 'api/user/register';
-    console.log('sending req');
     this.http.post(url, tempUser)
       .subscribe(
         (val) => {
@@ -50,23 +49,17 @@ export class RegisterComponent {
         },
         response => {
           console.log("POST call in error", response);
+          //todo: popup
         },
         () => {
           console.log("The POST observable is now completed.");
+          //todo: popup
         });
   }
 
   onRegisteredLogin(tempUser: User) {
     this.authService.login(tempUser.Username, tempUser.Password)
       .subscribe(res => {
-        alert("Login successful! "
-          + "USERNAME: "
-          + tempUser.Username
-          + "\nTOKEN: "
-          + this.authService.getAuth()!.token
-          + "\nEMAIL: "
-          + this.authService.getAuth()!.email
-        );
         this.router.navigate(['']);
       },
         err => {

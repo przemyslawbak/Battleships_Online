@@ -12,6 +12,7 @@ import { AuthInterceptor } from './services/auth.interceptor';
 import { JoinComponent } from './join/join.component';
 import { LoginExternalProvidersComponent } from './login.externalproviders/login.externalproviders.component';
 import { RegisterComponent } from './register/register.component';
+import { ForgottenComponent } from './forgotten/forgotten.component';
 //import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -20,7 +21,8 @@ import { RegisterComponent } from './register/register.component';
     NavMenuComponent,
     JoinComponent,
     LoginExternalProvidersComponent,
-    RegisterComponent
+    RegisterComponent,
+    ForgottenComponent
   ],
   imports: [
     FormsModule,

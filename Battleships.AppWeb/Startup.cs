@@ -58,6 +58,7 @@ namespace Battleships_Online
                     .SetIsOriginAllowed((host) => true));
             });
 
+            services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IUserValidation, UserValidation>();
             services.AddTransient<IInputSanitizer, InputSanitizer>();
 

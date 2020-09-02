@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="AppClient\src\app\models\pass.reset.ts" />
     <None Remove="AppClient\src\app\models\token.response.ts" />
     <None Remove="AppClient\src\app\models\user.ts" />
     <None Remove="AppClient\src\app\services\auth.interceptor.ts" />
@@ -26,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="AppClient\src\app\models\pass.reset.ts" />
     <TypeScriptCompile Include="AppClient\src\app\models\token.response.ts" />
     <TypeScriptCompile Include="AppClient\src\app\models\user.ts" />
     <TypeScriptCompile Include="AppClient\src\app\services\auth.service.ts" />
