@@ -24,7 +24,7 @@
           </li>
           <li *ngIf="this.auth.isLoggedIn()">
             <a (click)="logout()">
-              <span class="nav-link text-dark">Logout</span>
+              <span class="nav-link text-dark">Logout {{this.GetUsername()}}</span>
             </a>
           </li>
         </ul>

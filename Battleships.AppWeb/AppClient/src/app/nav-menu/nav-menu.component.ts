@@ -8,10 +8,20 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./nav-menu.component.css']
 })
 export class NavMenuComponent {
+  userName: string;
   constructor(public auth: AuthService) {
+
   }
 
   isExpanded = false;
+
+  GetUsername() {
+    if (this.auth.isLoggedIn()) {
+      return this.auth.getAuth()!.user;
+    } else {
+      return "guest";
+    }
+  }
 
   collapse() {
     this.isExpanded = false;

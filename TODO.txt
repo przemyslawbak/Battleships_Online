@@ -1,5 +1,5 @@
 OK - register new user
-- after login display user name
+OK - after login display user name
 OK - login after registering
 OK - join with facebook
 OK - login user

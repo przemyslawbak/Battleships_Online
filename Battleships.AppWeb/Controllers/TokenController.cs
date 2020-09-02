@@ -82,7 +82,8 @@ namespace Battleships.AppWeb.Controllers
                 {
                     Token = encodedToken,
                     Expiration = tokenExpirationMins,
-                    Email = user.Email
+                    Email = user.Email,
+                    User = user.UserName
                 };
                 return Json(response);
             }
