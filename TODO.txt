@@ -4,7 +4,7 @@ OK - login after registering
 OK - join with facebook
 OK - login user
 OK - forgot pass
-!!!! - receive toke + email from the link in PassResetComponent!!!!!
+OK - receive token + email from the link in PassResetComponent
 OK - register cancel btn
 - protecting routes https://fullstackmark.com/post/13/jwt-authentication-with-aspnet-core-2-web-api-angular-5-net-core-identity-and-facebook-login
 - user token expire
