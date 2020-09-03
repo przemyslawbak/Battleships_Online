@@ -13,6 +13,7 @@ import { JoinComponent } from './join/join.component';
 import { LoginExternalProvidersComponent } from './login.externalproviders/login.externalproviders.component';
 import { RegisterComponent } from './register/register.component';
 import { ForgottenComponent } from './forgotten/forgotten.component';
+import { PassResetComponent } from './pass-reset/pass-reset.component';
 //import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -22,7 +23,8 @@ import { ForgottenComponent } from './forgotten/forgotten.component';
     JoinComponent,
     LoginExternalProvidersComponent,
     RegisterComponent,
-    ForgottenComponent
+    ForgottenComponent,
+    PassResetComponent
   ],
   imports: [
     FormsModule,

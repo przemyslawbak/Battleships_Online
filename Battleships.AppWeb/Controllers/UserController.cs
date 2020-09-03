@@ -33,7 +33,7 @@ namespace Battleships.AppWeb.Controllers
         /// </summary>
         /// <returns>Status code.</returns>
         [HttpPost("Reset")]
-        public async Task<IActionResult> PassChange(PassResetEmailViewModel model)
+        public async Task<IActionResult> PassChange([FromBody]PassResetEmailViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -46,7 +46,7 @@ namespace Battleships.AppWeb.Controllers
                     string token = await _userManager.GeneratePasswordResetTokenAsync(user);
                     string email = model.Email;
 
-                    string resetLink = "http://localhost:4200/reset?token=" + token + ";email=" + model.Email;
+                    string resetLink = "http://localhost:4200/reset/" + model.Email + "/" + token;
 
                     try
                     {
@@ -69,19 +69,23 @@ namespace Battleships.AppWeb.Controllers
             }
         }
 
-        //TODO: after link being clicked
-        public async Task<IActionResult> PassReset(ResetPasswordViewModel details)
+        /// <summary>
+        /// POST: api/user/newpassword
+        /// </summary>
+        /// <returns>Status code.</returns>
+        [HttpPost("NewPassword")]
+        public async Task<IActionResult> PassReset([FromBody]ResetPasswordViewModel details)
         {
             if (ModelState.IsValid)
             {
                 details.Email = _sanitizer.Process(details.Email);
-                details.NewPassword = _sanitizer.Process(details.NewPassword);
+                details.Password = _sanitizer.Process(details.Password);
 
                 AppUser user = await _userManager.FindByEmailAsync(details.Email);
 
                 if (user != null)
                 {
-                    IdentityResult result = await _userManager.ResetPasswordAsync(user, details.Token, details.NewPassword);
+                    IdentityResult result = await _userManager.ResetPasswordAsync(user, details.Token, details.Password);
 
                     if (result.Succeeded)
                     {

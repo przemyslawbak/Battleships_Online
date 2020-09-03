@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 
-import { PassReset } from "../models/pass.reset";
+import { PassResetEmail } from "../models/pass.reset";
 
 @Component({
   selector: 'app-forgotten',
@@ -21,11 +21,7 @@ export class ForgottenComponent implements OnInit {
       Email: ['',
         [Validators.required,
         Validators.email]
-      ],
-      Password: ['', Validators.required],
-      PasswordConfirm: ['', Validators.required],
-    }, {
-        validator: this.passwordConfirmValidator
+      ]
       });
   }
 
@@ -33,7 +29,7 @@ export class ForgottenComponent implements OnInit {
   }
 
   onSubmit() {
-    var viewModel = <PassReset>{};
+    var viewModel = <PassResetEmail>{};
     viewModel.Email = this.form.value.Email;
     var url = 'http://localhost:50962/' + 'api/user/reset';
     this.http.post(url, viewModel)
@@ -54,22 +50,6 @@ export class ForgottenComponent implements OnInit {
 
   onBack() {
     this.router.navigate(["join"]);
-  }
-
-  passwordConfirmValidator(control: FormControl): any {
-    let p = control.root.get('Password');
-    let pc = control.root.get('PasswordConfirm');
-    if (p && pc) {
-      if (p.value !== pc.value) {
-        pc.setErrors(
-          { 'PasswordMismatch': true }
-        );
-      }
-      else {
-        pc.setErrors(null);
-      }
-    }
-    return null;
   }
 
   getFormControl(name: string) {

@@ -5,7 +5,7 @@ namespace Battleships.Models.ViewModels
     public class ResetPasswordViewModel
     {
         [Required(ErrorMessage = "Please fill up your new password.")]
-        public string NewPassword { get; set; }
+        public string Password { get; set; }
         [Required]
         public string Token { get; set; }
         [Required]

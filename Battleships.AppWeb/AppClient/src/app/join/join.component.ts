@@ -26,14 +26,6 @@ export class JoinComponent {
     var password = this.form.value.Password;
     this.authService.login(username, password)
       .subscribe(res => {
-        alert("Login successful! "
-          + "USERNAME: "
-          + username
-          + "\nTOKEN: "
-          + this.authService.getAuth()!.token
-          + "\nEMAIL: "
-          + this.authService.getAuth()!.email
-        );
         this.router.navigate(['']);
       },
         err => {
