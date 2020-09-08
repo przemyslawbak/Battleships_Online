@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AuthService } from './services/auth.service';
+import { AuthGuard } from './services/auth.guard';
 
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 
@@ -37,7 +38,9 @@ import { TestComponent } from './test/test.component';
     ReactiveFormsModule,
     //NgbModule.forRoot()
   ],
-  providers: [AuthService,
+  providers: [
+    AuthGuard,
+    AuthService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

@@ -71,7 +71,7 @@ namespace Battleships_Online
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration["Data:M_K_Server:ConnectionString"]));
 
-            services.AddIdentityCore<AppUser>(opts => //for JwtBearerDefaults, replaced AddIdentity
+            services.AddIdentity<AppUser, IdentityRole>(opts => //for JwtBearerDefaults, replaced AddIdentity
             {
                 opts.User.RequireUniqueEmail = true;
                 opts.User.AllowedUserNameCharacters = null; //disable validation

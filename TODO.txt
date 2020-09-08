@@ -7,10 +7,11 @@ OK - login user
 OK - forgot pass
 OK - receive token + email from the link in PassResetComponent
 OK - register cancel btn
-- protecting routes https://fullstackmark.com/post/13/jwt-authentication-with-aspnet-core-2-web-api-angular-5-net-core-identity-and-facebook-login
+OK - protecting routes https://fullstackmark.com/post/13/jwt-authentication-with-aspnet-core-2-web-api-angular-5-net-core-identity-and-facebook-login
 - user token expire
 - popups for: registered user, logged in, send forgotten pass
-- controllers authorisation
+OK - controllers authorisation
+- protect controllers
 - local storage? https://stackoverflow.com/questions/40589730/local-storage-in-angular-2/40590101
 
 later:
