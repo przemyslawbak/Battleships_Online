@@ -53,7 +53,7 @@ namespace Battleships_Online
                     ValidateAudience = false,
                     //ValidIssuer = Configuration["Auth:JsonWebToken:Issuer"],
                     //ValidAudience = Configuration["Auth:JsonWebToken:Audience"],
-                    //ClockSkew = TimeSpan.Zero,
+                    ClockSkew = TimeSpan.Zero,
                     //RequireExpirationTime = false
                 };
             })
