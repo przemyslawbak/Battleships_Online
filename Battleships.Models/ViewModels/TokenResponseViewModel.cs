@@ -8,6 +8,7 @@ namespace Battleships.Models.ViewModels
     public class TokenResponseViewModel
     {
         public string Token { get; set; }
+        public string RefreshToken { get; set; }
         public string Email { get; set; }
         public string User { get; set; }
         public int Expiration { get; set; }

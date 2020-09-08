@@ -1,4 +1,5 @@
-﻿using Battleships.Models;
+﻿using Battleships.DAL;
+using Battleships.Models;
 using Battleships.Models.ViewModels;
 using Battleships.Services;
 using Microsoft.AspNetCore.Identity;
@@ -7,8 +8,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Battleships.AppWeb.Controllers
@@ -21,119 +20,162 @@ namespace Battleships.AppWeb.Controllers
         UserManager<AppUser> _userManager;
         private SignInManager<AppUser> _signInManager;
         private readonly ITokenService _tokenService;
+        private readonly ITokenRepository _tokenRepo;
 
-        public TokenController(IConfiguration configuration, UserManager<AppUser> userMgr, SignInManager<AppUser> signinMgr, ITokenService tokenService)
+        public TokenController(IConfiguration configuration, UserManager<AppUser> userMgr, SignInManager<AppUser> signinMgr, ITokenService tokenService, ITokenRepository tokenRepo)
         {
             _configuration = configuration;
             _signInManager = signinMgr;
             _userManager = userMgr;
             _tokenService = tokenService;
+            _tokenRepo = tokenRepo;
         }
 
-        [HttpPost("Auth")]
+        [HttpPost("auth")]
         public async Task<IActionResult> JsonWebToken([FromBody]TokenRequestViewModel model)
         {
-            // return a generic HTTP Status 500 (Server Error) if the client payload is invalid.
             if (model == null) return new StatusCodeResult(500);
             switch (model.grant_type)
             {
                 case "password":
                     return await GetToken(model);
                 default:
-                    // not supported - return a HTTP 401 (Unauthorized)
                     return new UnauthorizedResult();
             }
         }
+
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken([FromBody]RefreshTokenRequestViewModel model)
+        {
+            string ip = GetIpAddress();
+
+            bool properToken = _tokenRepo.VerifyReceivedToken(model.refreshtoken, model.username, ip);
+
+            if (!properToken)
+            {
+                return new UnauthorizedResult();
+            }
+
+            return await GetToken(model);
+        }
+
+        private async Task<IActionResult> GetToken(RefreshTokenRequestViewModel model) //todo: DRY
+        {
+            AppUser user = await _userManager.FindByNameAsync(model.username);
+
+            if (user == null)
+            {
+                return new UnauthorizedResult();
+            }
+
+            TokenResponseViewModel response = GenerateResponse(user);
+
+            return Json(response);
+        }
+
         private async Task<IActionResult> GetToken(TokenRequestViewModel model)
         {
-            try
+            AppUser user = await _userManager.FindByNameAsync(model.username);
+
+            if (user == null && model.username.Contains("@"))
             {
-                int expiration = _configuration.GetValue<int>("Auth:JsonWebToken:TokenExpirationInMinutes");
-                string key = _configuration["Auth:JsonWebToken:Key"];
-                AppUser user = await _userManager.FindByNameAsync(model.username);
-
-                if (user == null && model.username.Contains("@"))
-                {
-                    user = await _userManager.FindByEmailAsync(model.username);
-                }
-
-                if (user == null || !await _userManager.CheckPasswordAsync(user, model.password))
-                {
-                    return new UnauthorizedResult(); //todo status code
-                }
-
-                SecurityToken token = _tokenService.GetSecurityToken(user, key, expiration);
-
-                string encodedToken = new JwtSecurityTokenHandler().WriteToken(token);
-
-
-                TokenResponseViewModel response = new TokenResponseViewModel()
-                {
-                    Token = encodedToken,
-                    Expiration = expiration,
-                    Email = user.Email,
-                    User = user.UserName
-                };
-                return Json(response);
-            }
-            catch
-            {
-                return new UnauthorizedResult();
+                user = await _userManager.FindByEmailAsync(model.username);
             }
 
-
-
-
-            /*OLD
-            try
+            if (user == null || !await _userManager.CheckPasswordAsync(user, model.password))
             {
-                // check if there's an user with the given username
-                AppUser user = await _userManager.FindByNameAsync(model.username);
-                // fallback to support e-mail address instead of username
-                if (user == null && model.username.Contains("@"))
-                    user = await _userManager.FindByEmailAsync(model.username);
-                if (user == null || !await _userManager.CheckPasswordAsync(user, model.password))
-                {
-                    // user does not exists or password mismatch
-                    return new UnauthorizedResult();
-                }
-                // username & password matches: create and return theJwt token.
-                DateTime now = DateTime.UtcNow;
-                // add the registered claims for JWT (RFC7519).
-                // For more info, see https://tools.ietf.org/html/rfc7519#section-4.1
-
-                Claim[] claims = new[] {
-                    new Claim(JwtRegisteredClaimNames.Sub, user.Id),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(JwtRegisteredClaimNames.Iat, new DateTimeOffset(now).ToUnixTimeSeconds().ToString())
-                    // TODO: add additional claims here
-                    };
-
-                int tokenExpirationMins = _configuration.GetValue<int>("Auth:JsonWebToken:TokenExpirationInMinutes");
-                SymmetricSecurityKey issuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Auth:JsonWebToken:Key"]));
-
-                JwtSecurityToken token = new JwtSecurityToken(
-                    issuer: _configuration["Auth:JsonWebToken:Issuer"],
-                    audience: _configuration["Auth:JsonWebToken:Audience"], claims: claims, notBefore: now,
-                    expires: now.Add(TimeSpan.FromMinutes(tokenExpirationMins)), signingCredentials: new SigningCredentials( issuerSigningKey, SecurityAlgorithms.HmacSha256));
-                string encodedToken = new JwtSecurityTokenHandler().WriteToken(token);
-
-                // build & return the response
-                TokenResponseViewModel response = new TokenResponseViewModel()
-                {
-                    Token = encodedToken,
-                    Expiration = tokenExpirationMins,
-                    Email = user.Email,
-                    User = user.UserName
-                };
-                return Json(response);
+                return new UnauthorizedResult(); //todo status code
             }
-            catch (Exception ex)
-            {
-                return new UnauthorizedResult();
-            }
-            */
+
+            TokenResponseViewModel response = GenerateResponse(user);
+
+            return Json(response);
         }
+
+        private TokenResponseViewModel GenerateResponse(AppUser user)
+        {
+            int expiration = _configuration.GetValue<int>("Auth:JsonWebToken:TokenExpirationInMinutes");
+            string key = _configuration["Auth:JsonWebToken:Key"];
+
+            SecurityToken token = _tokenService.GetSecurityToken(user, key, expiration);
+
+            string encodedToken = new JwtSecurityTokenHandler().WriteToken(token);
+            string refreshToken = _tokenService.GetRefreshToken();
+
+            _tokenRepo.SaveRefreshToken(refreshToken, user.UserName, GetIpAddress());
+
+            return new TokenResponseViewModel()
+            {
+                Token = encodedToken,
+                Expiration = expiration,
+                Email = user.Email,
+                User = user.UserName,
+                RefreshToken = refreshToken
+            };
+        }
+
+        private string GetIpAddress()
+        {
+            if (Request.Headers.ContainsKey("X-Forwarded-For"))
+                return Request.Headers["X-Forwarded-For"];
+            else
+                return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+        }
+
+
+
+
+
+
+        /*OLD
+        try
+        {
+            // check if there's an user with the given username
+            AppUser user = await _userManager.FindByNameAsync(model.username);
+            // fallback to support e-mail address instead of username
+            if (user == null && model.username.Contains("@"))
+                user = await _userManager.FindByEmailAsync(model.username);
+            if (user == null || !await _userManager.CheckPasswordAsync(user, model.password))
+            {
+                // user does not exists or password mismatch
+                return new UnauthorizedResult();
+            }
+            // username & password matches: create and return theJwt token.
+            DateTime now = DateTime.UtcNow;
+            // add the registered claims for JWT (RFC7519).
+            // For more info, see https://tools.ietf.org/html/rfc7519#section-4.1
+
+            Claim[] claims = new[] {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Iat, new DateTimeOffset(now).ToUnixTimeSeconds().ToString())
+                // TODO: add additional claims here
+                };
+
+            int tokenExpirationMins = _configuration.GetValue<int>("Auth:JsonWebToken:TokenExpirationInMinutes");
+            SymmetricSecurityKey issuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Auth:JsonWebToken:Key"]));
+
+            JwtSecurityToken token = new JwtSecurityToken(
+                issuer: _configuration["Auth:JsonWebToken:Issuer"],
+                audience: _configuration["Auth:JsonWebToken:Audience"], claims: claims, notBefore: now,
+                expires: now.Add(TimeSpan.FromMinutes(tokenExpirationMins)), signingCredentials: new SigningCredentials( issuerSigningKey, SecurityAlgorithms.HmacSha256));
+            string encodedToken = new JwtSecurityTokenHandler().WriteToken(token);
+
+            // build & return the response
+            TokenResponseViewModel response = new TokenResponseViewModel()
+            {
+                Token = encodedToken,
+                Expiration = tokenExpirationMins,
+                Email = user.Email,
+                User = user.UserName
+            };
+            return Json(response);
+        }
+        catch (Exception ex)
+        {
+            return new UnauthorizedResult();
+        }
+        */
 
         [HttpGet("ExternalLogin/{provider}")]
         public IActionResult ExternalLogin(string provider, string returnUrl = null)
