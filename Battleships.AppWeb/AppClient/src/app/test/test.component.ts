@@ -17,16 +17,9 @@ export class TestComponent implements OnInit {
   }
 
   executeCall(): void {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': 'bearer ' + this.auth.getAuth()!.token
-      })
-    };
-
-    console.log('executing call');
+    console.log('executing call, token:' + this.auth.getAuth()!.token);
     var url = 'http://localhost:50962/' + 'api/user/test';
-    this.http.get<string>(url, httpOptions)
+    this.http.get<string>(url)
       .subscribe(
         (val) => {
           console.log("POST call successful value returned in body", val);

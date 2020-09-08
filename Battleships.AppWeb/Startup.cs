@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,26 +28,33 @@ namespace Battleships_Online
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication(opts =>
+            services.AddCors(options =>
             {
-                opts.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                opts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.WithOrigins("http://localhost:4200")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials()
+                    .SetIsOriginAllowed((host) => true));
+            });
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(cfg =>
             {
                 cfg.RequireHttpsMetadata = false;
                 cfg.SaveToken = true;
                 cfg.TokenValidationParameters = new TokenValidationParameters()
                 {
-                    ValidIssuer = Configuration["Auth:JsonWebToken:Issuer"],
-                    ValidAudience = Configuration["Auth:JsonWebToken:Audience"],
+                    ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Auth:JsonWebToken:Key"])),
-                    ClockSkew = TimeSpan.Zero,
-                    RequireExpirationTime = false,
                     ValidateIssuer = false,
-                    ValidateIssuerSigningKey = false,
-                    ValidateAudience = false
+                    ValidateAudience = false,
+                    //ValidIssuer = Configuration["Auth:JsonWebToken:Issuer"],
+                    //ValidAudience = Configuration["Auth:JsonWebToken:Audience"],
+                    //ClockSkew = TimeSpan.Zero,
+                    //RequireExpirationTime = false
                 };
             })
             .AddFacebook(options =>
@@ -63,7 +71,8 @@ namespace Battleships_Online
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration["Data:M_K_Server:ConnectionString"]));
 
-            services.AddIdentity<AppUser, IdentityRole>(opts => {
+            services.AddIdentityCore<AppUser>(opts => //for JwtBearerDefaults, replaced AddIdentity
+            {
                 opts.User.RequireUniqueEmail = true;
                 opts.User.AllowedUserNameCharacters = null; //disable validation
                 opts.Password.RequireNonAlphanumeric = false;
@@ -71,24 +80,12 @@ namespace Battleships_Online
                 opts.Password.RequireUppercase = false;
                 opts.Password.RequireDigit = false;
             })
-            .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddDefaultTokenProviders();
-
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy",
-                    builder => builder.WithOrigins("http://localhost:4200")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials()
-                    .SetIsOriginAllowed((host) => true));
-            });
+            .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IUserValidation, UserValidation>();
             services.AddTransient<IInputSanitizer, InputSanitizer>();
-
-            services.AddMvc();
+            services.AddTransient<ITokenService, TokenService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -101,12 +98,7 @@ namespace Battleships_Online
 
             app.UseCors("CorsPolicy");
             app.UseAuthentication();
-            app.UseMvc(routes => {
-                routes.MapRoute(name: "Error", template: "Error",
-                defaults: new { controller = "Error", action = "Error" });
-                routes.MapRoute(name: "default", template: "{controller}/{action}/{id?}",
-                defaults: new { controller = "Home", action = "Index" });
-            });
+            app.UseMvc();
         }
     }
 }

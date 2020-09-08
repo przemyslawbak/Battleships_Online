@@ -1,5 +1,6 @@
 ﻿using Battleships.Models;
 using Battleships.Models.ViewModels;
+using Battleships.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -19,12 +20,14 @@ namespace Battleships.AppWeb.Controllers
         IConfiguration _configuration;
         UserManager<AppUser> _userManager;
         private SignInManager<AppUser> _signInManager;
+        private readonly ITokenService _tokenService;
 
-        public TokenController(IConfiguration configuration, UserManager<AppUser> userMgr, SignInManager<AppUser> signinMgr)
+        public TokenController(IConfiguration configuration, UserManager<AppUser> userMgr, SignInManager<AppUser> signinMgr, ITokenService tokenService)
         {
             _configuration = configuration;
             _signInManager = signinMgr;
             _userManager = userMgr;
+            _tokenService = tokenService;
         }
 
         [HttpPost("Auth")]
@@ -43,6 +46,45 @@ namespace Battleships.AppWeb.Controllers
         }
         private async Task<IActionResult> GetToken(TokenRequestViewModel model)
         {
+            try
+            {
+                int expiration = _configuration.GetValue<int>("Auth:JsonWebToken:TokenExpirationInMinutes");
+                string key = _configuration["Auth:JsonWebToken:Key"];
+                AppUser user = await _userManager.FindByNameAsync(model.username);
+
+                if (user == null && model.username.Contains("@"))
+                {
+                    user = await _userManager.FindByEmailAsync(model.username);
+                }
+
+                if (user == null || !await _userManager.CheckPasswordAsync(user, model.password))
+                {
+                    return new UnauthorizedResult(); //todo status code
+                }
+
+                SecurityToken token = _tokenService.GetSecurityToken(user, key, expiration);
+
+                string encodedToken = new JwtSecurityTokenHandler().WriteToken(token);
+
+
+                TokenResponseViewModel response = new TokenResponseViewModel()
+                {
+                    Token = encodedToken,
+                    Expiration = expiration,
+                    Email = user.Email,
+                    User = user.UserName
+                };
+                return Json(response);
+            }
+            catch
+            {
+                return new UnauthorizedResult();
+            }
+
+
+
+
+            /*OLD
             try
             {
                 // check if there's an user with the given username
@@ -90,6 +132,7 @@ namespace Battleships.AppWeb.Controllers
             {
                 return new UnauthorizedResult();
             }
+            */
         }
 
         [HttpGet("ExternalLogin/{provider}")]
