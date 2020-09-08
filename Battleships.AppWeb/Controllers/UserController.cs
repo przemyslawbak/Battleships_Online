@@ -62,7 +62,7 @@ namespace Battleships.AppWeb.Controllers
 
                     try
                     {
-                        await _emailSender.SendEmailAsync(model.Email, "Reset your password", "Please click or copy the password reset link to your browser: " + resetLink);
+                        await _emailSender.SendEmailAsync(email, "Reset your password", "Please click or copy the password reset link to your browser: " + resetLink);
                         return Ok();
                     }
                     catch
