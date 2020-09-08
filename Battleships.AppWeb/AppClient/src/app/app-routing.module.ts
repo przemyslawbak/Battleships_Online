@@ -5,11 +5,13 @@ import { JoinComponent } from './join/join.component';
 import { RegisterComponent } from './register/register.component';
 import { ForgottenComponent } from './forgotten/forgotten.component';
 import { PassResetComponent } from './pass-reset/pass-reset.component';
+import { TestComponent } from './test/test.component';
 
 const routes: Routes = [
   { path: 'join', component: JoinComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'forgotten', component: ForgottenComponent },
+  { path: 'test', component: TestComponent },
   { path: 'reset/:email/:token1/:token2/:token3', component: PassResetComponent },
   { path: '', redirectTo: '/', pathMatch: 'full' },
 ];

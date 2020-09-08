@@ -14,6 +14,7 @@ import { LoginExternalProvidersComponent } from './login.externalproviders/login
 import { RegisterComponent } from './register/register.component';
 import { ForgottenComponent } from './forgotten/forgotten.component';
 import { PassResetComponent } from './pass-reset/pass-reset.component';
+import { TestComponent } from './test/test.component';
 //import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -24,7 +25,8 @@ import { PassResetComponent } from './pass-reset/pass-reset.component';
     LoginExternalProvidersComponent,
     RegisterComponent,
     ForgottenComponent,
-    PassResetComponent
+    PassResetComponent,
+    TestComponent
   ],
   imports: [
     FormsModule,

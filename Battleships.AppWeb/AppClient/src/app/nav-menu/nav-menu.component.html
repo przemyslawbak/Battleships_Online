@@ -26,6 +26,7 @@
             <a (click)="logout()">
               <span class="nav-link text-dark">Logout {{this.GetUsername()}}</span>
             </a>
+            <a class="nav-link text-dark" [routerLink]="['/test']">Test</a>
           </li>
         </ul>
       </div>

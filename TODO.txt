@@ -3,6 +3,7 @@ OK - after login display user name
 OK - login after registering
 OK - join with facebook
 OK - login user
+- login remember me?
 OK - forgot pass
 OK - receive token + email from the link in PassResetComponent
 OK - register cancel btn
@@ -10,6 +11,7 @@ OK - register cancel btn
 - user token expire
 - popups for: registered user, logged in, send forgotten pass
 - controllers authorisation
+- local storage? https://stackoverflow.com/questions/40589730/local-storage-in-angular-2/40590101
 
 later:
 

@@ -50,8 +50,7 @@ namespace Battleships.AppWeb.Controllers
                 // fallback to support e-mail address instead of username
                 if (user == null && model.username.Contains("@"))
                     user = await _userManager.FindByEmailAsync(model.username);
-                if (user == null || !await _userManager.CheckPasswordAsync(user,
-                model.password))
+                if (user == null || !await _userManager.CheckPasswordAsync(user, model.password))
                 {
                     // user does not exists or password mismatch
                     return new UnauthorizedResult();

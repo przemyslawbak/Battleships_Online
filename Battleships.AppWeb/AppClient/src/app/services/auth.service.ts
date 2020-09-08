@@ -9,7 +9,6 @@ import { TokenResponse } from "../models/token.response";
 @Injectable()
 export class AuthService {
   authKey: string = "auth";
-  clientId: string = "TestMakerFree";
 
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: any) {
   }
@@ -19,14 +18,14 @@ export class AuthService {
     var data = {
       username: username,
       password: password,
-      client_id: this.clientId,
       // required when signing up with username/password
       grant_type: "password",
       // space-separated list of scopes for which the token is issued
       scope: "offline_access profile email"
     };
     return this.http.post<TokenResponse>(url, data)
-      .pipe(map((res) => {
+      .pipe(
+        map((res) => {
         let token = res && res.token;
         // if the token is there, login has been successful
         if (token) {
@@ -76,5 +75,11 @@ export class AuthService {
       return localStorage.getItem(this.authKey) != null;
     }
     return false;
+  }
+
+  isTokenExpired() {
+    const token = this.getAuth().token;
+    const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
+    return (Math.floor((new Date).getTime() / 1000)) >= expiry;
   }
 }

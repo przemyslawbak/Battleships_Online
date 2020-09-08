@@ -1,6 +1,7 @@
 ﻿using Battleships.Models;
 using Battleships.Models.ViewModels;
 using Battleships.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -26,6 +27,17 @@ namespace Battleships.AppWeb.Controllers
             _validator = validator;
             _sanitizer = sanitizer;
             _emailSender = emailSender;
+        }
+
+        /// <summary>
+        /// POST: api/user/test
+        /// </summary>
+        /// <returns>Status code.</returns>
+        [HttpGet("Test")]
+        [Authorize]
+        public IActionResult GetTest()
+        {
+            return new OkObjectResult(new { Message = "This is secure data!" });
         }
 
         /// <summary>
