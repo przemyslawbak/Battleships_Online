@@ -3,6 +3,7 @@ OK - after login display user name
 OK - login after registering
 OK - join with facebook
 OK - login user
+OK - test creating refresh token
 - refresh token interceptor
 - multiple interceptors: https://stackoverflow.com/a/45722740/12603542
 - refresh token
