@@ -9,7 +9,7 @@ OK - new request after token refreshing
 OK - multiple interceptors: https://stackoverflow.com/a/45722740/12603542
 OK - refresh token
 OK - logout revokes refresh token
-- logout revokes access token
+OK - logout revokes access token
 - login remember me? - remove
 OK - forgot pass
 OK - receive token + email from the link in PassResetComponent
@@ -20,7 +20,7 @@ OK - user token expire: https://stackoverflow.com/questions/55847727/jwt-token-e
 OK - controllers authorisation
 - local storage? https://stackoverflow.com/questions/40589730/local-storage-in-angular-2/40590101
 - spinners for requests
-- external (FB) login tokens, all ok?
+- external (FB) login tokens, callback, all ok?
 - token issuer, audience, add?
 
 later:

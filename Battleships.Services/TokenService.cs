@@ -1,7 +1,10 @@
 ﻿using Battleships.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -10,6 +13,13 @@ namespace Battleships.Services
 {
     public class TokenService : ITokenService
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public TokenService(IHttpContextAccessor httpContextAccessor)
+        {
+            _httpContextAccessor = httpContextAccessor;
+        }
+
         public string GetRefreshToken()
         {
             using (var rngCryptoServiceProvider = new RNGCryptoServiceProvider())
@@ -36,6 +46,13 @@ namespace Battleships.Services
             };
 
             return tokenHandler.CreateToken(tokenDescriptor);
+        }
+
+        public string GetCurrentToken()
+        {
+            var authorizationHeader = _httpContextAccessor.HttpContext.Request.Headers["authorization"];
+
+            return authorizationHeader == StringValues.Empty ? string.Empty : authorizationHeader.Single().Split(' ').Last();
         }
     }
 }

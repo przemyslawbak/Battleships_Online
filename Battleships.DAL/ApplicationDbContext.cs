@@ -9,6 +9,7 @@ namespace Battleships.DAL
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<BlacklistedToken> BlacklistedTokens { get; set; }
 
     }
 }

@@ -4,6 +4,7 @@ using Battleships.Models.ViewModels;
 using Battleships.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -21,8 +22,14 @@ namespace Battleships.AppWeb.Controllers
         private SignInManager<AppUser> _signInManager;
         private readonly ITokenService _tokenService;
         private readonly ITokenRepository _tokenRepo;
+        private readonly int _hoursKeepBlacklistedTokend = 5; //todo: move to _configuration
 
-        public TokenController(IConfiguration configuration, UserManager<AppUser> userMgr, SignInManager<AppUser> signinMgr, ITokenService tokenService, ITokenRepository tokenRepo)
+        public TokenController(
+            IConfiguration configuration,
+            UserManager<AppUser> userMgr,
+            SignInManager<AppUser> signinMgr,
+            ITokenService tokenService,
+            ITokenRepository tokenRepo)
         {
             _configuration = configuration;
             _signInManager = signinMgr;
@@ -40,7 +47,7 @@ namespace Battleships.AppWeb.Controllers
                 case "password":
                     return await GetToken(model);
                 default:
-                    return new UnauthorizedResult();
+                    return new UnauthorizedResult(); //todo: status code
             }
         }
 
@@ -53,7 +60,7 @@ namespace Battleships.AppWeb.Controllers
 
             if (!properToken)
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedResult(); //todo: status code
             }
 
             return await GetToken(model);
@@ -63,8 +70,8 @@ namespace Battleships.AppWeb.Controllers
         public IActionResult RevokeToken([FromBody]RevokeTokenRequestViewModel model)
         {
             _tokenRepo.DeleteRefreshToken(model.username);
-
-            //todo: black list access token
+            _tokenRepo.CleanUpBlacklistedTokens(_hoursKeepBlacklistedTokend);
+            _tokenRepo.AddBlacklistedToken(model.token);
 
             return Ok();
         }
@@ -75,7 +82,7 @@ namespace Battleships.AppWeb.Controllers
 
             if (user == null)
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedResult(); //todo: status code
             }
 
             TokenResponseViewModel response = GenerateResponse(user);
@@ -94,7 +101,7 @@ namespace Battleships.AppWeb.Controllers
 
             if (user == null || !await _userManager.CheckPasswordAsync(user, model.password))
             {
-                return new UnauthorizedResult(); //todo status code
+                return new UnauthorizedResult(); //todo: status code
             }
 
             TokenResponseViewModel response = GenerateResponse(user);

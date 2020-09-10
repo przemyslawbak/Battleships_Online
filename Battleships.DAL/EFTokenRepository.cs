@@ -1,5 +1,6 @@
 ﻿using Battleships.Models;
 using Microsoft.EntityFrameworkCore.Internal;
+using System;
 using System.Linq;
 
 namespace Battleships.DAL
@@ -11,6 +12,19 @@ namespace Battleships.DAL
         public EFTokenRepository(ApplicationDbContext ctx)
         {
             _context = ctx;
+        }
+
+        public void AddBlacklistedToken(string token)
+        {
+            _context.BlacklistedTokens.Add(new BlacklistedToken() { Token = token, BlacklistedDateTime = DateTime.UtcNow });
+            _context.SaveChanges();
+        }
+
+        public void CleanUpBlacklistedTokens(int hoursKeepBlacklistedTokend)
+        {
+            var expiredBlacklistedTokens = _context.BlacklistedTokens.Where(tokens => DateTime.UtcNow > tokens.BlacklistedDateTime.AddHours(hoursKeepBlacklistedTokend));
+            _context.BlacklistedTokens.RemoveRange(expiredBlacklistedTokens);
+            _context.SaveChanges();
         }
 
         public void DeleteRefreshToken(string userName)
@@ -39,6 +53,11 @@ namespace Battleships.DAL
         public bool VerifyReceivedToken(string refreshToken, string userName, string ip)
         {
             return _context.RefreshTokens.Any(tokens => tokens.UserName == userName && tokens.IpAddress == ip && tokens.UserName == userName);
+        }
+
+        public bool VeriFyTokenBan(string currentToken)
+        {
+            return _context.BlacklistedTokens.Any(token => token.Token == currentToken);
         }
     }
 }

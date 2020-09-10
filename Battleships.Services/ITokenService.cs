@@ -1,5 +1,6 @@
 ﻿using Battleships.Models;
 using Microsoft.IdentityModel.Tokens;
+using System.Threading.Tasks;
 
 namespace Battleships.Services
 {
@@ -7,5 +8,6 @@ namespace Battleships.Services
     {
         SecurityToken GetSecurityToken(AppUser user, string key, int expiration);
         string GetRefreshToken();
+        string GetCurrentToken();
     }
 }

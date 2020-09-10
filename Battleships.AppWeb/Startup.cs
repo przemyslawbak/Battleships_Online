@@ -1,4 +1,5 @@
-﻿using Battleships.DAL;
+﻿using Battleships.AppWeb.Utilities;
+using Battleships.DAL;
 using Battleships.Models;
 using Battleships.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -71,7 +72,7 @@ namespace Battleships_Online
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration["Data:M_K_Server:ConnectionString"]));
 
-            services.AddIdentity<AppUser, IdentityRole>(opts => //for JwtBearerDefaults, replaced AddIdentity
+            services.AddIdentity<AppUser, IdentityRole>(opts =>
             {
                 opts.User.RequireUniqueEmail = true;
                 opts.User.AllowedUserNameCharacters = null; //disable validation
@@ -82,6 +83,7 @@ namespace Battleships_Online
             })
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddTransient<TokenManagerMiddleware>();
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IUserValidation, UserValidation>();
             services.AddTransient<IInputSanitizer, InputSanitizer>();
@@ -100,6 +102,7 @@ namespace Battleships_Online
 
             app.UseCors("CorsPolicy");
             app.UseAuthentication();
+            app.UseMiddleware<TokenManagerMiddleware>();
             app.UseMvc();
         }
     }
