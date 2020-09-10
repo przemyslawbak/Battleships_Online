@@ -1,6 +1,6 @@
 export interface TokenResponse {
   token: string,
-  refreshtoken: string,
   email: string,
-  user: string
+  user: string,
+  refreshToken: string
 }

@@ -29,7 +29,7 @@ export class AuthService {
     var url = 'http://localhost:50962/' + "api/token/refresh-token";
     var data = {
       username: this.getAuth().user,
-      refreshtoken: this.getAuth().refreshtoken
+      refreshtoken: this.getAuth().refreshToken
     };
 
     return this.getTokenResponse(url, data);
@@ -38,9 +38,10 @@ export class AuthService {
   public logout(): boolean {
     console.log('logged out from auth service');
     var url = 'http://localhost:50962/' + "api/token/revoke-token";
+    console.log('refresh token to revoke: ' + this.getAuth().refreshToken);
     var data = {
       username: this.getAuth().user,
-      refreshtoken: this.getAuth().refreshtoken,
+      refreshtoken: this.getAuth().refreshToken,
       token: this.getAuth().token
     };
     console.log('revoke token post call');
@@ -60,6 +61,9 @@ export class AuthService {
         localStorage.setItem(
           this.authKey,
           JSON.stringify(auth));
+
+        console.log('refresh token: ' + auth.refreshToken);
+        console.log('token: ' + auth.token);
       }
       else {
         localStorage.removeItem(this.authKey);

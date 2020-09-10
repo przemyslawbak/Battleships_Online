@@ -70,6 +70,7 @@ namespace Battleships.AppWeb.Controllers
 
             return Ok();
         }
+
         [HttpGet("ExternalLogin/{provider}")]
         public IActionResult ExternalLogin(string provider, string returnUrl = null)
         {
