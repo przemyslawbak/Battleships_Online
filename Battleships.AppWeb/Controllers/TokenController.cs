@@ -59,6 +59,16 @@ namespace Battleships.AppWeb.Controllers
             return await GetToken(model);
         }
 
+        [HttpPost("revoke-token")]
+        public IActionResult RevokeToken([FromBody]RevokeTokenRequestViewModel model)
+        {
+            _tokenRepo.DeleteRefreshToken(model.username);
+
+            //todo: black list access token
+
+            return Ok();
+        }
+
         private async Task<IActionResult> GetToken(RefreshTokenRequestViewModel model) //todo: DRY
         {
             AppUser user = await _userManager.FindByNameAsync(model.username);

@@ -6,5 +6,6 @@ namespace Battleships.DAL
     {
         void SaveRefreshToken(string refreshToken, string id, string ip);
         bool VerifyReceivedToken(string refreshtoken, string username, string ip);
+        void DeleteRefreshToken(string username);
     }
 }

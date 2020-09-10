@@ -5,10 +5,11 @@ OK - join with facebook
 OK - login user
 OK - test creating refresh token
 OK - refresh token interceptor: https://stackoverflow.com/a/57638101
-- new request after token refreshing
+OK - new request after token refreshing
 OK - multiple interceptors: https://stackoverflow.com/a/45722740/12603542
-- refresh token
-- logout revokes tokens
+OK - refresh token
+OK - logout revokes refresh token
+- logout revokes access token
 - login remember me? - remove
 OK - forgot pass
 OK - receive token + email from the link in PassResetComponent

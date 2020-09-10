@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpHandler, HttpInterceptor, HttpRequest, HttpEvent, HttpErrorResponse } from "@angular/common/http";
+import { HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { Observable, BehaviorSubject } from 'rxjs';
 import { catchError, switchMap, filter, take } from "rxjs/operators";
@@ -50,12 +50,11 @@ export class AuthInterceptor implements HttpInterceptor {
             return this.refreshTokenSubject.pipe(
               filter(authResult => authResult != null),
               take(1),
-              switchMap(authResult => {
+              switchMap(() => {
                 let modifiedRequest = this.addAuthHeader(request);
                 return next.handle(modifiedRequest);
               }));
           }
-        //todo: handle auth error if logged in
         } else {
           return next.handle(this.addAuthHeader(request))
         }

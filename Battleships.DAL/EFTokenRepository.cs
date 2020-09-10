@@ -13,6 +13,16 @@ namespace Battleships.DAL
             _context = ctx;
         }
 
+        public void DeleteRefreshToken(string userName)
+        {
+            if (_context.RefreshTokens.Any(tokens => tokens.UserName == userName))
+            {
+                var allTokens = _context.RefreshTokens.Where(tokens => tokens.UserName == userName);
+                _context.RefreshTokens.RemoveRange(allTokens);
+                _context.SaveChanges();
+            }
+        }
+
         public void SaveRefreshToken(string refreshToken, string userName, string ip)
         {
             bool userExists = _context.RefreshTokens.Any(tokens => tokens.UserName == userName);
