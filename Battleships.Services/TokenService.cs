@@ -1,5 +1,6 @@
 ﻿using Battleships.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -14,10 +15,12 @@ namespace Battleships.Services
     public class TokenService : ITokenService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IConfiguration _configuration;
 
-        public TokenService(IHttpContextAccessor httpContextAccessor)
+        public TokenService(IHttpContextAccessor httpContextAccessor, IConfiguration config)
         {
             _httpContextAccessor = httpContextAccessor;
+            _configuration = config;
         }
 
         public string GetRefreshToken()
@@ -30,8 +33,11 @@ namespace Battleships.Services
             }
         }
 
-        public SecurityToken GetSecurityToken(AppUser user, string key, int expiration)
+        public SecurityToken GetSecurityToken(AppUser user)
         {
+            int expiration = _configuration.GetValue<int>("Auth:JsonWebToken:TokenExpirationInMinutes");
+            string key = _configuration["Auth:JsonWebToken:Key"];
+
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
             byte[] secret = Encoding.ASCII.GetBytes(key);
 
@@ -42,7 +48,9 @@ namespace Battleships.Services
                     new Claim(ClaimTypes.Name, user.Id.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(expiration),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secret), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secret), SecurityAlgorithms.HmacSha256Signature),
+                Issuer = _configuration["Auth:JsonWebToken:Issuer"],
+                Audience = _configuration["Auth:JsonWebToken:Audience"]
             };
 
             return tokenHandler.CreateToken(tokenDescriptor);

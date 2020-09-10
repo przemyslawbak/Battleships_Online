@@ -6,7 +6,7 @@ namespace Battleships.Services
 {
     public interface ITokenService
     {
-        SecurityToken GetSecurityToken(AppUser user, string key, int expiration);
+        SecurityToken GetSecurityToken(AppUser user);
         string GetRefreshToken();
         string GetCurrentToken();
     }

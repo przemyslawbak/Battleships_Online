@@ -52,8 +52,8 @@ namespace Battleships_Online
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Auth:JsonWebToken:Key"])),
                     ValidateIssuer = false,
                     ValidateAudience = false,
-                    //ValidIssuer = Configuration["Auth:JsonWebToken:Issuer"],
-                    //ValidAudience = Configuration["Auth:JsonWebToken:Audience"],
+                    ValidIssuer = Configuration["Auth:JsonWebToken:Issuer"],
+                    ValidAudience = Configuration["Auth:JsonWebToken:Audience"],
                     ClockSkew = TimeSpan.Zero, //https://stackoverflow.com/a/46231102/12603542
                     //RequireExpirationTime = false
                 };

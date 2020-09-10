@@ -35,7 +35,7 @@ namespace Battleships.AppWeb.Controllers
         /// <returns>Status code.</returns>
         [HttpGet("Test")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public IActionResult GetTest()
+        public IActionResult GetAuthTest()
         {
             return new OkObjectResult(new { Message = "This is secure data!" });
         }
