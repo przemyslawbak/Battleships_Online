@@ -10,36 +10,49 @@ import { TokenResponse } from "../models/token.response";
 export class AuthService {
   authKey: string = "auth";
 
-  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: any) {
-  }
+  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: any) { }
+
   // performs the login
   login(username: string, password: string): Observable<boolean> {
     var url = 'http://localhost:50962/' + "api/token/auth";
     var data = {
       username: username,
       password: password,
-      // required when signing up with username/password
       grant_type: "password",
-      // space-separated list of scopes for which the token is issued
       scope: "offline_access profile email"
     };
     return this.http.post<TokenResponse>(url, data)
       .pipe(
         map((res) => {
         let token = res && res.token;
-        // if the token is there, login has been successful
         if (token) {
-          // store username and jwt token
           this.setAuth(res);
-          // successful login
           return true;
         }
-        // failed login
         return false;
       }))
   }
 
+  refreshToken(): Observable<boolean> {
+    var url = 'http://localhost:50962/' + "api/token/refresh-token";
+    var data = {
+      username: this.getAuth().user,
+      refreshtoken: this.getAuth().refreshtoken
+    };
+    return this.http.post<TokenResponse>(url, data) //todo: DRY
+      .pipe(
+        map((res) => {
+          let token = res && res.token;
+          if (token) {
+            this.setAuth(res);
+            return true;
+          }
+          return false;
+        }))
+  }
+
   logout(): boolean {
+    console.log('logged out from auth service');
     this.setAuth(null);
     return true;
   }
@@ -77,9 +90,13 @@ export class AuthService {
     return false;
   }
 
-  isTokenExpired() {
-    const token = this.getAuth().token;
-    const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
-    return (Math.floor((new Date).getTime() / 1000)) >= expiry;
+  isTokenExpired(): boolean {
+    if (this.isLoggedIn()) {
+      const token = this.getAuth().token;
+      const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
+      return (Math.floor((new Date).getTime() / 1000)) >= expiry;
+    } else {
+      return false;
+    }
   }
 }

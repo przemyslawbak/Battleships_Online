@@ -4,10 +4,12 @@ OK - login after registering
 OK - join with facebook
 OK - login user
 OK - test creating refresh token
-- refresh token interceptor
-- multiple interceptors: https://stackoverflow.com/a/45722740/12603542
+OK - refresh token interceptor: https://stackoverflow.com/a/57638101
+- new request after token refreshing
+OK - multiple interceptors: https://stackoverflow.com/a/45722740/12603542
 - refresh token
-- login remember me?
+- logout revokes tokens
+- login remember me? - remove
 OK - forgot pass
 OK - receive token + email from the link in PassResetComponent
 OK - register cancel btn
@@ -17,8 +19,8 @@ OK - user token expire: https://stackoverflow.com/questions/55847727/jwt-token-e
 OK - controllers authorisation
 - local storage? https://stackoverflow.com/questions/40589730/local-storage-in-angular-2/40590101
 - spinners for requests
-- external login tokens?
-- token issuer, audience
+- external (FB) login tokens, all ok?
+- token issuer, audience, add?
 
 later:
 
@@ -29,3 +31,4 @@ later:
 - captcha
 - clean up console.log
 - protect server controllers
+- structure https://angular.io/guide/styleguide
