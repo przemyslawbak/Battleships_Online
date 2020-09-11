@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, UrlMatcher, UrlSegment, UrlMatchResult } from '@angular/router';
 
 import { JoinComponent } from './join/join.component';
 import { RegisterComponent } from './register/register.component';
@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'forgotten', component: ForgottenComponent },
   { path: 'test', component: TestComponent, canActivate: [AuthGuard] },
-  { path: 'pass-reset/:email/:token1/:token2/:token3/:token4/:token5', component: PassResetComponent },
+  { path: 'pass-reset/:email/:token', component: PassResetComponent },
   { path: '', redirectTo: '/', pathMatch: 'full' },
 ];
 

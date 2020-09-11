@@ -56,6 +56,7 @@ namespace Battleships.AppWeb.Controllers
                 if (user != null)
                 {
                     string token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    token = token.Replace("/", "$");
                     string email = model.Email;
 
                     string resetLink = "http://localhost:4200/pass-reset/" + model.Email + "/" + token;
