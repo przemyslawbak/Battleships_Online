@@ -1,6 +1,7 @@
 import { Inject, Injectable, PLATFORM_ID } from "@angular/core";
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from "@angular/common/http";
+import { Router } from "@angular/router";
 import { Observable } from "rxjs";
 import { map } from 'rxjs/operators';
 
@@ -10,7 +11,11 @@ import { TokenResponse } from "../models/token.response";
 export class AuthService {
   authKey: string = "auth";
 
-  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: any) { }
+  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: any, private router: Router) { }
+
+  public facebookLogin(accessToken: string) {
+    console.log(accessToken);
+  }
 
   // performs the login
   public login(username: string, password: string): Observable<boolean> {
@@ -106,6 +111,7 @@ export class AuthService {
         map((res) => {
           let token = res && res.token;
           if (token) {
+            this.router.navigate(['']);
             this.setAuth(res);
             return true;
           }

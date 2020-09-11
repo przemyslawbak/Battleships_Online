@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'forgotten', component: ForgottenComponent },
   { path: 'test', component: TestComponent, canActivate: [AuthGuard] },
-  { path: 'reset/:email/:token1/:token2/:token3', component: PassResetComponent },
+  { path: 'pass-reset/:email/:token1/:token2/:token3/:token4/:token5', component: PassResetComponent },
   { path: '', redirectTo: '/', pathMatch: 'full' },
 ];
 

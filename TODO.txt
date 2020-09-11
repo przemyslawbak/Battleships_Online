@@ -23,6 +23,7 @@ OK - local storage for tokens? nope
 - external (FB) login tokens, callback, all ok?
 OK - verify issuer, audience
 - register display name get rid of
+- pass reset token changes `/` sections
 
 later:
 - auth roles

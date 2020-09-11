@@ -23,7 +23,6 @@ namespace Battleships.AppWeb.Controllers
         private readonly ITokenService _tokenService;
         private readonly ITokenRepository _tokenRepo;
         private readonly int _hoursKeepBlacklistedTokend = 5; //todo: move to _configuration
-        private readonly string _clientHomePage = "http://localhost:4200"; //todo: move to _configuration
 
         public TokenController(
             UserManager<AppUser> userMgr,
@@ -78,21 +77,11 @@ namespace Battleships.AppWeb.Controllers
         }
 
         [HttpGet("external-login/{provider}")]
-        public IActionResult ExternalLogin(string provider, string returnUrl = "http://localhost:4200")
+        public IActionResult ExternalLoginAsync(string provider, string returnUrl = null)
         {
-            switch (provider.ToLower())
-            {
-                // case "google":
-                // case "twitter":
-                case "facebook":
-                    // Redirect the request to the external provider.
-                    var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Token", new { ReturnUrl = returnUrl });
-                    var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, "http://localhost:50962" + redirectUrl);
-                    return new ChallengeResult(provider, properties);
-                default:
-                    // provider not supported
-                    return BadRequest();
-            }
+            var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Token", new { ReturnUrl = returnUrl });
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, "http://localhost:50962" + redirectUrl);
+            return new ChallengeResult(provider, properties);
         }
 
         //todo: clean up and check
@@ -130,13 +119,14 @@ namespace Battleships.AppWeb.Controllers
                     return new ObjectResult("Error when creating new user.") { StatusCode = 500 };
                 }
 
+                //todo: register response
                 return Content("registered");
             }
             else
             {
                 TokenResponseViewModel response = GenerateResponse(user);
 
-                return Content("logged in: " + user.UserName);
+                return View(response);
             }
         }
 

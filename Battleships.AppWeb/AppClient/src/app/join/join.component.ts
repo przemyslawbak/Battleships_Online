@@ -28,7 +28,6 @@ export class JoinComponent {
     var password = this.form.value.Password;
     this.authService.login(username, password)
       .subscribe(() => {
-        this.router.navigate(['']);
       },
         err => {
           // login failed

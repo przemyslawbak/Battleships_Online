@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,7 +33,9 @@ namespace Battleships_Online
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
-                    builder => builder.WithOrigins("http://localhost:4200")
+                    builder => builder
+                    .SetIsOriginAllowedToAllowWildcardSubdomains()
+                    .WithOrigins("*localhost:4200", "*.facebook.com")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials()
@@ -81,7 +84,8 @@ namespace Battleships_Online
                 opts.Password.RequireUppercase = false;
                 opts.Password.RequireDigit = false;
             })
-            .AddEntityFrameworkStores<ApplicationDbContext>();
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
 
             services.AddTransient<TokenManagerMiddleware>();
             services.AddTransient<IEmailSender, EmailSender>();
@@ -94,7 +98,16 @@ namespace Battleships_Online
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
+        {/*
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "AppClient";
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200"); //https://stackoverflow.com/a/60146427/12603542
+                }
+            });*/
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

@@ -32,6 +32,7 @@ export class ForgottenComponent implements OnInit {
     var viewModel = <PassResetEmail>{};
     viewModel.Email = this.form.value.Email;
     var url = 'http://localhost:50962/' + 'api/user/reset';
+    console.log('test');
     this.http.post(url, viewModel)
       .subscribe(
         (val) => {

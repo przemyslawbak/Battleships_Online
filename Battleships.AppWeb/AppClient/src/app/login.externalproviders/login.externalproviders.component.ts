@@ -5,6 +5,7 @@ import { Router } from "@angular/router";
 
 import { AuthService } from '../services/auth.service';
 import { TokenResponse } from "../models/token.response";
+import { map } from 'rxjs/operators';
 
 declare var window: any;
 @Component({
@@ -13,29 +14,26 @@ declare var window: any;
   styleUrls: ['./login.externalproviders.component.css']
 })
 export class LoginExternalProvidersComponent implements OnInit {
-  externalProviderWindow: any;
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    private authService: AuthService,
-    // inject the local zone
-    private zone: NgZone,
-    @Inject(PLATFORM_ID) private platformId: any) {
-  }
+  private externalProviderWindow: Window;
+  failed: boolean;
+  error: string;
+  errorDescription: string;
+  isRequesting: boolean;
+
+  constructor(private http: HttpClient, private router: Router, private auth: AuthService, private zone: NgZone, @Inject(PLATFORM_ID) private platformId: any) { }
+
   ngOnInit() {
     if (!isPlatformBrowser(this.platformId)) {
       return;
     }
-    // close previously opened windows (if any)
+
     this.closePopUpWindow();
-    // instantiate the externalProviderLogin function
-    // (if it doesn't exist already)
     var self = this;
     if (!window.externalProviderLogin) {
       window.externalProviderLogin = function (auth: TokenResponse) {
         self.zone.run(() => {
           console.log("External Login successful!");
-          self.authService.setAuth(auth);
+          self.auth.setAuth(auth);
           self.router.navigate([""]);
         });
       }
@@ -54,7 +52,24 @@ export class LoginExternalProvidersComponent implements OnInit {
 
     this.closePopUpWindow();
     this.externalProviderWindow = window.open(url, "ExternalProvider", params, false);
-    alert('dupa'); //todo: lock for the window time being (somehow)
+    this.externalProviderWindow.addEventListener("message", this.handleMessage.bind(this), false);
+  }
+
+  private handleMessage(event: Event) {
+    console.log('event occured');
+    const message = event as MessageEvent;
+
+    if (message.origin !== "http://localhost:50962" || message.data === "") {
+      console.log('message.origin corrupted');
+      return
+    };
+
+    this.externalProviderWindow.close();
+
+    const result = <TokenResponse>JSON.parse(message.data);
+    console.log(result.email);
+    //todo: fail
+    //todo: ok
   }
 
   private closePopUpWindow() {

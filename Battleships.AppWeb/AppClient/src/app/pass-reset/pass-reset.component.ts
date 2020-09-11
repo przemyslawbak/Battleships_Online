@@ -34,7 +34,9 @@ export class PassResetComponent implements OnInit {
     const token1 = this.route.snapshot.paramMap.get('token1');
     const token2 = this.route.snapshot.paramMap.get('token2');
     const token3 = this.route.snapshot.paramMap.get('token3');
-    const token = token1 + '/' + token2 + '/' + token3;
+    const token4 = this.route.snapshot.paramMap.get('token4');
+    const token5 = this.route.snapshot.paramMap.get('token5');
+    const token = token1 + '/' + token2 + '/' + token3; + '/' + token4 + '/' + token5;;
     console.log('email: ' + email);
     console.log('token: ' + token);
 
@@ -48,7 +50,7 @@ export class PassResetComponent implements OnInit {
 
   onSubmit() {
     this.passModel.Password = this.form.value.Password;
-    var url = 'http://localhost:50962/' + 'api/user/newpassword';
+    var url = 'http://localhost:50962/' + 'api/user/new-password';
     this.http.post(url, this.passModel)
       .subscribe(
         (val) => {

@@ -44,7 +44,7 @@ namespace Battleships.AppWeb.Controllers
         /// POST: api/user/reset
         /// </summary>
         /// <returns>Status code.</returns>
-        [HttpPost("Reset")]
+        [HttpPost("reset")]
         public async Task<IActionResult> PassChange([FromBody]PassResetEmailViewModel model)
         {
             if (ModelState.IsValid)
@@ -58,7 +58,7 @@ namespace Battleships.AppWeb.Controllers
                     string token = await _userManager.GeneratePasswordResetTokenAsync(user);
                     string email = model.Email;
 
-                    string resetLink = "http://localhost:4200/reset/" + model.Email + "/" + token;
+                    string resetLink = "http://localhost:4200/pass-reset/" + model.Email + "/" + token;
 
                     try
                     {
@@ -85,7 +85,7 @@ namespace Battleships.AppWeb.Controllers
         /// POST: api/user/newpassword
         /// </summary>
         /// <returns>Status code.</returns>
-        [HttpPost("NewPassword")]
+        [HttpPost("new-password")]
         public async Task<IActionResult> PassReset([FromBody]ResetPasswordViewModel details)
         {
             if (ModelState.IsValid)
