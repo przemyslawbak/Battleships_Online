@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Battleships.AppWeb.Controllers
@@ -15,22 +17,26 @@ namespace Battleships.AppWeb.Controllers
     [ApiController]
     public class TokenController : Controller
     {
-        UserManager<AppUser> _userManager;
+        private readonly IUserService _userService;
+        private UserManager<AppUser> _userManager;
         private SignInManager<AppUser> _signInManager;
         private readonly ITokenService _tokenService;
         private readonly ITokenRepository _tokenRepo;
         private readonly int _hoursKeepBlacklistedTokend = 5; //todo: move to _configuration
+        private readonly string _clientHomePage = "http://localhost:4200"; //todo: move to _configuration
 
         public TokenController(
             UserManager<AppUser> userMgr,
             SignInManager<AppUser> signinMgr,
             ITokenService tokenService,
-            ITokenRepository tokenRepo)
+            ITokenRepository tokenRepo,
+            IUserService userService)
         {
             _signInManager = signinMgr;
             _userManager = userMgr;
             _tokenService = tokenService;
             _tokenRepo = tokenRepo;
+            _userService = userService;
         }
 
         [HttpPost("auth")]
@@ -71,25 +77,21 @@ namespace Battleships.AppWeb.Controllers
             return Ok();
         }
 
-        [HttpGet("ExternalLogin/{provider}")]
-        public IActionResult ExternalLogin(string provider, string returnUrl = null)
+        [HttpGet("external-login/{provider}")]
+        public IActionResult ExternalLogin(string provider, string returnUrl = "http://localhost:4200")
         {
             switch (provider.ToLower())
             {
+                // case "google":
+                // case "twitter":
                 case "facebook":
-                    // case "google":
-                    // case "twitter":
-                    // todo: add all supported providers here
                     // Redirect the request to the external provider.
                     var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Token", new { ReturnUrl = returnUrl });
                     var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, "http://localhost:50962" + redirectUrl);
                     return new ChallengeResult(provider, properties);
                 default:
                     // provider not supported
-                    return BadRequest(new
-                    {
-                        Error = string.Format("Provider '{0}' is not supported.", provider)
-                    });
+                    return BadRequest();
             }
         }
 
@@ -99,62 +101,67 @@ namespace Battleships.AppWeb.Controllers
         {
             if (!string.IsNullOrEmpty(remoteError))
             {
-                // TODO: handle external provider errors
+                //todo: handle external provider errors
                 throw new Exception(string.Format("External Provider error: {0}", remoteError));
             }
-            // Extract the login info obtained from the External Provider
-            var info = await _signInManager.GetExternalLoginInfoAsync();
+
+            ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
+
             if (info == null)
             {
-                // if there's none, emit an error
-                throw new Exception("ERROR: No login info available.");
-            }
-            // Check if this user already registered himself with this external provider before
-            var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
-            if (user == null)
-            {
-                // If we reach this point, it means that this user never tried to logged in
-                // using this external provider. However, it could have used other providers
-                // and /or have a local account.
-                // We can find out if that's the case by looking for his e-mail address.
-                // Retrieve the 'emailaddress' claim
-                var emailKey = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";
-                var email = info.Principal.FindFirst(emailKey).Value;
-                // Lookup if there's an username with this e-mail address in the Db
-                user = await _userManager.FindByEmailAsync(email);
-                if (user == null)
-                {
-                    // No user has been found: register a new user
-                    // using the info retrieved from the provider
-                    DateTime now = DateTime.Now;
-                    // Create a unique username using the 'nameidentifier' claim
-                    var idKey = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
-                    var username = string.Format("{0}{1}{2}",
-                    info.LoginProvider,
-                    info.Principal.FindFirst(idKey).Value,
-                    Guid.NewGuid().ToString("N"));
-                    user = new AppUser()
-                    {
-                        SecurityStamp = Guid.NewGuid().ToString(),
-                        UserName = username,
-                        Email = email
-                    };
-                    // Add the user to the Db with a random password
-                    IdentityResult register = await _userManager.CreateAsync(user, "SomerandoMp94084as(($_@$sowrdhardTobreak@*#%(!13285038");
-                    // Remove Lockout and E-Mail confirmation
-                    if (register.Succeeded)
-                    {
-                        //todo
-                    }
-                    else
-                    {
-                        //todo
-                    };
-                }
-                else throw new Exception("Authentication error");
+                throw new Exception(string.Format("External Provider error, no user data"));
             }
 
-            return Content("finito?"); //brakuje zalogowania jeśli już zarejestrowany, nei zamyka okna facebooka!!!!!!!!!!!!!!!!!!!!
+            var user = await _userManager.FindByEmailAsync(info.Principal.FindFirst(ClaimTypes.Email).Value);
+
+            if (user == null)
+            {
+                UserViewModel userRegisterVm = new UserViewModel()
+                {
+                    Email = info.Principal.FindFirst(ClaimTypes.Email).Value,
+                    UserName = GenerateUsername(info.Principal.FindFirst(ClaimTypes.GivenName).Value),
+                    Password = GenerateRandomString()
+                };
+
+                bool result = await _userService.CreateNewUserAndAddToDbAsync(userRegisterVm);
+
+                if (!result)
+                {
+                    return new ObjectResult("Error when creating new user.") { StatusCode = 500 };
+                }
+
+                return Content("registered");
+            }
+            else
+            {
+                TokenResponseViewModel response = GenerateResponse(user);
+
+                return Content("logged in: " + user.UserName);
+            }
+        }
+
+        //todo: service
+        private static string GenerateRandomString()
+        {
+            Random random = new Random();
+
+            const string chars = "abcdefghijklmnopqrtuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+            return new string(Enumerable.Repeat(chars, 20).Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        //todo: service
+        private string GenerateUsername(string typedName)
+        {
+            int count = 0;
+            string name = typedName;
+
+            while (_userManager.Users.Any(x => x.UserName == name))
+            {
+                name = typedName + count++.ToString();
+            }
+
+            return name;
         }
 
         //todo: service?

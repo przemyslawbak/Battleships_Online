@@ -41,26 +41,26 @@ export class LoginExternalProvidersComponent implements OnInit {
       }
     }
   }
-  closePopUpWindow() {
+
+  public callExternalLogin(providerName: string) {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+    var url = 'http://localhost:50962/' + "api/token/external-login/" + providerName;
+
+    var w = (screen.width >= 1050) ? 1050 : screen.width;
+    var h = (screen.height >= 550) ? 550 : screen.height;
+    var params = "toolbar=yes,scrollbars=yes,resizable=yes,width=" + w + ", height=" + h;
+
+    this.closePopUpWindow();
+    this.externalProviderWindow = window.open(url, "ExternalProvider", params, false);
+    alert('dupa'); //todo: lock for the window time being (somehow)
+  }
+
+  private closePopUpWindow() {
     if (this.externalProviderWindow) {
       this.externalProviderWindow.close();
     }
     this.externalProviderWindow = null;
-  }
-  callExternalLogin(providerName: string) {
-    if (!isPlatformBrowser(this.platformId)) {
-      return;
-    }
-    var url = 'http://localhost:50962/' + "api/Token/ExternalLogin/" +
-      providerName;
-    // minimalistic mobile devices support
-    var w = (screen.width >= 1050) ? 1050 : screen.width;
-    var h = (screen.height >= 550) ? 550 : screen.height;
-    var params = "toolbar=yes,scrollbars=yes,resizable=yes,width="
-      + w + ", height=" + h;
-    // close previously opened windows (if any)
-    this.closePopUpWindow();
-    this.externalProviderWindow = window.open(url,
-      "ExternalProvider", params, false);
   }
 }

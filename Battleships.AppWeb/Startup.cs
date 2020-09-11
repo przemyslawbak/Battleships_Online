@@ -85,7 +85,7 @@ namespace Battleships_Online
 
             services.AddTransient<TokenManagerMiddleware>();
             services.AddTransient<IEmailSender, EmailSender>();
-            services.AddTransient<IUserValidation, UserValidation>();
+            services.AddTransient<IUserService, UserService>();
             services.AddTransient<IInputSanitizer, InputSanitizer>();
             services.AddTransient<ITokenService, TokenService>();
 

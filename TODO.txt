@@ -22,6 +22,7 @@ OK - local storage for tokens? nope
 - spinners for requests
 - external (FB) login tokens, callback, all ok?
 OK - verify issuer, audience
+- register display name get rid of
 
 later:
 - auth roles
