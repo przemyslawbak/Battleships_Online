@@ -1,11 +1,9 @@
 import { Component, Inject, OnInit, NgZone, PLATFORM_ID } from "@angular/core";
 import { isPlatformBrowser } from '@angular/common';
-import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 
 import { AuthService } from '../services/auth.service';
 import { TokenResponse } from "../models/token.response";
-import { map } from 'rxjs/operators';
 
 declare var window: any;
 @Component({
@@ -20,7 +18,7 @@ export class LoginExternalProvidersComponent implements OnInit {
   errorDescription: string;
   isRequesting: boolean;
 
-  constructor(private http: HttpClient, private router: Router, private auth: AuthService, private zone: NgZone, @Inject(PLATFORM_ID) private platformId: any) { }
+  constructor(private router: Router, private auth: AuthService, private zone: NgZone, @Inject(PLATFORM_ID) private platformId: any) { }
 
   ngOnInit() {
     if (!isPlatformBrowser(this.platformId)) {
@@ -34,7 +32,7 @@ export class LoginExternalProvidersComponent implements OnInit {
         self.zone.run(() => {
           console.log("External Login successful!");
           self.auth.setAuth(auth);
-          self.router.navigate([""]);
+          self.router.navigate(['']);
         });
       }
     }
@@ -52,24 +50,18 @@ export class LoginExternalProvidersComponent implements OnInit {
 
     this.closePopUpWindow();
     this.externalProviderWindow = window.open(url, "ExternalProvider", params, false);
-    this.externalProviderWindow.addEventListener("message", this.handleMessage.bind(this), false);
+    parent.window.addEventListener("message", this.handleCloseExternalProvider.bind(this), false);
   }
 
-  private handleMessage(event: Event) {
-    console.log('event occured');
-    const message = event as MessageEvent;
-
-    if (message.origin !== "http://localhost:50962" || message.data === "") {
-      console.log('message.origin corrupted');
-      return
-    };
-
-    this.externalProviderWindow.close();
-
-    const result = <TokenResponse>JSON.parse(message.data);
-    console.log(result.email);
-    //todo: fail
-    //todo: ok
+  private handleCloseExternalProvider() {
+    if (this.auth.isLoggedIn()) {
+      console.log('logged in user with external provider: ' + this.auth.getAuth().user);
+      this.router.navigate(['']);
+      this.closePopUpWindow();
+    } else {
+      console.log('failed to logged in user with external provider');
+      this.router.navigate(['join']);
+    }
   }
 
   private closePopUpWindow() {

@@ -202,10 +202,10 @@ namespace Battleships.AppWeb.Controllers
 
             return new TokenResponseViewModel()
             {
-                Token = encodedToken,
+                Token = encodedToken.Replace("/", "$"),
                 Email = user.Email,
                 User = user.UserName,
-                RefreshToken = refreshToken
+                RefreshToken = refreshToken.Replace("/", "$")
             };
         }
 

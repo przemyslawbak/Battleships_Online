@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 
@@ -8,12 +8,18 @@ import { AuthService } from '../services/auth.service';
   templateUrl: "./join.component.html",
   styleUrls: ['./join.component.css']
 })
-export class JoinComponent {
+export class JoinComponent implements OnInit {
   title: string;
   form: FormGroup;
   constructor(private router: Router, private fb: FormBuilder, private authService: AuthService) {
     //initialize the form
     this.createForm();
+  }
+
+  ngOnInit() {
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate(['']);
+    }
   }
 
   createForm() {

@@ -1,17 +1,19 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule, UrlMatcher, UrlSegment, UrlMatchResult } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 
 import { JoinComponent } from './join/join.component';
 import { RegisterComponent } from './register/register.component';
 import { ForgottenComponent } from './forgotten/forgotten.component';
 import { PassResetComponent } from './pass-reset/pass-reset.component';
 import { TestComponent } from './test/test.component';
+import { CloseComponent } from './close/close.component';
 import { AuthGuard } from './services/auth.guard';
 
 const routes: Routes = [
   { path: 'join', component: JoinComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'forgotten', component: ForgottenComponent },
+  { path: 'close/:email/:user/:token/:refresh', component: CloseComponent },
   { path: 'test', component: TestComponent, canActivate: [AuthGuard] },
   { path: 'pass-reset/:email/:token', component: PassResetComponent },
   { path: '', redirectTo: '/', pathMatch: 'full' },

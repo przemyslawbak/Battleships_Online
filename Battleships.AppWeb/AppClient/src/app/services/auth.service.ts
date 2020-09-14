@@ -63,12 +63,10 @@ export class AuthService {
   public setAuth(auth: TokenResponse | null): boolean {
     if (isPlatformBrowser(this.platformId)) {
       if (auth) {
-        localStorage.setItem(
-          this.authKey,
-          JSON.stringify(auth));
-
-        console.log('refresh token: ' + auth.refreshToken);
-        console.log('token: ' + auth.token);
+        auth.token = auth.token.replace(/\$/g, '/');
+        auth.refreshToken = auth.refreshToken.replace(/\$/g, '/');
+        localStorage.setItem(this.authKey, JSON.stringify(auth));
+        console.log('user logged in');
       }
       else {
         localStorage.removeItem(this.authKey);

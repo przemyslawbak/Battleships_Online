@@ -17,6 +17,7 @@ import { RegisterComponent } from './register/register.component';
 import { ForgottenComponent } from './forgotten/forgotten.component';
 import { PassResetComponent } from './pass-reset/pass-reset.component';
 import { TestComponent } from './test/test.component';
+import { CloseComponent } from './close/close.component';
 //import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -28,7 +29,8 @@ import { TestComponent } from './test/test.component';
     RegisterComponent,
     ForgottenComponent,
     PassResetComponent,
-    TestComponent
+    TestComponent,
+    CloseComponent
   ],
   imports: [
     FormsModule,

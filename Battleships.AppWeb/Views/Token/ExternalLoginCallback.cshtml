@@ -8,20 +8,8 @@
 </head>
 <body>
     <script>
-        var accessToken = "@Model.Token";
-        var message = {};
-        if (accessToken) {
-            message.status = true;
-            message.token = '@Model.Token';
-            message.email = '@Model.Email';
-            message.refreshToken = '@Model.RefreshToken';
-            message.user = '@Model.User';
-        } else {
-            message.status = false;
-        }
-        console.log('posting message');
-        this.window.postMessage(JSON.stringify(message), "http://localhost:4200");
-        console.log('posted message');
+        console.log('location: http://localhost:4200/close/@Model.Email/@Model.User/@Model.Token/@Model.RefreshToken');
+        window.location.replace('http://localhost:4200/close/@Model.Email/changeme/@Model.Token/@Model.RefreshToken');
     </script>
 </body>
 </html>

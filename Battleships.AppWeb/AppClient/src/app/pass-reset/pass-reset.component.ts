@@ -12,7 +12,7 @@ import { PassResetModel } from "../models/pass.reset.model";
 export class PassResetComponent implements OnInit {
   form: FormGroup;
   passModel: PassResetModel;
-  constructor(private router: Router, private formBuilder: FormBuilder, private http: HttpClient, private route: ActivatedRoute,) {
+  constructor(private router: Router, private formBuilder: FormBuilder, private http: HttpClient, private route: ActivatedRoute) {
     this.createForm();
   }
 

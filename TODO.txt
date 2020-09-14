@@ -20,10 +20,11 @@ OK - user token expire: https://stackoverflow.com/questions/55847727/jwt-token-e
 OK - controllers authorisation
 OK - local storage for tokens? nope
 - spinners for requests
-- external (FB) login tokens, callback, all ok?
+- external (FB) login tokens, callback, all ok? - https://stackoverflow.com/a/2224451/12603542
 OK - verify issuer, audience
 - register display name get rid of
 OK - pass reset token changes `/` sections https://stackoverflow.com/a/50408905/12603542
+- auth to localStorage
 
 later:
 - auth roles
