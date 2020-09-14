@@ -2,7 +2,7 @@
 {
     public class RefreshTokenRequestViewModel
     {
-        public string username { get; set; }
-        public string refreshtoken { get; set; }
+        public string Email { get; set; }
+        public string RefreshToken { get; set; }
     }
 }

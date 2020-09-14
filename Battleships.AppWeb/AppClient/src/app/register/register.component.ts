@@ -34,10 +34,10 @@ export class RegisterComponent {
   onSubmit() {
     // build a temporary user object from form values
     var tempUser = <User>{};
-    tempUser.DisplayName = this.form.value.DisplayName;
-    tempUser.Email = this.form.value.Email;
-    tempUser.Password = this.form.value.Password;
-    tempUser.Username = this.form.value.DisplayName;
+    tempUser.displayName = this.form.value.DisplayName;
+    tempUser.email = this.form.value.Email;
+    tempUser.password = this.form.value.Password;
+    tempUser.username = this.form.value.DisplayName;
     var url = 'http://localhost:50962/' + 'api/user/register';
     this.http.post(url, tempUser)
       .subscribe(
@@ -57,7 +57,7 @@ export class RegisterComponent {
   }
 
   onRegisteredLogin(tempUser: User) {
-    this.authService.login(tempUser.Username, tempUser.Password)
+    this.authService.login(tempUser.username, tempUser.password)
       .subscribe(res => {
         this.router.navigate(['']);
       },

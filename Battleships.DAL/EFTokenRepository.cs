@@ -27,32 +27,32 @@ namespace Battleships.DAL
             _context.SaveChanges();
         }
 
-        public void DeleteRefreshToken(string userName)
+        public void DeleteRefreshToken(string email)
         {
-            if (_context.RefreshTokens.Any(tokens => tokens.UserName == userName))
+            if (_context.RefreshTokens.Any(tokens => tokens.Email == email))
             {
-                var allTokens = _context.RefreshTokens.Where(tokens => tokens.UserName == userName);
+                var allTokens = _context.RefreshTokens.Where(tokens => tokens.Email == email);
                 _context.RefreshTokens.RemoveRange(allTokens);
                 _context.SaveChanges();
             }
         }
 
-        public void SaveRefreshToken(string refreshToken, string userName, string ip)
+        public void SaveRefreshToken(string refreshToken, string email, string ip)
         {
-            bool userExists = _context.RefreshTokens.Any(tokens => tokens.UserName == userName);
+            bool emailExists = _context.RefreshTokens.Any(tokens => tokens.Email == email);
 
-            if (userExists)
+            if (emailExists)
             {
-                _context.RefreshTokens.Remove(_context.RefreshTokens.First(tokens => tokens.UserName == userName));
+                _context.RefreshTokens.Remove(_context.RefreshTokens.First(tokens => tokens.Email == email));
             }
 
-            _context.RefreshTokens.Add(new RefreshToken() { IpAddress = ip, Token = refreshToken, UserName = userName });
+            _context.RefreshTokens.Add(new RefreshToken() { IpAddress = ip, Token = refreshToken, Email = email });
             _context.SaveChanges();
         }
 
-        public bool VerifyReceivedToken(string refreshToken, string userName, string ip)
+        public bool VerifyReceivedToken(string refreshToken, string email, string ip)
         {
-            return _context.RefreshTokens.Any(tokens => tokens.UserName == userName && tokens.IpAddress == ip && tokens.UserName == userName);
+            return _context.RefreshTokens.Any(tokens => tokens.Token == refreshToken && tokens.IpAddress == ip && tokens.Email == email);
         }
 
         public bool VeriFyTokenBan(string currentToken)

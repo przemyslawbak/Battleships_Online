@@ -42,7 +42,7 @@ namespace Battleships.AppWeb.Controllers
         public async Task<IActionResult> JsonWebToken([FromBody]TokenRequestViewModel model)
         {
             if (model == null) return new StatusCodeResult(500);
-            switch (model.grant_type)
+            switch (model.GrantType)
             {
                 case "password":
                     return await GetToken(model);
@@ -56,7 +56,7 @@ namespace Battleships.AppWeb.Controllers
         {
             string ip = GetIpAddress();
 
-            bool properToken = _tokenRepo.VerifyReceivedToken(model.refreshtoken, model.username, ip);
+            bool properToken = _tokenRepo.VerifyReceivedToken(model.RefreshToken, model.Email, ip);
 
             if (!properToken)
             {
@@ -69,9 +69,9 @@ namespace Battleships.AppWeb.Controllers
         [HttpPost("revoke-token")]
         public IActionResult RevokeToken([FromBody]RevokeTokenRequestViewModel model)
         {
-            _tokenRepo.DeleteRefreshToken(model.username);
+            _tokenRepo.DeleteRefreshToken(model.UserName);
             _tokenRepo.CleanUpBlacklistedTokens(_hoursKeepBlacklistedTokend);
-            _tokenRepo.AddBlacklistedToken(model.token);
+            _tokenRepo.AddBlacklistedToken(model.Token);
 
             return Ok();
         }
@@ -159,7 +159,7 @@ namespace Battleships.AppWeb.Controllers
         //todo: DRY
         private async Task<IActionResult> GetToken(RefreshTokenRequestViewModel model)
         {
-            AppUser user = await _userManager.FindByNameAsync(model.username);
+            AppUser user = await _userManager.FindByEmailAsync(model.Email);
 
             if (user == null)
             {
@@ -175,14 +175,9 @@ namespace Battleships.AppWeb.Controllers
         //todo: DRY
         private async Task<IActionResult> GetToken(TokenRequestViewModel model)
         {
-            AppUser user = await _userManager.FindByNameAsync(model.username);
+            AppUser user = await _userManager.FindByEmailAsync(model.Email);
 
-            if (user == null && model.username.Contains("@"))
-            {
-                user = await _userManager.FindByEmailAsync(model.username);
-            }
-
-            if (user == null || !await _userManager.CheckPasswordAsync(user, model.password))
+            if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
             {
                 return new UnauthorizedResult(); //todo: status code
             }
@@ -199,14 +194,14 @@ namespace Battleships.AppWeb.Controllers
             string encodedToken = new JwtSecurityTokenHandler().WriteToken(token);
             string refreshToken = _tokenService.GetRefreshToken();
 
-            _tokenRepo.SaveRefreshToken(refreshToken, user.UserName, GetIpAddress());
+            _tokenRepo.SaveRefreshToken(refreshToken, user.Email, GetIpAddress());
 
             return new TokenResponseViewModel()
             {
-                Token = encodedToken.Replace("/", "$"),
+                Token = encodedToken.Replace("/", "$").Replace("=", "@"),
                 Email = user.Email,
                 User = user.UserName,
-                RefreshToken = refreshToken.Replace("/", "$"),
+                RefreshToken = refreshToken.Replace("/", "$").Replace("=", "@"),
                 DisplayName = user.DisplayName
             };
         }

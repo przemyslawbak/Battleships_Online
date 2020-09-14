@@ -8,10 +8,10 @@
         <div *ngIf="form.errors?.auth" class="error-panel help-block">
           {{form.errors.auth}}
         </div>
-        <div class="form-group" [ngClass]="{ 'has-error has-feedback' : hasError('Username') }">
-          <input type="text" required formControlName="Username" class="form-control" placeholder="Username or Email address" />
-          <span *ngIf="hasError('Username')" class="glyphicon glyphicon-remove form-controlfeedback" aria-hidden="true"></span>
-          <div *ngIf="hasError('Username')" class="help-block">
+        <div class="form-group" [ngClass]="{ 'has-error has-feedback' : hasError('Email') }">
+          <input type="text" required formControlName="Email" class="form-control" placeholder="Email address" />
+          <span *ngIf="hasError('Email')" class="glyphicon glyphicon-remove form-controlfeedback" aria-hidden="true"></span>
+          <div *ngIf="hasError('Email')" class="help-block">
             Please insert registered e-mail address.
           </div>
         </div>

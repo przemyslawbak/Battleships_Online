@@ -1,3 +1,3 @@
 export interface PassResetEmail {
-  Email: string;
+  email: string;
 }

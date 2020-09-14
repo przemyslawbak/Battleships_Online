@@ -18,13 +18,12 @@ export class AuthService {
   }
 
   // performs the login
-  public login(username: string, password: string): Observable<boolean> {
+  public login(email: string, password: string): Observable<boolean> {
     var url = 'http://localhost:50962/' + "api/token/auth";
     var data = {
-      username: username,
-      password: password,
-      grant_type: "password",
-      scope: "offline_access profile email"
+      Email: email,
+      Password: password,
+      GrantType: "password"
     };
 
     return this.getTokenResponse(url, data);
@@ -33,9 +32,10 @@ export class AuthService {
   public refreshToken(): Observable<boolean> {
     var url = 'http://localhost:50962/' + "api/token/refresh-token";
     var data = {
-      username: this.getAuth().user,
-      refreshtoken: this.getAuth().refreshToken
+      Email: this.getAuth().email,
+      RefreshToken: this.getAuth().refreshToken
     };
+    console.log('refresh token - user name: ' + this.getAuth().user);
 
     return this.getTokenResponse(url, data);
   }
@@ -45,9 +45,9 @@ export class AuthService {
     var url = 'http://localhost:50962/' + "api/token/revoke-token";
     console.log('refresh token to revoke: ' + this.getAuth().refreshToken);
     var data = {
-      username: this.getAuth().user,
-      refreshtoken: this.getAuth().refreshToken,
-      token: this.getAuth().token
+      UserName: this.getAuth().user,
+      RefreshToken: this.getAuth().refreshToken,
+      Token: this.getAuth().token
     };
     console.log('revoke token post call');
     this.http.post<any>(url, data)
@@ -63,8 +63,8 @@ export class AuthService {
   public setAuth(auth: TokenResponse | null): boolean {
     if (isPlatformBrowser(this.platformId)) {
       if (auth) {
-        auth.token = auth.token.replace(/\$/g, '/');
-        auth.refreshToken = auth.refreshToken.replace(/\$/g, '/');
+        auth.token = auth.token.replace(/\$/g, '/').replace(/\@/g, '=');
+        auth.refreshToken = auth.refreshToken.replace(/\$/g, '/').replace(/\@/g, '=');
         localStorage.setItem(this.authKey, JSON.stringify(auth));
         console.log('user logged in');
       }
@@ -109,8 +109,8 @@ export class AuthService {
         map((res) => {
           let token = res && res.token;
           if (token) {
-            this.router.navigate(['']);
             this.setAuth(res);
+            this.router.navigate(['']);
             return true;
           }
           return false;

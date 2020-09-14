@@ -26,13 +26,12 @@ export class LoginExternalProvidersComponent implements OnInit {
     }
 
     this.closePopUpWindow();
-    var self = this;
     if (!window.externalProviderLogin) {
       window.externalProviderLogin = function (auth: TokenResponse) {
-        self.zone.run(() => {
+        this.zone.run(() => {
           console.log("External Login successful!");
-          self.auth.setAuth(auth);
-          self.router.navigate(['']);
+          this.auth.setAuth(auth);
+          this.router.navigate(['']);
         });
       }
     }
@@ -55,7 +54,7 @@ export class LoginExternalProvidersComponent implements OnInit {
 
   private handleCloseExternalProvider() {
     if (this.auth.isLoggedIn()) {
-      console.log('logged in user with external provider: ' + this.auth.getAuth().user);
+      console.log('logged in user with external provider: ' + this.auth.getAuth()!.displayName);
       this.router.navigate(['']);
       this.closePopUpWindow();
     } else {

@@ -2,8 +2,8 @@
 {
     public class RevokeTokenRequestViewModel
     {
-        public string username { get; set; }
-        public string refreshtoken { get; set; }
-        public string token { get; set; }
+        public string UserName { get; set; }
+        public string RefreshToken { get; set; }
+        public string Token { get; set; }
     }
 }

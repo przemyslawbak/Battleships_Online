@@ -34,15 +34,15 @@ export class PassResetComponent implements OnInit {
     const token = this.route.snapshot.paramMap.get('token');
 
     var model = <PassResetModel>{};
-    model.Email = email;
-    model.Password = '';
-    model.Token = token.replace(/\$/g, '/');
+    model.email = email;
+    model.password = '';
+    model.token = token.replace(/\$/g, '/');
 
     return model;
   }
 
   onSubmit() {
-    this.passModel.Password = this.form.value.Password;
+    this.passModel.password = this.form.value.Password;
     var url = 'http://localhost:50962/' + 'api/user/new-password';
     this.http.post(url, this.passModel)
       .subscribe(

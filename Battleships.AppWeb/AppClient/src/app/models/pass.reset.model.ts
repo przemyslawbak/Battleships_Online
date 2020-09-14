@@ -1,5 +1,5 @@
 export interface PassResetModel {
-  Password: string;
-  Email: string;
-  Token: string;
+  password: string;
+  email: string;
+  token: string;
 }

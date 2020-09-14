@@ -5,10 +5,10 @@ namespace Battleships.Models.ViewModels
     [JsonObject(MemberSerialization.OptOut)]
     public class TokenRequestViewModel
     {
-        public string grant_type { get; set; }
-        public string client_id { get; set; }
-        public string client_secret { get; set; }
-        public string username { get; set; }
-        public string password { get; set; }
+        public string GrantType { get; set; }
+        public string ClientId { get; set; }
+        public string ClientSecret { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
     }
 }

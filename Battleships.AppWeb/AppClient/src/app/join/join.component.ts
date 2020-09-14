@@ -11,7 +11,7 @@ import { AuthService } from '../services/auth.service';
 export class JoinComponent implements OnInit {
   title: string;
   form: FormGroup;
-  constructor(private router: Router, private fb: FormBuilder, private authService: AuthService) {
+  constructor(private router: Router, private formBuilder: FormBuilder, private authService: AuthService) {
     //initialize the form
     this.createForm();
   }
@@ -23,16 +23,19 @@ export class JoinComponent implements OnInit {
   }
 
   createForm() {
-    this.form = this.fb.group({
-      Username: ['', Validators.required],
+    this.form = this.formBuilder.group({
+      Email: ['',
+        [Validators.required,
+        Validators.email]
+      ],
       Password: ['', Validators.required]
     });
   }
 
   onSubmit() {
-    var username = this.form.value.Username;
+    var email = this.form.value.Email;
     var password = this.form.value.Password;
-    this.authService.login(username, password)
+    this.authService.login(email, password)
       .subscribe(() => {
       },
         err => {
