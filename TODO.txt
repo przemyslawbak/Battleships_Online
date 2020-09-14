@@ -24,7 +24,7 @@ OK - external (FB) login tokens, callback, all ok? - https://stackoverflow.com/a
 OK - verify issuer, audience
 OK - register display name - get rid of
 OK - pass reset token changes `/` sections https://stackoverflow.com/a/50408905/12603542
-- model capital letters front & back end
+OK - model camel case front, pascal case back
 
 later:
 - add Twitter, Google external login providers
