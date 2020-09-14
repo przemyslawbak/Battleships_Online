@@ -22,8 +22,9 @@ OK - local storage for tokens? nope
 - spinners for requests
 OK - external (FB) login tokens, callback, all ok? - https://stackoverflow.com/a/2224451/12603542
 OK - verify issuer, audience
-- register display name - get rid of
+OK - register display name - get rid of
 OK - pass reset token changes `/` sections https://stackoverflow.com/a/50408905/12603542
+- model capital letters front & back end
 
 later:
 - add Twitter, Google external login providers

@@ -15,9 +15,9 @@ export class NavMenuComponent {
 
   isExpanded = false;
 
-  GetUsername() {
+  getUserDisplayName() {
     if (this.auth.isLoggedIn()) {
-      return this.auth.getAuth()!.user;
+      return this.auth.getAuth()!.displayName;
     } else {
       return "guest";
     }

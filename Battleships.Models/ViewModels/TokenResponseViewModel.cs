@@ -11,5 +11,6 @@ namespace Battleships.Models.ViewModels
         public string RefreshToken { get; set; }
         public string Email { get; set; }
         public string User { get; set; }
+        public string DisplayName { get; set; }
     }
 }

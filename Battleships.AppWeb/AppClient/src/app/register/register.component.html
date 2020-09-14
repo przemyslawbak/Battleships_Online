@@ -6,11 +6,11 @@
         <div *ngIf="form.errors?.auth" class="error-panel help-block">
           {{form.errors.register}}
         </div>
-        <div class="form-group" [ngClass]="{ 'has-error has-feedback' : hasError('Username') }">
-          <input type="text" required autofocus formControlName="Username" class="form-control" placeholder="Insert username..." />
-          <span *ngIf="hasError('Username')" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
-          <div *ngIf="hasError('Username')" class="help-block">
-            Please insert a valid username.
+        <div class="form-group" [ngClass]="{ 'has-error has-feedback' : hasError('DisplayName') }">
+          <input type="text" required autofocus formControlName="DisplayName" class="form-control" placeholder="Choose a Display Name..." />
+          <span *ngIf="hasError('DisplayName')" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+          <div *ngIf="hasError('DisplayName')" class="help-block">
+            Please insert a valid display name.
           </div>
         </div>
         <div class="form-group" [ngClass]="{ 'has-error has-feedback' : hasError('Email') }">
@@ -32,13 +32,6 @@
           <span *ngIf="hasError('PasswordConfirm')" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
           <div *ngIf="hasError('PasswordConfirm')" class="help-block">
             Password and confirm password don't match.
-          </div>
-        </div>
-        <div class="form-group" [ngClass]="{ 'has-error has-feedback' : hasError('DisplayName') }">
-          <input type="text" required autofocus formControlName="DisplayName" class="form-control" placeholder="Choose a Display Name..." />
-          <span *ngIf="hasError('DisplayName')" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
-          <div *ngIf="hasError('DisplayName')" class="help-block">
-            Please insert a valid display name.
           </div>
         </div>
         <div class="text-center">

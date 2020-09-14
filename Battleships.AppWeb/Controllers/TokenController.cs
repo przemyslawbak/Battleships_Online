@@ -109,7 +109,8 @@ namespace Battleships.AppWeb.Controllers
                 {
                     Email = info.Principal.FindFirst(ClaimTypes.Email).Value,
                     UserName = GenerateUsername(info.Principal.FindFirst(ClaimTypes.GivenName).Value),
-                    Password = GenerateRandomString()
+                    Password = GenerateRandomString(),
+                    DisplayName = GenerateUsername(info.Principal.FindFirst(ClaimTypes.GivenName).Value)
                 };
 
                 bool result = await _userService.CreateNewUserAndAddToDbAsync(userRegisterVm);
@@ -205,7 +206,8 @@ namespace Battleships.AppWeb.Controllers
                 Token = encodedToken.Replace("/", "$"),
                 Email = user.Email,
                 User = user.UserName,
-                RefreshToken = refreshToken.Replace("/", "$")
+                RefreshToken = refreshToken.Replace("/", "$"),
+                DisplayName = user.DisplayName
             };
         }
 

@@ -142,16 +142,11 @@ namespace Battleships.AppWeb.Controllers
                 return new ObjectResult("Wrong register user input: " + errors + ".") { StatusCode = 422 };
             }
 
+            userRegisterVm.UserName = GenerateUsername(userRegisterVm.UserName);
+
             userRegisterVm = SanitizeRegisteringUserInputs(userRegisterVm);
 
-            AppUser user = await _userManager.FindByNameAsync(userRegisterVm.UserName);
-
-            if (user != null)
-            {
-                return new ObjectResult("Username already exists.") { StatusCode = 409 };
-            }
-
-            user = await _userManager.FindByEmailAsync(userRegisterVm.Email);
+            AppUser user = await _userManager.FindByEmailAsync(userRegisterVm.Email);
 
             if (user != null)
             {
@@ -166,6 +161,19 @@ namespace Battleships.AppWeb.Controllers
             }
 
             return Ok();
+        }
+
+        private string GenerateUsername(string typedName)
+        {
+            int count = 0;
+            string name = typedName;
+
+            while (_userManager.Users.Any(x => x.UserName == name))
+            {
+                name = typedName + count++.ToString();
+            }
+
+            return name;
         }
 
         /// <summary>

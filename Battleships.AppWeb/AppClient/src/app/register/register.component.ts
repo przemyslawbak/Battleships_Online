@@ -20,7 +20,6 @@ export class RegisterComponent {
   }
   createForm() {
     this.form = this.formBuilder.group({
-      Username: ['', Validators.required],
       Email: ['',
         [Validators.required,
         Validators.email]
@@ -35,10 +34,10 @@ export class RegisterComponent {
   onSubmit() {
     // build a temporary user object from form values
     var tempUser = <User>{};
-    tempUser.Username = this.form.value.Username;
+    tempUser.DisplayName = this.form.value.DisplayName;
     tempUser.Email = this.form.value.Email;
     tempUser.Password = this.form.value.Password;
-    tempUser.DisplayName = this.form.value.DisplayName;
+    tempUser.Username = this.form.value.DisplayName;
     var url = 'http://localhost:50962/' + 'api/user/register';
     this.http.post(url, tempUser)
       .subscribe(
