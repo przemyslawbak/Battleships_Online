@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
 import { Router } from "@angular/router";
+import { NgxSpinnerService } from "ngx-spinner";
 import { Observable, BehaviorSubject } from 'rxjs';
 import { catchError, switchMap, filter, take } from "rxjs/operators";
 
@@ -8,7 +9,7 @@ import { AuthService } from "../services/auth.service";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(public auth: AuthService, private router: Router) { }
+  constructor(public auth: AuthService, private router: Router, private spinner: NgxSpinnerService) { }
   private isRefreshing = false;
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
@@ -62,7 +63,10 @@ export class AuthInterceptor implements HttpInterceptor {
         this.router.navigate(['join']);
       }
     } else {
-      //todo: handle other error
+      //todo: popup
+      console.log('error code: ' + error.status);
+      console.log('error text: ' + error.error);
+      this.spinner.hide();
     }
   }
 

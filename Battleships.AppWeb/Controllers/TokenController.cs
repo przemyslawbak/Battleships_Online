@@ -41,13 +41,16 @@ namespace Battleships.AppWeb.Controllers
         [HttpPost("auth")]
         public async Task<IActionResult> JsonWebToken([FromBody]TokenRequestViewModel model)
         {
-            if (model == null) return new StatusCodeResult(500);
+            if (model == null)
+            {
+                return new StatusCodeResult(500);
+            }
             switch (model.GrantType)
             {
                 case "password":
                     return await GetToken(model);
                 default:
-                    return new UnauthorizedResult(); //todo: status code
+                    return new ObjectResult("Please try again.") { StatusCode = 409 };
             }
         }
 
@@ -60,7 +63,7 @@ namespace Battleships.AppWeb.Controllers
 
             if (!properToken)
             {
-                return new UnauthorizedResult(); //todo: status code
+                return new ObjectResult("Please log in again.") { StatusCode = 409 };
             }
 
             return await GetToken(model);
@@ -120,15 +123,13 @@ namespace Battleships.AppWeb.Controllers
                     return new ObjectResult("Error when creating new user.") { StatusCode = 500 };
                 }
 
-                //todo: register response
-                return Content("registered");
+                user = await _userManager.FindByEmailAsync(info.Principal.FindFirst(ClaimTypes.Email).Value);
             }
-            else
-            {
-                TokenResponseViewModel response = GenerateResponse(user);
 
-                return View(response);
-            }
+
+            TokenResponseViewModel response = GenerateResponse(user);
+
+            return View(response);
         }
 
         //todo: service
@@ -163,7 +164,7 @@ namespace Battleships.AppWeb.Controllers
 
             if (user == null)
             {
-                return new UnauthorizedResult(); //todo: status code
+                return new ObjectResult("Wrong email or password.") { StatusCode = 409 };
             }
 
             TokenResponseViewModel response = GenerateResponse(user);
@@ -179,7 +180,7 @@ namespace Battleships.AppWeb.Controllers
 
             if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
             {
-                return new UnauthorizedResult(); //todo: status code
+                return new ObjectResult("Wrong email or password.") { StatusCode = 409 };
             }
 
             TokenResponseViewModel response = GenerateResponse(user);

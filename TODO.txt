@@ -26,8 +26,10 @@ OK - register display name - get rid of
 OK - pass reset token changes `/` sections https://stackoverflow.com/a/50408905/12603542
 OK - model camel case front, pascal case back
 OK - login after register
-- bug, if not registered yet with FB, hits `return Content("registered");`
+OK - bug, if not registered yet with FB, hits `return Content("registered");`
 - bug, if no email in DB for `forgotten pass`, freezes
+- error handling interceptor
+- all constructor returned errors make to ObjectResult
 
 later:
 - add Twitter, Google external login providers
