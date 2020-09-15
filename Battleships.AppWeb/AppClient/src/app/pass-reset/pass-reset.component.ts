@@ -48,21 +48,10 @@ export class PassResetComponent implements OnInit {
     var url = 'http://localhost:50962/' + 'api/user/new-password';
     this.http.post(url, this.passModel)
       .subscribe(
-        (val) => {
-          console.log("POST call successful value returned in body", val);
-          this.spinner.hide();
-          this.router.navigate(['']);
-        },
-        response => {
-          console.log("POST call in error", response);
-          this.spinner.hide();
-          //todo: popup
-        },
         () => {
-          console.log("The POST observable is now completed.");
           this.spinner.hide();
-          //todo: popup
-        });
+        }
+      );
   }
 
   onBack() {

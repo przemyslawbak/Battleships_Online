@@ -28,10 +28,10 @@ OK - model camel case front, pascal case back
 OK - login after register
 OK - bug, if not registered yet with FB, hits `return Content("registered");`
 OK - bug, if no email in DB for `forgotten pass`, freezes
-- error handling interceptor
 OK - all constructor endpoint errors make to ObjectResult
 
 later:
+- error handling interceptor
 - add Twitter, Google external login providers
 - auth roles
 - creating user identity result https://4programmers.net/Forum/C_i_.NET/343563-nowy_uzytkownik_api_endpoint?p=1703857#comment-625167

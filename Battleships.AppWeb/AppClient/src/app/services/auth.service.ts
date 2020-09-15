@@ -55,8 +55,9 @@ export class AuthService {
     this.http.post<any>(url, data)
       .subscribe(
         () => {
-          this.spinner.hide();
           console.log('logged out');
+          this.spinner.hide();
+          this.router.navigate(['']);
         });
     this.setAuth(null);
     return true;

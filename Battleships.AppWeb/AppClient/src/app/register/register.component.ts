@@ -42,22 +42,10 @@ export class RegisterComponent {
     var url = 'http://localhost:50962/' + 'api/user/register';
     this.http.post(url, tempUser)
       .subscribe(
-        (val) => {
-          console.log("POST call successful value returned in body", val);
-          this.spinner.hide();
-          this.router.navigate(['']);
-        },
-        response => {
-          console.log("POST call in error", response);
-          this.spinner.hide();
-          //todo: popup
-        },
         () => {
-          console.log("The POST observable is now completed.");
-          this.onRegisteredLogin(tempUser);
           this.spinner.hide();
-          //todo: popup
-        });
+        }
+      );
   }
 
   onRegisteredLogin(tempUser: User) {

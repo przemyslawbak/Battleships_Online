@@ -164,7 +164,7 @@ namespace Battleships.AppWeb.Controllers
 
             if (user == null)
             {
-                return new ObjectResult("Please login again.") { StatusCode = 409 };
+                return new ObjectResult("Please log in again.") { StatusCode = 409 };
             }
 
             TokenResponseViewModel response = GenerateResponse(user);
