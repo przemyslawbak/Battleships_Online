@@ -10,6 +10,8 @@ import { AuthGuard } from './services/auth.guard';
 
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 
+import { ModalModule } from './modal';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -35,6 +37,7 @@ import { CloseComponent } from './close/close.component';
     CloseComponent
   ],
   imports: [
+    ModalModule,
     BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,

@@ -4,6 +4,8 @@ import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { NgxSpinnerService } from "ngx-spinner";
 
+import { ModalService } from '../modal';
+
 import { PassResetEmail } from "../models/pass.reset";
 
 @Component({
@@ -13,7 +15,7 @@ import { PassResetEmail } from "../models/pass.reset";
 })
 export class ForgottenComponent implements OnInit {
   form: FormGroup;
-  constructor(private router: Router, private formBuilder: FormBuilder, private http: HttpClient, private spinner: NgxSpinnerService) {
+  constructor(private router: Router, private formBuilder: FormBuilder, private http: HttpClient, private spinner: NgxSpinnerService, private modalService: ModalService) {
     this.createForm();
   }
 
@@ -50,6 +52,7 @@ export class ForgottenComponent implements OnInit {
     return this.form.get(name);
   }
 
+  //todo: what using this?
   hasError(name: string) {
     var e = this.getFormControl(name);
     return e && (e.dirty || e.touched) && !e.valid;

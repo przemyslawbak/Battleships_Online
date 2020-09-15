@@ -6,10 +6,11 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { catchError, switchMap, filter, take } from "rxjs/operators";
 
 import { AuthService } from "../services/auth.service";
+import { ModalService } from '../modal';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(public auth: AuthService, private router: Router, private spinner: NgxSpinnerService) { }
+  constructor(public auth: AuthService, private router: Router, private spinner: NgxSpinnerService, private modalService: ModalService) { }
   private isRefreshing = false;
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
@@ -67,6 +68,7 @@ export class AuthInterceptor implements HttpInterceptor {
       console.log('error code: ' + error.status);
       console.log('error text: ' + error.error);
       this.spinner.hide();
+      this.modalService.open('info-modal', error.error);
     }
   }
 
