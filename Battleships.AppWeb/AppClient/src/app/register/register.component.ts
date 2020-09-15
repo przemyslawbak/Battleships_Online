@@ -14,7 +14,7 @@ import { AuthService } from '../services/auth.service';
 })
 export class RegisterComponent {
   form: FormGroup;
-  constructor(private router: Router, private formBuilder: FormBuilder, private http: HttpClient, private authService: AuthService, private spinner: NgxSpinnerService) {
+  constructor(private router: Router, private formBuilder: FormBuilder, private http: HttpClient, private auth: AuthService, private spinner: NgxSpinnerService) {
 
     // initialize the form
     this.createForm();
@@ -44,7 +44,6 @@ export class RegisterComponent {
       .subscribe(
         (val) => {
           console.log("POST call successful value returned in body", val);
-          this.onRegisteredLogin(tempUser);
           this.spinner.hide();
           this.router.navigate(['']);
         },
@@ -55,14 +54,15 @@ export class RegisterComponent {
         },
         () => {
           console.log("The POST observable is now completed.");
+          this.onRegisteredLogin(tempUser);
           this.spinner.hide();
           //todo: popup
         });
   }
 
   onRegisteredLogin(tempUser: User) {
-    this.authService.login(tempUser.username, tempUser.password)
-      .subscribe(res => {
+    this.auth.login(tempUser.email, tempUser.password)
+      .subscribe(() => {
         this.router.navigate(['']);
       },
         err => {

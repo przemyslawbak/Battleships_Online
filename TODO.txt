@@ -19,13 +19,13 @@ OK - user token expire: https://stackoverflow.com/questions/55847727/jwt-token-e
 - popups for: registered user, logged in, send forgotten pass
 OK - controllers authorisation
 OK - local storage for tokens? nope
-- spinners for requests
+OK - spinners for requests
 OK - external (FB) login tokens, callback, all ok? - https://stackoverflow.com/a/2224451/12603542
 OK - verify issuer, audience
 OK - register display name - get rid of
 OK - pass reset token changes `/` sections https://stackoverflow.com/a/50408905/12603542
 OK - model camel case front, pascal case back
-- login after register
+OK - login after register
 
 later:
 - add Twitter, Google external login providers
