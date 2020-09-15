@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit, NgZone, PLATFORM_ID } from "@angular/core";
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from "@angular/router";
+import { NgxSpinnerService } from "ngx-spinner";
 
 import { AuthService } from '../services/auth.service';
 import { TokenResponse } from "../models/token.response";
@@ -18,7 +19,7 @@ export class LoginExternalProvidersComponent implements OnInit {
   errorDescription: string;
   isRequesting: boolean;
 
-  constructor(private router: Router, private auth: AuthService, private zone: NgZone, @Inject(PLATFORM_ID) private platformId: any) { }
+  constructor(private router: Router, private auth: AuthService, private zone: NgZone, @Inject(PLATFORM_ID) private platformId: any, private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
     if (!isPlatformBrowser(this.platformId)) {
@@ -41,6 +42,7 @@ export class LoginExternalProvidersComponent implements OnInit {
     if (!isPlatformBrowser(this.platformId)) {
       return;
     }
+    this.spinner.show();
     var url = 'http://localhost:50962/' + "api/token/external-login/" + providerName;
 
     var w = (screen.width >= 1050) ? 1050 : screen.width;
@@ -61,6 +63,7 @@ export class LoginExternalProvidersComponent implements OnInit {
       console.log('failed to logged in user with external provider');
       this.router.navigate(['join']);
     }
+    this.spinner.hide();
   }
 
   private closePopUpWindow() {

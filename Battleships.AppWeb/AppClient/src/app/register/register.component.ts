@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
+import { NgxSpinnerService } from "ngx-spinner";
 
 import { User } from "../models/user";
 import { AuthService } from '../services/auth.service';
@@ -13,7 +14,7 @@ import { AuthService } from '../services/auth.service';
 })
 export class RegisterComponent {
   form: FormGroup;
-  constructor(private router: Router, private formBuilder: FormBuilder, private http: HttpClient, private authService: AuthService) {
+  constructor(private router: Router, private formBuilder: FormBuilder, private http: HttpClient, private authService: AuthService, private spinner: NgxSpinnerService) {
 
     // initialize the form
     this.createForm();
@@ -32,7 +33,7 @@ export class RegisterComponent {
       });
   }
   onSubmit() {
-    // build a temporary user object from form values
+    this.spinner.show();
     var tempUser = <User>{};
     tempUser.displayName = this.form.value.DisplayName;
     tempUser.email = this.form.value.Email;
@@ -44,14 +45,17 @@ export class RegisterComponent {
         (val) => {
           console.log("POST call successful value returned in body", val);
           this.onRegisteredLogin(tempUser);
+          this.spinner.hide();
           this.router.navigate(['']);
         },
         response => {
           console.log("POST call in error", response);
+          this.spinner.hide();
           //todo: popup
         },
         () => {
           console.log("The POST observable is now completed.");
+          this.spinner.hide();
           //todo: popup
         });
   }

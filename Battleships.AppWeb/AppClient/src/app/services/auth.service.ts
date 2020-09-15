@@ -4,6 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { Observable } from "rxjs";
 import { map } from 'rxjs/operators';
+import { NgxSpinnerService } from "ngx-spinner";
 
 import { TokenResponse } from "../models/token.response";
 
@@ -11,7 +12,7 @@ import { TokenResponse } from "../models/token.response";
 export class AuthService {
   authKey: string = "auth";
 
-  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: any, private router: Router) { }
+  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: any, private router: Router, private spinner: NgxSpinnerService) { }
 
   public facebookLogin(accessToken: string) {
     console.log(accessToken);
@@ -41,6 +42,7 @@ export class AuthService {
   }
 
   public logout(): boolean {
+    this.spinner.show();
     console.log('logged out from auth service');
     var url = 'http://localhost:50962/' + "api/token/revoke-token";
     console.log('refresh token to revoke: ' + this.getAuth().refreshToken);
@@ -53,6 +55,7 @@ export class AuthService {
     this.http.post<any>(url, data)
       .subscribe(
         () => {
+          this.spinner.hide();
           console.log('logged out');
         });
     this.setAuth(null);
@@ -104,15 +107,18 @@ export class AuthService {
   }
 
   private getTokenResponse(url: string, data): Observable<boolean> {
-    return this.http.post<TokenResponse>(url, data) //todo: DRY
+    this.spinner.show();
+    return this.http.post<TokenResponse>(url, data)
       .pipe(
         map((res) => {
           let token = res && res.token;
           if (token) {
             this.setAuth(res);
+            this.spinner.hide();
             this.router.navigate(['']);
             return true;
           }
+          this.spinner.hide();
           return false;
         }))
   }

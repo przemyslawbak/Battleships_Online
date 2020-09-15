@@ -2,6 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
+import { NgxSpinnerModule } from "ngx-spinner";
 
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/auth.guard';
@@ -33,11 +35,13 @@ import { CloseComponent } from './close/close.component';
     CloseComponent
   ],
   imports: [
+    BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    NgxSpinnerModule,
     //NgbModule.forRoot()
   ],
   providers: [

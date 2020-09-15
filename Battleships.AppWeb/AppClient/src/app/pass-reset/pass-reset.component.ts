@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
+import { NgxSpinnerService } from "ngx-spinner";
 
 import { PassResetModel } from "../models/pass.reset.model";
 
@@ -12,7 +13,7 @@ import { PassResetModel } from "../models/pass.reset.model";
 export class PassResetComponent implements OnInit {
   form: FormGroup;
   passModel: PassResetModel;
-  constructor(private router: Router, private formBuilder: FormBuilder, private http: HttpClient, private route: ActivatedRoute) {
+  constructor(private router: Router, private formBuilder: FormBuilder, private http: HttpClient, private route: ActivatedRoute, private spinner: NgxSpinnerService) {
     this.createForm();
   }
 
@@ -42,20 +43,24 @@ export class PassResetComponent implements OnInit {
   }
 
   onSubmit() {
+    this.spinner.show();
     this.passModel.password = this.form.value.Password;
     var url = 'http://localhost:50962/' + 'api/user/new-password';
     this.http.post(url, this.passModel)
       .subscribe(
         (val) => {
           console.log("POST call successful value returned in body", val);
+          this.spinner.hide();
           this.router.navigate(['']);
         },
         response => {
           console.log("POST call in error", response);
+          this.spinner.hide();
           //todo: popup
         },
         () => {
           console.log("The POST observable is now completed.");
+          this.spinner.hide();
           //todo: popup
         });
   }

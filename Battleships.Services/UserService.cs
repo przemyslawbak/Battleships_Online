@@ -40,7 +40,6 @@ namespace Battleships.Services
         {
             AppUser user = CreateNewUser(registerVm);
 
-
             IdentityResult result = await _userManager.CreateAsync(user, registerVm.Password);
 
             if (!result.Succeeded)
@@ -67,7 +66,8 @@ namespace Battleships.Services
             {
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = registerVm.UserName,
-                Email = registerVm.Email
+                Email = registerVm.Email,
+                DisplayName = registerVm.DisplayName
             };
         }
 

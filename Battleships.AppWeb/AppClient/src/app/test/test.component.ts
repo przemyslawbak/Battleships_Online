@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
+import { NgxSpinnerService } from "ngx-spinner";
 
 import { AuthService } from '../services/auth.service';
 
@@ -10,13 +11,14 @@ import { AuthService } from '../services/auth.service';
 })
 export class TestComponent implements OnInit {
 
-  constructor(private http: HttpClient, public auth: AuthService) { }
+  constructor(private http: HttpClient, public auth: AuthService, private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
     this.executeCall()
   }
 
   executeCall(): void {
+    this.spinner.show();
     console.log('executing call, token:' + this.auth.getAuth()!.token);
     console.log('executing call, refresh token:' + this.auth.getAuth()!.refreshToken);
     var url = 'http://localhost:50962/' + 'api/user/test';
@@ -24,13 +26,16 @@ export class TestComponent implements OnInit {
       .subscribe(
         (val) => {
           console.log("POST call successful value returned in body", val);
+          this.spinner.hide();
         },
         response => {
           console.log("POST call in error", response);
+          this.spinner.hide();
           //todo: popup
         },
         () => {
           console.log("The POST observable is now completed.");
+          this.spinner.hide();
           //todo: popup
         });
   }
