@@ -1,4 +1,5 @@
-﻿using Ganss.XSS;
+﻿using Battleships.Models.ViewModels;
+using Ganss.XSS;
 
 namespace Battleships.Services
 {
@@ -11,9 +12,25 @@ namespace Battleships.Services
             _sanitizer = new HtmlSanitizer();
         }
 
-        public string Process(string input)
+        public string CleanUp(string input)
         {
             return _sanitizer.Sanitize(input);
+        }
+
+        /// <summary>
+        /// Sanitizing user inputs
+        /// </summary>
+        /// <param name="userRegisterVm">Passed user vm</param>
+        /// <returns>Sanitized user vm</returns>
+        public UserViewModel SanitizeRegisteringUserInputs(UserViewModel userRegisterVm)
+        {
+            return new UserViewModel()
+            {
+                DisplayName = CleanUp(userRegisterVm.DisplayName),
+                Email = CleanUp(userRegisterVm.Email),
+                Password = CleanUp(userRegisterVm.Password),
+                UserName = CleanUp(userRegisterVm.UserName)
+            };
         }
     }
 }

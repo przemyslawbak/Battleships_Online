@@ -2,7 +2,6 @@
 using Battleships.Models.ViewModels;
 using Battleships.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,14 +13,12 @@ namespace Battleships.AppWeb.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
-        private readonly UserManager<AppUser> _userManager;
         private readonly IUserService _userService;
         private readonly IInputSanitizer _sanitizer;
         private readonly IEmailSender _emailSender;
 
-        public UserController(UserManager<AppUser> userMgr, IUserService userService, IInputSanitizer sanitizer, IEmailSender emailSender)
+        public UserController(IUserService userService, IInputSanitizer sanitizer, IEmailSender emailSender)
         {
-            _userManager = userMgr;
             _userService = userService;
             _sanitizer = sanitizer;
             _emailSender = emailSender;
@@ -30,7 +27,7 @@ namespace Battleships.AppWeb.Controllers
         /// <summary>
         /// POST: api/user/test
         /// </summary>
-        /// <returns>Status code.</returns>
+        /// <returns>Status code with object.</returns>
         [HttpGet("Test")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public IActionResult GetAuthTest()
@@ -47,21 +44,20 @@ namespace Battleships.AppWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                model.Email = _sanitizer.Process(model.Email);
+                model.Email = _sanitizer.CleanUp(model.Email);
 
-                AppUser user = await _userManager.FindByEmailAsync(model.Email);
+                AppUser user = await _userService.FindUserByEmail(model.Email);
 
                 if (user != null)
                 {
-                    string token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                    token = token.Replace("/", "$");
-                    string email = model.Email;
+                    string token = await _userService.GetPassResetToken(user);
 
                     string resetLink = "http://localhost:4200/pass-reset/" + model.Email + "/" + token;
 
                     try
                     {
-                        await _emailSender.SendEmailAsync(email, "Reset your password", "Please click or copy the password reset link to your browser: " + resetLink);
+                        await _emailSender.SendEmailAsync(model.Email, "Reset your password", "Please click or copy the password reset link to your browser: " + resetLink);
+
                         return Ok();
                     }
                     catch
@@ -69,15 +65,9 @@ namespace Battleships.AppWeb.Controllers
                         return new ObjectResult("Email could not be sent.") { StatusCode = 502 };
                     }
                 }
-                else
-                {
-                    return new ObjectResult("Wrong email address.") { StatusCode = 409 };
-                }
             }
-            else
-            {
-                return new ObjectResult("Wrong email address.") { StatusCode = 409 };
-            }
+
+            return new ObjectResult("Wrong email address.") { StatusCode = 409 };
         }
 
         /// <summary>
@@ -85,22 +75,21 @@ namespace Battleships.AppWeb.Controllers
         /// </summary>
         /// <returns>Status code.</returns>
         [HttpPost("new-password")]
-        public async Task<IActionResult> PassReset([FromBody]ResetPasswordViewModel details)
+        public async Task<IActionResult> PassReset([FromBody]ResetPasswordViewModel model)
         {
             if (ModelState.IsValid)
             {
-                details.Email = _sanitizer.Process(details.Email);
-                details.Password = _sanitizer.Process(details.Password);
+                model.Email = _sanitizer.CleanUp(model.Email);
+                model.Password = _sanitizer.CleanUp(model.Password);
 
-                AppUser user = await _userManager.FindByEmailAsync(details.Email);
+                AppUser user = await _userService.FindUserByEmail(model.Email);
 
                 if (user != null)
                 {
-                    IdentityResult result = await _userManager.ResetPasswordAsync(user, details.Token, details.Password);
+                    bool updated = await _userService.ResetPassword(user, model.Token, model.Password);
 
-                    if (result.Succeeded)
+                    if (updated)
                     {
-                        await _userManager.UpdateAsync(user);
                         return Ok();
                     }
                     else
@@ -115,7 +104,7 @@ namespace Battleships.AppWeb.Controllers
             }
             else
             {
-                return View(details);
+                return View(model);
             }
         }
 
@@ -124,13 +113,8 @@ namespace Battleships.AppWeb.Controllers
         /// </summary>
         /// <returns>Status code.</returns>
         [HttpPost("Register")]
-        public async Task<IActionResult> AddNewUser([FromBody]UserViewModel userRegisterVm)
+        public async Task<IActionResult> AddNewUser([FromBody]UserViewModel model)
         {
-            if (!_userService.VerifyPassedRegisterViewModel(userRegisterVm))
-            {
-                return new ObjectResult("Wrong register user input, or user is null.") { StatusCode = 422 };
-            }
-
             if (!ModelState.IsValid)
             {
                 string errors = string.Join(", ", ModelState.Select(x => x.Value.Errors)
@@ -140,18 +124,18 @@ namespace Battleships.AppWeb.Controllers
                 return new ObjectResult("Wrong register user input: " + errors + ".") { StatusCode = 422 };
             }
 
-            userRegisterVm.UserName = GenerateUsername(userRegisterVm.UserName);
+            model.UserName = _userService.GenerateUsername(model.UserName);
 
-            userRegisterVm = SanitizeRegisteringUserInputs(userRegisterVm);
+            model = _sanitizer.SanitizeRegisteringUserInputs(model);
 
-            AppUser user = await _userManager.FindByEmailAsync(userRegisterVm.Email);
+            AppUser user = await _userService.FindUserByEmail(model.Email);
 
             if (user != null)
             {
                 return new ObjectResult("Email already exists.") { StatusCode = 409 };
             }
 
-            bool result = await _userService.CreateNewUserAndAddToDbAsync(userRegisterVm);
+            bool result = await _userService.CreateNewUserAndAddToDbAsync(model);
 
             if (!result)
             {
@@ -159,35 +143,6 @@ namespace Battleships.AppWeb.Controllers
             }
 
             return Ok();
-        }
-
-        private string GenerateUsername(string typedName)
-        {
-            int count = 0;
-            string name = typedName;
-
-            while (_userManager.Users.Any(x => x.UserName == name))
-            {
-                name = typedName + count++.ToString();
-            }
-
-            return name;
-        }
-
-        /// <summary>
-        /// Sanitizing user inputs
-        /// </summary>
-        /// <param name="userRegisterVm">Passed user vm</param>
-        /// <returns>Sanitized user vm</returns>
-        private UserViewModel SanitizeRegisteringUserInputs(UserViewModel userRegisterVm)
-        {
-            return new UserViewModel()
-            {
-                DisplayName = _sanitizer.Process(userRegisterVm.DisplayName),
-                Email = _sanitizer.Process(userRegisterVm.Email),
-                Password = _sanitizer.Process(userRegisterVm.Password),
-                UserName = _sanitizer.Process(userRegisterVm.UserName)
-            };
         }
     }
 }
