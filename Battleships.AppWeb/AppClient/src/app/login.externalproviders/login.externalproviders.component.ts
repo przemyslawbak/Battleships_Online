@@ -1,10 +1,12 @@
-import { Component, Inject, OnInit, NgZone, PLATFORM_ID } from "@angular/core";
+import { Component, Inject, OnInit, PLATFORM_ID } from "@angular/core";
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 
-import { AuthService } from '../services/auth.service';
 import { TokenResponse } from "../models/token.response";
+
+import { AuthService } from '../services/auth.service';
+import { ModalService } from '../modal';
 
 declare var window: any;
 @Component({
@@ -19,7 +21,7 @@ export class LoginExternalProvidersComponent implements OnInit {
   errorDescription: string;
   isRequesting: boolean;
 
-  constructor(private router: Router, private auth: AuthService, private zone: NgZone, @Inject(PLATFORM_ID) private platformId: any, private spinner: NgxSpinnerService) { }
+  constructor(private router: Router, private auth: AuthService, @Inject(PLATFORM_ID) private platformId: any, private spinner: NgxSpinnerService, private modalService: ModalService) { }
 
   ngOnInit() {
     if (!isPlatformBrowser(this.platformId)) {
@@ -61,6 +63,7 @@ export class LoginExternalProvidersComponent implements OnInit {
       this.closePopUpWindow();
     } else {
       console.log('failed to logged in user with external provider');
+      this.modalService.open('info-modal', 'Something went wrong. Please try again.');
       this.router.navigate(['join']);
     }
     this.spinner.hide();

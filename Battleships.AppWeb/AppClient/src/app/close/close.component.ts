@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { TokenResponse } from "../models/token.response";
+
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -18,10 +19,9 @@ export class CloseComponent implements OnInit {
     this.tokenResponse = this.getTokenResponse();
     if (this.tokenResponse) {
       this.auth.setAuth(this.tokenResponse);
-      parent.window.opener.postMessage('', 'http://localhost:4200');
-    } else {
-      //todo: message that error
     }
+
+    parent.window.opener.postMessage('', 'http://localhost:4200');
   }
 
   getTokenResponse(): TokenResponse {
