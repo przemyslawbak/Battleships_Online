@@ -10,7 +10,7 @@ jw-modal .jw-modal {
   position: fixed;
   top: 25%;
 left: 50%;
-transform: translate(-50%, -25%); /*todo: higher*/
+transform: translate(-50%, -25%);
   /* z-index must be higher than .jw-modal-background */
   z-index: 1000;
   /* enables scrolling for tall modals */
