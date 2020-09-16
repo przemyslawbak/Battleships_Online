@@ -1,5 +1,6 @@
 ﻿using Battleships.DAL;
 using Battleships.Models;
+using Battleships.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
@@ -36,6 +37,25 @@ namespace Battleships.Services
                 rngCryptoServiceProvider.GetBytes(randomBytes);
                 return Convert.ToBase64String(randomBytes);
             }
+        }
+
+        public TokenResponseViewModel GenerateResponse(AppUser user, string ip)
+        {
+            SecurityToken token = GetSecurityToken(user);
+
+            string encodedToken = new JwtSecurityTokenHandler().WriteToken(token);
+            string refreshToken = GetRefreshToken();
+
+            _tokenRepo.SaveRefreshToken(refreshToken, user.Email, ip);
+
+            return new TokenResponseViewModel()
+            {
+                Token = encodedToken.Replace("/", "$").Replace("=", "@"),
+                Email = user.Email,
+                User = user.UserName,
+                RefreshToken = refreshToken.Replace("/", "$").Replace("=", "@"),
+                DisplayName = user.DisplayName
+            };
         }
 
         public SecurityToken GetSecurityToken(AppUser user)

@@ -1,4 +1,5 @@
 ﻿using Battleships.Models;
+using Battleships.Models.ViewModels;
 using Microsoft.IdentityModel.Tokens;
 using System.Threading.Tasks;
 
@@ -10,5 +11,6 @@ namespace Battleships.Services
         string GetRefreshToken();
         string GetCurrentToken();
         void CleanUpBlacklistedTokens();
+        TokenResponseViewModel GenerateResponse(AppUser user, string ip);
     }
 }

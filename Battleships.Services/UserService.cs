@@ -1,8 +1,10 @@
 ﻿using Battleships.Models;
 using Battleships.Models.ViewModels;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Battleships.Services
@@ -10,10 +12,12 @@ namespace Battleships.Services
     public class UserService : IUserService
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
 
-        public UserService(UserManager<AppUser> userMgr)
+        public UserService(UserManager<AppUser> userMgr, SignInManager<AppUser> signInManager)
         {
             _userManager = userMgr;
+            _signInManager = signInManager;
         }
 
         /// <summary>
@@ -21,11 +25,11 @@ namespace Battleships.Services
         /// </summary>
         /// <param name="registerVm">User inputs.</param>
         /// <returns>Boolean if succeeded or not.</returns>
-        public async Task<bool> CreateNewUserAndAddToDbAsync(UserViewModel registerVm)
+        public async Task<bool> CreateNewUserAndAddToDbAsync(UserViewModel model)
         {
-            AppUser user = CreateNewUser(registerVm);
+            AppUser user = CreateNewUser(model);
 
-            IdentityResult result = await _userManager.CreateAsync(user, registerVm.Password);
+            IdentityResult result = await _userManager.CreateAsync(user, model.Password);
 
             if (!result.Succeeded)
             {
@@ -38,6 +42,19 @@ namespace Battleships.Services
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Generates random password.
+        /// </summary>
+        /// <returns>Random password string.</returns>
+        public string GenerateRandomPassword()
+        {
+            Random random = new Random();
+
+            const string chars = "abcdefghijklmnopqrtuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+            return new string(Enumerable.Repeat(chars, 20).Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
         /// <summary>
@@ -140,6 +157,48 @@ namespace Battleships.Services
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Gets external auth properties.
+        /// </summary>
+        /// <param name="provider">Providers name.</param>
+        /// <param name="redirectUrl">Redirection URL.</param>
+        /// <returns>Authentication properties.</returns>
+        public AuthenticationProperties GetExternalAuthenticationProperties(string provider, string redirectUrl)
+        {
+            return _signInManager.ConfigureExternalAuthenticationProperties(provider, "http://localhost:50962" + redirectUrl);
+        }
+
+        /// <summary>
+        /// Gets external login info.
+        /// </summary>
+        /// <returns>External login info.</returns>
+        public async Task<ExternalLoginInfo> GetExternalLogin()
+        {
+            return await _signInManager.GetExternalLoginInfoAsync();
+        }
+
+        /// <summary>
+        /// VErifies if password is correct for the user.
+        /// </summary>
+        /// <param name="user">AppUser object.</param>
+        /// <param name="password">Password to be verified.</param>
+        /// <returns>Boolean if the password is correct.</returns>
+        public async Task<bool> VerifyUsersPassword(AppUser user, string password)
+        {
+            return await _userManager.CheckPasswordAsync(user, password);
+        }
+
+        public UserViewModel GetRegisterModel(ExternalLoginInfo info)
+        {
+            return new UserViewModel()
+            {
+                Email = info.Principal.FindFirst(ClaimTypes.Email).Value,
+                UserName = GenerateUsername(info.Principal.FindFirst(ClaimTypes.GivenName).Value),
+                Password = GenerateRandomPassword(),
+                DisplayName = info.Principal.FindFirst(ClaimTypes.GivenName).Value
+            };
         }
     }
 }

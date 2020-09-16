@@ -30,16 +30,17 @@ OK - bug, if not registered yet with FB, hits `return Content("registered");`
 OK - bug, if no email in DB for `forgotten pass`, freezes
 OK - all constructor endpoint errors make to ObjectResult
 OK - move modal service to `services` directory
-
-later:
+- refactorize TokenController
+- captcha
 - error handling interceptor
 - add Twitter, Google external login providers
-- auth roles
-- creating user identity result https://4programmers.net/Forum/C_i_.NET/343563-nowy_uzytkownik_api_endpoint?p=1703857#comment-625167
-- refactorize TokenController
-- mock UserManager
-- join with twitter
-- captcha
+- structure https://angular.io/guide/styleguide
+
+end:
 - clean up console.log
 - protect server controllers
-- structure https://angular.io/guide/styleguide
+
+later:
+- auth roles
+- creating user identity result https://4programmers.net/Forum/C_i_.NET/343563-nowy_uzytkownik_api_endpoint?p=1703857#comment-625167
+- mock UserManager
