@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 
 namespace Battleships.AppWeb.Controllers
 {
-    //todo: login after register
     //todo: mock UserManager
     //todo: creating user identity result https://4programmers.net/Forum/C_i_.NET/343563-nowy_uzytkownik_api_endpoint?p=1703857#comment-625167
     [Route("api/[controller]")]
