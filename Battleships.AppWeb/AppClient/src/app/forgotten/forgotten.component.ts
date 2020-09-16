@@ -19,19 +19,10 @@ export class ForgottenComponent implements OnInit {
     this.createForm();
   }
 
-  createForm() {
-    this.form = this.formBuilder.group({
-      Email: ['',
-        [Validators.required,
-        Validators.email]
-      ]
-      });
+  public ngOnInit(): void {
   }
 
-  ngOnInit(): void {
-  }
-
-  onSubmit() {
+  public onSubmit() {
     this.spinner.show();
     var viewModel = <PassResetEmail>{};
     viewModel.email = this.form.value.Email;
@@ -46,17 +37,25 @@ export class ForgottenComponent implements OnInit {
       );
   }
 
-  onBack() {
+  public hasError(name: string) {
+    var e = this.getFormControl(name);
+    return e && (e.dirty || e.touched) && !e.valid;
+  }
+
+  public  onBack() {
     this.router.navigate(["join"]);
   }
 
-  getFormControl(name: string) {
+  private getFormControl(name: string) {
     return this.form.get(name);
   }
 
-  //todo: what using this?
-  hasError(name: string) {
-    var e = this.getFormControl(name);
-    return e && (e.dirty || e.touched) && !e.valid;
+  private createForm() {
+    this.form = this.formBuilder.group({
+      Email: ['',
+        [Validators.required,
+        Validators.email]
+      ]
+    });
   }
 }
