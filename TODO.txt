@@ -16,7 +16,7 @@ OK - receive token + email from the link in PassResetComponent
 OK - register cancel btn
 OK - protecting routes
 OK - user token expire: https://stackoverflow.com/questions/55847727/jwt-token-expiration-in-angular-6/55847892#55847892
-- popups for: registered user, logged in, send forgotten pass
+OK - popups for: sent forgotten pass
 OK - controllers authorisation
 OK - local storage for tokens? nope
 OK - spinners for requests
@@ -29,6 +29,7 @@ OK - login after register
 OK - bug, if not registered yet with FB, hits `return Content("registered");`
 OK - bug, if no email in DB for `forgotten pass`, freezes
 OK - all constructor endpoint errors make to ObjectResult
+- move modal service to `services` directory
 
 later:
 - error handling interceptor

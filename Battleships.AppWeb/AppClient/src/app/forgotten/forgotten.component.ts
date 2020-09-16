@@ -39,7 +39,9 @@ export class ForgottenComponent implements OnInit {
     this.http.post(url, viewModel)
       .subscribe(
         () => {
+          this.modalService.open('info-modal', 'Password reset link has been sent to: ' + viewModel.email + '.');
           this.spinner.hide();
+          this.router.navigate(['']);
         }
       );
   }

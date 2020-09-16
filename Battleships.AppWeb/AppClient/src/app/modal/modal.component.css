@@ -33,7 +33,7 @@ jw-modal .jw-modal-background {
   left: 0;
   /* semi-transparent black  */
   background-color: #000;
-  opacity: 0.75;
+  opacity: 0.6;
   /* z-index must be below .jw-modal and above everything else  */
   z-index: 900;
 }

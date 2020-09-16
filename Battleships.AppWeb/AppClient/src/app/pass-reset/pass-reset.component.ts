@@ -4,6 +4,8 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { NgxSpinnerService } from "ngx-spinner";
 
+import { ModalService } from '../modal';
+
 import { PassResetModel } from "../models/pass.reset.model";
 
 @Component({
@@ -13,7 +15,7 @@ import { PassResetModel } from "../models/pass.reset.model";
 export class PassResetComponent implements OnInit {
   form: FormGroup;
   passModel: PassResetModel;
-  constructor(private router: Router, private formBuilder: FormBuilder, private http: HttpClient, private route: ActivatedRoute, private spinner: NgxSpinnerService) {
+  constructor(private router: Router, private formBuilder: FormBuilder, private http: HttpClient, private route: ActivatedRoute, private spinner: NgxSpinnerService, private modalService: ModalService) {
     this.createForm();
   }
 
@@ -49,7 +51,9 @@ export class PassResetComponent implements OnInit {
     this.http.post(url, this.passModel)
       .subscribe(
         () => {
+          this.modalService.open('info-modal', 'Now you can log in with your password.');
           this.spinner.hide();
+          this.router.navigate(['join']);
         }
       );
   }

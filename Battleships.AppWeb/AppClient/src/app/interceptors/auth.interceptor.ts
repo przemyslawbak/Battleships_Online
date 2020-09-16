@@ -64,7 +64,6 @@ export class AuthInterceptor implements HttpInterceptor {
         this.router.navigate(['join']);
       }
     } else {
-      //todo: popup
       console.log('error code: ' + error.status);
       console.log('error text: ' + error.error);
       this.spinner.hide();
