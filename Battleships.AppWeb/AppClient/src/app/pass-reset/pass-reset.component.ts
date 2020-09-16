@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { NgxSpinnerService } from "ngx-spinner";
 
-import { ModalService } from '../modal';
+import { ModalService } from '../services/modal.service';
 
 import { PassResetModel } from "../models/pass.reset.model";
 

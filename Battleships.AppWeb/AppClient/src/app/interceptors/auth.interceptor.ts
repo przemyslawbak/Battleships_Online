@@ -6,7 +6,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { catchError, switchMap, filter, take } from "rxjs/operators";
 
 import { AuthService } from "../services/auth.service";
-import { ModalService } from '../modal';
+import { ModalService } from '../services/modal.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {

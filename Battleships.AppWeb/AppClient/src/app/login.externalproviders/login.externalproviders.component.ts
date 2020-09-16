@@ -6,7 +6,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { TokenResponse } from "../models/token.response";
 
 import { AuthService } from '../services/auth.service';
-import { ModalService } from '../modal';
+import { ModalService } from '../services/modal.service';
 
 declare var window: any;
 @Component({
