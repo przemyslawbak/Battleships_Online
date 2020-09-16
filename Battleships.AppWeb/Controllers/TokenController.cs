@@ -88,19 +88,18 @@ namespace Battleships.AppWeb.Controllers
 
         //todo: clean up and check
         [HttpGet("ExternalLoginCallback")]
-        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
+        public async Task<IActionResult> ExternalLoginCallback(string remoteError = null)
         {
             if (!string.IsNullOrEmpty(remoteError))
             {
-                //todo: handle external provider errors
-                throw new Exception(string.Format("External Provider error: {0}", remoteError));
+                return new ObjectResult("External provider error: " + remoteError) { StatusCode = 503 };
             }
 
             ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
 
             if (info == null)
             {
-                throw new Exception(string.Format("External Provider error, no user data"));
+                return new ObjectResult("External provider error.") { StatusCode = 503 };
             }
 
             var user = await _userManager.FindByEmailAsync(info.Principal.FindFirst(ClaimTypes.Email).Value);
