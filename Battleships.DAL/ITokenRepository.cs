@@ -7,8 +7,8 @@ namespace Battleships.DAL
         void SaveRefreshToken(string refreshToken, string email, string ip);
         bool VerifyReceivedToken(string refreshtoken, string email, string ip);
         void DeleteRefreshToken(string email);
-        void CleanUpBlacklistedTokens(int hoursKeepBlacklistedTokend);
         void AddBlacklistedToken(string token);
         bool VeriFyTokenBan(string currentToken);
+        void CleanUpBlacklistedTokens(int hoursKeepBlacklistedTokend);
     }
 }

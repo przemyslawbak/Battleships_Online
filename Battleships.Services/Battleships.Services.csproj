@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Battleships.DAL\Battleships.DAL.csproj" />
     <ProjectReference Include="..\Battleships.Models\Battleships.Models.csproj" />
   </ItemGroup>
 

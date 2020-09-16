@@ -22,7 +22,6 @@ namespace Battleships.AppWeb.Controllers
         private SignInManager<AppUser> _signInManager;
         private readonly ITokenService _tokenService;
         private readonly ITokenRepository _tokenRepo;
-        private readonly int _hoursKeepBlacklistedTokend = 5; //todo: move to _configuration
 
         public TokenController(
             UserManager<AppUser> userMgr,
@@ -73,7 +72,7 @@ namespace Battleships.AppWeb.Controllers
         public IActionResult RevokeToken([FromBody]RevokeTokenRequestViewModel model)
         {
             _tokenRepo.DeleteRefreshToken(model.UserName);
-            _tokenRepo.CleanUpBlacklistedTokens(_hoursKeepBlacklistedTokend);
+            _tokenService.CleanUpBlacklistedTokens();
             _tokenRepo.AddBlacklistedToken(model.Token);
 
             return Ok();

@@ -1,4 +1,5 @@
-﻿using Battleships.Models;
+﻿using Battleships.DAL;
+using Battleships.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
@@ -16,11 +17,15 @@ namespace Battleships.Services
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IConfiguration _configuration;
+        private readonly ITokenRepository _tokenRepo;
+        private readonly int _hoursKeepBlacklistedTokend;
 
-        public TokenService(IHttpContextAccessor httpContextAccessor, IConfiguration config)
+        public TokenService(IHttpContextAccessor httpContextAccessor, IConfiguration config, ITokenRepository tokenRepo)
         {
             _httpContextAccessor = httpContextAccessor;
             _configuration = config;
+            _tokenRepo = tokenRepo;
+            _hoursKeepBlacklistedTokend = _configuration.GetValue<int>("Auth:JsonWebToken:BlacklistedTokenInHours");
         }
 
         public string GetRefreshToken()
@@ -61,6 +66,11 @@ namespace Battleships.Services
             var authorizationHeader = _httpContextAccessor.HttpContext.Request.Headers["authorization"];
 
             return authorizationHeader == StringValues.Empty ? string.Empty : authorizationHeader.Single().Split(' ').Last();
+        }
+
+        public void CleanUpBlacklistedTokens()
+        {
+            _tokenRepo.CleanUpBlacklistedTokens(_hoursKeepBlacklistedTokend);
         }
     }
 }

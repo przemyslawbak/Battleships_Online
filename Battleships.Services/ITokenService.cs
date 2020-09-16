@@ -9,5 +9,6 @@ namespace Battleships.Services
         SecurityToken GetSecurityToken(AppUser user);
         string GetRefreshToken();
         string GetCurrentToken();
+        void CleanUpBlacklistedTokens();
     }
 }
