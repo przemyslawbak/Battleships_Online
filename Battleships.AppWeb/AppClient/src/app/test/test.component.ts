@@ -31,12 +31,10 @@ export class TestComponent implements OnInit {
         response => {
           console.log("POST call in error", response);
           this.spinner.hide();
-          //todo: popup
         },
         () => {
           console.log("The POST observable is now completed.");
           this.spinner.hide();
-          //todo: popup
         });
   }
 }
