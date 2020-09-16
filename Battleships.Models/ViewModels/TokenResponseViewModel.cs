@@ -1,9 +1,7 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace Battleships.Models.ViewModels
 {
-    //TODO: verify
     [JsonObject(MemberSerialization.OptOut)]
     public class TokenResponseViewModel
     {
