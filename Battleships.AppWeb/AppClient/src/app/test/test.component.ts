@@ -19,8 +19,8 @@ export class TestComponent implements OnInit {
 
   executeCall(): void {
     this.spinner.show();
-    console.log('executing call, token:' + this.auth.getAuth()!.token);
-    console.log('executing call, refresh token:' + this.auth.getAuth()!.refreshToken);
+    console.log('executing test auth call, token:' + this.auth.getAuth()!.token);
+    console.log('executing test auth call, refresh token:' + this.auth.getAuth()!.refreshToken);
     var url = 'http://localhost:50962/' + 'api/user/test';
     this.http.get<string>(url)
       .subscribe(

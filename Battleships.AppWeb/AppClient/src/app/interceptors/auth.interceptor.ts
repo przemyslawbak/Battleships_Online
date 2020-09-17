@@ -78,6 +78,7 @@ export class AuthInterceptor implements HttpInterceptor {
   addAuthHeader(request: HttpRequest<any>): HttpRequest<any> {
     var token = (this.auth.isLoggedIn()) ? this.auth.getAuth()!.token : null;
     if (token) {
+      console.log('added bearer');
       request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`

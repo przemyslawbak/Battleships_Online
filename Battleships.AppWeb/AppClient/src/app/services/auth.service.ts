@@ -26,6 +26,7 @@ export class AuthService {
       Password: password,
       GrantType: "password"
     };
+    this.router.navigate(['']);
 
     return this.getTokenResponse(url, data);
   }
@@ -36,8 +37,8 @@ export class AuthService {
       Email: this.getAuth().email,
       RefreshToken: this.getAuth().refreshToken
     };
-    console.log('refresh token - user name: ' + this.getAuth().user);
-
+    console.log('refreshing auth token, token:' + this.getAuth()!.token);
+    console.log('refreshing auth token, refresh token:' + this.getAuth()!.refreshToken);
     return this.getTokenResponse(url, data);
   }
 
@@ -70,7 +71,6 @@ export class AuthService {
         auth.token = auth.token.replace(/\$/g, '/').replace(/\@/g, '=');
         auth.refreshToken = auth.refreshToken.replace(/\$/g, '/').replace(/\@/g, '=');
         localStorage.setItem(this.authKey, JSON.stringify(auth));
-        console.log('user logged in');
       }
       else {
         localStorage.removeItem(this.authKey);
@@ -114,9 +114,11 @@ export class AuthService {
         map((res) => {
           let token = res && res.token;
           if (token) {
+            console.log('user logged in');
             this.setAuth(res);
+            console.log('received auth token, token:' + this.getAuth()!.token);
+            console.log('received auth token, refresh token:' + this.getAuth()!.refreshToken);
             this.spinner.hide();
-            this.router.navigate(['']);
             return true;
           }
           this.spinner.hide();

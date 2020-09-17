@@ -7,7 +7,7 @@ namespace Battleships.DAL
 {
     public class EFTokenRepository : ITokenRepository
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public EFTokenRepository(ApplicationDbContext ctx)
         {
@@ -52,7 +52,9 @@ namespace Battleships.DAL
 
         public bool VerifyReceivedToken(string refreshToken, string email, string ip)
         {
-            return _context.RefreshTokens.Any(tokens => tokens.Token == refreshToken && tokens.IpAddress == ip && tokens.Email == email);
+            bool verify = _context.RefreshTokens.Any(tokens => tokens.Token == refreshToken && tokens.IpAddress == ip && tokens.Email == email);
+
+            return verify;
         }
 
         public bool VeriFyTokenBan(string currentToken)

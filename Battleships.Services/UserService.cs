@@ -167,7 +167,7 @@ namespace Battleships.Services
         /// <returns>Authentication properties.</returns>
         public AuthenticationProperties GetExternalAuthenticationProperties(string provider, string redirectUrl)
         {
-            return _signInManager.ConfigureExternalAuthenticationProperties(provider, "http://localhost:50962" + redirectUrl);
+            return _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
         }
 
         /// <summary>

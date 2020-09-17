@@ -72,7 +72,7 @@ namespace Battleships.Services
                 {
                     new Claim(ClaimTypes.Name, user.Id.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(expiration),
+                Expires = DateTime.UtcNow.AddSeconds(expiration), //todo: addminutes
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secret), SecurityAlgorithms.HmacSha256Signature),
                 Issuer = _configuration["Auth:JsonWebToken:Issuer"],
                 Audience = _configuration["Auth:JsonWebToken:Audience"]

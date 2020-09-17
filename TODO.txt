@@ -30,11 +30,12 @@ OK - bug, if not registered yet with FB, hits `return Content("registered");`
 OK - bug, if no email in DB for `forgotten pass`, freezes
 OK - all constructor endpoint errors make to ObjectResult
 OK - move modal service to `services` directory
-- refactorize TokenController
+OK - bug 2x hits RefreshToken
+OK - error handling in client app
 - captcha
-- error handling interceptor
 - add Twitter, Google external login providers
 - structure https://angular.io/guide/styleguide
+- refactorize TokenController
 
 end:
 - clean up console.log

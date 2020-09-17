@@ -31,6 +31,8 @@ namespace Battleships.AppWeb.Controllers
         [HttpPost("auth")]
         public async Task<IActionResult> JsonWebToken([FromBody]TokenRequestViewModel model)
         {
+            TempData["requstIp"] = GetIpAddress();
+
             if (model == null)
             {
                 return new StatusCodeResult(500);
@@ -47,9 +49,9 @@ namespace Battleships.AppWeb.Controllers
         [HttpPost("refresh-token")]
         public async Task<IActionResult> RefreshToken([FromBody]RefreshTokenRequestViewModel model)
         {
-            string ip = GetIpAddress();
+            TempData["requstIp"] = GetIpAddress();
 
-            bool properToken = _tokenRepo.VerifyReceivedToken(model.RefreshToken, model.Email, ip);
+            bool properToken = _tokenRepo.VerifyReceivedToken(model.RefreshToken, model.Email, TempData["requstIp"].ToString());
 
             if (!properToken)
             {
@@ -72,6 +74,7 @@ namespace Battleships.AppWeb.Controllers
         [HttpGet("external-login/{provider}")]
         public IActionResult ExternalLoginAsync(string provider, string returnUrl = null)
         {
+            TempData["requstIp"] = GetIpAddress();
             string redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Token", new { ReturnUrl = returnUrl });
             AuthenticationProperties properties = _userService.GetExternalAuthenticationProperties(provider, "http://localhost:50962" + redirectUrl);
             return new ChallengeResult(provider, properties);
@@ -109,7 +112,7 @@ namespace Battleships.AppWeb.Controllers
                 user = await _userService.FindUserByEmail(info.Principal.FindFirst(ClaimTypes.Email).Value);
             }
 
-            TokenResponseViewModel response = _tokenService.GenerateResponse(user, GetIpAddress());
+            TokenResponseViewModel response = _tokenService.GenerateResponse(user, TempData["requstIp"].ToString());
 
             return View(response);
         }
@@ -123,7 +126,7 @@ namespace Battleships.AppWeb.Controllers
                 return new ObjectResult("Please log in again.") { StatusCode = 409 };
             }
 
-            TokenResponseViewModel response = _tokenService.GenerateResponse(user, GetIpAddress());
+            TokenResponseViewModel response = _tokenService.GenerateResponse(user, TempData["requstIp"].ToString());
 
             return Json(response);
         }
@@ -137,7 +140,7 @@ namespace Battleships.AppWeb.Controllers
                 return new ObjectResult("Wrong email or password.") { StatusCode = 409 };
             }
 
-            TokenResponseViewModel response = _tokenService.GenerateResponse(user, GetIpAddress());
+            TokenResponseViewModel response = _tokenService.GenerateResponse(user, TempData["requstIp"].ToString());
 
             return Json(response);
         }
