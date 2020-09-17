@@ -5,12 +5,13 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { Observable, BehaviorSubject } from 'rxjs';
 import { catchError, switchMap, filter, take } from "rxjs/operators";
 
+import { SecurityService } from "../services/security.service";
 import { AuthService } from "../services/auth.service";
 import { ModalService } from '../services/modal.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(public auth: AuthService, private router: Router, private spinner: NgxSpinnerService, private modalService: ModalService) { }
+  constructor(public auth: AuthService, private router: Router, private spinner: NgxSpinnerService, private modalService: ModalService, private securityService: SecurityService) { }
   private isRefreshing = false;
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
@@ -64,12 +65,10 @@ export class AuthInterceptor implements HttpInterceptor {
         this.router.navigate(['join']);
       }
     } else if (error.status === 429) {
-      var miliseconds = 10000;
-      var currentTime = new Date().getTime();
-      while (currentTime + miliseconds >= new Date().getTime()) {
-      }
+      this.securityService.delayForBruteForce(10);
       this.genericErrorHandler(error);
     } else {
+      this.securityService.delayForBruteForce(5);
       this.genericErrorHandler(error);
     }
   }

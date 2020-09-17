@@ -6,12 +6,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 
+import { ModalModule } from './modal';
+import { SecurityService } from './services/security.service';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/auth.guard';
 
 import { AuthInterceptor } from './interceptors/auth.interceptor';
-
-import { ModalModule } from './modal';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -52,6 +52,7 @@ import { CloseComponent } from './close/close.component';
   providers: [
     { provide: RECAPTCHA_V3_SITE_KEY, useValue: '6Ldkfs0ZAAAAAGU1nSIrKUZ-C6mSy4TfpWETFypX' },
     AuthGuard,
+    SecurityService,
     AuthService,
     {
       provide: HTTP_INTERCEPTORS,

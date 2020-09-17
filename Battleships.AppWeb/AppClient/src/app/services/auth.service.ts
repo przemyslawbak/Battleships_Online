@@ -4,6 +4,8 @@ import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { Observable } from "rxjs";
 import { map } from 'rxjs/operators';
+
+import { SecurityService } from "../services/security.service";
 import { NgxSpinnerService } from "ngx-spinner";
 
 import { TokenResponse } from "../models/token.response";
@@ -12,7 +14,7 @@ import { TokenResponse } from "../models/token.response";
 export class AuthService {
   authKey: string = "auth";
 
-  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: any, private router: Router, private spinner: NgxSpinnerService) { }
+  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: any, private router: Router, private spinner: NgxSpinnerService, private securityService: SecurityService) { }
 
   public facebookLogin(accessToken: string) {
     console.log(accessToken);

@@ -5,6 +5,7 @@ import { HttpClient } from "@angular/common/http";
 
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { NgxSpinnerService } from "ngx-spinner";
+import { SecurityService } from "../services/security.service";
 
 import { User } from "../models/user";
 import { AuthService } from '../services/auth.service';
@@ -16,7 +17,7 @@ import { AuthService } from '../services/auth.service';
 })
 export class RegisterComponent {
   form: FormGroup;
-  constructor(private router: Router, private formBuilder: FormBuilder, private http: HttpClient, private auth: AuthService, private spinner: NgxSpinnerService, private recaptchaV3Service: ReCaptchaV3Service) {
+  constructor(private router: Router, private formBuilder: FormBuilder, private http: HttpClient, private auth: AuthService, private spinner: NgxSpinnerService, private recaptchaV3Service: ReCaptchaV3Service, private securityService: SecurityService) {
 
     // initialize the form
     this.createForm();
@@ -36,7 +37,6 @@ export class RegisterComponent {
   }
 
   private onSubmit(token: string) {
-    this.spinner.show();
     var model = <User>{};
     model.displayName = this.form.value.DisplayName;
     model.email = this.form.value.Email;
@@ -44,6 +44,7 @@ export class RegisterComponent {
     model.username = this.form.value.DisplayName;
     model.captchaToken = token;
     var url = 'http://localhost:50962/' + 'api/user/register';
+    this.securityService.delayForBruteForce(5);
     this.http.post(url, model)
       .subscribe(
         () => {
@@ -54,6 +55,7 @@ export class RegisterComponent {
   }
 
   public beforeSubmittingForm(): void {
+    this.spinner.show();
     this.recaptchaV3Service.execute('formSubmit')
       .subscribe(
         (token) => {

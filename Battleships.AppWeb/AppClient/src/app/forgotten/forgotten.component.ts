@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 
 import { ModalService } from '../services/modal.service';
+import { SecurityService } from "../services/security.service";
 import { NgxSpinnerService } from "ngx-spinner";
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 
@@ -16,7 +17,7 @@ import { PassResetEmail } from "../models/pass.reset";
 })
 export class ForgottenComponent implements OnInit {
   public form: FormGroup;
-  constructor(private router: Router, private formBuilder: FormBuilder, private http: HttpClient, private spinner: NgxSpinnerService, private modalService: ModalService, private recaptchaV3Service: ReCaptchaV3Service) {
+  constructor(private router: Router, private formBuilder: FormBuilder, private http: HttpClient, private spinner: NgxSpinnerService, private modalService: ModalService, private recaptchaV3Service: ReCaptchaV3Service, private securityService: SecurityService) {
     this.createForm();
   }
 
@@ -24,11 +25,11 @@ export class ForgottenComponent implements OnInit {
   }
 
   private onSubmit(captchaToken: string) {
-    this.spinner.show();
     let model = <PassResetEmail>{};
     model.email = this.form.value.Email;
     model.captchaToken = captchaToken;
     const url = 'http://localhost:50962/' + 'api/user/reset';
+    this.securityService.delayForBruteForce(5);
     this.http.post(url, model)
       .subscribe(
         () => {
@@ -40,6 +41,7 @@ export class ForgottenComponent implements OnInit {
   }
 
   public beforeSubmittingForm(): void {
+    this.spinner.show();
     this.recaptchaV3Service.execute('formSubmit')
       .subscribe(
         (token) => {
