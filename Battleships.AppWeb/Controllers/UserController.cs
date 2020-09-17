@@ -16,19 +16,21 @@ namespace Battleships.AppWeb.Controllers
         private readonly IUserService _userService;
         private readonly IInputSanitizer _sanitizer;
         private readonly IEmailSender _emailSender;
+        private readonly IHttpService _http;
 
-        public UserController(IUserService userService, IInputSanitizer sanitizer, IEmailSender emailSender)
+        public UserController(IUserService userService, IInputSanitizer sanitizer, IEmailSender emailSender, IHttpService http)
         {
             _userService = userService;
             _sanitizer = sanitizer;
             _emailSender = emailSender;
+            _http = http;
         }
 
         /// <summary>
         /// POST: api/user/test
         /// </summary>
         /// <returns>Status code with object.</returns>
-        [HttpGet("Test")]
+        [HttpGet("test")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public IActionResult GetAuthTest()
         {
@@ -42,6 +44,13 @@ namespace Battleships.AppWeb.Controllers
         [HttpPost("reset")]
         public async Task<IActionResult> PassChange([FromBody]PassResetEmailViewModel model)
         {
+            RecaptchaVerificationResponseModel recaptchaResponse = await _http.VerifyCaptchaAsync(model.CaptchaToken, _userService.GetIpAddress(HttpContext));
+
+            if (!recaptchaResponse.Success && recaptchaResponse.Score < 0.8) //todo: appsettings 0.8
+            {
+                return new ObjectResult("It looks like you are sending automated requests.") { StatusCode = 429 };
+            }
+
             if (ModelState.IsValid)
             {
                 model.Email = _sanitizer.CleanUp(model.Email);
@@ -112,9 +121,16 @@ namespace Battleships.AppWeb.Controllers
         /// POST: api/user/register
         /// </summary>
         /// <returns>Status code.</returns>
-        [HttpPost("Register")]
+        [HttpPost("register")]
         public async Task<IActionResult> AddNewUser([FromBody]UserViewModel model)
         {
+            RecaptchaVerificationResponseModel recaptchaResponse = await _http.VerifyCaptchaAsync(model.CaptchaToken, _userService.GetIpAddress(HttpContext));
+
+            if (!recaptchaResponse.Success && recaptchaResponse.Score < 0.8) //todo: appsettings 0.8
+            {
+                return new ObjectResult("It looks like you are sending automated requests.") { StatusCode = 429 };
+            }
+
             if (!ModelState.IsValid)
             {
                 string errors = string.Join(", ", ModelState.Select(x => x.Value.Errors)

@@ -1,6 +1,8 @@
 ﻿using Battleships.Models;
 using Battleships.Models.ViewModels;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Linq;
@@ -199,6 +201,11 @@ namespace Battleships.Services
                 Password = GenerateRandomPassword(),
                 DisplayName = info.Principal.FindFirst(ClaimTypes.GivenName).Value
             };
+        }
+
+        public string GetIpAddress(HttpContext httpContext)
+        {
+            return httpContext.Features.Get<IHttpConnectionFeature>()?.RemoteIpAddress.MapToIPv4().ToString();
         }
     }
 }

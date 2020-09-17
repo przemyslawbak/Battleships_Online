@@ -1,5 +1,6 @@
 OK - add Google external login providers
-- recaptcha v3
+OK - recaptcha v3: forgotten, register
+- what to do if StatusCode = 429? (robot)
 - delay before login, register, reset pass again
 - structure https://angular.io/guide/styleguide
 - refactorize TokenController
@@ -43,7 +44,7 @@ OK - bug 2x hits RefreshToken
 OK - error handling in client app
 
 end:
-- clean up console.log
+- clean up JS console.log rows
 - protect server controllers
 
 future:

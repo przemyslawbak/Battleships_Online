@@ -96,6 +96,7 @@ namespace Battleships_Online
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IInputSanitizer, InputSanitizer>();
             services.AddTransient<ITokenService, TokenService>();
+            services.AddTransient<IHttpService, HttpService>();
 
             services.AddTransient<ITokenRepository, EFTokenRepository>();
         }

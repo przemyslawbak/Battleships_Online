@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 import { NgxSpinnerModule } from "ngx-spinner";
+import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/auth.guard';
@@ -37,6 +38,7 @@ import { CloseComponent } from './close/close.component';
     CloseComponent
   ],
   imports: [
+    RecaptchaV3Module,
     ModalModule,
     BrowserAnimationsModule,
     FormsModule,
@@ -48,6 +50,7 @@ import { CloseComponent } from './close/close.component';
     //NgbModule.forRoot()
   ],
   providers: [
+    { provide: RECAPTCHA_V3_SITE_KEY, useValue: '6Ldkfs0ZAAAAAGU1nSIrKUZ-C6mSy4TfpWETFypX' },
     AuthGuard,
     AuthService,
     {

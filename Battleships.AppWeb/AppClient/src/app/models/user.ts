@@ -3,4 +3,5 @@ export interface User {
   password: string;
   email: string;
   displayName: string;
+  captchaToken: string;
 }

@@ -32,7 +32,7 @@ namespace Battleships.AppWeb.Controllers
         [HttpPost("auth")]
         public async Task<IActionResult> JsonWebToken([FromBody]TokenRequestViewModel model)
         {
-            TempData["requstIp"] = GetIpAddress();
+            TempData["requstIp"] = _userService.GetIpAddress(HttpContext);
 
             if (model == null)
             {
@@ -50,7 +50,7 @@ namespace Battleships.AppWeb.Controllers
         [HttpPost("refresh-token")]
         public async Task<IActionResult> RefreshToken([FromBody]RefreshTokenRequestViewModel model)
         {
-            TempData["requstIp"] = GetIpAddress();
+            TempData["requstIp"] = _userService.GetIpAddress(HttpContext);
 
             bool properToken = _tokenRepo.VerifyReceivedToken(model.RefreshToken, model.Email, TempData["requstIp"].ToString());
 
@@ -75,7 +75,7 @@ namespace Battleships.AppWeb.Controllers
         [HttpGet("external-login/{provider}")]
         public IActionResult ExternalLoginAsync(string provider, string returnUrl = null)
         {
-            TempData["requstIp"] = GetIpAddress();
+            TempData["requstIp"] = _userService.GetIpAddress(HttpContext);
             string redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Token", new { ReturnUrl = returnUrl });
             AuthenticationProperties properties = _userService.GetExternalAuthenticationProperties(provider, "http://localhost:50962" + redirectUrl);
             return new ChallengeResult(provider, properties);
@@ -144,12 +144,6 @@ namespace Battleships.AppWeb.Controllers
             TokenResponseViewModel response = _tokenService.GenerateResponse(user, TempData["requstIp"].ToString());
 
             return Json(response);
-        }
-
-        //todo: service
-        private string GetIpAddress()
-        {
-            return HttpContext.Features.Get<IHttpConnectionFeature>()?.RemoteIpAddress.MapToIPv4().ToString();
         }
     }
 }

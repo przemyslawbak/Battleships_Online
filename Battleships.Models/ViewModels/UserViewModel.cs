@@ -14,5 +14,7 @@ namespace Battleships.Models.ViewModels
         public string Email { get; set; }
         [Required(ErrorMessage = "Please fill up your displayed name.")]
         public string DisplayName { get; set; }
+        [Required(ErrorMessage = "Captcha verification is required.")]
+        public string CaptchaToken { get; set; }
     }
 }

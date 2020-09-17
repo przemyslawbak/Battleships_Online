@@ -1,6 +1,7 @@
 ﻿using Battleships.Models;
 using Battleships.Models.ViewModels;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
@@ -18,5 +19,6 @@ namespace Battleships.Services
         Task<bool> VerifyUsersPassword(AppUser user, string password);
         string GenerateRandomPassword();
         UserViewModel GetRegisterModel(ExternalLoginInfo info);
+        string GetIpAddress(HttpContext httpContext);
     }
 }
