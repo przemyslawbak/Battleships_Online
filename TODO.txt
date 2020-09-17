@@ -8,6 +8,7 @@ OK - recaptcha v3: forgotten, register
 - unit testing
 - creating user identity result https://4programmers.net/Forum/C_i_.NET/343563-nowy_uzytkownik_api_endpoint?p=1703857#comment-625167
 - mock UserManager
+- recaptcha v3 middleware / attribute
 OK - register new user
 OK - after login display user name
 OK - login after registering
