@@ -1,3 +1,12 @@
+OK - add Google external login providers
+- recaptcha v3
+- delay before login, register, reset pass again
+- structure https://angular.io/guide/styleguide
+- refactorize TokenController
+- auth roles? admin
+- unit testing
+- creating user identity result https://4programmers.net/Forum/C_i_.NET/343563-nowy_uzytkownik_api_endpoint?p=1703857#comment-625167
+- mock UserManager
 OK - register new user
 OK - after login display user name
 OK - login after registering
@@ -32,16 +41,9 @@ OK - all constructor endpoint errors make to ObjectResult
 OK - move modal service to `services` directory
 OK - bug 2x hits RefreshToken
 OK - error handling in client app
-- captcha
-- add Twitter, Google external login providers
-- structure https://angular.io/guide/styleguide
-- refactorize TokenController
 
 end:
 - clean up console.log
 - protect server controllers
 
-later:
-- auth roles
-- creating user identity result https://4programmers.net/Forum/C_i_.NET/343563-nowy_uzytkownik_api_endpoint?p=1703857#comment-625167
-- mock UserManager
+future:

@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -60,6 +59,11 @@ namespace Battleships_Online
                     ClockSkew = TimeSpan.Zero, //https://stackoverflow.com/a/46231102/12603542
                     //RequireExpirationTime = false
                 };
+            })
+            .AddGoogle(options =>
+            {
+                options.ClientId = Configuration["Auth:Google:ClientId"];
+                options.ClientSecret = Configuration["Auth:Google:ClientSecret"];
             })
             .AddFacebook(options =>
             {

@@ -3,6 +3,7 @@ using Battleships.Models;
 using Battleships.Models.ViewModels;
 using Battleships.Services;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -145,16 +146,10 @@ namespace Battleships.AppWeb.Controllers
             return Json(response);
         }
 
+        //todo: service
         private string GetIpAddress()
         {
-            if (Request.Headers.ContainsKey("X-Forwarded-For"))
-            {
-                return Request.Headers["X-Forwarded-For"];
-            }
-            else
-            {
-                return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            }
+            return HttpContext.Features.Get<IHttpConnectionFeature>()?.RemoteIpAddress.MapToIPv4().ToString();
         }
     }
 }
