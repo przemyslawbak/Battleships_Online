@@ -63,12 +63,20 @@ export class AuthInterceptor implements HttpInterceptor {
       } else {
         this.router.navigate(['join']);
       }
+    } else if (error.status === 429) {
+      var miliseconds = 10000;
+      var currentTime = new Date().getTime();
+      while (currentTime + miliseconds >= new Date().getTime()) {
+      }
+      this.genericErrorHandler(error);
     } else {
-      console.log('error code: ' + error.status);
-      console.log('error text: ' + error.error);
-      this.spinner.hide();
-      this.modalService.open('info-modal', error.error);
+      this.genericErrorHandler(error);
     }
+  }
+  
+  private genericErrorHandler(error: any) {
+    this.modalService.open('info-modal', error.error);
+    this.spinner.hide();
   }
 
   protected tryGetRefreshTokenService(): Observable<boolean> {

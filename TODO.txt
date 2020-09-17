@@ -1,10 +1,10 @@
 OK - add Google external login providers
 OK - recaptcha v3: forgotten, register
-- what to do if StatusCode = 429? (robot)
+OK - what to do if StatusCode = 429? (robot)
 - delay before login, register, reset pass again
-- structure https://angular.io/guide/styleguide
-- refactorize TokenController
 - auth roles? admin
+- Angular app structure https://angular.io/guide/styleguide
+- refactorize TokenController
 - unit testing
 - creating user identity result https://4programmers.net/Forum/C_i_.NET/343563-nowy_uzytkownik_api_endpoint?p=1703857#comment-625167
 - mock UserManager
