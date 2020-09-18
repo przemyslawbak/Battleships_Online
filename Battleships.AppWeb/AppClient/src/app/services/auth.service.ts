@@ -1,6 +1,6 @@
 import { Inject, Injectable, PLATFORM_ID } from "@angular/core";
 import { isPlatformBrowser } from '@angular/common';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpRequest } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { Observable } from "rxjs";
 import { map } from 'rxjs/operators';
@@ -30,6 +30,20 @@ export class AuthService {
     this.router.navigate(['']);
 
     return this.getTokenResponse(url, data);
+  }
+
+  public addAuthHeader(request: HttpRequest<any>): HttpRequest<any> {
+    var token = this.getAuth()!.token;
+    if (token) {
+      console.log('added bearer');
+      request = request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+    }
+
+    return request;
   }
 
   public refreshToken(): Observable<boolean> {

@@ -11,7 +11,8 @@ import { SecurityService } from './services/security.service';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './helpers/auth.guard';
 
-import { AuthInterceptor } from './helpers/auth.interceptor';
+import { JtwInterceptor } from './helpers/jtw.interceptor';
+import { ErrorInterceptor } from './helpers/error.interceptor';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,7 +25,6 @@ import { PassResetComponent } from './pass-reset/pass-reset.component';
 import { TestComponent } from './test/test.component';
 import { CloseComponent } from './close/close.component';
 import { AdminComponent } from './admin/admin.component';
-//import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -48,8 +48,7 @@ import { AdminComponent } from './admin/admin.component';
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    NgxSpinnerModule,
-    //NgbModule.forRoot()
+    NgxSpinnerModule
   ],
   providers: [
     { provide: RECAPTCHA_V3_SITE_KEY, useValue: '6Ldkfs0ZAAAAAGU1nSIrKUZ-C6mSy4TfpWETFypX' },
@@ -58,7 +57,12 @@ import { AdminComponent } from './admin/admin.component';
     AuthService,
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
+      useClass: JtwInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
       multi: true
     },
     ],

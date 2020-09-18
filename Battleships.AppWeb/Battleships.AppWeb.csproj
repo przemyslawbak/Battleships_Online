@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="AppClient\src\app\helpers\jtw.interceptor.ts" />
     <None Remove="AppClient\src\app\models\login-response.model.ts" />
     <None Remove="AppClient\src\app\models\new-user.model.ts" />
     <None Remove="AppClient\src\app\models\password-forgotten.model.ts" />
@@ -32,7 +33,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="AppClient\src\app\helpers\auth.interceptor.ts" />
+    <TypeScriptCompile Include="AppClient\src\app\helpers\jtw.interceptor.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="AppClient\src\app\helpers\error.interceptor.ts" />
     <TypeScriptCompile Include="AppClient\src\app\models\password-forgotten.model.ts" />
     <TypeScriptCompile Include="AppClient\src\app\models\password-reset.model.ts" />
     <TypeScriptCompile Include="AppClient\src\app\models\login-response.model.ts" />

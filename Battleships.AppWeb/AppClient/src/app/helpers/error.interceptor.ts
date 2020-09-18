@@ -10,14 +10,13 @@ import { AuthService } from "../services/auth.service";
 import { ModalService } from '../services/modal.service';
 
 @Injectable()
-export class AuthInterceptor implements HttpInterceptor {
+export class ErrorInterceptor implements HttpInterceptor {
   constructor(public auth: AuthService, private router: Router, private spinner: NgxSpinnerService, private modalService: ModalService, private securityService: SecurityService) { }
   private isRefreshing = false;
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<any> {
-    var updatedRequest = this.addAuthHeader(request);
-    return next.handle(updatedRequest)
+    return next.handle(request)
       .pipe(
         catchError(error => {
           return this.handleResponseError(error, request, next);
@@ -43,7 +42,7 @@ export class AuthInterceptor implements HttpInterceptor {
                 this.isRefreshing = false;
                 if (authResult) {
                   this.refreshTokenSubject.next(authResult);
-                  let modifiedRequest = this.addAuthHeader(request);
+                  let modifiedRequest = this.auth.addAuthHeader(request);
                   return next.handle(modifiedRequest);
                 } else {
                   this.auth.logout();
@@ -54,12 +53,12 @@ export class AuthInterceptor implements HttpInterceptor {
               filter(authResult => authResult != null),
               take(1),
               switchMap(() => {
-                let modifiedRequest = this.addAuthHeader(request);
+                let modifiedRequest = this.auth.addAuthHeader(request);
                 return next.handle(modifiedRequest);
               }));
           }
         } else {
-          return next.handle(this.addAuthHeader(request))
+          return next.handle(this.auth.addAuthHeader(request))
         }
       } else {
         this.router.navigate(['join']);
@@ -80,18 +79,5 @@ export class AuthInterceptor implements HttpInterceptor {
 
   protected tryGetRefreshTokenService(): Observable<boolean> {
     return this.auth.refreshToken();
-  }
-
-  addAuthHeader(request: HttpRequest<any>): HttpRequest<any> {
-    var token = (this.auth.isLoggedIn()) ? this.auth.getAuth()!.token : null;
-    if (token) {
-      console.log('added bearer');
-      request = request.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-    }
-    return request;
   }
 }
