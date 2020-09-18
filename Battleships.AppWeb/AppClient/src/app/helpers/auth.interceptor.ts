@@ -68,7 +68,7 @@ export class AuthInterceptor implements HttpInterceptor {
       this.securityService.delayForBruteForce(10);
       this.genericErrorHandler(error);
     } else {
-      this.securityService.delayForBruteForce(5);
+      this.securityService.delayForBruteForce(10);
       this.genericErrorHandler(error);
     }
   }
