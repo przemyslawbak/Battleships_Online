@@ -39,9 +39,9 @@ namespace Battleships.Services
             }
         }
 
-        public TokenResponseViewModel GenerateResponse(AppUser user, string ip)
+        public TokenResponseViewModel GenerateResponse(AppUser user, string ip, string role)
         {
-            SecurityToken token = GetSecurityToken(user);
+            SecurityToken token = GetSecurityToken(user, role);
 
             string encodedToken = new JwtSecurityTokenHandler().WriteToken(token);
             string refreshToken = GetRefreshToken();
@@ -54,11 +54,12 @@ namespace Battleships.Services
                 Email = user.Email,
                 User = user.UserName,
                 RefreshToken = refreshToken.Replace("/", "$").Replace("=", "@"),
-                DisplayName = user.DisplayName
+                DisplayName = user.DisplayName,
+                Role = role
             };
         }
 
-        public SecurityToken GetSecurityToken(AppUser user)
+        public SecurityToken GetSecurityToken(AppUser user, string role)
         {
             int expiration = _configuration.GetValue<int>("Auth:JsonWebToken:TokenExpirationInMinutes");
             string key = _configuration["Auth:JsonWebToken:Key"];
@@ -70,7 +71,8 @@ namespace Battleships.Services
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                    new Claim(ClaimTypes.Name, user.Id.ToString()),
+                    new Claim(ClaimTypes.Role, role)
                 }),
                 Expires = DateTime.UtcNow.AddSeconds(expiration), //todo: addminutes
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secret), SecurityAlgorithms.HmacSha256Signature),

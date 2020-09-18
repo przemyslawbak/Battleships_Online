@@ -20,7 +20,6 @@ export class AuthService {
     console.log(accessToken);
   }
 
-  // performs the login
   public login(email: string, password: string): Observable<boolean> {
     var url = 'http://localhost:50962/' + "api/token/auth";
     var data = {
@@ -66,7 +65,6 @@ export class AuthService {
     return true;
   }
 
-  // Persist auth into localStorage or removes it if a NULL argument is given
   public setAuth(auth: TokenResponse | null): boolean {
     if (isPlatformBrowser(this.platformId)) {
       if (auth) {
@@ -81,7 +79,6 @@ export class AuthService {
     return true;
   }
 
-  // Retrieves the auth JSON object (or NULL if none)
   public getAuth(): TokenResponse | null {
     if (isPlatformBrowser(this.platformId)) {
       var i = localStorage.getItem(this.authKey);
@@ -91,7 +88,15 @@ export class AuthService {
     }
     return null;
   }
-  // Returns TRUE if the user is logged in, FALSE otherwise.
+
+  public isAdmin(): boolean {
+    if (this.getAuth().role === "Admin") {
+      return true;
+    }
+
+    return false;
+  }
+
   public isLoggedIn(): boolean {
     if (isPlatformBrowser(this.platformId)) {
       return localStorage.getItem(this.authKey) != null;
@@ -120,6 +125,7 @@ export class AuthService {
             this.setAuth(res);
             console.log('received auth token, token:' + this.getAuth()!.token);
             console.log('received auth token, refresh token:' + this.getAuth()!.refreshToken);
+            console.log('received auth token, user role:' + this.getAuth()!.role);
             this.spinner.hide();
             return true;
           }

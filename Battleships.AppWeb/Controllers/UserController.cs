@@ -31,10 +31,21 @@ namespace Battleships.AppWeb.Controllers
         /// </summary>
         /// <returns>Status code with object.</returns>
         [HttpGet("test")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin, User")]
         public IActionResult GetAuthTest()
         {
             return new OkObjectResult(new { Message = "This is secure data!" });
+        }
+
+        /// <summary>
+        /// POST: api/user/admin
+        /// </summary>
+        /// <returns>Status code with object.</returns>
+        [HttpGet("admin")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles ="Admin")]
+        public IActionResult GetAdminTest()
+        {
+            return new OkObjectResult(new { Message = "This is data for admin only!" });
         }
 
         /// <summary>

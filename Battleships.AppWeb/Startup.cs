@@ -88,8 +88,9 @@ namespace Battleships_Online
                 opts.Password.RequireUppercase = false;
                 opts.Password.RequireDigit = false;
             })
-            .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddDefaultTokenProviders();
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
             services.AddTransient<TokenManagerMiddleware>();
             services.AddTransient<IEmailSender, EmailSender>();

@@ -9,9 +9,9 @@ import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 import { ModalModule } from './modal';
 import { SecurityService } from './services/security.service';
 import { AuthService } from './services/auth.service';
-import { AuthGuard } from './services/auth.guard';
+import { AuthGuard } from './helpers/auth.guard';
 
-import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { AuthInterceptor } from './helpers/auth.interceptor';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,6 +23,7 @@ import { ForgottenComponent } from './forgotten/forgotten.component';
 import { PassResetComponent } from './pass-reset/pass-reset.component';
 import { TestComponent } from './test/test.component';
 import { CloseComponent } from './close/close.component';
+import { AdminComponent } from './admin/admin.component';
 //import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -35,7 +36,8 @@ import { CloseComponent } from './close/close.component';
     ForgottenComponent,
     PassResetComponent,
     TestComponent,
-    CloseComponent
+    CloseComponent,
+    AdminComponent
   ],
   imports: [
     RecaptchaV3Module,

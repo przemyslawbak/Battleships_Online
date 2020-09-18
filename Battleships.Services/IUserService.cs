@@ -20,5 +20,6 @@ namespace Battleships.Services
         string GenerateRandomPassword();
         UserViewModel GetRegisterModel(ExternalLoginInfo info);
         string GetIpAddress(HttpContext httpContext);
+        Task<string> GetUserRoleAsync(AppUser user);
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -23,7 +24,7 @@ namespace Battleships.Services
         }
 
         /// <summary>
-        /// Creates new user and adds to the Db.
+        /// Creates new user, attaches 'User' role and adds to the Db.
         /// </summary>
         /// <param name="registerVm">User inputs.</param>
         /// <returns>Boolean if succeeded or not.</returns>
@@ -31,9 +32,11 @@ namespace Battleships.Services
         {
             AppUser user = CreateNewUser(model);
 
-            IdentityResult result = await _userManager.CreateAsync(user, model.Password);
 
-            if (!result.Succeeded)
+            IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+            IdentityResult roleResult = await _userManager.AddToRoleAsync(user, "User");
+
+            if (!result.Succeeded || roleResult.Succeeded)
             {
                 return false;
             }
@@ -206,6 +209,13 @@ namespace Battleships.Services
         public string GetIpAddress(HttpContext httpContext)
         {
             return httpContext.Features.Get<IHttpConnectionFeature>()?.RemoteIpAddress.MapToIPv4().ToString();
+        }
+
+        public async Task<string> GetUserRoleAsync(AppUser user)
+        {
+            IList<string> roles = await _userManager.GetRolesAsync(user);
+
+            return roles.FirstOrDefault();
         }
     }
 }

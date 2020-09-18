@@ -3,7 +3,6 @@ using Battleships.Models;
 using Battleships.Models.ViewModels;
 using Battleships.Services;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -113,7 +112,9 @@ namespace Battleships.AppWeb.Controllers
                 user = await _userService.FindUserByEmail(info.Principal.FindFirst(ClaimTypes.Email).Value);
             }
 
-            TokenResponseViewModel response = _tokenService.GenerateResponse(user, TempData["requstIp"].ToString());
+            string role = await _userService.GetUserRoleAsync(user); //todo: dry
+
+            TokenResponseViewModel response = _tokenService.GenerateResponse(user, TempData["requstIp"].ToString(), role);
 
             return View(response);
         }
@@ -122,12 +123,14 @@ namespace Battleships.AppWeb.Controllers
         {
             AppUser user = await _userService.FindUserByEmail(model.Email);
 
-            if (user == null)
+            if (user == null) //todo: dry
             {
                 return new ObjectResult("Please log in again.") { StatusCode = 409 };
             }
 
-            TokenResponseViewModel response = _tokenService.GenerateResponse(user, TempData["requstIp"].ToString());
+            string role = await _userService.GetUserRoleAsync(user); //todo: dry
+
+            TokenResponseViewModel response = _tokenService.GenerateResponse(user, TempData["requstIp"].ToString(), role);
 
             return Json(response);
         }
@@ -136,12 +139,14 @@ namespace Battleships.AppWeb.Controllers
         {
             AppUser user = await _userService.FindUserByEmail(model.Email);
 
-            if (user == null || !await _userService.VerifyUsersPassword(user, model.Password))
+            if (user == null || !await _userService.VerifyUsersPassword(user, model.Password)) //todo: dry
             {
                 return new ObjectResult("Wrong email or password.") { StatusCode = 409 };
             }
 
-            TokenResponseViewModel response = _tokenService.GenerateResponse(user, TempData["requstIp"].ToString());
+            string role = await _userService.GetUserRoleAsync(user); //todo: dry
+
+            TokenResponseViewModel response = _tokenService.GenerateResponse(user, TempData["requstIp"].ToString(), role);
 
             return Json(response);
         }
