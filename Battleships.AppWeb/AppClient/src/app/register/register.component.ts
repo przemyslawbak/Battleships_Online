@@ -7,7 +7,7 @@ import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { NgxSpinnerService } from "ngx-spinner";
 import { SecurityService } from "../services/security.service";
 
-import { User } from "../models/user";
+import { NewUser } from "../models/new-user.model";
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -37,7 +37,7 @@ export class RegisterComponent {
   }
 
   private onSubmit(token: string) {
-    var model = <User>{};
+    var model = <NewUser>{};
     model.displayName = this.form.value.DisplayName;
     model.email = this.form.value.Email;
     model.password = this.form.value.Password;
@@ -76,7 +76,7 @@ export class RegisterComponent {
     return this.form.get(name);
   }
 
-  private onRegisteredLogin(model: User) {
+  private onRegisteredLogin(model: NewUser) {
     this.auth.login(model.email, model.password)
       .subscribe(() => {
         this.router.navigate(['']);

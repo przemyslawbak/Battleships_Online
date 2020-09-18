@@ -1,4 +1,4 @@
-export interface PassResetEmail {
+export interface PassForgottenModel {
   email: string;
   captchaToken: string;
 }

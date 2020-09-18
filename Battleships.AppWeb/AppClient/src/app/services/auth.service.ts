@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
 import { SecurityService } from "../services/security.service";
 import { NgxSpinnerService } from "ngx-spinner";
 
-import { TokenResponse } from "../models/token.response";
+import { LoginResponse } from "../models/login-response.model";
 
 @Injectable()
 export class AuthService {
@@ -65,7 +65,7 @@ export class AuthService {
     return true;
   }
 
-  public setAuth(auth: TokenResponse | null): boolean {
+  public setAuth(auth: LoginResponse | null): boolean {
     if (isPlatformBrowser(this.platformId)) {
       if (auth) {
         auth.token = auth.token.replace(/\$/g, '/').replace(/\@/g, '=');
@@ -79,7 +79,7 @@ export class AuthService {
     return true;
   }
 
-  public getAuth(): TokenResponse | null {
+  public getAuth(): LoginResponse | null {
     if (isPlatformBrowser(this.platformId)) {
       var i = localStorage.getItem(this.authKey);
       if (i) {
@@ -116,7 +116,7 @@ export class AuthService {
 
   private getTokenResponse(url: string, data): Observable<boolean> {
     this.spinner.show();
-    return this.http.post<TokenResponse>(url, data)
+    return this.http.post<LoginResponse>(url, data)
       .pipe(
         map((res) => {
           let token = res && res.token;

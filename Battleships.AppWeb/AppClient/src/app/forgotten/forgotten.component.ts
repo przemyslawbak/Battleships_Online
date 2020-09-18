@@ -7,7 +7,7 @@ import { ModalService } from '../services/modal.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 
-import { PassResetEmail } from "../models/pass.reset";
+import { PassForgottenModel } from "../models/password-forgotten.model";
 
 @Component({
   selector: 'app-forgotten',
@@ -24,7 +24,7 @@ export class ForgottenComponent implements OnInit {
   }
 
   private onSubmit(captchaToken: string) {
-    let model = <PassResetEmail>{};
+    let model = <PassForgottenModel>{};
     model.email = this.form.value.Email;
     model.captchaToken = captchaToken;
     const url = 'http://localhost:50962/' + 'api/user/reset';

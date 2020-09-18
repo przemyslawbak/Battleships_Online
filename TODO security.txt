@@ -4,8 +4,8 @@ OK - what to do if StatusCode = 429? (robot)
 OK - delay before register, reset pass again
 OK - auth roles? admin
 OK - recaptcha v3 middleware / attribute / dry
-- http.post subscribe / unsucsribe?
-- front-end model naming
+OK - http.post subscribe / unsucsribe? no need https://stackoverflow.com/a/35043309/12603542
+OK - front-end model naming
 - errors interceptor, example: https://jasonwatmore.com/post/2020/09/09/angular-10-role-based-authorization-tutorial-with-example
 - destructors?
 - base url, example: https://jasonwatmore.com/post/2020/09/09/angular-10-role-based-authorization-tutorial-with-example

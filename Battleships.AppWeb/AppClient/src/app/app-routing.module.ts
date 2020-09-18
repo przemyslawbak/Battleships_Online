@@ -9,7 +9,7 @@ import { TestComponent } from './test/test.component';
 import { CloseComponent } from './close/close.component';
 import { AdminComponent } from './admin/admin.component';
 import { AuthGuard } from './helpers/auth.guard';
-import { Role } from './models/role';
+import { UserRole } from './models/user-role.model';
 
 const routes: Routes = [
   {
@@ -37,7 +37,7 @@ const routes: Routes = [
     path: 'admin',
     component: AdminComponent,
     canActivate: [AuthGuard],
-    data: { roles: [Role.Admin] }
+    data: { roles: [UserRole.Admin] }
   },
   {
     path: 'pass-reset/:email/:token',

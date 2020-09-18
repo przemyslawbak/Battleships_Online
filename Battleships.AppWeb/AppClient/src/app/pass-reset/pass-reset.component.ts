@@ -6,7 +6,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 
 import { ModalService } from '../services/modal.service';
 
-import { PassResetModel } from "../models/pass.reset.model";
+import { PassResetModel } from "../models/password-reset.model";
 
 @Component({
   templateUrl: './pass-reset.component.html',

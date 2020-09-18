@@ -1,10 +1,10 @@
-import { Role } from "./role";
+import { UserRole } from "./user-role.model";
 
-export interface TokenResponse {
+export interface LoginResponse {
   token: string,
   email: string,
   user: string,
   refreshToken: string,
   displayName: string,
-  role: Role
+  role: UserRole
 }

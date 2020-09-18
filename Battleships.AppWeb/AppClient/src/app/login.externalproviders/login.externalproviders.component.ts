@@ -3,7 +3,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 
-import { TokenResponse } from "../models/token.response";
+import { LoginResponse } from "../models/login-response.model";
 
 import { AuthService } from '../services/auth.service';
 import { ModalService } from '../services/modal.service';
@@ -30,7 +30,7 @@ export class LoginExternalProvidersComponent implements OnInit {
 
     this.closePopUpWindow();
     if (!window.externalProviderLogin) {
-      window.externalProviderLogin = function (auth: TokenResponse) {
+      window.externalProviderLogin = function (auth: LoginResponse) {
         this.zone.run(() => {
           console.log("External Login successful!");
           this.auth.setAuth(auth);
