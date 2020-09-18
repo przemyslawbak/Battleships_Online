@@ -36,7 +36,7 @@ namespace Battleships.Services
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);
             IdentityResult roleResult = await _userManager.AddToRoleAsync(user, "User");
 
-            if (!result.Succeeded || roleResult.Succeeded)
+            if (!result.Succeeded || !roleResult.Succeeded)
             {
                 return false;
             }

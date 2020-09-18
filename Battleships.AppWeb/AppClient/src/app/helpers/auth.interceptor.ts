@@ -94,6 +94,4 @@ export class AuthInterceptor implements HttpInterceptor {
     }
     return request;
   }
-
-
 }

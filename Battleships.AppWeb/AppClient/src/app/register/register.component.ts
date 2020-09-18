@@ -45,6 +45,7 @@ export class RegisterComponent {
     model.captchaToken = token;
     var url = 'http://localhost:50962/' + 'api/user/register';
     this.securityService.delayForBruteForce(5);
+    console.log('recaptcha v3 token: ' + model.captchaToken);
     this.http.post(url, model)
       .subscribe(
         () => {
@@ -81,7 +82,6 @@ export class RegisterComponent {
         this.router.navigate(['']);
       },
         err => {
-          // login failed
           console.log(err)
           this.form.setErrors({
             "auth": "Incorrect username or password"

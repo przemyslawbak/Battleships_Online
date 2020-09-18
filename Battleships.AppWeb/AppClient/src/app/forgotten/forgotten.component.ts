@@ -56,7 +56,7 @@ export class ForgottenComponent implements OnInit {
     return e && (e.dirty || e.touched) && !e.valid;
   }
 
-  public  onBack() {
+  public onBack() {
     this.router.navigate(["join"]);
   }
 
