@@ -5,6 +5,6 @@ namespace Battleships.Services
 {
     public interface IHttpService
     {
-        Task<RecaptchaVerificationResponseModel> VerifyCaptchaAsync(string captchaToken, string ip);
+        Task<bool> VerifyCaptchaAsync(string captchaToken, string ip);
     }
 }

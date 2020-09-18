@@ -98,8 +98,8 @@ namespace Battleships_Online
             services.AddTransient<IInputSanitizer, InputSanitizer>();
             services.AddTransient<ITokenService, TokenService>();
             services.AddTransient<IHttpService, HttpService>();
-
             services.AddTransient<ITokenRepository, EFTokenRepository>();
+            services.AddScoped<CaptchaVerifyActionFilter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -18,11 +18,19 @@ namespace Battleships.Services
             _configuration = config;
         }
 
-        public async Task<RecaptchaVerificationResponseModel> VerifyCaptchaAsync(string captchaToken, string ip)
+        public async Task<bool> VerifyCaptchaAsync(string captchaToken, string ip)
         {
             string secret = _configuration["ReCaptcha3:SecretKey"];
+            double minScore = _configuration.GetValue<double>("ReCaptcha3:AcceptedMinScore");
 
-            return await GetCaptchaRequestAsync(captchaToken, ip, secret);
+            RecaptchaVerificationResponseModel result =  await GetCaptchaRequestAsync(captchaToken, ip, secret);
+
+            if (result.Success && result.Score > minScore)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private async Task<RecaptchaVerificationResponseModel> GetCaptchaRequestAsync(string captchaToken, string ip, string secret)

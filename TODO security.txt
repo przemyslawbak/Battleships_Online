@@ -3,7 +3,7 @@ OK - recaptcha v3: forgotten, register
 OK - what to do if StatusCode = 429? (robot)
 OK - delay before register, reset pass again
 OK - auth roles? admin
-- recaptcha v3 middleware / attribute
+OK - recaptcha v3 middleware / attribute / dry
 - http.post subscribe / unsucsribe?
 - front-end model naming
 - errors interceptor, example: https://jasonwatmore.com/post/2020/09/09/angular-10-role-based-authorization-tutorial-with-example

@@ -1,4 +1,5 @@
-﻿using Battleships.Models;
+﻿using Battleships.AppWeb.Utilities;
+using Battleships.Models;
 using Battleships.Models.ViewModels;
 using Battleships.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -13,10 +14,10 @@ namespace Battleships.AppWeb.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
+        private readonly IHttpService _http;
         private readonly IUserService _userService;
         private readonly IInputSanitizer _sanitizer;
         private readonly IEmailSender _emailSender;
-        private readonly IHttpService _http;
 
         public UserController(IUserService userService, IInputSanitizer sanitizer, IEmailSender emailSender, IHttpService http)
         {
@@ -53,15 +54,9 @@ namespace Battleships.AppWeb.Controllers
         /// </summary>
         /// <returns>Status code.</returns>
         [HttpPost("reset")]
+        [ServiceFilter(typeof(CaptchaVerifyActionFilter))]
         public async Task<IActionResult> PassChange([FromBody]PassResetEmailViewModel model)
         {
-            RecaptchaVerificationResponseModel recaptchaResponse = await _http.VerifyCaptchaAsync(model.CaptchaToken, _userService.GetIpAddress(HttpContext));
-
-            if (!recaptchaResponse.Success && recaptchaResponse.Score < 0.8) //todo: appsettings 0.8
-            {
-                return new ObjectResult("It looks like you are sending automated requests.") { StatusCode = 429 };
-            }
-
             if (ModelState.IsValid)
             {
                 model.Email = _sanitizer.CleanUp(model.Email);
@@ -133,15 +128,9 @@ namespace Battleships.AppWeb.Controllers
         /// </summary>
         /// <returns>Status code.</returns>
         [HttpPost("register")]
+        [ServiceFilter(typeof(CaptchaVerifyActionFilter))]
         public async Task<IActionResult> AddNewUser([FromBody]UserViewModel model)
         {
-            RecaptchaVerificationResponseModel recaptchaResponse = await _http.VerifyCaptchaAsync(model.CaptchaToken, _userService.GetIpAddress(HttpContext));
-
-            if (!recaptchaResponse.Success && recaptchaResponse.Score < 0.8) //todo: appsettings 0.8
-            {
-                return new ObjectResult("It looks like you are sending automated requests.") { StatusCode = 429 };
-            }
-
             if (!ModelState.IsValid)
             {
                 string errors = string.Join(", ", ModelState.Select(x => x.Value.Errors)
