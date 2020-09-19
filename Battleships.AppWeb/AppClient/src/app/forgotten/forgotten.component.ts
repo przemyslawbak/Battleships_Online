@@ -14,13 +14,10 @@ import { PassForgottenModel } from "../models/password-forgotten.model";
   templateUrl: './forgotten.component.html',
   styleUrls: ['./forgotten.component.css']
 })
-export class ForgottenComponent implements OnInit {
+export class ForgottenComponent {
   public form: FormGroup;
   constructor(private router: Router, private formBuilder: FormBuilder, private http: HttpClient, private spinner: NgxSpinnerService, private modalService: ModalService, private recaptchaV3Service: ReCaptchaV3Service) {
     this.createForm();
-  }
-
-  public ngOnInit(): void {
   }
 
   private onSubmit(captchaToken: string) {

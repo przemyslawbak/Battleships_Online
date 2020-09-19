@@ -7,7 +7,13 @@ OK - recaptcha v3 middleware / attribute / dry
 OK - http.post subscribe / unsucsribe? no need https://stackoverflow.com/a/35043309/12603542
 OK - front-end model naming
 OK - errors interceptor
-- destructors?
+OK - destructors? 
+OK - Decorating ngOnDestroy with HostListener: https://wesleygrimes.com/angular/2019/03/29/making-upgrades-to-angular-ngondestroy.html
+- @HostListener('window:beforeunload', ['$event']) for external provider login? verify
+- read: https://angular.io/guide/lifecycle-hooks
+- private/public in components
+- cecheck return values in services
+- injecting services?
 - base url, example: https://jasonwatmore.com/post/2020/09/09/angular-10-role-based-authorization-tutorial-with-example
 - Angular app structure https://angular.io/guide/styleguide
 - refactorize TokenController
