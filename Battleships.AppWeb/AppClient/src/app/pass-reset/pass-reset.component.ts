@@ -14,7 +14,7 @@ import { PassResetModel } from "../models/password-reset.model";
 })
 export class PassResetComponent implements OnInit {
   public form: FormGroup;
-  private passModel: PassResetModel;
+  public passModel: PassResetModel;
   constructor(private router: Router, private formBuilder: FormBuilder, private http: HttpClient, private route: ActivatedRoute, private spinner: NgxSpinnerService, private modalService: ModalService) {
     this.createForm();
   }

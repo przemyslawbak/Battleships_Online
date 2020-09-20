@@ -11,7 +11,7 @@ export class NavMenuComponent {
   public userName: string;
   constructor(public auth: AuthService) { }
 
-  private isExpanded = false;
+  public isExpanded = false;
 
   public getUserDisplayName() {
     if (this.auth.isLoggedIn()) {
