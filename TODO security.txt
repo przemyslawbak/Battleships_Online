@@ -12,8 +12,8 @@ OK - Decorating ngOnDestroy with HostListener: https://wesleygrimes.com/angular/
 - @HostListener('window:beforeunload', ['$event']) for external provider login? verify
 - read: https://angular.io/guide/lifecycle-hooks
 - private/public in components
-- cecheck return values in services
-- injecting services?
+- cecheck return values in service methods
+OK - injecting services?
 - base url, example: https://jasonwatmore.com/post/2020/09/09/angular-10-role-based-authorization-tutorial-with-example
 - Angular app structure https://angular.io/guide/styleguide
 - refactorize TokenController

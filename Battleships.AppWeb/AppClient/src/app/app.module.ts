@@ -9,6 +9,7 @@ import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 import { ModalModule } from './modal';
 import { SecurityService } from './services/security.service';
 import { AuthService } from './services/auth.service';
+import { ModalService } from './services/modal.service';
 import { AuthGuard } from './helpers/auth.guard';
 
 import { JtwInterceptor } from './helpers/jtw.interceptor';
@@ -53,6 +54,7 @@ import { AdminComponent } from './admin/admin.component';
   providers: [
     { provide: RECAPTCHA_V3_SITE_KEY, useValue: '6Ldkfs0ZAAAAAGU1nSIrKUZ-C6mSy4TfpWETFypX' },
     AuthGuard,
+    ModalService,
     SecurityService,
     AuthService,
     {
