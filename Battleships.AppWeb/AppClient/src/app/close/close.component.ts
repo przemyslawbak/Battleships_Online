@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { LoginResponse } from "../models/login-response.model";
@@ -21,7 +21,12 @@ export class CloseComponent implements OnInit {
       this.auth.setAuth(this.tokenResponse);
     }
 
-    parent.window.opener.postMessage('', 'http://localhost:4200');
+    parent.window.close();
+  }
+
+  @HostListener('window:unload', ['$event'])
+  unloadHandler() {
+    parent.window.close();
   }
 
   getTokenResponse(): LoginResponse {

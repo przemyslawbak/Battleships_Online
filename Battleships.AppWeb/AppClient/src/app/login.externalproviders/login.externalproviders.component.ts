@@ -53,7 +53,16 @@ export class LoginExternalProvidersComponent implements OnInit {
 
     this.closePopUpWindow();
     this.externalProviderWindow = window.open(url, "ExternalProvider", params, false);
-    parent.window.addEventListener("message", this.handleCloseExternalProvider.bind(this), false);
+    var checkIntervalId = setInterval(() => {
+      if (this.externalProviderWindow.closed) {
+        console.log('closed');
+        clearInterval(checkIntervalId);
+        this.handleCloseExternalProvider();
+      }
+      else {
+        console.log('open');
+      }
+    }, 1000);
   }
 
   private handleCloseExternalProvider() {

@@ -9,7 +9,7 @@ OK - front-end model naming
 OK - errors interceptor
 OK - destructors? 
 OK - Decorating ngOnDestroy with HostListener: https://wesleygrimes.com/angular/2019/03/29/making-upgrades-to-angular-ngondestroy.html
-- @HostListener('window:beforeunload', ['$event']) for external provider login? verify
+OK - @HostListener('window:beforeunload', ['$event']) for external provider login? verify
 - read: https://angular.io/guide/lifecycle-hooks
 - private/public in components
 - cecheck return values in service methods
