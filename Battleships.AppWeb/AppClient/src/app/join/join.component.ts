@@ -16,23 +16,13 @@ export class JoinComponent implements OnInit {
     this.createForm();
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     if (this.authService.isLoggedIn()) {
       this.router.navigate(['']);
     }
   }
 
-  createForm() {
-    this.form = this.formBuilder.group({
-      Email: ['',
-        [Validators.required,
-        Validators.email]
-      ],
-      Password: ['', Validators.required]
-    });
-  }
-
-  onSubmit() {
+  public onSubmit() {
     var email = this.form.value.Email;
     var password = this.form.value.Password;
     this.authService.login(email, password)
@@ -47,30 +37,40 @@ export class JoinComponent implements OnInit {
         });
   }
 
-  onBack() {
+  public onBack() {
     this.router.navigate(['']);
   }
 
-  // retrieve a FormControl
-  getFormControl(name: string) {
-    return this.form.get(name);
-  }
-
   // returns TRUE if the FormControl is valid
-  isValid(name: string) {
+  public isValid(name: string) {
     var e = this.getFormControl(name);
     return e && e.valid;
   }
 
   // returns TRUE if the FormControl has been changed
-  isChanged(name: string) {
+  public isChanged(name: string) {
     var e = this.getFormControl(name);
     return e && (e.dirty || e.touched);
   }
 
   // returns TRUE if the FormControl is invalid after user changes
-  hasError(name: string) {
+  public hasError(name: string) {
     var e = this.getFormControl(name);
     return e && (e.dirty || e.touched) && !e.valid;
+  }
+
+  // retrieve a FormControl
+  private getFormControl(name: string) {
+    return this.form.get(name);
+  }
+
+  private createForm() {
+    this.form = this.formBuilder.group({
+      Email: ['',
+        [Validators.required,
+        Validators.email]
+      ],
+      Password: ['', Validators.required]
+    });
   }
 }

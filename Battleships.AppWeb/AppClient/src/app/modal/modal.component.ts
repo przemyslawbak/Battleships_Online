@@ -17,7 +17,7 @@ export class ModalComponent implements OnInit, OnDestroy {
     this.element = el.nativeElement;
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     // ensure id attribute exists
     if (!this.id) {
       console.error('modal must have an id');
@@ -39,20 +39,20 @@ export class ModalComponent implements OnInit, OnDestroy {
   }
 
   // remove self from modal service when component is destroyed
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.modalService.remove(this.id);
     this.element.remove();
   }
 
   // open modal
-  open(message: string): void {
+  public open(message: string): void {
     this.element.style.display = 'block';
     document.body.classList.add('jw-modal-open');
     this.message = message;
   }
 
   // close modal
-  close(): void {
+  public close(): void {
     this.element.style.display = 'none';
     document.body.classList.remove('jw-modal-open');
   }

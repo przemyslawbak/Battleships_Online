@@ -8,14 +8,12 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./nav-menu.component.css']
 })
 export class NavMenuComponent {
-  userName: string;
-  constructor(public auth: AuthService) {
+  public userName: string;
+  constructor(public auth: AuthService) { }
 
-  }
+  private isExpanded = false;
 
-  isExpanded = false;
-
-  getUserDisplayName() {
+  public getUserDisplayName() {
     if (this.auth.isLoggedIn()) {
       return this.auth.getAuth()!.displayName;
     } else {
@@ -23,15 +21,15 @@ export class NavMenuComponent {
     }
   }
 
-  collapse() {
+  public collapse() {
     this.isExpanded = false;
   }
 
-  toggle() {
+  public toggle() {
     this.isExpanded = !this.isExpanded;
   }
 
-  logout(): boolean {
+  public logout(): boolean {
     // logs out the user, then redirects him to Home View.
     if (this.auth.logout()) {
       console.log('logout clicked');

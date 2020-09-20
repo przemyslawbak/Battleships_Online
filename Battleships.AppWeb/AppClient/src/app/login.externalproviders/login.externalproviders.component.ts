@@ -23,7 +23,7 @@ export class LoginExternalProvidersComponent implements OnInit {
 
   constructor(private router: Router, private auth: AuthService, @Inject(PLATFORM_ID) private platformId: any, private spinner: NgxSpinnerService, private modalService: ModalService) { }
 
-  ngOnInit() {
+  public ngOnInit() {
     if (!isPlatformBrowser(this.platformId)) {
       return;
     }

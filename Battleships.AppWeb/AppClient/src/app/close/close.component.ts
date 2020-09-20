@@ -15,7 +15,7 @@ export class CloseComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private auth: AuthService) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.tokenResponse = this.getTokenResponse();
     if (this.tokenResponse) {
       this.auth.setAuth(this.tokenResponse);
@@ -25,11 +25,11 @@ export class CloseComponent implements OnInit {
   }
 
   @HostListener('window:unload', ['$event'])
-  unloadHandler() {
+  public unloadHandler() {
     parent.window.close();
   }
 
-  getTokenResponse(): LoginResponse {
+  private getTokenResponse(): LoginResponse {
     const email = this.route.snapshot.paramMap.get('email');
     const user = this.route.snapshot.paramMap.get('user');
     const token = this.route.snapshot.paramMap.get('token');

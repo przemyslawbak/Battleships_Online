@@ -12,11 +12,11 @@ export class AdminComponent implements OnInit {
 
   constructor(private http: HttpClient, public auth: AuthService, private spinner: NgxSpinnerService) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.executeCall()
   }
 
-  executeCall(): void {
+  private executeCall(): void {
     this.spinner.show();
     console.log('executing admin auth call, token:' + this.auth.getAuth()!.token);
     console.log('executing admin auth call, refresh token:' + this.auth.getAuth()!.refreshToken);

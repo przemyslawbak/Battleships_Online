@@ -13,38 +13,17 @@ import { PassResetModel } from "../models/password-reset.model";
   styleUrls: ['./pass-reset.component.css']
 })
 export class PassResetComponent implements OnInit {
-  form: FormGroup;
-  passModel: PassResetModel;
+  public form: FormGroup;
+  private passModel: PassResetModel;
   constructor(private router: Router, private formBuilder: FormBuilder, private http: HttpClient, private route: ActivatedRoute, private spinner: NgxSpinnerService, private modalService: ModalService) {
     this.createForm();
   }
 
-  createForm() {
-    this.form = this.formBuilder.group({
-      Password: ['', Validators.required],
-      PasswordConfirm: ['', Validators.required]
-    }, {
-        validator: this.passwordConfirmValidator
-      });
-  }
-
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.passModel = this.getPassResetModel();
   }
 
-  getPassResetModel(): PassResetModel {
-    const email = this.route.snapshot.paramMap.get('email');
-    const token = this.route.snapshot.paramMap.get('token');
-
-    var model = <PassResetModel>{};
-    model.email = email;
-    model.password = '';
-    model.token = token.replace(/\$/g, '/');
-
-    return model;
-  }
-
-  onSubmit() {
+  public onSubmit() {
     this.spinner.show();
     this.passModel.password = this.form.value.Password;
     var url = 'http://localhost:50962/' + 'api/user/new-password';
@@ -58,11 +37,25 @@ export class PassResetComponent implements OnInit {
       );
   }
 
-  onBack() {
+  public onBack() {
     this.router.navigate(["join"]);
   }
 
-  passwordConfirmValidator(control: FormControl): any {
+  public hasError(name: string) {
+    var e = this.getFormControl(name);
+    return e && (e.dirty || e.touched) && !e.valid;
+  }
+
+  private createForm() {
+    this.form = this.formBuilder.group({
+      Password: ['', Validators.required],
+      PasswordConfirm: ['', Validators.required]
+    }, {
+      validator: this.passwordConfirmValidator
+    });
+  }
+
+  private passwordConfirmValidator(control: FormControl): any {
     let p = control.root.get('Password');
     let pc = control.root.get('PasswordConfirm');
     if (p && pc) {
@@ -78,12 +71,19 @@ export class PassResetComponent implements OnInit {
     return null;
   }
 
-  getFormControl(name: string) {
+  private getFormControl(name: string) {
     return this.form.get(name);
   }
 
-  hasError(name: string) {
-    var e = this.getFormControl(name);
-    return e && (e.dirty || e.touched) && !e.valid;
+  private getPassResetModel(): PassResetModel {
+    const email = this.route.snapshot.paramMap.get('email');
+    const token = this.route.snapshot.paramMap.get('token');
+
+    var model = <PassResetModel>{};
+    model.email = email;
+    model.password = '';
+    model.token = token.replace(/\$/g, '/');
+
+    return model;
   }
 }
