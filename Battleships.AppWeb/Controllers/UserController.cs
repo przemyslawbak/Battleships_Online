@@ -14,17 +14,15 @@ namespace Battleships.AppWeb.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
-        private readonly IHttpService _http;
         private readonly IUserService _userService;
         private readonly IInputSanitizer _sanitizer;
         private readonly IEmailSender _emailSender;
 
-        public UserController(IUserService userService, IInputSanitizer sanitizer, IEmailSender emailSender, IHttpService http)
+        public UserController(IUserService userService, IInputSanitizer sanitizer, IEmailSender emailSender)
         {
             _userService = userService;
             _sanitizer = sanitizer;
             _emailSender = emailSender;
-            _http = http;
         }
 
         /// <summary>
