@@ -30,10 +30,8 @@ export class NavMenuComponent {
   }
 
   public logout(): boolean {
-    // logs out the user, then redirects him to Home View.
-    if (this.auth.logout()) {
-      console.log('logout clicked');
-    }
-    return false;
+    let result = this.auth.logout();
+    console.log(result);
+    return result;
   }
 }

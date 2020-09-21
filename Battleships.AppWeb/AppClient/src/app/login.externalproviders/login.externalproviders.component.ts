@@ -32,7 +32,6 @@ export class LoginExternalProvidersComponent implements OnInit {
     if (!window.externalProviderLogin) {
       window.externalProviderLogin = function (auth: LoginResponse) {
         this.zone.run(() => {
-          console.log("External Login successful!");
           this.auth.setAuth(auth);
           this.router.navigate(['']);
         });
@@ -55,23 +54,20 @@ export class LoginExternalProvidersComponent implements OnInit {
     this.externalProviderWindow = window.open(url, "ExternalProvider", params, false);
     var checkIntervalId = setInterval(() => {
       if (this.externalProviderWindow.closed) {
-        console.log('closed');
         clearInterval(checkIntervalId);
         this.handleCloseExternalProvider();
       }
       else {
-        console.log('open');
+        //still open, do nothing
       }
     }, 1000);
   }
 
   private handleCloseExternalProvider() {
     if (this.auth.isLoggedIn()) {
-      console.log('logged in user with external provider: ' + this.auth.getAuth()!.displayName);
       this.router.navigate(['']);
       this.closePopUpWindow();
     } else {
-      console.log('failed to logged in user with external provider');
       this.modalService.open('info-modal', 'Something went wrong. Please try again.');
       this.router.navigate(['join']);
     }

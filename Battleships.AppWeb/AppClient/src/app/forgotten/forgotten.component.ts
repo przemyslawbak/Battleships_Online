@@ -26,8 +26,7 @@ export class ForgottenComponent {
     model.captchaToken = captchaToken;
     const url = 'http://localhost:50962/' + 'api/user/reset';
     this.http.post(url, model)
-      .subscribe(
-        () => {
+      .subscribe(() => {
           this.modalService.open('info-modal', 'Password reset link has been sent to: ' + model.email + '.');
           this.spinner.hide();
           this.router.navigate(['']);
@@ -40,11 +39,7 @@ export class ForgottenComponent {
     this.recaptchaV3Service.execute('formSubmit')
       .subscribe(
         (token) => {
-          console.log('recaptcha v3 token: ' + token);
           this.onSubmit(token)
-        },
-        (error) => {
-          console.log('recaptcha v3 error: ' + error);
         });
   }
 

@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 
 import { AuthService } from '../services/auth.service';
+import { Subscription } from 'rxjs';
 @Component({
   selector: "join",
   templateUrl: "./join.component.html",
@@ -27,14 +28,8 @@ export class JoinComponent implements OnInit {
     var password = this.form.value.Password;
     this.authService.login(email, password)
       .subscribe(() => {
-      },
-        err => {
-          // login failed
-          console.log(err)
-          this.form.setErrors({
-            "auth": "Incorrect username or password"
-          });
-        });
+        this.router.navigate(['']);
+      });
   }
 
   public onBack() {

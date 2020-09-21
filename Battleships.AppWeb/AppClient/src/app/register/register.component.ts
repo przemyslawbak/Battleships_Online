@@ -43,11 +43,7 @@ export class RegisterComponent {
     this.recaptchaV3Service.execute('formSubmit')
       .subscribe(
         (token) => {
-          console.log('recaptcha v3 token: ' + token);
           this.onSubmit(token)
-        },
-        (error) => {
-          console.log('recaptcha v3 error: ' + error);
         });
   }
 
@@ -63,13 +59,7 @@ export class RegisterComponent {
     this.auth.login(model.email, model.password)
       .subscribe(() => {
         this.router.navigate(['']);
-      },
-        err => {
-          console.log(err)
-          this.form.setErrors({
-            "auth": "Incorrect username or password"
-          });
-        });
+      });
   }
 
   private passwordConfirmValidator(control: FormControl): any {
@@ -111,7 +101,6 @@ export class RegisterComponent {
     model.captchaToken = token;
     var url = 'http://localhost:50962/' + 'api/user/register';
     this.securityService.delayForBruteForce(5);
-    console.log('recaptcha v3 token: ' + model.captchaToken);
     this.http.post(url, model)
       .subscribe(
         () => {

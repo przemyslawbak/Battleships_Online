@@ -33,8 +33,7 @@ export class PassResetComponent implements OnInit {
           this.modalService.open('info-modal', 'Now you can log in with your password.');
           this.spinner.hide();
           this.router.navigate(['join']);
-        }
-      );
+        });
   }
 
   public onBack() {

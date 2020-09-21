@@ -16,10 +16,6 @@ export class AuthService {
 
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: any, private router: Router, private spinner: NgxSpinnerService, private securityService: SecurityService) { }
 
-  public facebookLogin(accessToken: string) {
-    console.log(accessToken);
-  }
-
   public login(email: string, password: string): Observable<boolean> {
     var url = 'http://localhost:50962/' + "api/token/auth";
     var data = {
@@ -27,7 +23,6 @@ export class AuthService {
       Password: password,
       GrantType: "password"
     };
-    this.router.navigate(['']);
 
     return this.getTokenResponse(url, data);
   }
@@ -35,7 +30,6 @@ export class AuthService {
   public addAuthHeader(request: HttpRequest<any>): HttpRequest<any> {
     var token = this.getAuth()!.token;
     if (token) {
-      console.log('added bearer');
       request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`
@@ -52,26 +46,20 @@ export class AuthService {
       Email: this.getAuth().email,
       RefreshToken: this.getAuth().refreshToken
     };
-    console.log('refreshing auth token, token:' + this.getAuth()!.token);
-    console.log('refreshing auth token, refresh token:' + this.getAuth()!.refreshToken);
     return this.getTokenResponse(url, data);
   }
 
   public logout(): boolean {
     this.spinner.show();
-    console.log('logged out from auth service');
     var url = 'http://localhost:50962/' + "api/token/revoke-token";
-    console.log('refresh token to revoke: ' + this.getAuth().refreshToken);
     var data = {
       UserName: this.getAuth().user,
       RefreshToken: this.getAuth().refreshToken,
       Token: this.getAuth().token
     };
-    console.log('revoke token post call');
     this.http.post<any>(url, data)
       .subscribe(
         () => {
-          console.log('logged out');
           this.spinner.hide();
           this.router.navigate(['']);
         });
@@ -135,11 +123,7 @@ export class AuthService {
         map((res) => {
           let token = res && res.token;
           if (token) {
-            console.log('user logged in');
             this.setAuth(res);
-            console.log('received auth token, token:' + this.getAuth()!.token);
-            console.log('received auth token, refresh token:' + this.getAuth()!.refreshToken);
-            console.log('received auth token, user role:' + this.getAuth()!.role);
             this.spinner.hide();
             return true;
           }
