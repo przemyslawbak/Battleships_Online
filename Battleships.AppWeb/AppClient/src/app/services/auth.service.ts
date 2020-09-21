@@ -4,6 +4,7 @@ import { HttpClient, HttpRequest } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { Observable } from "rxjs";
 import { map } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 import { SecurityService } from "../services/security.service";
 import { NgxSpinnerService } from "ngx-spinner";
@@ -17,7 +18,7 @@ export class AuthService {
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: any, private router: Router, private spinner: NgxSpinnerService, private securityService: SecurityService) { }
 
   public login(email: string, password: string): Observable<boolean> {
-    var url = 'http://localhost:50962/' + "api/token/auth";
+    var url = environment.apiUrl + "api/token/auth";
     var data = {
       Email: email,
       Password: password,
@@ -41,7 +42,7 @@ export class AuthService {
   }
 
   public refreshToken(): Observable<boolean> {
-    var url = 'http://localhost:50962/' + "api/token/refresh-token";
+    var url = environment.apiUrl + "api/token/refresh-token";
     var data = {
       Email: this.getAuth().email,
       RefreshToken: this.getAuth().refreshToken
@@ -51,7 +52,7 @@ export class AuthService {
 
   public logout(): boolean {
     this.spinner.show();
-    var url = 'http://localhost:50962/' + "api/token/revoke-token";
+    var url = environment.apiUrl + "api/token/revoke-token";
     var data = {
       UserName: this.getAuth().user,
       RefreshToken: this.getAuth().refreshToken,

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { NgxSpinnerService } from "ngx-spinner";
+import { environment } from '../../environments/environment';
 
 import { AuthService } from '../services/auth.service';
 
@@ -19,7 +20,7 @@ export class TestComponent implements OnInit {
 
   executeCall(): void {
     this.spinner.show();
-    var url = 'http://localhost:50962/' + 'api/user/test';
+    var url = environment.apiUrl + 'api/user/test';
     this.http.get<string>(url)
       .subscribe(
         (val) => {

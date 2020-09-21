@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
+import { environment } from '../../environments/environment';
 
 import { ModalService } from '../services/modal.service';
 import { NgxSpinnerService } from "ngx-spinner";
@@ -24,7 +25,7 @@ export class ForgottenComponent {
     let model = <PassForgottenModel>{};
     model.email = this.form.value.Email;
     model.captchaToken = captchaToken;
-    const url = 'http://localhost:50962/' + 'api/user/reset';
+    const url = environment.apiUrl + 'api/user/reset';
     this.http.post(url, model)
       .subscribe(() => {
           this.modalService.open('info-modal', 'Password reset link has been sent to: ' + model.email + '.');

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../services/auth.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-admin',
@@ -18,7 +19,7 @@ export class AdminComponent implements OnInit {
 
   private executeCall(): void {
     this.spinner.show();
-    var url = 'http://localhost:50962/' + 'api/user/admin';
+    var url = environment.apiUrl + 'api/user/admin';
     this.http.get<string>(url)
       .subscribe(
         (val) => {

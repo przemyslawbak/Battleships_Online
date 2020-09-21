@@ -2,6 +2,7 @@ import { Component, Inject, OnInit, PLATFORM_ID } from "@angular/core";
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
+import { environment } from '../../environments/environment';
 
 import { LoginResponse } from "../models/login-response.model";
 
@@ -44,7 +45,7 @@ export class LoginExternalProvidersComponent implements OnInit {
       return;
     }
     this.spinner.show();
-    var url = 'http://localhost:50962/' + "api/token/external-login/" + providerName;
+    var url = environment.apiUrl + "api/token/external-login/" + providerName;
 
     var w = (screen.width >= 1050) ? 1050 : screen.width;
     var h = (screen.height >= 550) ? 550 : screen.height;

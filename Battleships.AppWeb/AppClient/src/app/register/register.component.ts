@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
+import { environment } from '../../environments/environment';
 
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { NgxSpinnerService } from "ngx-spinner";
@@ -99,7 +100,7 @@ export class RegisterComponent {
     model.password = this.form.value.Password;
     model.username = this.form.value.DisplayName;
     model.captchaToken = token;
-    var url = 'http://localhost:50962/' + 'api/user/register';
+    var url = environment.apiUrl + 'api/user/register';
     this.securityService.delayForBruteForce(5);
     this.http.post(url, model)
       .subscribe(

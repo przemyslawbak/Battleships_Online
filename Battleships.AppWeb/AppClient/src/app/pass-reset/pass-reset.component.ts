@@ -3,6 +3,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { Router, ActivatedRoute } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { NgxSpinnerService } from "ngx-spinner";
+import { environment } from '../../environments/environment';
 
 import { ModalService } from '../services/modal.service';
 
@@ -26,7 +27,7 @@ export class PassResetComponent implements OnInit {
   public onSubmit() {
     this.spinner.show();
     this.passModel.password = this.form.value.Password;
-    var url = 'http://localhost:50962/' + 'api/user/new-password';
+    var url = environment.apiUrl + 'api/user/new-password';
     this.http.post(url, this.passModel)
       .subscribe(
         () => {
