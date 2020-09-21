@@ -103,9 +103,7 @@ namespace Battleships.AppWeb.Controllers
 
                 if (user != null)
                 {
-                    bool updated = await _userService.ResetPassword(user, model.Token, model.Password);
-
-                    if (updated)
+                    if (await _userService.ResetPassword(user, model.Token, model.Password))
                     {
                         return Ok();
                     }
@@ -121,7 +119,9 @@ namespace Battleships.AppWeb.Controllers
             }
             else
             {
-                return View(model);
+                string errors = string.Join(",", ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage)));
+
+                return new ObjectResult(errors) { StatusCode = 409 };
             }
         }
 
