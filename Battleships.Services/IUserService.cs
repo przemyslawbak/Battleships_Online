@@ -9,7 +9,7 @@ namespace Battleships.Services
 {
     public interface IUserService
     {
-        Task<bool> CreateNewUserAndAddToDbAsync(UserViewModel model);
+        Task<bool> CreateNewUserAndAddToDbAsync(UserRegisterViewModel model);
         Task<AppUser> FindUserByEmail(string email);
         Task<string> GetPassResetToken(AppUser user);
         Task<bool> ResetPassword(AppUser user, string token, string password);
@@ -18,7 +18,7 @@ namespace Battleships.Services
         Task<ExternalLoginInfo> GetExternalLogin();
         Task<bool> VerifyUsersPassword(AppUser user, string password);
         string GenerateRandomPassword();
-        UserViewModel GetRegisterModel(ExternalLoginInfo info);
+        UserRegisterViewModel GetRegisterModel(ExternalLoginInfo info);
         string GetIpAddress(HttpContext httpContext);
         Task<string> GetUserRoleAsync(AppUser user);
     }

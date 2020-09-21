@@ -81,9 +81,9 @@ namespace Battleships.AppWeb.Controllers
             }
             else
             {
-                string errors = string.Join(",", ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage)));
+                string errors = string.Join(", ", ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage)));
 
-                return new ObjectResult(errors) { StatusCode = 409 };
+                return new ObjectResult(errors + ".") { StatusCode = 409 };
             }
         }
 
@@ -119,9 +119,9 @@ namespace Battleships.AppWeb.Controllers
             }
             else
             {
-                string errors = string.Join(",", ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage)));
+                string errors = string.Join(", ", ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage)));
 
-                return new ObjectResult(errors) { StatusCode = 409 };
+                return new ObjectResult(errors + ".") { StatusCode = 409 };
             }
         }
 
@@ -131,15 +131,13 @@ namespace Battleships.AppWeb.Controllers
         /// <returns>Status code.</returns>
         [HttpPost("register")]
         [ServiceFilter(typeof(CaptchaVerifyActionFilter))]
-        public async Task<IActionResult> AddNewUser([FromBody]UserViewModel model)
+        public async Task<IActionResult> AddNewUser([FromBody]UserRegisterViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                string errors = string.Join(", ", ModelState.Select(x => x.Value.Errors)
-                           .Where(y => y.Count > 0)
-                           .ToList());
+                string errors = string.Join(", ", ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage)));
 
-                return new ObjectResult("Wrong register user input: " + errors + ".") { StatusCode = 422 };
+                return new ObjectResult(errors + ".") { StatusCode = 422 };
             }
 
             model.UserName = _userService.GenerateUsername(model.UserName);

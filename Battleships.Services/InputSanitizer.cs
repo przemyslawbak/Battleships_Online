@@ -22,9 +22,9 @@ namespace Battleships.Services
         /// </summary>
         /// <param name="userRegisterVm">Passed user vm</param>
         /// <returns>Sanitized user vm</returns>
-        public UserViewModel SanitizeRegisteringUserInputs(UserViewModel userRegisterVm)
+        public UserRegisterViewModel SanitizeRegisteringUserInputs(UserRegisterViewModel userRegisterVm)
         {
-            return new UserViewModel()
+            return new UserRegisterViewModel()
             {
                 DisplayName = CleanUp(userRegisterVm.DisplayName),
                 Email = CleanUp(userRegisterVm.Email),

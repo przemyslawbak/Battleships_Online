@@ -30,7 +30,7 @@ namespace Battleships.AppWeb.Utilities
             }
             else if (actionName == "AddNewUser")
             {
-                UserViewModel model = context.ActionArguments["model"] as UserViewModel;
+                UserRegisterViewModel model = context.ActionArguments["model"] as UserRegisterViewModel;
                 token = model.CaptchaToken;
             }
 

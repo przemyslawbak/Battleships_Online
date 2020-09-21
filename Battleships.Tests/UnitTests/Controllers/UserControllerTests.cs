@@ -20,30 +20,37 @@ namespace Battleships.Tests.UnitTests.Controllers
         private readonly UserController _controller;
         private readonly PassResetEmailViewModel _properPassResetModel;
         private readonly ResetPasswordViewModel _properResetModel;
-        private readonly string _properPassword;
-        private readonly string _properEmail;
-        private readonly string _properToken;
-        private readonly AppUser _properUser;
+        private readonly UserRegisterViewModel _properRegisterUserModel;
 
         public UserControllerTests()
         {
-            _properPassword = "proper_test_password";
-            _properEmail = "proper_test_email@gmail.com";
-            _properToken = "proper_test_token";
+            string properPassword = "proper_test_password";
+            string properEmail = "proper_test_email@gmail.com";
+            string properToken = "proper_test_token";
+            string properName = "proper_test_name";
+
             _properPassResetModel = new PassResetEmailViewModel()
             {
-                CaptchaToken = _properToken,
-                Email = _properEmail
+                CaptchaToken = properToken,
+                Email = properEmail
             };
             _properResetModel = new ResetPasswordViewModel()
             {
-                Email = _properEmail,
-                Password = _properPassword,
-                Token = _properToken
+                Email = properEmail,
+                Password = properPassword,
+                Token = properToken
             };
-            _properUser = new AppUser()
+            _properRegisterUserModel = new UserRegisterViewModel()
             {
-                Email = _properEmail
+                Email = properEmail,
+                CaptchaToken = properToken,
+                DisplayName = properName,
+                Password = properPassword,
+                UserName = properName
+            };
+            AppUser properUser = new AppUser()
+            {
+                Email = properEmail
             };
 
             _userServiceMock = new Mock<IUserService>();
@@ -51,9 +58,12 @@ namespace Battleships.Tests.UnitTests.Controllers
             _emailSenderMock = new Mock<IEmailSender>();
 
             _sanitizerMock.Setup(mock => mock.CleanUp(It.IsAny<string>())).Returns(It.IsAny<string>());
-            _userServiceMock.Setup(mock => mock.FindUserByEmail(It.IsAny<string>())).ReturnsAsync(_properUser);
+            _sanitizerMock.Setup(mock => mock.SanitizeRegisteringUserInputs(It.IsAny<UserRegisterViewModel>())).Returns(_properRegisterUserModel);
+            _userServiceMock.Setup(mock => mock.FindUserByEmail(It.IsAny<string>())).ReturnsAsync(properUser);
+            _userServiceMock.Setup(mock => mock.GenerateUsername(It.IsAny<string>())).Returns(It.IsAny<string>());
             _userServiceMock.Setup(mock => mock.GetPassResetToken(It.IsAny<AppUser>())).ReturnsAsync(It.IsAny<string>());
             _userServiceMock.Setup(mock => mock.ResetPassword(It.IsAny<AppUser>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
+            _userServiceMock.Setup(mock => mock.CreateNewUserAndAddToDbAsync(It.IsAny<UserRegisterViewModel>())).ReturnsAsync(true);
             _emailSenderMock.Setup(mock => mock.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
 
             _controller = new UserController(_userServiceMock.Object, _sanitizerMock.Object, _emailSenderMock.Object);
@@ -92,7 +102,7 @@ namespace Battleships.Tests.UnitTests.Controllers
         [Fact]
         private async Task PassChange_ModelValidationFailed_ReturnsStatusCode409()
         {
-            string expectedErrorsResult = "err1,err2";
+            string expectedErrorsResult = "err1, err2.";
 
             _controller.ModelState.AddModelError("test_error_1", "err1"); //model validation error will be thrown
             _controller.ModelState.AddModelError("test_error_2", "err2"); //model validation error will be thrown
@@ -154,7 +164,7 @@ namespace Battleships.Tests.UnitTests.Controllers
         [Fact]
         private async Task PassReset_ModelValidationFailed_ReturnsStatusCode409()
         {
-            string expectedErrorsResult = "err1,err2";
+            string expectedErrorsResult = "err1, err2.";
 
             _controller.ModelState.AddModelError("test_error_1", "err1"); //model validation error will be thrown
             _controller.ModelState.AddModelError("test_error_2", "err2"); //model validation error will be thrown
@@ -176,6 +186,86 @@ namespace Battleships.Tests.UnitTests.Controllers
             _userServiceMock.Setup(mock => mock.ResetPassword(It.IsAny<AppUser>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
 
             IActionResult result = await _controller.PassReset(_properResetModel);
+            ObjectResult objectResult = result as ObjectResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status500InternalServerError, objectResult.StatusCode);
+            Assert.Equal(expectedErrorsResult, objectResult.Value);
+        }
+
+        /// <summary>
+        /// Verifying that model for AddNewUser is valideted correctly.
+        /// NOTE: Just for reference that _registerUserModel is correct.
+        /// </summary>
+        [Fact]
+        private void AddNewUser_ValidationOfValidModelIsCorrect()
+        {
+            ValidationContext context = new ValidationContext(_properRegisterUserModel, null, null);
+            List<ValidationResult> results = new List<ValidationResult>();
+            bool isModelStateValid = Validator.TryValidateObject(_properRegisterUserModel, context, results, true);
+
+            Assert.True(isModelStateValid);
+        }
+
+        /// <summary>
+        /// Verifying that with _registerUserModel there is correct data flow and should be returned 200 status code.
+        /// </summary>
+        [Fact]
+        private async Task AddNewUser_WithValidModel_ReturnsStatusCode200()
+        {
+            _userServiceMock.Setup(mock => mock.FindUserByEmail(It.IsAny<string>())).ReturnsAsync((AppUser)null);
+            IActionResult result = await _controller.AddNewUser(_properRegisterUserModel);
+            StatusCodeResult statusCode = result as StatusCodeResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status200OK, statusCode.StatusCode);
+        }
+
+        /// <summary>
+        /// Verifying that with failed model validation will be returned 409 status code and listed model errors.
+        /// </summary>
+        [Fact]
+        private async Task AddNewUser_ModelValidationFailed_ReturnsStatusCode409()
+        {
+            string expectedErrorsResult = "err1, err2.";
+
+            _controller.ModelState.AddModelError("test_error_1", "err1"); //model validation error will be thrown
+            _controller.ModelState.AddModelError("test_error_2", "err2"); //model validation error will be thrown
+            IActionResult result = await _controller.AddNewUser(new UserRegisterViewModel());
+            ObjectResult objectResult = result as ObjectResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status422UnprocessableEntity, objectResult.StatusCode);
+            Assert.Equal(expectedErrorsResult, objectResult.Value);
+        }
+
+        /// <summary>
+        /// Verifying that existing users email will return 409 status code and error value.
+        /// </summary>
+        [Fact]
+        private async Task AddNewUser_WhenExistingEmailFailed_ReturnsStatusCode409()
+        {
+            string expectedErrorsResult = "Email already exists.";
+
+            IActionResult result = await _controller.AddNewUser(_properRegisterUserModel);
+            ObjectResult objectResult = result as ObjectResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status409Conflict, objectResult.StatusCode);
+            Assert.Equal(expectedErrorsResult, objectResult.Value);
+        }
+
+        /// <summary>
+        /// Verifying that failing of creating new user will return 500 status code and error value.
+        /// </summary>
+        [Fact]
+        private async Task AddNewUser_WhenCreatingUserFailed_ReturnsStatusCode500()
+        {
+            string expectedErrorsResult = "Error when creating new user.";
+            _userServiceMock.Setup(mock => mock.FindUserByEmail(It.IsAny<string>())).ReturnsAsync((AppUser)null);
+            _userServiceMock.Setup(mock => mock.CreateNewUserAndAddToDbAsync(It.IsAny<UserRegisterViewModel>())).ReturnsAsync(false);
+
+            IActionResult result = await _controller.AddNewUser(_properRegisterUserModel);
             ObjectResult objectResult = result as ObjectResult;
 
             Assert.NotNull(result);

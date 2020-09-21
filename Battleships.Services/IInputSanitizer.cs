@@ -5,6 +5,6 @@ namespace Battleships.Services
     public interface IInputSanitizer
     {
         string CleanUp(string input);
-        UserViewModel SanitizeRegisteringUserInputs(UserViewModel model);
+        UserRegisterViewModel SanitizeRegisteringUserInputs(UserRegisterViewModel model);
     }
 }

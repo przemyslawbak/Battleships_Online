@@ -100,7 +100,7 @@ namespace Battleships.AppWeb.Controllers
             if (user == null)
             {
 
-                UserViewModel model = _userService.GetRegisterModel(info);
+                UserRegisterViewModel model = _userService.GetRegisterModel(info);
 
                 bool result = await _userService.CreateNewUserAndAddToDbAsync(model);
 

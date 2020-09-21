@@ -28,7 +28,7 @@ namespace Battleships.Services
         /// </summary>
         /// <param name="registerVm">User inputs.</param>
         /// <returns>Boolean if succeeded or not.</returns>
-        public async Task<bool> CreateNewUserAndAddToDbAsync(UserViewModel model)
+        public async Task<bool> CreateNewUserAndAddToDbAsync(UserRegisterViewModel model)
         {
             AppUser user = CreateNewUser(model);
 
@@ -135,7 +135,7 @@ namespace Battleships.Services
         /// </summary>
         /// <param name="model">AppUser model.</param>
         /// <returns>New AppUser.</returns>
-        private AppUser CreateNewUser(UserViewModel model)
+        private AppUser CreateNewUser(UserRegisterViewModel model)
         {
             return new AppUser()
             {
@@ -195,9 +195,9 @@ namespace Battleships.Services
             return await _userManager.CheckPasswordAsync(user, password);
         }
 
-        public UserViewModel GetRegisterModel(ExternalLoginInfo info)
+        public UserRegisterViewModel GetRegisterModel(ExternalLoginInfo info)
         {
-            return new UserViewModel()
+            return new UserRegisterViewModel()
             {
                 Email = info.Principal.FindFirst(ClaimTypes.Email).Value,
                 UserName = GenerateUsername(info.Principal.FindFirst(ClaimTypes.GivenName).Value),

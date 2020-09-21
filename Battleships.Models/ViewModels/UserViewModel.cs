@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Battleships.Models.ViewModels
 {
     [JsonObject(MemberSerialization.OptOut)]
-    public class UserViewModel
+    public class UserRegisterViewModel
     {
         [Required(ErrorMessage = "Please fill up your name.")]
         public string UserName { get; set; }
