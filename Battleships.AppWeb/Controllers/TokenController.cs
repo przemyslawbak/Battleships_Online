@@ -1,5 +1,4 @@
-﻿using Battleships.DAL;
-using Battleships.Models;
+﻿using Battleships.Models;
 using Battleships.Models.ViewModels;
 using Battleships.Services;
 using Microsoft.AspNetCore.Authentication;
@@ -34,13 +33,17 @@ namespace Battleships.AppWeb.Controllers
             {
                 return new StatusCodeResult(500);
             }
-            switch (model.GrantType)
+
+            AppUser user = await _userService.FindUserByEmail(model.Email);
+
+            if (user == null || !await _userService.VerifyUsersPassword(user, model.Password))
             {
-                case "password":
-                    return await GetToken(model);
-                default:
-                    return new ObjectResult("Please try again.") { StatusCode = 409 };
+                return new ObjectResult("Invalid user details.") { StatusCode = 409 };
             }
+
+            string role = await _userService.GetUserRoleAsync(user);
+
+            return Json(_tokenService.GenerateTokenResponse(user, role, TempData["requstIp"].ToString()));
         }
 
         [HttpPost("refresh-token")]
@@ -53,7 +56,16 @@ namespace Battleships.AppWeb.Controllers
                 return new ObjectResult("Please log in again.") { StatusCode = 409 };
             }
 
-            return await GetToken(model);
+            AppUser user = await _userService.FindUserByEmail(model.Email);
+
+            if (user == null) //todo: dry
+            {
+                return new ObjectResult("Invalid user details.") { StatusCode = 409 };
+            }
+
+            string role = await _userService.GetUserRoleAsync(user);
+
+            return Json(_tokenService.GenerateTokenResponse(user, role, TempData["requstIp"].ToString()));
         }
 
         [HttpPost("revoke-token")]
@@ -74,8 +86,11 @@ namespace Battleships.AppWeb.Controllers
         public IActionResult ExternalLoginAsync(string provider, string returnUrl = null)
         {
             TempData["requstIp"] = _userService.GetIpAddress(HttpContext);
+
             string redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Token", new { ReturnUrl = returnUrl });
+
             AuthenticationProperties properties = _userService.GetExternalAuthenticationProperties(provider, "http://localhost:50962" + redirectUrl);
+
             return new ChallengeResult(provider, properties);
         }
 
@@ -101,9 +116,7 @@ namespace Battleships.AppWeb.Controllers
 
                 UserRegisterViewModel model = _userService.GetRegisterModel(info);
 
-                bool result = await _userService.CreateNewUserAndAddToDbAsync(model);
-
-                if (!result)
+                if (!await _userService.CreateNewUserAndAddToDbAsync(model))
                 {
                     return new ObjectResult("Error when creating new user.") { StatusCode = 500 };
                 }
@@ -111,43 +124,9 @@ namespace Battleships.AppWeb.Controllers
                 user = await _userService.FindUserByEmail(info.Principal.FindFirst(ClaimTypes.Email).Value);
             }
 
-            string role = await _userService.GetUserRoleAsync(user); //todo: dry
+            string role = await _userService.GetUserRoleAsync(user);
 
-            TokenResponseViewModel response = _tokenService.GenerateResponse(user, TempData["requstIp"].ToString(), role);
-
-            return View(response);
-        }
-
-        private async Task<IActionResult> GetToken(RefreshTokenRequestViewModel model)
-        {
-            AppUser user = await _userService.FindUserByEmail(model.Email);
-
-            if (user == null) //todo: dry
-            {
-                return new ObjectResult("Please log in again.") { StatusCode = 409 };
-            }
-
-            string role = await _userService.GetUserRoleAsync(user); //todo: dry
-
-            TokenResponseViewModel response = _tokenService.GenerateResponse(user, TempData["requstIp"].ToString(), role);
-
-            return Json(response);
-        }
-
-        private async Task<IActionResult> GetToken(TokenRequestViewModel model)
-        {
-            AppUser user = await _userService.FindUserByEmail(model.Email);
-
-            if (user == null || !await _userService.VerifyUsersPassword(user, model.Password)) //todo: dry
-            {
-                return new ObjectResult("Wrong email or password.") { StatusCode = 409 };
-            }
-
-            string role = await _userService.GetUserRoleAsync(user); //todo: dry
-
-            TokenResponseViewModel response = _tokenService.GenerateResponse(user, TempData["requstIp"].ToString(), role);
-
-            return Json(response);
+            return View(_tokenService.GenerateTokenResponse(user, role, TempData["requstIp"].ToString()));
         }
     }
 }

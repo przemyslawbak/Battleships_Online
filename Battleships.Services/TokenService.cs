@@ -39,26 +39,6 @@ namespace Battleships.Services
             }
         }
 
-        public TokenResponseViewModel GenerateResponse(AppUser user, string ip, string role)
-        {
-            SecurityToken token = GetSecurityToken(user, role);
-
-            string encodedToken = new JwtSecurityTokenHandler().WriteToken(token);
-            string refreshToken = GetRefreshToken();
-
-            _tokenRepo.SaveRefreshToken(refreshToken, user.Email, ip);
-
-            return new TokenResponseViewModel()
-            {
-                Token = encodedToken.Replace("/", "$").Replace("=", "@"),
-                Email = user.Email,
-                User = user.UserName,
-                RefreshToken = refreshToken.Replace("/", "$").Replace("=", "@"),
-                DisplayName = user.DisplayName,
-                Role = role
-            };
-        }
-
         public SecurityToken GetSecurityToken(AppUser user, string role)
         {
             int expiration = _configuration.GetValue<int>("Auth:JsonWebToken:TokenExpirationInMinutes");
@@ -114,6 +94,26 @@ namespace Battleships.Services
             {
                 return false;
             }
+        }
+
+        public TokenResponseViewModel GenerateTokenResponse(AppUser user, string role, string ip)
+        {
+            SecurityToken token = GetSecurityToken(user, role);
+
+            string encodedToken = new JwtSecurityTokenHandler().WriteToken(token);
+            string refreshToken = GetRefreshToken();
+
+            _tokenRepo.SaveRefreshToken(refreshToken, user.Email, ip);
+
+            return new TokenResponseViewModel()
+            {
+                Token = encodedToken.Replace("/", "$").Replace("=", "@"),
+                Email = user.Email,
+                User = user.UserName,
+                RefreshToken = refreshToken.Replace("/", "$").Replace("=", "@"),
+                DisplayName = user.DisplayName,
+                Role = role
+            };
         }
     }
 }
