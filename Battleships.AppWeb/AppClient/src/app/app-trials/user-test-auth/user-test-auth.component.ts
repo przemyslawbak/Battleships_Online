@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { NgxSpinnerService } from "ngx-spinner";
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../app-core/_services/auth.service';
 
 @Component({
   templateUrl: './user-test-auth.component.html',

@@ -2,12 +2,12 @@ import { Component, Inject, OnInit, PLATFORM_ID } from "@angular/core";
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 
-import { LoginResponse } from "../models/login-response.model";
+import { LoginResponse } from "../../app-core/_models/login-response.model";
 
-import { AuthService } from '../services/auth.service';
-import { ModalService } from '../services/modal.service';
+import { AuthService } from '../../app-core/_services/auth.service';
+import { ModalService } from '../../app-core/_services/modal.service';
 
 declare let window: any;
 

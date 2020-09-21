@@ -14,7 +14,8 @@ OK - private/public in components - https://stackoverflow.com/a/37506946
 OK - check return values in service methods
 OK - injecting services?
 OK - base url, example: https://jasonwatmore.com/post/2020/09/09/angular-10-role-based-authorization-tutorial-with-example
-- Angular app structure and coding style guide: https://angular.io/guide/styleguide
+OK - Angular app structure and coding style guide: https://angular.io/guide/styleguide
+- form validation bug
 - refactorize TokenController
 - back-end unit testing
 - front-end unit testing

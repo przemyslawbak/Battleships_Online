@@ -2,8 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 
-import { AuthService } from '../services/auth.service';
-import { Subscription } from 'rxjs';
+import { AuthService } from '../../app-core/_services/auth.service';
 @Component({
   selector: "join",
   templateUrl: "./user-join.component.html",

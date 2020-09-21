@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 
-import { ModalService } from '../services/modal.service';
+import { ModalService } from '../../app-core/_services/modal.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 
-import { PassForgottenModel } from "../models/password-forgotten.model";
+import { PassForgottenModel } from "../../app-core/_models/password-forgotten.model";
 
 @Component({
   templateUrl: './forgotten-pass.component.html',

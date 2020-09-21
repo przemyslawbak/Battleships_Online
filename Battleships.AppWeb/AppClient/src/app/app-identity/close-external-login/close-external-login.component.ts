@@ -1,9 +1,9 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { LoginResponse } from "../models/login-response.model";
+import { LoginResponse } from "../../app-core/_models/login-response.model";
 
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../app-core/_services/auth.service';
 
 @Component({
   templateUrl: './close-external-login.component.html',

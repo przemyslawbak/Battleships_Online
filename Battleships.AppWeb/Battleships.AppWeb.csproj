@@ -7,15 +7,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="AppClient\src\app\helpers\jtw.interceptor.ts" />
-    <None Remove="AppClient\src\app\models\login-response.model.ts" />
-    <None Remove="AppClient\src\app\models\new-user.model.ts" />
-    <None Remove="AppClient\src\app\models\password-forgotten.model.ts" />
-    <None Remove="AppClient\src\app\models\password-reset.model.ts" />
-    <None Remove="AppClient\src\app\models\user-role.model.ts" />
-    <None Remove="AppClient\src\app\services\auth.guard.ts" />
-    <None Remove="AppClient\src\app\services\auth.interceptor.ts" />
-    <None Remove="AppClient\src\app\services\auth.service.ts" />
+    <Compile Remove="AppClient\src\app\identity\**" />
+    <Content Remove="AppClient\src\app\identity\**" />
+    <EmbeddedResource Remove="AppClient\src\app\identity\**" />
+    <None Remove="AppClient\src\app\identity\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="AppClient\src\app\app-core\_helpers\jtw.interceptor.ts" />
+    <None Remove="AppClient\src\app\app-core\_models\login-response.model.ts" />
+    <None Remove="AppClient\src\app\app-core\_models\new-user.model.ts" />
+    <None Remove="AppClient\src\app\app-core\_models\password-forgotten.model.ts" />
+    <None Remove="AppClient\src\app\app-core\_models\password-reset.model.ts" />
+    <None Remove="AppClient\src\app\app-core\_models\user-role.model.ts" />
+    <None Remove="AppClient\src\app\app-core\_services\auth.guard.ts" />
+    <None Remove="AppClient\src\app\app-core\_services\auth.interceptor.ts" />
+    <None Remove="AppClient\src\app\app-core\_services\auth.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,21 +40,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="AppClient\src\app\helpers\jtw.interceptor.ts">
+    <TypeScriptCompile Include="AppClient\src\app\app-core\_helpers\jtw.interceptor.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="AppClient\src\app\helpers\error.interceptor.ts" />
-    <TypeScriptCompile Include="AppClient\src\app\models\password-forgotten.model.ts" />
-    <TypeScriptCompile Include="AppClient\src\app\models\password-reset.model.ts" />
-    <TypeScriptCompile Include="AppClient\src\app\models\login-response.model.ts" />
-    <TypeScriptCompile Include="AppClient\src\app\models\user-role.model.ts" />
-    <TypeScriptCompile Include="AppClient\src\app\models\new-user.model.ts" />
-    <TypeScriptCompile Include="AppClient\src\app\services\auth.service.ts" />
-    <TypeScriptCompile Include="AppClient\src\app\helpers\auth.guard.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="AppClient\src\app\identity\" />
+    <TypeScriptCompile Include="AppClient\src\app\app-core\_helpers\error.interceptor.ts" />
+    <TypeScriptCompile Include="AppClient\src\app\app-core\_models\password-forgotten.model.ts" />
+    <TypeScriptCompile Include="AppClient\src\app\app-core\_models\password-reset.model.ts" />
+    <TypeScriptCompile Include="AppClient\src\app\app-core\_models\login-response.model.ts" />
+    <TypeScriptCompile Include="AppClient\src\app\app-core\_models\user-role.model.ts" />
+    <TypeScriptCompile Include="AppClient\src\app\app-core\_models\new-user.model.ts" />
+    <TypeScriptCompile Include="AppClient\src\app\app-core\_services\auth.service.ts" />
+    <TypeScriptCompile Include="AppClient\src\app\app-core\_helpers\auth.guard.ts" />
   </ItemGroup>
 
 </Project>

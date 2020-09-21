@@ -5,9 +5,9 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { Observable, BehaviorSubject } from 'rxjs';
 import { catchError, switchMap, filter, take } from "rxjs/operators";
 
-import { SecurityService } from "../services/security.service";
-import { AuthService } from "../services/auth.service";
-import { ModalService } from '../services/modal.service';
+import { SecurityService } from "../_services/security.service";
+import { AuthService } from "../_services/auth.service";
+import { ModalService } from '../_services/modal.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
