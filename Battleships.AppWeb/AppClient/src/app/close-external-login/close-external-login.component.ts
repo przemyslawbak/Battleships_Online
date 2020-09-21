@@ -6,9 +6,8 @@ import { LoginResponse } from "../models/login-response.model";
 import { AuthService } from '../services/auth.service';
 
 @Component({
-  selector: 'app-close',
-  templateUrl: './close.component.html',
-  styleUrls: ['./close.component.css']
+  templateUrl: './close-external-login.component.html',
+  styleUrls: ['./close-external-login.component.css']
 })
 export class CloseComponent implements OnInit {
   tokenResponse: LoginResponse;

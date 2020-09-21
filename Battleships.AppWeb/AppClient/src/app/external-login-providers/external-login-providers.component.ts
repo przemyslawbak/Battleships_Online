@@ -12,9 +12,9 @@ import { ModalService } from '../services/modal.service';
 declare let window: any;
 
 @Component({
-  selector: "login-externalproviders",
-  templateUrl: "./login.externalproviders.component.html",
-  styleUrls: ['./login.externalproviders.component.css']
+  selector: "external-login-providers",
+  templateUrl: "./external-login-providers.component.html",
+  styleUrls: ['./external-login-providers.component.css']
 })
 
 export class LoginExternalProvidersComponent implements OnInit {

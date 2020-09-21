@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { JoinComponent } from './join/join.component';
-import { RegisterComponent } from './register/register.component';
-import { ForgottenComponent } from './forgotten/forgotten.component';
+import { JoinComponent } from './user-join/user-join.component';
+import { RegisterComponent } from './user-register/user-register.component';
+import { ForgottenComponent } from './forgotten-pass/forgotten-pass.component';
 import { PassResetComponent } from './pass-reset/pass-reset.component';
-import { TestComponent } from './test/test.component';
-import { CloseComponent } from './close/close.component';
-import { AdminComponent } from './admin/admin.component';
+import { TestComponent } from './user-test-auth/user-test-auth.component';
+import { CloseComponent } from './close-external-login/close-external-login.component';
+import { AdminComponent } from './admin-test-auth/admin-test-auth.component';
 import { AuthGuard } from './helpers/auth.guard';
 import { UserRole } from './models/user-role.model';
 

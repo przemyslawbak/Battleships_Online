@@ -11,9 +11,8 @@ import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { PassForgottenModel } from "../models/password-forgotten.model";
 
 @Component({
-  selector: 'app-forgotten',
-  templateUrl: './forgotten.component.html',
-  styleUrls: ['./forgotten.component.css']
+  templateUrl: './forgotten-pass.component.html',
+  styleUrls: ['./forgotten-pass.component.css']
 })
 export class ForgottenComponent {
   public form: FormGroup;
@@ -28,10 +27,10 @@ export class ForgottenComponent {
     const url = environment.apiUrl + 'api/user/reset';
     this.http.post(url, model)
       .subscribe(() => {
-          this.modalService.open('info-modal', 'Password reset link has been sent to: ' + model.email + '.');
-          this.spinner.hide();
-          this.router.navigate(['']);
-        }
+        this.modalService.open('info-modal', 'Password reset link has been sent to: ' + model.email + '.');
+        this.spinner.hide();
+        this.router.navigate(['']);
+      }
       );
   }
 

@@ -12,9 +12,9 @@ import { NewUser } from "../models/new-user.model";
 import { AuthService } from '../services/auth.service';
 
 @Component({
-  selector: 'register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  selector: 'user-register',
+  templateUrl: './user-register.component.html',
+  styleUrls: ['./user-register.component.css']
 })
 export class RegisterComponent {
   form: FormGroup;

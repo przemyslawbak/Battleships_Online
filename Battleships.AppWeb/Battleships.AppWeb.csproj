@@ -46,4 +46,8 @@
     <TypeScriptCompile Include="AppClient\src\app\helpers\auth.guard.ts" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="AppClient\src\app\identity\" />
+  </ItemGroup>
+
 </Project>

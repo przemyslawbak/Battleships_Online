@@ -1,25 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { AuthService } from '../services/auth.service';
-import { NgxSpinnerService } from 'ngx-spinner';
+import { HttpClient } from "@angular/common/http";
+import { NgxSpinnerService } from "ngx-spinner";
 import { environment } from '../../environments/environment';
 
+import { AuthService } from '../services/auth.service';
+
 @Component({
-  selector: 'app-admin',
-  templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.css']
+  templateUrl: './user-test-auth.component.html',
+  styleUrls: ['./user-test-auth.component.css']
 })
-export class AdminComponent implements OnInit {
+export class TestComponent implements OnInit {
 
   constructor(private http: HttpClient, public auth: AuthService, private spinner: NgxSpinnerService) { }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.executeCall()
   }
 
-  private executeCall(): void {
+  executeCall(): void {
     this.spinner.show();
-    let url = environment.apiUrl + 'api/user/admin';
+    let url = environment.apiUrl + 'api/user/test';
     this.http.get<string>(url)
       .subscribe(
         (val) => {

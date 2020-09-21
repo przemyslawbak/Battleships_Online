@@ -6,8 +6,8 @@ import { AuthService } from '../services/auth.service';
 import { Subscription } from 'rxjs';
 @Component({
   selector: "join",
-  templateUrl: "./join.component.html",
-  styleUrls: ['./join.component.css']
+  templateUrl: "./user-join.component.html",
+  styleUrls: ['./user-join.component.css']
 })
 export class JoinComponent implements OnInit {
   title: string;

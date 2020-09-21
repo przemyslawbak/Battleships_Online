@@ -2,15 +2,15 @@ import { Component, ViewEncapsulation, ElementRef, Input, OnInit, OnDestroy } fr
 
 import { ModalService } from '../services/modal.service';
 
-@Component({ 
-    selector: 'jw-modal', 
-    templateUrl: 'modal.component.html', 
-    styleUrls: ['modal.component.css'],
-    encapsulation: ViewEncapsulation.None
+@Component({
+  selector: 'jw-modal',
+  templateUrl: 'modal-views.component.html',
+  styleUrls: ['modal-views.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ModalComponent implements OnInit, OnDestroy {
   message: string;
-    @Input() id: string;
+  @Input() id: string;
   private element: any;
 
   constructor(private modalService: ModalService, private el: ElementRef) {
