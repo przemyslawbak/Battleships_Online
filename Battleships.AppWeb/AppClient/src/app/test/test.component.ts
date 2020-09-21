@@ -20,7 +20,7 @@ export class TestComponent implements OnInit {
 
   executeCall(): void {
     this.spinner.show();
-    var url = environment.apiUrl + 'api/user/test';
+    let url = environment.apiUrl + 'api/user/test';
     this.http.get<string>(url)
       .subscribe(
         (val) => {

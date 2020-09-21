@@ -26,7 +26,7 @@ namespace Battleships.Services
         {
             try
             {
-                using (var client = new SmtpClient())
+                using (SmtpClient client = new SmtpClient())
                 {
                     client.ServerCertificateValidationCallback = (s, c, h, e) => true;
                     client.Connect("mail.4sea-data.com", 465, true);

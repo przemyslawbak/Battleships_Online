@@ -25,17 +25,17 @@ export class RegisterComponent {
   }
 
   public isValid(name: string) {
-    var e = this.getFormControl(name);
+    let e = this.getFormControl(name);
     return e && e.valid;
   }
 
   public isChanged(name: string) {
-    var e = this.getFormControl(name);
+    let e = this.getFormControl(name);
     return e && (e.dirty || e.touched);
   }
 
   public hasError(name: string) {
-    var e = this.getFormControl(name);
+    let e = this.getFormControl(name);
     return e && (e.dirty || e.touched) && !e.valid;
   }
 
@@ -94,13 +94,13 @@ export class RegisterComponent {
   }
 
   private onSubmit(token: string) {
-    var model = <NewUser>{};
+    let model = <NewUser>{};
     model.displayName = this.form.value.DisplayName;
     model.email = this.form.value.Email;
     model.password = this.form.value.Password;
     model.username = this.form.value.DisplayName;
     model.captchaToken = token;
-    var url = environment.apiUrl + 'api/user/register';
+    let url = environment.apiUrl + 'api/user/register';
     this.securityService.delayForBruteForce(5);
     this.http.post(url, model)
       .subscribe(

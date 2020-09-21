@@ -10,16 +10,17 @@ OK - errors interceptor
 OK - destructors? 
 OK - Decorating ngOnDestroy with HostListener: https://wesleygrimes.com/angular/2019/03/29/making-upgrades-to-angular-ngondestroy.html
 OK - @HostListener('window:beforeunload', ['$event']) for external provider login? verify
-- read: https://angular.io/guide/lifecycle-hooks
 OK - private/public in components - https://stackoverflow.com/a/37506946
 OK - check return values in service methods
 OK - injecting services?
-- base url, example: https://jasonwatmore.com/post/2020/09/09/angular-10-role-based-authorization-tutorial-with-example
-- Angular app structure https://angular.io/guide/styleguide
+OK - base url, example: https://jasonwatmore.com/post/2020/09/09/angular-10-role-based-authorization-tutorial-with-example
+- Angular app structure and coding style guide: https://angular.io/guide/styleguide
 - refactorize TokenController
-- unit testing
+- back-end unit testing
+- front-end unit testing
 - creating user identity result https://4programmers.net/Forum/C_i_.NET/343563-nowy_uzytkownik_api_endpoint?p=1703857#comment-625167
 - mock UserManager
+- method comments
 OK - register new user
 OK - after login display user name
 OK - login after registering
@@ -54,6 +55,8 @@ OK - all constructor endpoint errors make to ObjectResult
 OK - move modal service to `services` directory
 OK - bug 2x hits RefreshToken
 OK - error handling in client app
+
+education:
 
 end:
 - clean up JS console.log rows

@@ -42,7 +42,7 @@ namespace Battleships.Services
                 { "remoteip", ip }
             };
 
-            var content = new FormUrlEncodedContent(values);
+            FormUrlEncodedContent content = new FormUrlEncodedContent(values);
 
             HttpResponseMessage response = await client.PostAsync(_configuration["ReCaptcha3:Url"], content);
 

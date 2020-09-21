@@ -18,8 +18,8 @@ export class AuthService {
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: any, private router: Router, private spinner: NgxSpinnerService, private securityService: SecurityService) { }
 
   public login(email: string, password: string): Observable<boolean> {
-    var url = environment.apiUrl + "api/token/auth";
-    var data = {
+    let url = environment.apiUrl + "api/token/auth";
+    let data = {
       Email: email,
       Password: password,
       GrantType: "password"
@@ -29,7 +29,7 @@ export class AuthService {
   }
 
   public addAuthHeader(request: HttpRequest<any>): HttpRequest<any> {
-    var token = this.getAuth()!.token;
+    let token = this.getAuth()!.token;
     if (token) {
       request = request.clone({
         setHeaders: {
@@ -42,8 +42,8 @@ export class AuthService {
   }
 
   public refreshToken(): Observable<boolean> {
-    var url = environment.apiUrl + "api/token/refresh-token";
-    var data = {
+    let url = environment.apiUrl + "api/token/refresh-token";
+    let data = {
       Email: this.getAuth().email,
       RefreshToken: this.getAuth().refreshToken
     };
@@ -52,8 +52,8 @@ export class AuthService {
 
   public logout(): boolean {
     this.spinner.show();
-    var url = environment.apiUrl + "api/token/revoke-token";
-    var data = {
+    let url = environment.apiUrl + "api/token/revoke-token";
+    let data = {
       UserName: this.getAuth().user,
       RefreshToken: this.getAuth().refreshToken,
       Token: this.getAuth().token
@@ -84,7 +84,7 @@ export class AuthService {
 
   public getAuth(): LoginResponse | null {
     if (isPlatformBrowser(this.platformId)) {
-      var i = localStorage.getItem(this.authKey);
+      let i = localStorage.getItem(this.authKey);
       if (i) {
         return JSON.parse(i);
       }

@@ -45,7 +45,7 @@ export class ForgottenComponent {
   }
 
   public hasError(name: string) {
-    var e = this.getFormControl(name);
+    let e = this.getFormControl(name);
     return e && (e.dirty || e.touched) && !e.valid;
   }
 

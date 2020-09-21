@@ -22,7 +22,7 @@ namespace Battleships.DAL
 
         public void CleanUpBlacklistedTokens(int hoursKeepBlacklistedTokend)
         {
-            var expiredBlacklistedTokens = _context.BlacklistedTokens.Where(tokens => DateTime.UtcNow > tokens.BlacklistedDateTime.AddHours(hoursKeepBlacklistedTokend));
+            IQueryable<BlacklistedToken> expiredBlacklistedTokens = _context.BlacklistedTokens.Where(tokens => DateTime.UtcNow > tokens.BlacklistedDateTime.AddHours(hoursKeepBlacklistedTokend));
             _context.BlacklistedTokens.RemoveRange(expiredBlacklistedTokens);
             _context.SaveChanges();
         }
@@ -31,7 +31,7 @@ namespace Battleships.DAL
         {
             if (_context.RefreshTokens.Any(tokens => tokens.Email == email))
             {
-                var allTokens = _context.RefreshTokens.Where(tokens => tokens.Email == email);
+                IQueryable<RefreshToken> allTokens = _context.RefreshTokens.Where(tokens => tokens.Email == email);
                 _context.RefreshTokens.RemoveRange(allTokens);
                 _context.SaveChanges();
             }

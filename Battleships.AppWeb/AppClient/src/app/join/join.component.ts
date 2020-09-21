@@ -24,8 +24,8 @@ export class JoinComponent implements OnInit {
   }
 
   public onSubmit() {
-    var email = this.form.value.Email;
-    var password = this.form.value.Password;
+    let email = this.form.value.Email;
+    let password = this.form.value.Password;
     this.authService.login(email, password)
       .subscribe(() => {
         this.router.navigate(['']);
@@ -38,19 +38,19 @@ export class JoinComponent implements OnInit {
 
   // returns TRUE if the FormControl is valid
   public isValid(name: string) {
-    var e = this.getFormControl(name);
+    let e = this.getFormControl(name);
     return e && e.valid;
   }
 
   // returns TRUE if the FormControl has been changed
   public isChanged(name: string) {
-    var e = this.getFormControl(name);
+    let e = this.getFormControl(name);
     return e && (e.dirty || e.touched);
   }
 
   // returns TRUE if the FormControl is invalid after user changes
   public hasError(name: string) {
-    var e = this.getFormControl(name);
+    let e = this.getFormControl(name);
     return e && (e.dirty || e.touched) && !e.valid;
   }
 

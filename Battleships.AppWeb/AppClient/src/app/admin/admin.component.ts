@@ -19,7 +19,7 @@ export class AdminComponent implements OnInit {
 
   private executeCall(): void {
     this.spinner.show();
-    var url = environment.apiUrl + 'api/user/admin';
+    let url = environment.apiUrl + 'api/user/admin';
     this.http.get<string>(url)
       .subscribe(
         (val) => {

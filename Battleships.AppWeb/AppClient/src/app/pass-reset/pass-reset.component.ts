@@ -27,7 +27,7 @@ export class PassResetComponent implements OnInit {
   public onSubmit() {
     this.spinner.show();
     this.passModel.password = this.form.value.Password;
-    var url = environment.apiUrl + 'api/user/new-password';
+    let url = environment.apiUrl + 'api/user/new-password';
     this.http.post(url, this.passModel)
       .subscribe(
         () => {
@@ -42,7 +42,7 @@ export class PassResetComponent implements OnInit {
   }
 
   public hasError(name: string) {
-    var e = this.getFormControl(name);
+    let e = this.getFormControl(name);
     return e && (e.dirty || e.touched) && !e.valid;
   }
 
@@ -79,7 +79,7 @@ export class PassResetComponent implements OnInit {
     const email = this.route.snapshot.paramMap.get('email');
     const token = this.route.snapshot.paramMap.get('token');
 
-    var model = <PassResetModel>{};
+    let model = <PassResetModel>{};
     model.email = email;
     model.password = '';
     model.token = token.replace(/\$/g, '/');

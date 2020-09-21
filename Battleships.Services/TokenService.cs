@@ -31,7 +31,7 @@ namespace Battleships.Services
 
         public string GetRefreshToken()
         {
-            using (var rngCryptoServiceProvider = new RNGCryptoServiceProvider())
+            using (RNGCryptoServiceProvider rngCryptoServiceProvider = new RNGCryptoServiceProvider())
             {
                 byte[] randomBytes = new byte[64];
                 rngCryptoServiceProvider.GetBytes(randomBytes);
@@ -85,7 +85,7 @@ namespace Battleships.Services
 
         public string GetCurrentToken()
         {
-            var authorizationHeader = _httpContextAccessor.HttpContext.Request.Headers["authorization"];
+            StringValues authorizationHeader = _httpContextAccessor.HttpContext.Request.Headers["authorization"];
 
             return authorizationHeader == StringValues.Empty ? string.Empty : authorizationHeader.Single().Split(' ').Last();
         }

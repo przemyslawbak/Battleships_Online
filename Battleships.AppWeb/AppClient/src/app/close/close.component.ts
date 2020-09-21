@@ -35,7 +35,7 @@ export class CloseComponent implements OnInit {
     const token = this.route.snapshot.paramMap.get('token');
     const refresh = this.route.snapshot.paramMap.get('refresh');
 
-    var model = <LoginResponse>{};
+    let model = <LoginResponse>{};
     model.email = email;
     model.displayName = user;
     model.user = user;

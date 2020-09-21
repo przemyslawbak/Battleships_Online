@@ -19,7 +19,7 @@ namespace Battleships.AppWeb.Utilities
 
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var actionName = context.RouteData.Values["action"] as string;
+            string actionName = context.RouteData.Values["action"] as string;
             string token = string.Empty;
             bool success = false;
 
