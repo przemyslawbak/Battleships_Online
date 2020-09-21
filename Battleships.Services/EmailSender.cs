@@ -15,14 +15,14 @@ namespace Battleships.Services
             _configuration = configuration;
         }
 
-        public Task SendEmailAsync(string email, string subject, string message)
+        public async Task<bool> SendEmailAsync(string email, string subject, string message)
         {
             MimeMessage msg = PrepareMesaage(message, subject, email, string.Empty, string.Empty);
 
-            return SendViaClientAsync(msg, string.Empty);
+            return await SendViaClientAsync(msg, string.Empty);
         }
 
-        private async Task SendViaClientAsync(MimeMessage msg, string returnAddress)
+        private async Task<bool> SendViaClientAsync(MimeMessage msg, string returnAddress)
         {
             try
             {
@@ -34,10 +34,12 @@ namespace Battleships.Services
                     await client.SendAsync(msg);
                     client.Disconnect(true);
                 }
+
+                return true;
             }
-            catch (Exception ex)
+            catch
             {
-                throw new InvalidOperationException(ex.Message);
+                return false;
             }
         }
 

@@ -67,20 +67,24 @@ namespace Battleships.AppWeb.Controllers
 
                     string resetLink = "http://localhost:4200/pass-reset/" + model.Email + "/" + token;
 
-                    try
+                    if (await _emailSender.SendEmailAsync(model.Email, "Reset your password", "Please click or copy the password reset link to your browser: " + resetLink))
                     {
-                        await _emailSender.SendEmailAsync(model.Email, "Reset your password", "Please click or copy the password reset link to your browser: " + resetLink);
-
                         return Ok();
                     }
-                    catch
+                    else
                     {
                         return new ObjectResult("Email could not be sent.") { StatusCode = 502 };
                     }
                 }
-            }
 
-            return new ObjectResult("Wrong email address.") { StatusCode = 409 };
+                return new ObjectResult("Wrong email address.") { StatusCode = 409 };
+            }
+            else
+            {
+                string errors = string.Join(",", ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage)));
+
+                return new ObjectResult(errors) { StatusCode = 409 };
+            }
         }
 
         /// <summary>

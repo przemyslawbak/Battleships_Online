@@ -4,6 +4,6 @@ namespace Battleships.Services
 {
     public interface IEmailSender
     {
-        Task SendEmailAsync(string email, string v1, string v2);
+        Task<bool> SendEmailAsync(string email, string v1, string v2);
     }
 }
