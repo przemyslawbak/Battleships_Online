@@ -16,15 +16,12 @@ namespace Battleships.AppWeb.Controllers
     {
         private readonly IUserService _userService;
         private readonly ITokenService _tokenService;
-        private readonly ITokenRepository _tokenRepo;
 
         public TokenController(
             ITokenService tokenService,
-            ITokenRepository tokenRepo,
             IUserService userService)
         {
             _tokenService = tokenService;
-            _tokenRepo = tokenRepo;
             _userService = userService;
         }
 
@@ -51,9 +48,7 @@ namespace Battleships.AppWeb.Controllers
         {
             TempData["requstIp"] = _userService.GetIpAddress(HttpContext);
 
-            bool properToken = _tokenRepo.VerifyReceivedToken(model.RefreshToken, model.Email, TempData["requstIp"].ToString());
-
-            if (!properToken)
+            if (!_tokenService.VerifyRefreshToken(model.RefreshToken, model.Email, TempData["requstIp"].ToString()))
             {
                 return new ObjectResult("Please log in again.") { StatusCode = 409 };
             }
@@ -64,11 +59,15 @@ namespace Battleships.AppWeb.Controllers
         [HttpPost("revoke-token")]
         public IActionResult RevokeToken([FromBody]RevokeTokenRequestViewModel model)
         {
-            _tokenRepo.DeleteRefreshToken(model.UserName);
-            _tokenService.CleanUpBlacklistedTokens();
-            _tokenRepo.AddBlacklistedToken(model.Token);
+            if (_tokenService.RevokeTokens(model))
+            {
+                return Ok();
+            }
+            else
+            {
+                return new ObjectResult("There was a problem logging the user out correctly.") { StatusCode = 500 };
+            }
 
-            return Ok();
         }
 
         [HttpGet("external-login/{provider}")]

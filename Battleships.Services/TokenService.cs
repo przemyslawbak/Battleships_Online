@@ -94,5 +94,26 @@ namespace Battleships.Services
         {
             _tokenRepo.CleanUpBlacklistedTokens(_hoursKeepBlacklistedTokend);
         }
+
+        public bool VerifyRefreshToken(string refreshToken, string email, string requstIp)
+        {
+            return _tokenRepo.VerifyReceivedToken(refreshToken, email, requstIp);
+        }
+
+        public bool RevokeTokens(RevokeTokenRequestViewModel model)
+        {
+            try
+            {
+                _tokenRepo.DeleteRefreshToken(model.UserName);
+                CleanUpBlacklistedTokens();
+                _tokenRepo.AddBlacklistedToken(model.Token);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

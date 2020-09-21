@@ -10,5 +10,7 @@ namespace Battleships.Services
         string GetCurrentToken();
         void CleanUpBlacklistedTokens();
         TokenResponseViewModel GenerateResponse(AppUser user, string ip, string role);
+        bool VerifyRefreshToken(string refreshToken, string email, string requstIp);
+        bool RevokeTokens(RevokeTokenRequestViewModel model);
     }
 }
