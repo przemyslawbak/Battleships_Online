@@ -6,7 +6,7 @@ namespace Battleships.Models.ViewModels
     [JsonObject(MemberSerialization.OptOut)]
     public class UserRegisterViewModel
     {
-        [Required(ErrorMessage = "Please fill up your name.")]
+        [Required(ErrorMessage = "Please fill up your user name.")]
         public string UserName { get; set; }
         [Required(ErrorMessage = "Please fill up your password.")]
         public string Password { get; set; }

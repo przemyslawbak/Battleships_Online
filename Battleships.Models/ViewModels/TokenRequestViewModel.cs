@@ -8,6 +8,7 @@ namespace Battleships.Models.ViewModels
     {
         public string GrantType { get; set; }
         public string ClientId { get; set; }
+        [Required(ErrorMessage = "Some authentication data is missing.")]
         public string ClientSecret { get; set; }
         [Required(ErrorMessage = "Please fill up your email address.")]
         [EmailAddress(ErrorMessage = "Please write a valid e-mail address.")]

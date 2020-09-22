@@ -21,6 +21,7 @@ namespace Battleships.Tests.UnitTests.Controllers
         private readonly TokenController _controller;
         private readonly TokenRequestViewModel _properTokenRequestModel;
         private readonly RefreshTokenRequestViewModel _properRefreshTokenModel;
+        private readonly RevokeTokenRequestViewModel _properRevokeTokenModel;
         private readonly TokenResponseViewModel _returnedResponseTokenModel;
 
         public TokenControllerTests()
@@ -31,6 +32,8 @@ namespace Battleships.Tests.UnitTests.Controllers
             string grantType = "password";
             string properPassword = "proper_test_password";
             string properToken = "proper_test_token";
+            string properName = "proper_test_name";
+
 
             _returnedResponseTokenModel = new TokenResponseViewModel()
             {
@@ -40,6 +43,12 @@ namespace Battleships.Tests.UnitTests.Controllers
                 Role = "foo4",
                 Token = "foo5",
                 User = "foo6"
+            };
+            _properRevokeTokenModel = new RevokeTokenRequestViewModel()
+            {
+                UserName = properName,
+                Token = properToken,
+                RefreshToken = properToken
             };
             _properRefreshTokenModel = new RefreshTokenRequestViewModel()
             {
@@ -71,6 +80,7 @@ namespace Battleships.Tests.UnitTests.Controllers
             _userServiceMock.Setup(mock => mock.GetUserRoleAsync(It.IsAny<AppUser>())).ReturnsAsync("User");
             _tokenServiceMock.Setup(mock => mock.GenerateTokenResponse(It.IsAny<AppUser>(), It.IsAny<string>(), It.IsAny<string>())).Returns(_returnedResponseTokenModel);
             _tokenServiceMock.Setup(mock => mock.VerifyRefreshToken(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(true);
+            _tokenServiceMock.Setup(mock => mock.RevokeTokens(_properRevokeTokenModel)).Returns(true);
 
             _controller = new TokenController(_tokenServiceMock.Object, _userServiceMock.Object) { TempData = tempData };
         }
@@ -176,6 +186,24 @@ namespace Battleships.Tests.UnitTests.Controllers
         }
 
         /// <summary>
+        /// Verifying that with failed model validation will be returned 409 status code and listed model errors.
+        /// </summary>
+        [Fact]
+        private async Task RefreshToken_ModelValidationFailed_ReturnsStatusCode409()
+        {
+            string expectedErrorsResult = "err1, err2.";
+
+            _controller.ModelState.AddModelError("test_error_1", "err1"); //model validation error will be thrown
+            _controller.ModelState.AddModelError("test_error_2", "err2"); //model validation error will be thrown
+            IActionResult result = await _controller.RefreshToken(new RefreshTokenRequestViewModel());
+            ObjectResult objectResult = result as ObjectResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status409Conflict, objectResult.StatusCode);
+            Assert.Equal(expectedErrorsResult, objectResult.Value);
+        }
+
+        /// <summary>
         /// Verifying that with _properRefreshTokenModel there is correct data flow and should be returned JsonResult with proper model object.
         /// </summary>
         [Fact]
@@ -210,6 +238,66 @@ namespace Battleships.Tests.UnitTests.Controllers
             Assert.NotNull(result);
             Assert.Equal(StatusCodes.Status409Conflict, objectResult.StatusCode);
             Assert.Equal(expectedErrorsResult, objectResult.Value);
+        }
+
+        /// <summary>
+        /// Verifying that model for RevokeToken is valideted correctly.
+        /// NOTE: Just for reference that _properRevokeTokenModel is correct.
+        /// </summary>
+        [Fact]
+        private void RevokeToken_ValidationOfValidModelIsCorrect()
+        {
+            ValidationContext context = new ValidationContext(_properRevokeTokenModel, null, null);
+            List<ValidationResult> results = new List<ValidationResult>();
+            bool isModelStateValid = Validator.TryValidateObject(_properRevokeTokenModel, context, results, true);
+
+            Assert.True(isModelStateValid);
+        }
+
+        /// <summary>
+        /// Verifying that with failed model validation will be returned 409 status code and listed model errors.
+        /// </summary>
+        [Fact]
+        private void RevokeToken_ModelValidationFailed_ReturnsStatusCode409()
+        {
+            string expectedErrorsResult = "err1, err2.";
+
+            _controller.ModelState.AddModelError("test_error_1", "err1"); //model validation error will be thrown
+            _controller.ModelState.AddModelError("test_error_2", "err2"); //model validation error will be thrown
+            IActionResult result = _controller.RevokeToken(new RevokeTokenRequestViewModel());
+            ObjectResult objectResult = result as ObjectResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status409Conflict, objectResult.StatusCode);
+            Assert.Equal(expectedErrorsResult, objectResult.Value);
+        }
+
+        /// <summary>
+        /// Verifying that with _properRevokeTokenModel there is correct data flow and should be returned 200 status code.
+        /// </summary>
+        [Fact]
+        private void RevokeToken_WithValidModel_Returns200StatusCode()
+        {
+            IActionResult result = _controller.RevokeToken(_properRevokeTokenModel);
+            StatusCodeResult statusCode = result as StatusCodeResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status200OK, statusCode.StatusCode);
+        }
+
+        /// <summary>
+        /// Verifying that with revoking tokens failed there is correct data flow and should be returned 500 status code.
+        /// </summary>
+        [Fact]
+        private void RevokeToken_WithRevokingTokensFailed_Returns500StatusCode()
+        {
+            _tokenServiceMock.Setup(mock => mock.RevokeTokens(_properRevokeTokenModel)).Returns(false);
+
+            IActionResult result = _controller.RevokeToken(_properRevokeTokenModel);
+            ObjectResult objectResult = result as ObjectResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status500InternalServerError, objectResult.StatusCode);
         }
     }
 }
