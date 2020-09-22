@@ -36,7 +36,7 @@ namespace Battleships.AppWeb.Controllers
 
             if (!ModelState.IsValid)
             {
-                string errors = string.Join(", ", ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage)));
+                string errors = string.Join(", ", ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage))); //todo: method/service
 
                 return new ObjectResult(errors + ".") { StatusCode = 409 };
             }
@@ -64,7 +64,7 @@ namespace Battleships.AppWeb.Controllers
 
             if (!ModelState.IsValid)
             {
-                string errors = string.Join(", ", ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage)));
+                string errors = string.Join(", ", ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage))); //todo: method/service
 
                 return new ObjectResult(errors + ".") { StatusCode = 409 };
             }
@@ -76,7 +76,7 @@ namespace Battleships.AppWeb.Controllers
 
             AppUser user = await _userService.FindUserByEmail(model.Email);
 
-            if (user == null) //todo: dry
+            if (user == null)
             {
                 return new ObjectResult("Invalid user details.") { StatusCode = 409 };
             }
@@ -89,13 +89,13 @@ namespace Battleships.AppWeb.Controllers
         /// <summary>
         /// POST: api/token/revoke-token
         /// </summary>
-        /// <returns>Removes tokens for user logout and returns 200 status code if successfull.</returns>
+        /// <returns>Returns 200 status code if successfull removes tokens for user logout.</returns>
         [HttpPost("revoke-token")]
         public IActionResult RevokeToken([FromBody]RevokeTokenRequestViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                string errors = string.Join(", ", ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage)));
+                string errors = string.Join(", ", ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage))); //todo: method/service
 
                 return new ObjectResult(errors + ".") { StatusCode = 409 };
             }
@@ -111,9 +111,9 @@ namespace Battleships.AppWeb.Controllers
         }
 
         /// <summary>
-        /// Get: api/token/external-login/{provider}
+        /// GET: api/token/external-login/{provider}
         /// </summary>
-        /// <returns>Calls ExternalLoginCallback for external providers login challenge.</returns>
+        /// <returns>new ChallengeResult for ExternalLoginCallback.</returns>
         [HttpGet("external-login/{provider}")]
         public IActionResult ExternalLoginAsync(string provider, string returnUrl = null)
         {
@@ -127,7 +127,7 @@ namespace Battleships.AppWeb.Controllers
         }
 
         /// <summary>
-        /// Get: api/token/ExternalLoginCallback
+        /// GET: api/token/ExternalLoginCallback
         /// </summary>
         /// <returns>Registers new user or logins existing user, and returns response data to the window being opened by AppClient.</returns>
         [HttpGet("ExternalLoginCallback")]
