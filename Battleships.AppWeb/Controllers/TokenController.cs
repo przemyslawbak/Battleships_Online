@@ -4,6 +4,7 @@ using Battleships.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -24,14 +25,20 @@ namespace Battleships.AppWeb.Controllers
             _userService = userService;
         }
 
+        /// <summary>
+        /// POST: api/token/auth
+        /// </summary>
+        /// <returns>Json result with response viewmodel.</returns>
         [HttpPost("auth")]
         public async Task<IActionResult> JsonWebToken([FromBody]TokenRequestViewModel model)
         {
-            TempData["requstIp"] = _userService.GetIpAddress(HttpContext);
+            TempData["requestIp"] = _userService.GetIpAddress(HttpContext);
 
-            if (model == null)
+            if (!ModelState.IsValid)
             {
-                return new StatusCodeResult(500);
+                string errors = string.Join(", ", ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage)));
+
+                return new ObjectResult(errors + ".") { StatusCode = 409 };
             }
 
             AppUser user = await _userService.FindUserByEmail(model.Email);
@@ -43,15 +50,26 @@ namespace Battleships.AppWeb.Controllers
 
             string role = await _userService.GetUserRoleAsync(user);
 
-            return Json(_tokenService.GenerateTokenResponse(user, role, TempData["requstIp"].ToString()));
+            return Json(_tokenService.GenerateTokenResponse(user, role, TempData["requestIp"].ToString()));
         }
 
+        /// <summary>
+        /// POST: api/token/refresh-token
+        /// </summary>
+        /// <returns>Json result with response viewmodel.</returns>
         [HttpPost("refresh-token")]
         public async Task<IActionResult> RefreshToken([FromBody]RefreshTokenRequestViewModel model)
         {
-            TempData["requstIp"] = _userService.GetIpAddress(HttpContext);
+            TempData["requestIp"] = _userService.GetIpAddress(HttpContext);
 
-            if (!_tokenService.VerifyRefreshToken(model.RefreshToken, model.Email, TempData["requstIp"].ToString()))
+            if (!ModelState.IsValid)
+            {
+                string errors = string.Join(", ", ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage)));
+
+                return new ObjectResult(errors + ".") { StatusCode = 409 };
+            }
+
+            if (!_tokenService.VerifyRefreshToken(model.RefreshToken, model.Email, TempData["requestIp"].ToString()))
             {
                 return new ObjectResult("Please log in again.") { StatusCode = 409 };
             }
@@ -65,12 +83,23 @@ namespace Battleships.AppWeb.Controllers
 
             string role = await _userService.GetUserRoleAsync(user);
 
-            return Json(_tokenService.GenerateTokenResponse(user, role, TempData["requstIp"].ToString()));
+            return Json(_tokenService.GenerateTokenResponse(user, role, TempData["requestIp"].ToString()));
         }
 
+        /// <summary>
+        /// POST: api/token/revoke-token
+        /// </summary>
+        /// <returns>Removes tokens for user logout and returns 200 status code if successfull.</returns>
         [HttpPost("revoke-token")]
         public IActionResult RevokeToken([FromBody]RevokeTokenRequestViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                string errors = string.Join(", ", ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage)));
+
+                return new ObjectResult(errors + ".") { StatusCode = 409 };
+            }
+
             if (_tokenService.RevokeTokens(model))
             {
                 return Ok();
@@ -79,13 +108,16 @@ namespace Battleships.AppWeb.Controllers
             {
                 return new ObjectResult("There was a problem logging the user out correctly.") { StatusCode = 500 };
             }
-
         }
 
+        /// <summary>
+        /// Get: api/token/external-login/{provider}
+        /// </summary>
+        /// <returns>Calls ExternalLoginCallback for external providers login challenge.</returns>
         [HttpGet("external-login/{provider}")]
         public IActionResult ExternalLoginAsync(string provider, string returnUrl = null)
         {
-            TempData["requstIp"] = _userService.GetIpAddress(HttpContext);
+            TempData["requestIp"] = _userService.GetIpAddress(HttpContext);
 
             string redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Token", new { ReturnUrl = returnUrl });
 
@@ -94,6 +126,10 @@ namespace Battleships.AppWeb.Controllers
             return new ChallengeResult(provider, properties);
         }
 
+        /// <summary>
+        /// Get: api/token/ExternalLoginCallback
+        /// </summary>
+        /// <returns>Registers new user or logins existing user, and returns response data to the window being opened by AppClient.</returns>
         [HttpGet("ExternalLoginCallback")]
         public async Task<IActionResult> ExternalLoginCallback(string remoteError = null)
         {
@@ -126,7 +162,7 @@ namespace Battleships.AppWeb.Controllers
 
             string role = await _userService.GetUserRoleAsync(user);
 
-            return View(_tokenService.GenerateTokenResponse(user, role, TempData["requstIp"].ToString()));
+            return View(_tokenService.GenerateTokenResponse(user, role, TempData["requestIp"].ToString()));
         }
     }
 }

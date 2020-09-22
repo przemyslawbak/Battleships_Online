@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace Battleships.DAL
+﻿namespace Battleships.DAL
 {
     public interface ITokenRepository
     {

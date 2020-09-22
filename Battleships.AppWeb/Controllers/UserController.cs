@@ -26,7 +26,7 @@ namespace Battleships.AppWeb.Controllers
         }
 
         /// <summary>
-        /// POST: api/user/test
+        /// GET: api/user/test
         /// </summary>
         /// <returns>Status code with object.</returns>
         [HttpGet("test")]
@@ -37,7 +37,7 @@ namespace Battleships.AppWeb.Controllers
         }
 
         /// <summary>
-        /// POST: api/user/admin
+        /// GET: api/user/admin
         /// </summary>
         /// <returns>Status code with object.</returns>
         [HttpGet("admin")]
