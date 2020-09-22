@@ -32,7 +32,6 @@ namespace Battleships.Services
         {
             AppUser user = CreateNewUser(model);
 
-
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);
             IdentityResult roleResult = await _userManager.AddToRoleAsync(user, "User");
 
@@ -130,40 +129,6 @@ namespace Battleships.Services
         }
 
         /// <summary>
-        /// Creates new AppUser object instance.
-        /// </summary>
-        /// <param name="model">AppUser model.</param>
-        /// <returns>New AppUser.</returns>
-        private AppUser CreateNewUser(UserRegisterViewModel model)
-        {
-            return new AppUser()
-            {
-                SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = model.UserName,
-                Email = model.Email,
-                DisplayName = model.DisplayName
-            };
-        }
-
-        /// <summary>
-        /// Adds new user to the DB.
-        /// </summary>
-        /// <param name="user">Passed user.</param>
-        /// <returns>Boolean if succeeded or not.</returns>
-        private async Task<bool> UpdateDbWithNewUser(AppUser user)
-        {
-            try
-            {
-                await _userManager.UpdateAsync(user);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
         /// Gets external auth properties.
         /// </summary>
         /// <param name="provider">Providers name.</param>
@@ -230,6 +195,40 @@ namespace Battleships.Services
             IList<string> roles = await _userManager.GetRolesAsync(user);
 
             return roles.FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Creates new AppUser object instance.
+        /// </summary>
+        /// <param name="model">AppUser model.</param>
+        /// <returns>New AppUser.</returns>
+        private AppUser CreateNewUser(UserRegisterViewModel model)
+        {
+            return new AppUser()
+            {
+                SecurityStamp = Guid.NewGuid().ToString(),
+                UserName = model.UserName,
+                Email = model.Email,
+                DisplayName = model.DisplayName
+            };
+        }
+
+        /// <summary>
+        /// Adds new user to the DB.
+        /// </summary>
+        /// <param name="user">Passed user.</param>
+        /// <returns>Boolean if succeeded or not.</returns>
+        private async Task<bool> UpdateDbWithNewUser(AppUser user)
+        {
+            try
+            {
+                await _userManager.UpdateAsync(user);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

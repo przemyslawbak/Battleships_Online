@@ -22,33 +22,30 @@ namespace Battleships.Tests.UnitTests.Services
         private readonly HttpService _service;
         private readonly string _testToken;
         private readonly string _testIp;
-        private HttpClient _fakeClient;
-        private IConfiguration _fakeConfig;
         private RecaptchaVerificationResponseModel _responseObject;
-        private readonly Dictionary<string, string> _myConfiguration;
 
         public HttpServiceTests()
         {
             _testToken = "some_cool_test_token";
             _testIp = "some_cool_test_ip";
 
-            _myConfiguration = new Dictionary<string, string>()
+            Dictionary<string, string> myConfiguration = new Dictionary<string, string>()
             {
                 {"ReCaptcha3:AcceptedMinScore", "0.5"},
                 {"ReCaptcha3:SecretKey", "secret_test_key"},
                 {"ReCaptcha3:Url", "https://stackoverflow.com/a/34826506/12603542"}
             };
 
-            _fakeConfig = new ConfigurationBuilder()
-                .AddInMemoryCollection(_myConfiguration)
+            IConfiguration fakeConfig = new ConfigurationBuilder()
+                .AddInMemoryCollection(myConfiguration)
                 .Build();
             _fakeHttpMessageHandlerMock = new Mock<FakeHttpMessageHandler>();
-            _fakeClient = new HttpClient(_fakeHttpMessageHandlerMock.Object);
+            HttpClient fakeClient = new HttpClient(_fakeHttpMessageHandlerMock.Object);
             _httpClientMock = new Mock<IHttpClientProvider>();
 
-            _httpClientMock.Setup(mock => mock.GetHttpClient()).Returns(_fakeClient);
+            _httpClientMock.Setup(mock => mock.GetHttpClient()).Returns(fakeClient);
 
-            _service = new HttpService(_fakeConfig, _httpClientMock.Object);
+            _service = new HttpService(fakeConfig, _httpClientMock.Object);
         }
 
         [Theory]
