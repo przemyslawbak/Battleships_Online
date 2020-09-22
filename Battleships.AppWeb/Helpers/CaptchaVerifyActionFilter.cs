@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Threading.Tasks;
 
-namespace Battleships.AppWeb.Utilities
+namespace Battleships.AppWeb.Helpers
 {
     public class CaptchaVerifyActionFilter : ActionFilterAttribute
     {
@@ -21,7 +21,7 @@ namespace Battleships.AppWeb.Utilities
         {
             string actionName = context.RouteData.Values["action"] as string;
             string token = string.Empty;
-            bool success = false;
+            bool success;
 
             if (actionName == "PassChange")
             {

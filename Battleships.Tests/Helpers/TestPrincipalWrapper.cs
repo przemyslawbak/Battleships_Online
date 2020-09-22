@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace Battleships.Tests.Wrappers
+namespace Battleships.Tests.Helpers
 {
     public class TestPrincipalWrapper : ClaimsPrincipal
     {

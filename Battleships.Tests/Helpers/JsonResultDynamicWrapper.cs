@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Dynamic;
 using System.Reflection;
 
-namespace Battleships.Tests.Wrappers
+namespace Battleships.Tests.Helpers
 {
     public class JsonResultDynamicWrapper : DynamicObject
     {

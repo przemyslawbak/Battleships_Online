@@ -1,6 +1,6 @@
 ﻿using Battleships.Models;
 using Battleships.Services;
-using Battleships.Tests.Wrappers;
+using Battleships.Tests.Helpers;
 using Microsoft.Extensions.Configuration;
 using Moq;
 using Moq.Protected;

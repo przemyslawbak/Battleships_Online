@@ -1,4 +1,4 @@
-﻿using Battleships.AppWeb.Utilities;
+﻿using Battleships.AppWeb.Helpers;
 using Battleships.DAL;
 using Battleships.Models;
 using Battleships.Services;

@@ -2,7 +2,7 @@
 using Battleships.Models;
 using Battleships.Models.ViewModels;
 using Battleships.Services;
-using Battleships.Tests.Wrappers;
+using Battleships.Tests.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -73,8 +73,10 @@ namespace Battleships.Tests.UnitTests.Controllers
                 Email = properEmail
             };
             DefaultHttpContext httpContext = new DefaultHttpContext();
-            TempDataDictionary tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
-            tempData.Add("requestIp", "127.0.0.1");
+            TempDataDictionary tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>())
+            {
+                { "requestIp", "127.0.0.1" }
+            };
 
             _tokenServiceMock = new Mock<ITokenService>();
             _userServiceMock = new Mock<IUserService>();

@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Battleships.Tests.Wrappers
+namespace Battleships.Tests.Helpers
 {
     public class FakeHttpMessageHandler : HttpMessageHandler
     {

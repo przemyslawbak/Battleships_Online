@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Battleships.AppWeb.Utilities
+namespace Battleships.AppWeb.Helpers
 {
     public class TokenManagerMiddleware : IMiddleware
     {
