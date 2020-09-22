@@ -19,7 +19,7 @@ namespace Battleships.AppWeb.Utilities
 
         public async Task InvokeAsync(HttpContext httpContext, RequestDelegate next)
         {
-            string currentToken = _tokenService.GetCurrentToken();
+            string currentToken = _tokenService.GetCurrentToken(httpContext);
             bool isTokenBlacklisted = _tokenRepo.VeriFyTokenBan(currentToken);
 
             if (!isTokenBlacklisted)

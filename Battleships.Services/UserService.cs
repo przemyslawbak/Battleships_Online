@@ -56,7 +56,6 @@ namespace Battleships.Services
         public string GenerateRandomPassword()
         {
             Random random = new Random();
-
             const string chars = "abcdefghijklmnopqrtuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
             return new string(Enumerable.Repeat(chars, 20).Select(s => s[random.Next(s.Length)]).ToArray());
@@ -185,7 +184,7 @@ namespace Battleships.Services
         }
 
         /// <summary>
-        /// VErifies if password is correct for the user.
+        /// Verifies if password is correct for the user.
         /// </summary>
         /// <param name="user">AppUser object.</param>
         /// <param name="password">Password to be verified.</param>
@@ -195,6 +194,11 @@ namespace Battleships.Services
             return await _userManager.CheckPasswordAsync(user, password);
         }
 
+        /// <summary>
+        /// Returns instance of UserRegisterViewModel, where props are based on passed ExternalLoginInfo object.
+        /// </summary>
+        /// <param name="info">ExternalLoginInfo object.</param>
+        /// <returns>UserRegisterViewModel object.</returns>
         public UserRegisterViewModel GetRegisterModel(ExternalLoginInfo info)
         {
             return new UserRegisterViewModel()
@@ -206,11 +210,21 @@ namespace Battleships.Services
             };
         }
 
+        /// <summary>
+        /// Returns IP address extracted from passed HttpContext object.
+        /// </summary>
+        /// <param name="httpContext">HttpContext object.</param>
+        /// <returns>String IP address v4</returns>
         public string GetIpAddress(HttpContext httpContext)
         {
             return httpContext.Features.Get<IHttpConnectionFeature>()?.RemoteIpAddress.MapToIPv4().ToString();
         }
 
+        /// <summary>
+        /// Returns user role basing on passed AppUser object.
+        /// </summary>
+        /// <param name="user">AppUser object.</param>
+        /// <returns>String user role.</returns>
         public async Task<string> GetUserRoleAsync(AppUser user)
         {
             IList<string> roles = await _userManager.GetRolesAsync(user);
