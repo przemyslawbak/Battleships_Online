@@ -4,11 +4,14 @@ using Battleships.Models.ViewModels;
 using Battleships.Services;
 using Battleships.Tests.Wrappers;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Moq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -23,6 +26,7 @@ namespace Battleships.Tests.UnitTests.Controllers
         private readonly RefreshTokenRequestViewModel _properRefreshTokenModel;
         private readonly RevokeTokenRequestViewModel _properRevokeTokenModel;
         private readonly TokenResponseViewModel _returnedResponseTokenModel;
+        private readonly ExternalLoginInfo _externalLoginInfoInstance;
 
         public TokenControllerTests()
         {
@@ -33,8 +37,9 @@ namespace Battleships.Tests.UnitTests.Controllers
             string properPassword = "proper_test_password";
             string properToken = "proper_test_token";
             string properName = "proper_test_name";
+            Thread.CurrentPrincipal = new TestPrincipalWrapper(new Claim(ClaimTypes.Email, properEmail));
 
-
+            _externalLoginInfoInstance = new ExternalLoginInfo((ClaimsPrincipal)Thread.CurrentPrincipal, "Facebook", "providers_key", "some_display_name");
             _returnedResponseTokenModel = new TokenResponseViewModel()
             {
                 DisplayName = "foo1",
@@ -78,6 +83,9 @@ namespace Battleships.Tests.UnitTests.Controllers
             _userServiceMock.Setup(mock => mock.FindUserByEmail(It.IsAny<string>())).ReturnsAsync(properUser);
             _userServiceMock.Setup(mock => mock.VerifyUsersPassword(It.IsAny<AppUser>(), It.IsAny<string>())).ReturnsAsync(true);
             _userServiceMock.Setup(mock => mock.GetUserRoleAsync(It.IsAny<AppUser>())).ReturnsAsync("User");
+            _userServiceMock.Setup(mock => mock.GetExternalLogin()).ReturnsAsync(_externalLoginInfoInstance);
+            _userServiceMock.Setup(mock => mock.GetRegisterModel(It.IsAny<ExternalLoginInfo>())).Returns(new UserRegisterViewModel());
+            _userServiceMock.Setup(mock => mock.CreateNewUserAndAddToDbAsync(It.IsAny<UserRegisterViewModel>())).ReturnsAsync(true);
             _tokenServiceMock.Setup(mock => mock.GenerateTokenResponse(It.IsAny<AppUser>(), It.IsAny<string>(), It.IsAny<string>())).Returns(_returnedResponseTokenModel);
             _tokenServiceMock.Setup(mock => mock.VerifyRefreshToken(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(true);
             _tokenServiceMock.Setup(mock => mock.RevokeTokens(_properRevokeTokenModel)).Returns(true);
@@ -298,6 +306,77 @@ namespace Battleships.Tests.UnitTests.Controllers
 
             Assert.NotNull(result);
             Assert.Equal(StatusCodes.Status500InternalServerError, objectResult.StatusCode);
+        }
+
+        /// <summary>
+        /// Verifying that with remoteError = null there is correct data flow and should be returned JsonResult with proper model object.
+        /// </summary>
+        [Fact]
+        private async Task ExternalLoginCallback_WithValidModel_ReturnsJsonResult()
+        {
+            IActionResult result = await _controller.ExternalLoginCallback(null);
+            ViewResult resultObject = result as ViewResult;
+            TokenResponseViewModel resultData = resultObject.ViewData.Model as TokenResponseViewModel;
+
+            Assert.NotNull(result);
+            Assert.IsType<ViewResult>(result);
+            Assert.Equal("foo1", resultData.DisplayName);
+            Assert.Equal("foo2", resultData.Email);
+            Assert.Equal("foo3", resultData.RefreshToken);
+            Assert.Equal("foo4", resultData.Role);
+            Assert.Equal("foo5", resultData.Token);
+            Assert.Equal("foo6", resultData.User);
+        }
+
+        /// <summary>
+        /// Verifying that with providers remote error will be returned 503 status code.
+        /// </summary>
+        [Fact]
+        private async Task ExternalLoginCallback_ProvidersRemoteError_ReturnsStatusCode503()
+        {
+            string expectedErrorsResult = "External provider error: some_error.";
+
+            IActionResult result = await _controller.ExternalLoginCallback("some_error");
+            ObjectResult objectResult = result as ObjectResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status503ServiceUnavailable, objectResult.StatusCode);
+            Assert.Equal(expectedErrorsResult, objectResult.Value);
+        }
+
+        /// <summary>
+        /// Verifying that external login info not received will be returned 503 status code.
+        /// </summary>
+        [Fact]
+        private async Task ExternalLoginCallback_ExternalLoginInfoNotReceived_ReturnsStatusCode503()
+        {
+            string expectedErrorsResult = "External provider error.";
+            _userServiceMock.Setup(mock => mock.GetExternalLogin()).ReturnsAsync((ExternalLoginInfo)null);
+
+            IActionResult result = await _controller.ExternalLoginCallback(null);
+            ObjectResult objectResult = result as ObjectResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status503ServiceUnavailable, objectResult.StatusCode);
+            Assert.Equal(expectedErrorsResult, objectResult.Value);
+        }
+
+        /// <summary>
+        /// Verifying that when user not found and could not create new user will be returned 500 status code.
+        /// </summary>
+        [Fact]
+        private async Task ExternalLoginCallback_UserNotFoundAndCouldNotCreateNewUser_ReturnsStatusCode500()
+        {
+            string expectedErrorsResult = "Error when creating new user.";
+            _userServiceMock.Setup(mock => mock.FindUserByEmail(It.IsAny<string>())).ReturnsAsync((AppUser)null);
+            _userServiceMock.Setup(mock => mock.CreateNewUserAndAddToDbAsync(It.IsAny<UserRegisterViewModel>())).ReturnsAsync(false);
+
+            IActionResult result = await _controller.ExternalLoginCallback(null);
+            ObjectResult objectResult = result as ObjectResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status500InternalServerError, objectResult.StatusCode);
+            Assert.Equal(expectedErrorsResult, objectResult.Value);
         }
     }
 }

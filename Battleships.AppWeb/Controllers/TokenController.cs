@@ -135,7 +135,7 @@ namespace Battleships.AppWeb.Controllers
         {
             if (!string.IsNullOrEmpty(remoteError))
             {
-                return new ObjectResult("External provider error: " + remoteError) { StatusCode = 503 };
+                return new ObjectResult("External provider error: " + remoteError + ".") { StatusCode = 503 };
             }
 
             ExternalLoginInfo info = await _userService.GetExternalLogin();
@@ -149,15 +149,12 @@ namespace Battleships.AppWeb.Controllers
 
             if (user == null)
             {
-
                 UserRegisterViewModel model = _userService.GetRegisterModel(info);
 
                 if (!await _userService.CreateNewUserAndAddToDbAsync(model))
                 {
                     return new ObjectResult("Error when creating new user.") { StatusCode = 500 };
                 }
-
-                user = await _userService.FindUserByEmail(info.Principal.FindFirst(ClaimTypes.Email).Value);
             }
 
             string role = await _userService.GetUserRoleAsync(user);
