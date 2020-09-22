@@ -1,7 +1,6 @@
 ﻿using MailKit.Net.Smtp;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
-using System;
 using System.Threading.Tasks;
 
 namespace Battleships.Services
@@ -48,17 +47,11 @@ namespace Battleships.Services
             MimeMessage mailMessage = new MimeMessage();
             mailMessage.From.Add(new MailboxAddress("4Sea Data", _configuration["ServiceSecret:NoReplyAddress"]));
             mailMessage.To.Add(new MailboxAddress("4Sea Data - No reply", email));
-
-
             mailMessage.Subject = subject;
             mailMessage.Body = new TextPart("plain")
             {
                 Text = message
             };
-            if (!string.IsNullOrEmpty(returnAddress) && !string.IsNullOrEmpty(name))
-            {
-                mailMessage.ReplyTo.Add(new MailboxAddress(name, returnAddress));
-            }
 
             return mailMessage;
         }
