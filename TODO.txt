@@ -15,6 +15,7 @@ OK - check return values in service methods
 OK - injecting services?
 OK - base url, example: https://jasonwatmore.com/post/2020/09/09/angular-10-role-based-authorization-tutorial-with-example
 OK - Angular app structure and coding style guide: https://angular.io/guide/styleguide
+- error handling if RecaptchaVerificationResponseModel result not Success
 - test case: add if (model == null) return 500?????
 - refactorize TokenController
 - back-end unit testing

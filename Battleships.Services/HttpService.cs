@@ -11,11 +11,14 @@ namespace Battleships.Services
     public class HttpService : IHttpService
     {
         private readonly IConfiguration _configuration;
-        private static readonly HttpClient client = new HttpClient();
+        private readonly IHttpClientProvider _httpClient;
+        private static HttpClient _sharedHttpClient;
 
-        public HttpService(IConfiguration config)
+        public HttpService(IConfiguration config, IHttpClientProvider httpClient)
         {
             _configuration = config;
+            _httpClient = httpClient;
+            _sharedHttpClient = _httpClient.GetHttpClient();
         }
 
         public async Task<bool> VerifyCaptchaAsync(string captchaToken, string ip)
@@ -43,8 +46,12 @@ namespace Battleships.Services
             };
 
             FormUrlEncodedContent content = new FormUrlEncodedContent(values);
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, _configuration["ReCaptcha3:Url"])
+            {
+                Content = content
+            };
 
-            HttpResponseMessage response = await client.PostAsync(_configuration["ReCaptcha3:Url"], content);
+            HttpResponseMessage response = await _sharedHttpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
