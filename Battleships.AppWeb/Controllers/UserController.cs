@@ -55,7 +55,7 @@ namespace Battleships.AppWeb.Controllers
         [ServiceFilter(typeof(CaptchaVerifyActionFilter))]
         public async Task<IActionResult> PassChange([FromBody]PassResetEmailViewModel model)
         {
-            if (model == null) //todo: unit test
+            if (model == null)
             {
                 return new ObjectResult("Bad request.") { StatusCode = 400 };
             }
@@ -95,7 +95,7 @@ namespace Battleships.AppWeb.Controllers
         [HttpPost("new-password")]
         public async Task<IActionResult> PassReset([FromBody]ResetPasswordViewModel model)
         {
-            if (model == null) //todo: unit test
+            if (model == null)
             {
                 return new ObjectResult("Bad request.") { StatusCode = 400 };
             }
@@ -133,7 +133,7 @@ namespace Battleships.AppWeb.Controllers
         [ServiceFilter(typeof(CaptchaVerifyActionFilter))]
         public async Task<IActionResult> AddNewUser([FromBody]UserRegisterViewModel model)
         {
-            if (model == null) //todo: unit test
+            if (model == null)
             {
                 return new ObjectResult("Bad request.") { StatusCode = 400 };
             }

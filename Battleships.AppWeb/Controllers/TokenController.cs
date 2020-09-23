@@ -34,7 +34,7 @@ namespace Battleships.AppWeb.Controllers
         {
             TempData["requestIp"] = _userService.GetIpAddress(HttpContext);
 
-            if (model == null) //todo: unit test
+            if (model == null)
             {
                 return new ObjectResult("Bad request.") { StatusCode = 400 };
             }
@@ -67,7 +67,7 @@ namespace Battleships.AppWeb.Controllers
         {
             TempData["requestIp"] = _userService.GetIpAddress(HttpContext);
 
-            if (model == null) //todo: unit test
+            if (model == null)
             {
                 return new ObjectResult("Bad request.") { StatusCode = 400 };
             }
@@ -103,7 +103,7 @@ namespace Battleships.AppWeb.Controllers
         [HttpPost("revoke-token")]
         public IActionResult RevokeToken([FromBody]RevokeTokenRequestViewModel model)
         {
-            if (model == null) //todo: unit test
+            if (model == null)
             {
                 return new ObjectResult("Bad request.") { StatusCode = 400 };
             }

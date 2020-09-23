@@ -15,13 +15,15 @@ OK - check return values in service methods
 OK - injecting services?
 OK - base url, example: https://jasonwatmore.com/post/2020/09/09/angular-10-role-based-authorization-tutorial-with-example
 OK - Angular app structure and coding style guide: https://angular.io/guide/styleguide
-- error handling if RecaptchaVerificationResponseModel result not Success
-- test case: add if (model == null) return 500?????
+OK - test case: add if (model == null) return 500?????
 OK - refactorize TokenController
 OK - back-end unit testing
+OK - unit testing model == null
+- action flter to verify model == null: https://stackoverflow.com/a/25829843/12603542
 - creating user identity result https://4programmers.net/Forum/C_i_.NET/343563-nowy_uzytkownik_api_endpoint?p=1703857#comment-625167
-- mock UserManager
-- method comments
+- error handling if RecaptchaVerificationResponseModel result not Success
+OK - mock UserManager
+- Angular method comments
 - front-end unit testing
 OK - register new user
 OK - after login display user name
