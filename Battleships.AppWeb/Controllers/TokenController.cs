@@ -34,6 +34,11 @@ namespace Battleships.AppWeb.Controllers
         {
             TempData["requestIp"] = _userService.GetIpAddress(HttpContext);
 
+            if (model == null) //todo: unit test
+            {
+                return new ObjectResult("Bad request.") { StatusCode = 400 };
+            }
+
             if (!ModelState.IsValid)
             {
                 string errors = string.Join(", ", ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage))); //todo: method/service
@@ -61,6 +66,11 @@ namespace Battleships.AppWeb.Controllers
         public async Task<IActionResult> RefreshToken([FromBody]RefreshTokenRequestViewModel model)
         {
             TempData["requestIp"] = _userService.GetIpAddress(HttpContext);
+
+            if (model == null) //todo: unit test
+            {
+                return new ObjectResult("Bad request.") { StatusCode = 400 };
+            }
 
             if (!ModelState.IsValid)
             {
@@ -93,6 +103,11 @@ namespace Battleships.AppWeb.Controllers
         [HttpPost("revoke-token")]
         public IActionResult RevokeToken([FromBody]RevokeTokenRequestViewModel model)
         {
+            if (model == null) //todo: unit test
+            {
+                return new ObjectResult("Bad request.") { StatusCode = 400 };
+            }
+
             if (!ModelState.IsValid)
             {
                 string errors = string.Join(", ", ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage))); //todo: method/service

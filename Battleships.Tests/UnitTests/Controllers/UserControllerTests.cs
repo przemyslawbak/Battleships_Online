@@ -69,10 +69,6 @@ namespace Battleships.Tests.UnitTests.Controllers
             _controller = new UserController(_userServiceMock.Object, _sanitizerMock.Object, _emailSenderMock.Object);
         }
 
-        /// <summary>
-        /// Verifying that model for PassChange is valideted correctly.
-        /// NOTE: Just for reference that _properPassResetModel is correct.
-        /// </summary>
         [Fact]
         private void PassChange_ValidationOfValidModelIsCorrect()
         {
@@ -83,11 +79,8 @@ namespace Battleships.Tests.UnitTests.Controllers
             Assert.True(isModelStateValid);
         }
 
-        /// <summary>
-        /// Verifying that with _properPassResetModel there is correct data flow and should be returned 200 status code.
-        /// </summary>
         [Fact]
-        private async Task PassChange_WithValidModel_ReturnsStatusCode200()
+        private async Task PassChange_OnValidModel_ReturnsStatusCode200()
         {
             IActionResult result = await _controller.PassChange(_properPassResetModel);
             StatusCodeResult statusCode = result as StatusCodeResult;
@@ -96,16 +89,13 @@ namespace Battleships.Tests.UnitTests.Controllers
             Assert.Equal(StatusCodes.Status200OK, statusCode.StatusCode);
         }
 
-        /// <summary>
-        /// Verifying that with failed model validation will be returned 409 status code and listed model errors.
-        /// </summary>
         [Fact]
-        private async Task PassChange_ModelValidationFailed_ReturnsStatusCode409()
+        private async Task PassChange_OnModelValidationFailed_ReturnsStatusCode409()
         {
             string expectedErrorsResult = "err1, err2.";
 
-            _controller.ModelState.AddModelError("test_error_1", "err1"); //model validation error will be thrown
-            _controller.ModelState.AddModelError("test_error_2", "err2"); //model validation error will be thrown
+            _controller.ModelState.AddModelError("test_error_1", "err1");
+            _controller.ModelState.AddModelError("test_error_2", "err2");
             IActionResult result = await _controller.PassChange(new PassResetEmailViewModel());
             ObjectResult objectResult = result as ObjectResult;
 
@@ -114,11 +104,8 @@ namespace Battleships.Tests.UnitTests.Controllers
             Assert.Equal(expectedErrorsResult, objectResult.Value);
         }
 
-        /// <summary>
-        /// Verifying that failed email sending will return 502 status code and error value.
-        /// </summary>
         [Fact]
-        private async Task PassChange_WhenEmailSendingFailed_ReturnsStatusCode502()
+        private async Task PassChange_OnEmailSendingFailed_ReturnsStatusCode502()
         {
             string expectedErrorsResult = "Email could not be sent.";
             _emailSenderMock.Setup(mock => mock.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
@@ -131,10 +118,6 @@ namespace Battleships.Tests.UnitTests.Controllers
             Assert.Equal(expectedErrorsResult, objectResult.Value);
         }
 
-        /// <summary>
-        /// Verifying that model for PassReset is valideted correctly.
-        /// NOTE: Just for reference that _properResetModel is correct.
-        /// </summary>
         [Fact]
         private void PassReset_ValidationOfValidModelIsCorrect()
         {
@@ -145,11 +128,8 @@ namespace Battleships.Tests.UnitTests.Controllers
             Assert.True(isModelStateValid);
         }
 
-        /// <summary>
-        /// Verifying that with _properResetModel there is correct data flow and should be returned 200 status code.
-        /// </summary>
         [Fact]
-        private async Task PassReset_WithValidModel_ReturnsStatusCode200()
+        private async Task PassReset_OnValidModel_ReturnsStatusCode200()
         {
             IActionResult result = await _controller.PassReset(_properResetModel);
             StatusCodeResult statusCode = result as StatusCodeResult;
@@ -158,16 +138,13 @@ namespace Battleships.Tests.UnitTests.Controllers
             Assert.Equal(StatusCodes.Status200OK, statusCode.StatusCode);
         }
 
-        /// <summary>
-        /// Verifying that with failed model validation will be returned 409 status code and listed model errors.
-        /// </summary>
         [Fact]
-        private async Task PassReset_ModelValidationFailed_ReturnsStatusCode409()
+        private async Task PassReset_OnModelValidationFailed_ReturnsStatusCode409()
         {
             string expectedErrorsResult = "err1, err2.";
 
-            _controller.ModelState.AddModelError("test_error_1", "err1"); //model validation error will be thrown
-            _controller.ModelState.AddModelError("test_error_2", "err2"); //model validation error will be thrown
+            _controller.ModelState.AddModelError("test_error_1", "err1");
+            _controller.ModelState.AddModelError("test_error_2", "err2");
             IActionResult result = await _controller.PassReset(new ResetPasswordViewModel());
             ObjectResult objectResult = result as ObjectResult;
 
@@ -176,11 +153,8 @@ namespace Battleships.Tests.UnitTests.Controllers
             Assert.Equal(expectedErrorsResult, objectResult.Value);
         }
 
-        /// <summary>
-        /// Verifying that failed password updating will return 502 status code and error value.
-        /// </summary>
         [Fact]
-        private async Task PassReset_WhenPasswordUpdatingFailed_ReturnsStatusCode500()
+        private async Task PassReset_OnPasswordUpdatingFailed_ReturnsStatusCode500()
         {
             string expectedErrorsResult = "Error when updating password.";
             _userServiceMock.Setup(mock => mock.ResetPassword(It.IsAny<AppUser>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
@@ -193,12 +167,8 @@ namespace Battleships.Tests.UnitTests.Controllers
             Assert.Equal(expectedErrorsResult, objectResult.Value);
         }
 
-        /// <summary>
-        /// Verifying that model for AddNewUser is valideted correctly.
-        /// NOTE: Just for reference that _registerUserModel is correct.
-        /// </summary>
         [Fact]
-        private void AddNewUser_ValidationOfValidModelIsCorrect()
+        private void AddNewUser_OnValidationOfValidModelIsCorrect()
         {
             ValidationContext context = new ValidationContext(_properRegisterUserModel, null, null);
             List<ValidationResult> results = new List<ValidationResult>();
@@ -207,11 +177,8 @@ namespace Battleships.Tests.UnitTests.Controllers
             Assert.True(isModelStateValid);
         }
 
-        /// <summary>
-        /// Verifying that with _registerUserModel there is correct data flow and should be returned 200 status code.
-        /// </summary>
         [Fact]
-        private async Task AddNewUser_WithValidModel_ReturnsStatusCode200()
+        private async Task AddNewUser_OnValidModel_ReturnsStatusCode200()
         {
             _userServiceMock.Setup(mock => mock.FindUserByEmail(It.IsAny<string>())).ReturnsAsync((AppUser)null);
             IActionResult result = await _controller.AddNewUser(_properRegisterUserModel);
@@ -221,16 +188,13 @@ namespace Battleships.Tests.UnitTests.Controllers
             Assert.Equal(StatusCodes.Status200OK, statusCode.StatusCode);
         }
 
-        /// <summary>
-        /// Verifying that with failed model validation will be returned 409 status code and listed model errors.
-        /// </summary>
         [Fact]
-        private async Task AddNewUser_ModelValidationFailed_ReturnsStatusCode409()
+        private async Task AddNewUser_OnModelValidationFailed_ReturnsStatusCode409()
         {
             string expectedErrorsResult = "err1, err2.";
 
-            _controller.ModelState.AddModelError("test_error_1", "err1"); //model validation error will be thrown
-            _controller.ModelState.AddModelError("test_error_2", "err2"); //model validation error will be thrown
+            _controller.ModelState.AddModelError("test_error_1", "err1");
+            _controller.ModelState.AddModelError("test_error_2", "err2");
             IActionResult result = await _controller.AddNewUser(new UserRegisterViewModel());
             ObjectResult objectResult = result as ObjectResult;
 
@@ -239,11 +203,8 @@ namespace Battleships.Tests.UnitTests.Controllers
             Assert.Equal(expectedErrorsResult, objectResult.Value);
         }
 
-        /// <summary>
-        /// Verifying that existing users email will return 409 status code and error value.
-        /// </summary>
         [Fact]
-        private async Task AddNewUser_WhenExistingEmailFailed_ReturnsStatusCode409()
+        private async Task AddNewUser_OnExistingEmailFailed_ReturnsStatusCode409()
         {
             string expectedErrorsResult = "Email already exists.";
 
@@ -255,11 +216,8 @@ namespace Battleships.Tests.UnitTests.Controllers
             Assert.Equal(expectedErrorsResult, objectResult.Value);
         }
 
-        /// <summary>
-        /// Verifying that failing of creating new user will return 500 status code and error value.
-        /// </summary>
         [Fact]
-        private async Task AddNewUser_WhenCreatingUserFailed_ReturnsStatusCode500()
+        private async Task AddNewUser_OnCreatingUserFailed_ReturnsStatusCode500()
         {
             string expectedErrorsResult = "Error when creating new user.";
             _userServiceMock.Setup(mock => mock.FindUserByEmail(It.IsAny<string>())).ReturnsAsync((AppUser)null);

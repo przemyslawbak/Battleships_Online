@@ -53,7 +53,7 @@ namespace Battleships.Tests.UnitTests.Services
         [InlineData(0.4, true, false)]
         [InlineData(0.9, false, false)]
         [InlineData(0.4, false, false)]
-        private async Task VerifyCaptchaAsync_ForHttpResponse_ReturnsCorrectBoolean(double score, bool success, bool expected)
+        private async Task VerifyCaptchaAsync_OnCentainHttpResponseValues_ReturnsCorrectBoolean(double score, bool success, bool expected)
         {
             _responseObject = new RecaptchaVerificationResponseModel()
             {

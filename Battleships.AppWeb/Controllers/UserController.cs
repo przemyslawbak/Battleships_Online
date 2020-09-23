@@ -55,36 +55,37 @@ namespace Battleships.AppWeb.Controllers
         [ServiceFilter(typeof(CaptchaVerifyActionFilter))]
         public async Task<IActionResult> PassChange([FromBody]PassResetEmailViewModel model)
         {
-            if (ModelState.IsValid)
+            if (model == null) //todo: unit test
             {
-                model.Email = _sanitizer.CleanUp(model.Email);
-
-                AppUser user = await _userService.FindUserByEmail(model.Email);
-
-                if (user != null)
-                {
-                    string token = await _userService.GetPassResetToken(user);
-
-                    string resetLink = "http://localhost:4200/pass-reset/" + model.Email + "/" + token;
-
-                    if (await _emailSender.SendEmailAsync(model.Email, "Reset your password", "Please click or copy the password reset link to your browser: " + resetLink))
-                    {
-                        return Ok();
-                    }
-                    else
-                    {
-                        return new ObjectResult("Email could not be sent.") { StatusCode = 502 };
-                    }
-                }
-
-                return new ObjectResult("Wrong email address.") { StatusCode = 409 };
+                return new ObjectResult("Bad request.") { StatusCode = 400 };
             }
-            else
+
+            if (!ModelState.IsValid)
             {
                 string errors = string.Join(", ", ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage)));
 
                 return new ObjectResult(errors + ".") { StatusCode = 409 };
             }
+
+            model.Email = _sanitizer.CleanUp(model.Email);
+
+            AppUser user = await _userService.FindUserByEmail(model.Email);
+
+            if (user == null)
+            {
+                return new ObjectResult("Wrong email address.") { StatusCode = 409 };
+            }
+
+            string token = await _userService.GetPassResetToken(user);
+
+            string resetLink = "http://localhost:4200/pass-reset/" + model.Email + "/" + token;
+
+            if (!await _emailSender.SendEmailAsync(model.Email, "Reset your password", "Please click or copy the password reset link to your browser: " + resetLink))
+            {
+                return new ObjectResult("Email could not be sent.") { StatusCode = 502 };
+            }
+
+            return Ok();
         }
 
         /// <summary>
@@ -94,35 +95,34 @@ namespace Battleships.AppWeb.Controllers
         [HttpPost("new-password")]
         public async Task<IActionResult> PassReset([FromBody]ResetPasswordViewModel model)
         {
-            if (ModelState.IsValid)
+            if (model == null) //todo: unit test
             {
-                model.Email = _sanitizer.CleanUp(model.Email);
-                model.Password = _sanitizer.CleanUp(model.Password);
-
-                AppUser user = await _userService.FindUserByEmail(model.Email);
-
-                if (user != null)
-                {
-                    if (await _userService.ResetPassword(user, model.Token, model.Password))
-                    {
-                        return Ok();
-                    }
-                    else
-                    {
-                        return new ObjectResult("Error when updating password.") { StatusCode = 500 };
-                    }
-                }
-                else
-                {
-                    return new ObjectResult("Wrong email address.") { StatusCode = 409 };
-                }
+                return new ObjectResult("Bad request.") { StatusCode = 400 };
             }
-            else
+
+            if (!ModelState.IsValid)
             {
                 string errors = string.Join(", ", ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage)));
 
                 return new ObjectResult(errors + ".") { StatusCode = 409 };
             }
+
+            model.Email = _sanitizer.CleanUp(model.Email);
+            model.Password = _sanitizer.CleanUp(model.Password);
+
+            AppUser user = await _userService.FindUserByEmail(model.Email);
+
+            if (user == null)
+            {
+                return new ObjectResult("Wrong email address.") { StatusCode = 409 };
+            }
+
+            if (!await _userService.ResetPassword(user, model.Token, model.Password))
+            {
+                return new ObjectResult("Error when updating password.") { StatusCode = 500 };
+            }
+
+            return Ok();
         }
 
         /// <summary>
@@ -133,6 +133,11 @@ namespace Battleships.AppWeb.Controllers
         [ServiceFilter(typeof(CaptchaVerifyActionFilter))]
         public async Task<IActionResult> AddNewUser([FromBody]UserRegisterViewModel model)
         {
+            if (model == null) //todo: unit test
+            {
+                return new ObjectResult("Bad request.") { StatusCode = 400 };
+            }
+
             if (!ModelState.IsValid)
             {
                 string errors = string.Join(", ", ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage)));

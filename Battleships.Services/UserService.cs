@@ -91,23 +91,19 @@ namespace Battleships.Services
         /// <returns>Boolean if succeeded or not.</returns>
         public async Task<bool> ResetPassword(AppUser user, string token, string password)
         {
-            try
-            {
-                IdentityResult result = await _userManager.ResetPasswordAsync(user, token, password);
+            IdentityResult result = await _userManager.ResetPasswordAsync(user, token, password);
 
-                if (result.Succeeded)
-                {
-                    await _userManager.UpdateAsync(user);
-
-                    return true;
-                }
-
-                return false;
-            }
-            catch
+            if (!result.Succeeded)
             {
                 return false;
             }
+
+            if (!await UpdateDbWithNewUser(user))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>
