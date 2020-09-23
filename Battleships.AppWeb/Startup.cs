@@ -100,7 +100,8 @@ namespace Battleships_Online
             services.AddTransient<IHttpService, HttpService>();
             services.AddTransient<ITokenRepository, EFTokenRepository>();
             services.AddTransient<IHttpClientProvider, HttpClientProvider>();
-            services.AddScoped<CaptchaVerifyActionFilter>();
+            services.AddScoped<ValidateModelAttribute>();
+            services.AddScoped<VerifyCaptchaAttribute>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

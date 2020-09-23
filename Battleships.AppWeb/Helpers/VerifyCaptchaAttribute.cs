@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Battleships.AppWeb.Helpers
 {
-    public class CaptchaVerifyActionFilter : ActionFilterAttribute
+    public class VerifyCaptchaAttribute : ActionFilterAttribute
     {
         private readonly IHttpService _http;
         private readonly IUserService _userService;
 
-        public CaptchaVerifyActionFilter(IHttpService http, IUserService userService)
+        public VerifyCaptchaAttribute(IHttpService http, IUserService userService)
         {
             _userService = userService;
             _http = http;

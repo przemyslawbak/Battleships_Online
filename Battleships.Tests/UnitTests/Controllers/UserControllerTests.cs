@@ -90,34 +90,6 @@ namespace Battleships.Tests.UnitTests.Controllers
         }
 
         [Fact]
-        private async Task PassChange_OnNullModelReceived_ReturnsStatusCode400()
-        {
-            string expectedErrorsResult = "Bad request.";
-
-            IActionResult result = await _controller.PassChange(null);
-            ObjectResult objectResult = result as ObjectResult;
-
-            Assert.NotNull(result);
-            Assert.Equal(StatusCodes.Status400BadRequest, objectResult.StatusCode);
-            Assert.Equal(expectedErrorsResult, objectResult.Value);
-        }
-
-        [Fact]
-        private async Task PassChange_OnModelValidationFailed_ReturnsStatusCode409()
-        {
-            string expectedErrorsResult = "err1, err2.";
-
-            _controller.ModelState.AddModelError("test_error_1", "err1");
-            _controller.ModelState.AddModelError("test_error_2", "err2");
-            IActionResult result = await _controller.PassChange(new PassResetEmailViewModel());
-            ObjectResult objectResult = result as ObjectResult;
-
-            Assert.NotNull(result);
-            Assert.Equal(StatusCodes.Status409Conflict, objectResult.StatusCode);
-            Assert.Equal(expectedErrorsResult, objectResult.Value);
-        }
-
-        [Fact]
         private async Task PassChange_OnEmailSendingFailed_ReturnsStatusCode502()
         {
             string expectedErrorsResult = "Email could not be sent.";
@@ -149,34 +121,6 @@ namespace Battleships.Tests.UnitTests.Controllers
 
             Assert.NotNull(result);
             Assert.Equal(StatusCodes.Status200OK, statusCode.StatusCode);
-        }
-
-        [Fact]
-        private async Task PassReset_OnNullModelReceived_ReturnsStatusCode400()
-        {
-            string expectedErrorsResult = "Bad request.";
-
-            IActionResult result = await _controller.PassReset(null);
-            ObjectResult objectResult = result as ObjectResult;
-
-            Assert.NotNull(result);
-            Assert.Equal(StatusCodes.Status400BadRequest, objectResult.StatusCode);
-            Assert.Equal(expectedErrorsResult, objectResult.Value);
-        }
-
-        [Fact]
-        private async Task PassReset_OnModelValidationFailed_ReturnsStatusCode409()
-        {
-            string expectedErrorsResult = "err1, err2.";
-
-            _controller.ModelState.AddModelError("test_error_1", "err1");
-            _controller.ModelState.AddModelError("test_error_2", "err2");
-            IActionResult result = await _controller.PassReset(new ResetPasswordViewModel());
-            ObjectResult objectResult = result as ObjectResult;
-
-            Assert.NotNull(result);
-            Assert.Equal(StatusCodes.Status409Conflict, objectResult.StatusCode);
-            Assert.Equal(expectedErrorsResult, objectResult.Value);
         }
 
         [Fact]
@@ -212,34 +156,6 @@ namespace Battleships.Tests.UnitTests.Controllers
 
             Assert.NotNull(result);
             Assert.Equal(StatusCodes.Status200OK, statusCode.StatusCode);
-        }
-
-        [Fact]
-        private async Task AddNewUser_OnNullModelReceived_ReturnsStatusCode400()
-        {
-            string expectedErrorsResult = "Bad request.";
-
-            IActionResult result = await _controller.AddNewUser(null);
-            ObjectResult objectResult = result as ObjectResult;
-
-            Assert.NotNull(result);
-            Assert.Equal(StatusCodes.Status400BadRequest, objectResult.StatusCode);
-            Assert.Equal(expectedErrorsResult, objectResult.Value);
-        }
-
-        [Fact]
-        private async Task AddNewUser_OnModelValidationFailed_ReturnsStatusCode409()
-        {
-            string expectedErrorsResult = "err1, err2.";
-
-            _controller.ModelState.AddModelError("test_error_1", "err1");
-            _controller.ModelState.AddModelError("test_error_2", "err2");
-            IActionResult result = await _controller.AddNewUser(new UserRegisterViewModel());
-            ObjectResult objectResult = result as ObjectResult;
-
-            Assert.NotNull(result);
-            Assert.Equal(StatusCodes.Status422UnprocessableEntity, objectResult.StatusCode);
-            Assert.Equal(expectedErrorsResult, objectResult.Value);
         }
 
         [Fact]

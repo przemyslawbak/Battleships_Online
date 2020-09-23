@@ -123,34 +123,6 @@ namespace Battleships.Tests.UnitTests.Controllers
         }
 
         [Fact]
-        private async Task JsonWebToken_OnValidationFailed_ReturnsStatusCode409()
-        {
-            string expectedErrorsResult = "err1, err2.";
-
-            _controller.ModelState.AddModelError("test_error_1", "err1");
-            _controller.ModelState.AddModelError("test_error_2", "err2");
-            IActionResult result = await _controller.JsonWebToken(new TokenRequestViewModel());
-            ObjectResult objectResult = result as ObjectResult;
-
-            Assert.NotNull(result);
-            Assert.Equal(StatusCodes.Status409Conflict, objectResult.StatusCode);
-            Assert.Equal(expectedErrorsResult, objectResult.Value);
-        }
-
-        [Fact]
-        private async Task JsonWebToken_OnNullModelReceived_ReturnsStatusCode400()
-        {
-            string expectedErrorsResult = "Bad request.";
-
-            IActionResult result = await _controller.JsonWebToken(null);
-            ObjectResult objectResult = result as ObjectResult;
-
-            Assert.NotNull(result);
-            Assert.Equal(StatusCodes.Status400BadRequest, objectResult.StatusCode);
-            Assert.Equal(expectedErrorsResult, objectResult.Value);
-        }
-
-        [Fact]
         private async Task JsonWebToken_OnUserNotExisting_ReturnsStatusCode409()
         {
             string expectedErrorsResult = "Invalid user details.";
@@ -186,34 +158,6 @@ namespace Battleships.Tests.UnitTests.Controllers
             bool isModelStateValid = Validator.TryValidateObject(_properRefreshTokenModel, context, results, true);
 
             Assert.True(isModelStateValid);
-        }
-
-        [Fact]
-        private async Task RefreshToken_OnModelValidationFailed_ReturnsStatusCode409()
-        {
-            string expectedErrorsResult = "err1, err2.";
-
-            _controller.ModelState.AddModelError("test_error_1", "err1");
-            _controller.ModelState.AddModelError("test_error_2", "err2");
-            IActionResult result = await _controller.RefreshToken(new RefreshTokenRequestViewModel());
-            ObjectResult objectResult = result as ObjectResult;
-
-            Assert.NotNull(result);
-            Assert.Equal(StatusCodes.Status409Conflict, objectResult.StatusCode);
-            Assert.Equal(expectedErrorsResult, objectResult.Value);
-        }
-
-        [Fact]
-        private async Task RefreshToken_OnNullModelReceived_ReturnsStatusCode400()
-        {
-            string expectedErrorsResult = "Bad request.";
-
-            IActionResult result = await _controller.RefreshToken(null);
-            ObjectResult objectResult = result as ObjectResult;
-
-            Assert.NotNull(result);
-            Assert.Equal(StatusCodes.Status400BadRequest, objectResult.StatusCode);
-            Assert.Equal(expectedErrorsResult, objectResult.Value);
         }
 
         [Fact]
@@ -255,34 +199,6 @@ namespace Battleships.Tests.UnitTests.Controllers
             bool isModelStateValid = Validator.TryValidateObject(_properRevokeTokenModel, context, results, true);
 
             Assert.True(isModelStateValid);
-        }
-
-        [Fact]
-        private void RevokeToken_OnModelValidationFailed_ReturnsStatusCode409()
-        {
-            string expectedErrorsResult = "err1, err2.";
-
-            _controller.ModelState.AddModelError("test_error_1", "err1");
-            _controller.ModelState.AddModelError("test_error_2", "err2");
-            IActionResult result = _controller.RevokeToken(new RevokeTokenRequestViewModel());
-            ObjectResult objectResult = result as ObjectResult;
-
-            Assert.NotNull(result);
-            Assert.Equal(StatusCodes.Status409Conflict, objectResult.StatusCode);
-            Assert.Equal(expectedErrorsResult, objectResult.Value);
-        }
-
-        [Fact]
-        private void RevokeToken_OnNullModelReceived_ReturnsStatusCode400()
-        {
-            string expectedErrorsResult = "Bad request.";
-
-            IActionResult result = _controller.RevokeToken(null);
-            ObjectResult objectResult = result as ObjectResult;
-
-            Assert.NotNull(result);
-            Assert.Equal(StatusCodes.Status400BadRequest, objectResult.StatusCode);
-            Assert.Equal(expectedErrorsResult, objectResult.Value);
         }
 
         [Fact]

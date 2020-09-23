@@ -4,13 +4,10 @@ using Battleships.Models.ViewModels;
 using Battleships.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Battleships.AppWeb.Controllers
 {
-    //todo: mock UserManager
-    //todo: creating user identity result https://4programmers.net/Forum/C_i_.NET/343563-nowy_uzytkownik_api_endpoint?p=1703857#comment-625167
     [Route("api/[controller]")]
     public class UserController : Controller
     {
@@ -52,21 +49,10 @@ namespace Battleships.AppWeb.Controllers
         /// </summary>
         /// <returns>Status code.</returns>
         [HttpPost("reset")]
-        [ServiceFilter(typeof(CaptchaVerifyActionFilter))]
+        [ServiceFilter(typeof(VerifyCaptchaAttribute))]
+        [ValidateModel]
         public async Task<IActionResult> PassChange([FromBody]PassResetEmailViewModel model)
         {
-            if (model == null)
-            {
-                return new ObjectResult("Bad request.") { StatusCode = 400 };
-            }
-
-            if (!ModelState.IsValid)
-            {
-                string errors = string.Join(", ", ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage)));
-
-                return new ObjectResult(errors + ".") { StatusCode = 409 };
-            }
-
             model.Email = _sanitizer.CleanUp(model.Email);
 
             AppUser user = await _userService.FindUserByEmail(model.Email);
@@ -93,20 +79,9 @@ namespace Battleships.AppWeb.Controllers
         /// </summary>
         /// <returns>Status code.</returns>
         [HttpPost("new-password")]
+        [ValidateModel]
         public async Task<IActionResult> PassReset([FromBody]ResetPasswordViewModel model)
         {
-            if (model == null)
-            {
-                return new ObjectResult("Bad request.") { StatusCode = 400 };
-            }
-
-            if (!ModelState.IsValid)
-            {
-                string errors = string.Join(", ", ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage)));
-
-                return new ObjectResult(errors + ".") { StatusCode = 409 };
-            }
-
             model.Email = _sanitizer.CleanUp(model.Email);
             model.Password = _sanitizer.CleanUp(model.Password);
 
@@ -130,21 +105,10 @@ namespace Battleships.AppWeb.Controllers
         /// </summary>
         /// <returns>Status code.</returns>
         [HttpPost("register")]
-        [ServiceFilter(typeof(CaptchaVerifyActionFilter))]
+        [ServiceFilter(typeof(VerifyCaptchaAttribute))]
+        [ValidateModel]
         public async Task<IActionResult> AddNewUser([FromBody]UserRegisterViewModel model)
         {
-            if (model == null)
-            {
-                return new ObjectResult("Bad request.") { StatusCode = 400 };
-            }
-
-            if (!ModelState.IsValid)
-            {
-                string errors = string.Join(", ", ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage)));
-
-                return new ObjectResult(errors + ".") { StatusCode = 422 };
-            }
-
             model.UserName = _userService.GenerateUsername(model.UserName);
 
             model = _sanitizer.SanitizeRegisteringUserInputs(model);

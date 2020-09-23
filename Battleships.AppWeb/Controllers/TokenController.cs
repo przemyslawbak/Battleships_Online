@@ -1,10 +1,10 @@
-﻿using Battleships.Models;
+﻿using Battleships.AppWeb.Helpers;
+using Battleships.Models;
 using Battleships.Models.ViewModels;
 using Battleships.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -30,21 +30,10 @@ namespace Battleships.AppWeb.Controllers
         /// </summary>
         /// <returns>Json result with response viewmodel.</returns>
         [HttpPost("auth")]
+        [ValidateModel]
         public async Task<IActionResult> JsonWebToken([FromBody]TokenRequestViewModel model)
         {
             TempData["requestIp"] = _userService.GetIpAddress(HttpContext);
-
-            if (model == null)
-            {
-                return new ObjectResult("Bad request.") { StatusCode = 400 };
-            }
-
-            if (!ModelState.IsValid)
-            {
-                string errors = string.Join(", ", ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage))); //todo: method/service
-
-                return new ObjectResult(errors + ".") { StatusCode = 409 };
-            }
 
             AppUser user = await _userService.FindUserByEmail(model.Email);
 
@@ -63,21 +52,10 @@ namespace Battleships.AppWeb.Controllers
         /// </summary>
         /// <returns>Json result with response viewmodel.</returns>
         [HttpPost("refresh-token")]
+        [ValidateModel]
         public async Task<IActionResult> RefreshToken([FromBody]RefreshTokenRequestViewModel model)
         {
             TempData["requestIp"] = _userService.GetIpAddress(HttpContext);
-
-            if (model == null)
-            {
-                return new ObjectResult("Bad request.") { StatusCode = 400 };
-            }
-
-            if (!ModelState.IsValid)
-            {
-                string errors = string.Join(", ", ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage))); //todo: method/service
-
-                return new ObjectResult(errors + ".") { StatusCode = 409 };
-            }
 
             if (!_tokenService.VerifyRefreshToken(model.RefreshToken, model.Email, TempData["requestIp"].ToString()))
             {
@@ -101,20 +79,9 @@ namespace Battleships.AppWeb.Controllers
         /// </summary>
         /// <returns>Returns 200 status code if successfull removes tokens for user logout.</returns>
         [HttpPost("revoke-token")]
+        [ValidateModel]
         public IActionResult RevokeToken([FromBody]RevokeTokenRequestViewModel model)
         {
-            if (model == null)
-            {
-                return new ObjectResult("Bad request.") { StatusCode = 400 };
-            }
-
-            if (!ModelState.IsValid)
-            {
-                string errors = string.Join(", ", ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage))); //todo: method/service
-
-                return new ObjectResult(errors + ".") { StatusCode = 409 };
-            }
-
             if (_tokenService.RevokeTokens(model))
             {
                 return Ok();
