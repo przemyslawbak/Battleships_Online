@@ -48,7 +48,7 @@ namespace Battleships.Tests.UnitTests.ActionFilters
         /// <summary>
         /// Returns created mock of ActionContext.
         /// </summary>
-        /// <returns>mock of ActionContext.</returns>
+        /// <returns>Mock of ActionContext.</returns>
         private Mock<ActionContext> GetActionContext()
         {
             var contextMock = new Mock<HttpContext>();

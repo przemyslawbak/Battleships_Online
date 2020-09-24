@@ -2,7 +2,13 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": "./src",
+    "paths": {
+      "@environments/*": [ "environments/*" ],
+      "@services/*": [ "app/app-core/_services/*" ],
+      "@helpers/*": [ "app/app-core/_helpers/*" ],
+      "@models/*": [ "app/app-core/_models/*" ]
+    },
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,

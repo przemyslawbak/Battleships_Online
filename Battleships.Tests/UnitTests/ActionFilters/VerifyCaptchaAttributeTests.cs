@@ -57,6 +57,10 @@ namespace Battleships.Tests.UnitTests.ActionFilters
             _filter = new VerifyCaptchaAttribute(_httpMock.Object, _userServiceMock.Object);
         }
 
+        /// <summary>
+        /// Returns created ActionExecutingContext object. 
+        /// </summary>
+        /// <returns>ActionExecutingContext object.</returns>
         private ActionExecutingContext GetActionExecutingContext()
         {
             var controllerMock = new Mock<Controller>();
@@ -66,6 +70,10 @@ namespace Battleships.Tests.UnitTests.ActionFilters
             return new ActionExecutingContext(_actionContextMock.Object, filter, dictionary, controllerMock.Object);
         }
 
+        /// <summary>
+        /// Returns created mock of ActionContext.
+        /// </summary>
+        /// <returns>Mock of ActionContext.</returns>
         private Mock<ActionContext> GetActionContextMock()
         {
             var contextMock = new Mock<HttpContext>();
@@ -76,7 +84,7 @@ namespace Battleships.Tests.UnitTests.ActionFilters
         }
 
         [Fact]
-        private async Task OnActionExecuting_OnNoModelErrorsAndNotNull_ResultIsNull()
+        private async Task OnActionExecuting_OnCorrectActionNameAndPositiveTokenVerification_ResultIsNull()
         {
             await _filter.OnActionExecutionAsync(_actionExecutingContext, _next);
 

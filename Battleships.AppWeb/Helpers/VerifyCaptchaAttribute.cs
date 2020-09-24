@@ -46,7 +46,7 @@ namespace Battleships.AppWeb.Helpers
 
             if (!verificationSuccess)
             {
-                context.Result = new ObjectResult("It looks like you are sending automated requests.") { StatusCode = 429 };
+                context.Result = new ObjectResult("Oops! Something went wrong.") { StatusCode = 429 };
 
                 return;
             }
