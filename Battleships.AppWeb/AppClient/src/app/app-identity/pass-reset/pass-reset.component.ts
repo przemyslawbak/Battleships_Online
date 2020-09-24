@@ -7,7 +7,7 @@ import { environment } from '@environments/environment';
 
 import { ModalService } from '@services/modal.service';
 
-import { PassResetModel } from "../../app-core/_models/password-reset.model";
+import { PassResetModel } from "@models/password-reset.model";
 
 @Component({
   templateUrl: './pass-reset.component.html',

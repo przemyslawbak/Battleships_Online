@@ -8,7 +8,7 @@ import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { NgxSpinnerService } from "ngx-spinner";
 import { SecurityService } from "@services/security.service";
 
-import { NewUser } from "../../app-core/_models/new-user.model";
+import { NewUser } from "@models/new-user.model";
 import { AuthService } from '@services/auth.service';
 
 @Component({

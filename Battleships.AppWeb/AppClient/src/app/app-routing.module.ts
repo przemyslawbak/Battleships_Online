@@ -8,7 +8,7 @@ import { PassResetComponent } from './app-identity/pass-reset/pass-reset.compone
 import { CloseComponent } from './app-identity/close-external-login/close-external-login.component';
 
 import { AuthGuard } from './app-core/_helpers/auth.guard';
-import { UserRole } from './app-core/_models/user-role.model';
+import { UserRole } from '@models/user-role.model';
 
 import { TestComponent } from './app-trials/user-test-auth/user-test-auth.component';
 import { AdminComponent } from './app-trials/admin-test-auth/admin-test-auth.component';

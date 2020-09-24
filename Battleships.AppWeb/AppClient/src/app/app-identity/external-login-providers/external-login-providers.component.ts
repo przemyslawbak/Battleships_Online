@@ -4,7 +4,7 @@ import { Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 import { environment } from '@environments/environment';
 
-import { LoginResponse } from "../../app-core/_models/login-response.model";
+import { LoginResponse } from "@models/login-response.model";
 
 import { AuthService } from '@services/auth.service';
 import { ModalService } from '@services/modal.service';

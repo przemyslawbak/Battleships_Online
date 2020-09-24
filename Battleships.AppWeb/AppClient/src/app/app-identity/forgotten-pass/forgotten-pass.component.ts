@@ -8,7 +8,7 @@ import { ModalService } from '@services/modal.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 
-import { PassForgottenModel } from "../../app-core/_models/password-forgotten.model";
+import { PassForgottenModel } from "@models/password-forgotten.model";
 
 @Component({
   templateUrl: './forgotten-pass.component.html',

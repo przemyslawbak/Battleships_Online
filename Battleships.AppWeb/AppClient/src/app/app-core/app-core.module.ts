@@ -8,9 +8,9 @@ import { AppRoutingModule } from '../app-routing.module';
 import { ModalComponent } from './modal-views/modal-views.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 
-import { ModalService } from './_services/modal.service';
-import { SecurityService } from './_services/security.service';
-import { AuthService } from './_services/auth.service';
+import { ModalService } from '@services/modal.service';
+import { SecurityService } from '@services/security.service';
+import { AuthService } from '@services/auth.service';
 
 import { AuthGuard } from './_helpers/auth.guard';
 import { JtwInterceptor } from './_helpers/jtw.interceptor';
