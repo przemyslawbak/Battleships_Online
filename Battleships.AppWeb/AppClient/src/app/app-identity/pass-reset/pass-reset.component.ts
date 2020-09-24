@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  FormBuilder,
+  Validators,
+} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -11,12 +16,19 @@ import { PassResetModel } from '@models/password-reset.model';
 
 @Component({
   templateUrl: './pass-reset.component.html',
-  styleUrls: ['./pass-reset.component.css']
+  styleUrls: ['./pass-reset.component.css'],
 })
 export class PassResetComponent implements OnInit {
   public form: FormGroup;
   public passModel: PassResetModel;
-  constructor(private router: Router, private formBuilder: FormBuilder, private http: HttpClient, private route: ActivatedRoute, private spinner: NgxSpinnerService, private modalService: ModalService) {
+  constructor(
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private spinner: NgxSpinnerService,
+    private modalService: ModalService
+  ) {
     this.createForm();
   }
 
@@ -28,13 +40,14 @@ export class PassResetComponent implements OnInit {
     this.spinner.show();
     this.passModel.password = this.form.value.Password;
     const url = environment.apiUrl + 'api/user/new-password';
-    this.http.post(url, this.passModel)
-      .subscribe(
-        () => {
-          this.modalService.open('info-modal', 'Now you can log in with your password.');
-          this.spinner.hide();
-          this.router.navigate(['join']);
-        });
+    this.http.post(url, this.passModel).subscribe(() => {
+      this.modalService.open(
+        'info-modal',
+        'Now you can log in with your password.'
+      );
+      this.spinner.hide();
+      this.router.navigate(['join']);
+    });
   }
 
   public onBack() {
@@ -47,12 +60,15 @@ export class PassResetComponent implements OnInit {
   }
 
   private createForm() {
-    this.form = this.formBuilder.group({
-      Password: ['', Validators.required],
-      PasswordConfirm: ['', Validators.required]
-    }, {
-      validator: this.passwordConfirmValidator
-    });
+    this.form = this.formBuilder.group(
+      {
+        Password: ['', Validators.required],
+        PasswordConfirm: ['', Validators.required],
+      },
+      {
+        validator: this.passwordConfirmValidator,
+      }
+    );
   }
 
   private passwordConfirmValidator(control: FormControl): any {
@@ -60,11 +76,8 @@ export class PassResetComponent implements OnInit {
     const pc = control.root.get('PasswordConfirm');
     if (p && pc) {
       if (p.value !== pc.value) {
-        pc.setErrors(
-          { PasswordMismatch: true }
-        );
-      }
-      else {
+        pc.setErrors({ PasswordMismatch: true });
+      } else {
         pc.setErrors(null);
       }
     }

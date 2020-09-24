@@ -15,14 +15,20 @@ import { LoginResponse } from '@models/login-response.model';
 export class AuthService {
   authKey = 'auth';
 
-  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: any, private router: Router, private spinner: NgxSpinnerService, private securityService: SecurityService) { }
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: any,
+    private router: Router,
+    private spinner: NgxSpinnerService,
+    private securityService: SecurityService
+  ) {}
 
   public login(email: string, password: string): Observable<boolean> {
     const url = environment.apiUrl + 'api/token/auth';
     const data = {
       Email: email,
       Password: password,
-      GrantType: 'password'
+      GrantType: 'password',
     };
 
     return this.getTokenResponse(url, data);
@@ -33,8 +39,8 @@ export class AuthService {
     if (token) {
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
     }
 
@@ -45,7 +51,7 @@ export class AuthService {
     const url = environment.apiUrl + 'api/token/refresh-token';
     const data = {
       Email: this.getAuth().email,
-      RefreshToken: this.getAuth().refreshToken
+      RefreshToken: this.getAuth().refreshToken,
     };
     return this.getTokenResponse(url, data);
   }
@@ -56,14 +62,12 @@ export class AuthService {
     const data = {
       UserName: this.getAuth().user,
       RefreshToken: this.getAuth().refreshToken,
-      Token: this.getAuth().token
+      Token: this.getAuth().token,
     };
-    this.http.post<any>(url, data)
-      .subscribe(
-        () => {
-          this.spinner.hide();
-          this.router.navigate(['']);
-        });
+    this.http.post<any>(url, data).subscribe(() => {
+      this.spinner.hide();
+      this.router.navigate(['']);
+    });
     this.setAuth(null);
     return true;
   }
@@ -72,10 +76,11 @@ export class AuthService {
     if (isPlatformBrowser(this.platformId)) {
       if (auth) {
         auth.token = auth.token.replace(/\$/g, '/').replace(/\@/g, '=');
-        auth.refreshToken = auth.refreshToken.replace(/\$/g, '/').replace(/\@/g, '=');
+        auth.refreshToken = auth.refreshToken
+          .replace(/\$/g, '/')
+          .replace(/\@/g, '=');
         localStorage.setItem(this.authKey, JSON.stringify(auth));
-      }
-      else {
+      } else {
         localStorage.removeItem(this.authKey);
       }
     }
@@ -110,8 +115,8 @@ export class AuthService {
   public isTokenExpired(): boolean {
     if (this.isLoggedIn()) {
       const token = this.getAuth().token;
-      const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
-      return (Math.floor((new Date).getTime() / 1000)) >= expiry;
+      const expiry = JSON.parse(atob(token.split('.')[1])).exp;
+      return Math.floor(new Date().getTime() / 1000) >= expiry;
     } else {
       return false;
     }
@@ -119,17 +124,17 @@ export class AuthService {
 
   private getTokenResponse(url: string, data): Observable<boolean> {
     this.spinner.show();
-    return this.http.post<LoginResponse>(url, data)
-      .pipe(
-        map((res) => {
-          const token = res && res.token;
-          if (token) {
-            this.setAuth(res);
-            this.spinner.hide();
-            return true;
-          }
+    return this.http.post<LoginResponse>(url, data).pipe(
+      map((res) => {
+        const token = res && res.token;
+        if (token) {
+          this.setAuth(res);
           this.spinner.hide();
-          return false;
-        }));
+          return true;
+        }
+        this.spinner.hide();
+        return false;
+      })
+    );
   }
 }

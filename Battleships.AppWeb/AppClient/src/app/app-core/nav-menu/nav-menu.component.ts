@@ -5,11 +5,11 @@ import { AuthService } from '@services/auth.service';
 @Component({
   selector: 'app-nav-menu',
   templateUrl: './nav-menu.component.html',
-  styleUrls: ['./nav-menu.component.css']
+  styleUrls: ['./nav-menu.component.css'],
 })
 export class NavMenuComponent {
   public userName: string;
-  constructor(public auth: AuthService) { }
+  constructor(public auth: AuthService) {}
 
   public isExpanded = false;
 

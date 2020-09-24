@@ -16,43 +16,44 @@ import { AdminComponent } from './app-trials/admin-test-auth/admin-test-auth.com
 const routes: Routes = [
   {
     path: 'join',
-    component: JoinComponent
+    component: JoinComponent,
   },
   {
     path: 'register',
-    component: RegisterComponent
+    component: RegisterComponent,
   },
   {
     path: 'forgotten',
-    component: ForgottenComponent
+    component: ForgottenComponent,
   },
   {
     path: 'close/:email/:user/:token/:refresh',
-    component: CloseComponent
+    component: CloseComponent,
   },
   {
     path: 'test',
     component: TestComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
   {
     path: 'admin',
     component: AdminComponent,
     canActivate: [AuthGuard],
-    data: { roles: [UserRole.Admin] }
+    data: { roles: [UserRole.Admin] },
   },
   {
     path: 'pass-reset/:email/:token',
-    component: PassResetComponent
+    component: PassResetComponent,
   },
   {
-    path: '', redirectTo: '/',
-    pathMatch: 'full'
+    path: '',
+    redirectTo: '/',
+    pathMatch: 'full',
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

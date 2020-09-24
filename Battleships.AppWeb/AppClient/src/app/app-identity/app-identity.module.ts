@@ -23,7 +23,7 @@ import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
     BrowserAnimationsModule,
     HttpClientModule,
     BrowserModule,
-    RecaptchaV3Module
+    RecaptchaV3Module,
   ],
   declarations: [
     JoinComponent,
@@ -33,10 +33,12 @@ import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
     PassResetComponent,
     CloseComponent,
   ],
-  exports: [
-  ],
+  exports: [],
   providers: [
-    { provide: RECAPTCHA_V3_SITE_KEY, useValue: '6Ldkfs0ZAAAAAGU1nSIrKUZ-C6mSy4TfpWETFypX' },
-  ]
+    {
+      provide: RECAPTCHA_V3_SITE_KEY,
+      useValue: '6Ldkfs0ZAAAAAGU1nSIrKUZ-C6mSy4TfpWETFypX',
+    },
+  ],
 })
-export class AppIdentityModule { }
+export class AppIdentityModule {}

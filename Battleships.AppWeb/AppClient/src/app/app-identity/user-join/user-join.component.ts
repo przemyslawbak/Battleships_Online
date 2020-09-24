@@ -16,7 +16,6 @@ export class JoinComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService
   ) {
-    // initialize the form
     this.createForm();
   }
 
@@ -38,25 +37,21 @@ export class JoinComponent implements OnInit {
     this.router.navigate(['']);
   }
 
-  // returns TRUE if the FormControl is valid
   public isValid(name: string) {
     const e = this.getFormControl(name);
     return e && e.valid;
   }
 
-  // returns TRUE if the FormControl has been changed
   public isChanged(name: string) {
     const e = this.getFormControl(name);
     return e && (e.dirty || e.touched);
   }
 
-  // returns TRUE if the FormControl is invalid after user changes
   public hasError(name: string) {
     const e = this.getFormControl(name);
     return e && (e.dirty || e.touched) && !e.valid;
   }
 
-  // retrieve a FormControl
   private getFormControl(name: string) {
     return this.form.get(name);
   }

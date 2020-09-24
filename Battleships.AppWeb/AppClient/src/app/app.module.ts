@@ -1,33 +1,25 @@
-// angular
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-// custom modules
 import { AppCoreModule } from './app-core/app-core.module';
 import { AppTrialsModule } from './app-trials/app-trials.module';
 import { AppIdentityModule } from './app-identity/app-identity.module';
 import { AppRoutingModule } from './app-routing.module';
 
-// external libraries
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { AppComponent } from './app.component';
 
-
-
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     AppCoreModule,
     AppTrialsModule,
     AppIdentityModule,
     BrowserModule,
     NgxSpinnerModule,
-    AppRoutingModule
+    AppRoutingModule,
   ],
-  providers: [
-  ],
-  bootstrap: [AppComponent]
+  providers: [],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

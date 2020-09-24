@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import {
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+} from '@angular/common/http';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable, BehaviorSubject } from 'rxjs';
@@ -11,20 +15,34 @@ import { ModalService } from '@services/modal.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(public auth: AuthService, private router: Router, private spinner: NgxSpinnerService, private modalService: ModalService, private securityService: SecurityService) { }
+  constructor(
+    public auth: AuthService,
+    private router: Router,
+    private spinner: NgxSpinnerService,
+    private modalService: ModalService,
+    private securityService: SecurityService
+  ) {}
   private isRefreshing = false;
-  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
+    null
+  );
 
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<any> {
-    return next.handle(request)
-      .pipe(
-        catchError(error => {
-          return this.handleResponseError(error, request, next);
-        })
-      );
+  public intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<any> {
+    return next.handle(request).pipe(
+      catchError((error) => {
+        return this.handleResponseError(error, request, next);
+      })
+    );
   }
 
-  handleResponseError(error: any, request: HttpRequest<any>, next: HttpHandler): any {
+  private handleResponseError(
+    error: any,
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): any {
     if (request.url.indexOf('refresh') !== -1) {
       return next.handle(request);
     }
@@ -47,15 +65,17 @@ export class ErrorInterceptor implements HttpInterceptor {
                 } else {
                   this.auth.logout();
                 }
-              }));
+              })
+            );
           } else {
             return this.refreshTokenSubject.pipe(
-              filter(authResult => authResult != null),
+              filter((authResult) => authResult != null),
               take(1),
               switchMap(() => {
                 const modifiedRequest = this.auth.addAuthHeader(request);
                 return next.handle(modifiedRequest);
-              }));
+              })
+            );
           }
         } else {
           return next.handle(this.auth.addAuthHeader(request));

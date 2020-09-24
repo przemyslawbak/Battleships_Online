@@ -14,13 +14,18 @@ declare let window: any;
 @Component({
   selector: 'external-login-providers',
   templateUrl: './external-login-providers.component.html',
-  styleUrls: ['./external-login-providers.component.css']
+  styleUrls: ['./external-login-providers.component.css'],
 })
-
 export class LoginExternalProvidersComponent implements OnInit {
   private externalProviderWindow: Window;
 
-  constructor(private router: Router, private auth: AuthService, @Inject(PLATFORM_ID) private platformId: any, private spinner: NgxSpinnerService, private modalService: ModalService) { }
+  constructor(
+    private router: Router,
+    private auth: AuthService,
+    @Inject(PLATFORM_ID) private platformId: any,
+    private spinner: NgxSpinnerService,
+    private modalService: ModalService
+  ) {}
 
   public ngOnInit() {
     if (!isPlatformBrowser(this.platformId)) {
@@ -45,18 +50,23 @@ export class LoginExternalProvidersComponent implements OnInit {
     this.spinner.show();
     const url = environment.apiUrl + 'api/token/external-login/' + providerName;
 
-    const w = (screen.width >= 1050) ? 1050 : screen.width;
-    const h = (screen.height >= 550) ? 550 : screen.height;
-    const params = 'toolbar=yes,scrollbars=yes,resizable=yes,width=' + w + ', height=' + h;
+    const w = screen.width >= 1050 ? 1050 : screen.width;
+    const h = screen.height >= 550 ? 550 : screen.height;
+    const params =
+      'toolbar=yes,scrollbars=yes,resizable=yes,width=' + w + ', height=' + h;
 
     this.closePopUpWindow();
-    this.externalProviderWindow = window.open(url, 'ExternalProvider', params, false);
+    this.externalProviderWindow = window.open(
+      url,
+      'ExternalProvider',
+      params,
+      false
+    );
     const checkIntervalId = setInterval(() => {
       if (this.externalProviderWindow.closed) {
         clearInterval(checkIntervalId);
         this.handleCloseExternalProvider();
-      }
-      else {
+      } else {
         // still open, do nothing
       }
     }, 1000);
@@ -67,7 +77,10 @@ export class LoginExternalProvidersComponent implements OnInit {
       this.router.navigate(['']);
       this.closePopUpWindow();
     } else {
-      this.modalService.open('info-modal', 'Something went wrong. Please try again.');
+      this.modalService.open(
+        'info-modal',
+        'Something went wrong. Please try again.'
+      );
       this.router.navigate(['join']);
     }
     this.spinner.hide();

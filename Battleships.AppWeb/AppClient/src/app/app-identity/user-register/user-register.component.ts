@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  FormBuilder,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
@@ -14,12 +19,19 @@ import { AuthService } from '@services/auth.service';
 @Component({
   selector: 'user-register',
   templateUrl: './user-register.component.html',
-  styleUrls: ['./user-register.component.css']
+  styleUrls: ['./user-register.component.css'],
 })
 export class RegisterComponent {
   form: FormGroup;
-  constructor(private router: Router, private formBuilder: FormBuilder, private http: HttpClient, private auth: AuthService, private spinner: NgxSpinnerService, private recaptchaV3Service: ReCaptchaV3Service, private securityService: SecurityService) {
-
+  constructor(
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private http: HttpClient,
+    private auth: AuthService,
+    private spinner: NgxSpinnerService,
+    private recaptchaV3Service: ReCaptchaV3Service,
+    private securityService: SecurityService
+  ) {
     // initialize the form
     this.createForm();
   }
@@ -41,11 +53,9 @@ export class RegisterComponent {
 
   public beforeSubmittingForm(): void {
     this.spinner.show();
-    this.recaptchaV3Service.execute('formSubmit')
-      .subscribe(
-        (token) => {
-          this.onSubmit(token);
-        });
+    this.recaptchaV3Service.execute('formSubmit').subscribe((token) => {
+      this.onSubmit(token);
+    });
   }
 
   public onBack() {
@@ -57,10 +67,9 @@ export class RegisterComponent {
   }
 
   private onRegisteredLogin(model: NewUser) {
-    this.auth.login(model.email, model.password)
-      .subscribe(() => {
-        this.router.navigate(['']);
-      });
+    this.auth.login(model.email, model.password).subscribe(() => {
+      this.router.navigate(['']);
+    });
   }
 
   private passwordConfirmValidator(control: FormControl): any {
@@ -68,11 +77,8 @@ export class RegisterComponent {
     const pc = control.root.get('PasswordConfirm');
     if (p && pc) {
       if (p.value !== pc.value) {
-        pc.setErrors(
-          { PasswordMismatch: true }
-        );
-      }
-      else {
+        pc.setErrors({ PasswordMismatch: true });
+      } else {
         pc.setErrors(null);
       }
     }
@@ -80,17 +86,17 @@ export class RegisterComponent {
   }
 
   private createForm() {
-    this.form = this.formBuilder.group({
-      Email: ['',
-        [Validators.required,
-        Validators.email]
-      ],
-      Password: ['', Validators.required],
-      PasswordConfirm: ['', Validators.required],
-      DisplayName: ['', Validators.required]
-    }, {
-      validator: this.passwordConfirmValidator
-    });
+    this.form = this.formBuilder.group(
+      {
+        Email: ['', [Validators.required, Validators.email]],
+        Password: ['', Validators.required],
+        PasswordConfirm: ['', Validators.required],
+        DisplayName: ['', Validators.required],
+      },
+      {
+        validator: this.passwordConfirmValidator,
+      }
+    );
   }
 
   private onSubmit(token: string) {
@@ -102,12 +108,9 @@ export class RegisterComponent {
     model.captchaToken = token;
     const url = environment.apiUrl + 'api/user/register';
     this.securityService.delayForBruteForce(5);
-    this.http.post(url, model)
-      .subscribe(
-        () => {
-          this.onRegisteredLogin(model);
-          this.spinner.hide();
-        }
-      );
+    this.http.post(url, model).subscribe(() => {
+      this.onRegisteredLogin(model);
+      this.spinner.hide();
+    });
   }
 }

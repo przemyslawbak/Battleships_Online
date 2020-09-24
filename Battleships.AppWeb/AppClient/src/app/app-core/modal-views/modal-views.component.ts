@@ -1,4 +1,11 @@
-import { Component, ViewEncapsulation, ElementRef, Input, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  ViewEncapsulation,
+  ElementRef,
+  Input,
+  OnInit,
+  OnDestroy,
+} from '@angular/core';
 
 import { ModalService } from '@services/modal.service';
 
@@ -6,7 +13,7 @@ import { ModalService } from '@services/modal.service';
   selector: 'jw-modal',
   templateUrl: 'modal-views.component.html',
   styleUrls: ['modal-views.component.css'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class ModalComponent implements OnInit, OnDestroy {
   message: string;
@@ -18,40 +25,33 @@ export class ModalComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    // ensure id attribute exists
     if (!this.id) {
       console.error('modal must have an id');
       return;
     }
 
-    // move element to bottom of page (just before </body>) so it can be displayed above everything else
     document.body.appendChild(this.element);
 
-    // close modal on background click
-    this.element.addEventListener('click', el => {
+    this.element.addEventListener('click', (el) => {
       if (el.target.className === 'jw-modal') {
         this.close();
       }
     });
 
-    // add self (this modal instance) to the modal service so it's accessible from controllers
     this.modalService.add(this);
   }
 
-  // remove self from modal service when component is destroyed
   public ngOnDestroy(): void {
     this.modalService.remove(this.id);
     this.element.remove();
   }
 
-  // open modal
   public open(message: string): void {
     this.element.style.display = 'block';
     document.body.classList.add('jw-modal-open');
     this.message = message;
   }
 
-  // close modal
   public close(): void {
     this.element.style.display = 'none';
     document.body.classList.remove('jw-modal-open');

@@ -7,12 +7,12 @@ import { AuthService } from '@services/auth.service';
 
 @Component({
   templateUrl: './close-external-login.component.html',
-  styleUrls: ['./close-external-login.component.css']
+  styleUrls: ['./close-external-login.component.css'],
 })
 export class CloseComponent implements OnInit {
   tokenResponse: LoginResponse;
 
-  constructor(private route: ActivatedRoute, private auth: AuthService) { }
+  constructor(private route: ActivatedRoute, private auth: AuthService) {}
 
   public ngOnInit(): void {
     this.tokenResponse = this.getTokenResponse();
@@ -43,5 +43,4 @@ export class CloseComponent implements OnInit {
 
     return model;
   }
-
 }

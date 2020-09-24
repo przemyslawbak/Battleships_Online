@@ -22,31 +22,25 @@ import { ErrorInterceptor } from './_helpers/error.interceptor';
     NgxSpinnerModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    BrowserModule
+    BrowserModule,
   ],
-  declarations: [
-    ModalComponent,
-    NavMenuComponent
-  ],
-  exports: [
-    ModalComponent,
-    NavMenuComponent
-  ],
+  declarations: [ModalComponent, NavMenuComponent],
+  exports: [ModalComponent, NavMenuComponent],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JtwInterceptor,
-      multi: true
+      multi: true,
     },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
-      multi: true
+      multi: true,
     },
     ModalService,
     SecurityService,
     AuthService,
-    AuthGuard
-  ]
+    AuthGuard,
+  ],
 })
-export class AppCoreModule { }
+export class AppCoreModule {}
