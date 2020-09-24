@@ -28,7 +28,7 @@ namespace Battleships.AppWeb.Helpers
                 return;
             }
 
-            httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized; //todo: result - ObjectResult
         }
     }
 }

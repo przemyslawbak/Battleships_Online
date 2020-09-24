@@ -21,7 +21,7 @@ namespace Battleships.AppWeb.Helpers
         {
             string actionName = context.RouteData.Values["action"] as string;
             string token = string.Empty;
-            bool success;
+            bool verificationSuccess;
 
             if (actionName == "PassChange")
             {
@@ -33,12 +33,21 @@ namespace Battleships.AppWeb.Helpers
                 UserRegisterViewModel model = context.ActionArguments["model"] as UserRegisterViewModel;
                 token = model.CaptchaToken;
             }
-
-            success = await _http.VerifyCaptchaAsync(token, _userService.GetIpAddress(context.HttpContext));
-
-            if (!success)
+            else 
             {
-                context.Result = new ObjectResult("It looks like you are sending automated requests.") { StatusCode = 429 };
+                context.Result = new ObjectResult("Bad request.") { StatusCode = 400 };
+            }
+
+            if (context.Result == null)
+            {
+                string ip = _userService.GetIpAddress(context.HttpContext);
+
+                verificationSuccess = await _http.VerifyCaptchaAsync(token, ip);
+
+                if (!verificationSuccess)
+                {
+                    context.Result = new ObjectResult("It looks like you are sending automated requests.") { StatusCode = 429 };
+                }
             }
 
             await next();

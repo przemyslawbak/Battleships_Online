@@ -13,7 +13,7 @@ namespace Battleships.Tests.UnitTests.ActionFilters
 {
     public class ValidateModelAttributeTests
     {
-        private Mock<ActionContext> _actionContext;
+        private Mock<ActionContext> _actionContextMock;
         private ActionExecutingContext _actionExecutingContext;
         private Dictionary<string, object> _actionArguments;
         private readonly ModelStateDictionary _modelState;
@@ -26,21 +26,29 @@ namespace Battleships.Tests.UnitTests.ActionFilters
             {
                 { "name", "Pszemek" }
             };
-            _actionContext = GetActionContext();
+            _actionContextMock = GetActionContext();
             _actionExecutingContext = GetActionExecutingContext();
 
             _filter = new ValidateModelAttribute();
         }
 
+        /// <summary>
+        /// Returns created instance of ActionExecutingContext object.
+        /// </summary>
+        /// <returns>ActionExecutingContext object</returns>
         private ActionExecutingContext GetActionExecutingContext()
         {
             var controllerMock = new Mock<Controller>();
             var dictionary = _actionArguments;
             var filter = new List<IFilterMetadata>();
 
-            return new ActionExecutingContext(_actionContext.Object, filter, dictionary, controllerMock.Object);
+            return new ActionExecutingContext(_actionContextMock.Object, filter, dictionary, controllerMock.Object);
         }
 
+        /// <summary>
+        /// Returns created mock of ActionContext.
+        /// </summary>
+        /// <returns>mock of ActionContext.</returns>
         private Mock<ActionContext> GetActionContext()
         {
             var contextMock = new Mock<HttpContext>();
@@ -64,7 +72,7 @@ namespace Battleships.Tests.UnitTests.ActionFilters
             string expectedErrorsResult = "error1, error2.";
             _modelState.AddModelError("", "error1");
             _modelState.AddModelError("", "error2");
-            _actionContext = GetActionContext();
+            _actionContextMock = GetActionContext();
             _actionExecutingContext = GetActionExecutingContext();
 
             _filter.OnActionExecuting(_actionExecutingContext);
@@ -84,7 +92,7 @@ namespace Battleships.Tests.UnitTests.ActionFilters
             {
                 { "name", null }
             };
-            _actionContext = GetActionContext();
+            _actionContextMock = GetActionContext();
             _actionExecutingContext = GetActionExecutingContext();
 
             _filter.OnActionExecuting(_actionExecutingContext);
