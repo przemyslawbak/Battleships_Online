@@ -57,7 +57,7 @@ namespace Battleships.DAL
             return verify;
         }
 
-        public bool VeriFyTokenBan(string currentToken)
+        public bool IsTokenBlacklisted(string currentToken)
         {
             return _context.BlacklistedTokens.Any(token => token.Token == currentToken);
         }

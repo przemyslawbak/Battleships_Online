@@ -1,5 +1,4 @@
-﻿using Battleships.DAL;
-using Battleships.Services;
+﻿using Battleships.Services;
 using Microsoft.AspNetCore.Http;
 using System.Net;
 using System.Threading.Tasks;
@@ -9,26 +8,23 @@ namespace Battleships.AppWeb.Helpers
     public class TokenManagerMiddleware : IMiddleware
     {
         private readonly ITokenService _tokenService;
-        private readonly ITokenRepository _tokenRepo;
 
-        public TokenManagerMiddleware(ITokenService tokenService, ITokenRepository tokenRepo)
+        public TokenManagerMiddleware(ITokenService tokenService)
         {
             _tokenService = tokenService;
-            _tokenRepo = tokenRepo;
         }
 
         public async Task InvokeAsync(HttpContext httpContext, RequestDelegate next)
         {
             string currentToken = _tokenService.GetCurrentToken(httpContext);
-            bool isTokenBlacklisted = _tokenRepo.VeriFyTokenBan(currentToken);
 
-            if (!isTokenBlacklisted)
+            if (!_tokenService.IsTokenBlacklisted(currentToken))
             {
                 await next(httpContext);
                 return;
             }
 
-            httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized; //todo: result - ObjectResult
+            httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
         }
     }
 }

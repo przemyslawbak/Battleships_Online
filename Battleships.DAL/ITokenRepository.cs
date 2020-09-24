@@ -6,7 +6,7 @@
         bool VerifyReceivedToken(string refreshtoken, string email, string ip);
         void DeleteRefreshToken(string email);
         void AddBlacklistedToken(string token);
-        bool VeriFyTokenBan(string currentToken);
+        bool IsTokenBlacklisted(string currentToken);
         void CleanUpBlacklistedTokens(int hoursKeepBlacklistedTokend);
     }
 }

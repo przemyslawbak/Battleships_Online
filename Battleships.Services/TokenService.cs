@@ -149,5 +149,15 @@ namespace Battleships.Services
                 return Convert.ToBase64String(randomBytes);
             }
         }
+
+        /// <summary>
+        /// Checks if token is blacklisted from use.
+        /// </summary>
+        /// <param name="currentToken">Current user auth token.</param>
+        /// <returns>Boolean result.</returns>
+        public bool IsTokenBlacklisted(string currentToken)
+        {
+            return _tokenRepo.IsTokenBlacklisted(currentToken);
+        }
     }
 }

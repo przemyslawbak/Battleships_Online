@@ -36,18 +36,19 @@ namespace Battleships.AppWeb.Helpers
             else 
             {
                 context.Result = new ObjectResult("Bad request.") { StatusCode = 400 };
+
+                return;
             }
 
-            if (context.Result == null)
+            string ip = _userService.GetIpAddress(context.HttpContext);
+
+            verificationSuccess = await _http.VerifyCaptchaAsync(token, ip);
+
+            if (!verificationSuccess)
             {
-                string ip = _userService.GetIpAddress(context.HttpContext);
+                context.Result = new ObjectResult("It looks like you are sending automated requests.") { StatusCode = 429 };
 
-                verificationSuccess = await _http.VerifyCaptchaAsync(token, ip);
-
-                if (!verificationSuccess)
-                {
-                    context.Result = new ObjectResult("It looks like you are sending automated requests.") { StatusCode = 429 };
-                }
+                return;
             }
 
             await next();
