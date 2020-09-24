@@ -26,17 +26,13 @@ namespace Battleships.Tests.UnitTests.ActionFilters
         private readonly VerifyCaptchaAttribute _filter;
         private readonly ActionExecutionDelegate _next;
         private RouteData _routeData;
-        private readonly string _correctToken;
-        private readonly string _correctIp;
         private readonly PassResetEmailViewModel _model;
 
         public VerifyCaptchaAttributeTests()
         {
-            string _correctToken = "some_fancy_token";
-            string _correctIp = "127.0.0.1";
             _model = new PassResetEmailViewModel()
             {
-                CaptchaToken = _correctToken,
+                CaptchaToken = "some_fancy_token",
                 Email = "some_fancy_email@gmail.com"
             };
             _routeData = new RouteData();
@@ -57,7 +53,7 @@ namespace Battleships.Tests.UnitTests.ActionFilters
             };
 
             _userServiceMock.Setup(mock => mock.GetIpAddress(_actionContextMock.Object.HttpContext)).Returns("127.0.0.1");
-            _httpMock.Setup(mock => mock.VerifyCaptchaAsync(_correctToken, _correctIp)).ReturnsAsync(true);
+            _httpMock.Setup(mock => mock.VerifyCaptchaAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
 
             _filter = new VerifyCaptchaAttribute(_httpMock.Object, _userServiceMock.Object);
         }
@@ -93,11 +89,6 @@ namespace Battleships.Tests.UnitTests.ActionFilters
         {
             _routeData = new RouteData();
             _routeData.Values.Add("action", "WrongActionName");
-            _modelState = new ModelStateDictionary();
-            _actionArguments = new Dictionary<string, object>()
-            {
-                { "model", _model }
-            };
             _actionContextMock = GetActionContextMock();
             _actionExecutingContext = GetActionExecutingContext();
             string expectedErrorsResult = "Bad request.";
@@ -114,7 +105,7 @@ namespace Battleships.Tests.UnitTests.ActionFilters
         [Fact]
         private async Task OnActionExecuting_OnCaptchaTokenVerificationFailed_ResultIs429()
         {
-            _model.CaptchaToken = "corrupted_token";
+            _httpMock.Setup(mock => mock.VerifyCaptchaAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
             string expectedErrorsResult = "It looks like you are sending automated requests.";
             await _filter.OnActionExecutionAsync(_actionExecutingContext, _next);
 
