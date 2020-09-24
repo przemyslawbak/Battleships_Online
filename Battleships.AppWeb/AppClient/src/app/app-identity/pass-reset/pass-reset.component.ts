@@ -3,9 +3,9 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { Router, ActivatedRoute } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { NgxSpinnerService } from "ngx-spinner";
-import { environment } from '../../../environments/environment';
+import { environment } from '@environments/environment';
 
-import { ModalService } from '../../app-core/_services/modal.service';
+import { ModalService } from '@services/modal.service';
 
 import { PassResetModel } from "../../app-core/_models/password-reset.model";
 

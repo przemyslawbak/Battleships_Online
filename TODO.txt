@@ -23,7 +23,7 @@ OK - action flter to verify model == null: https://stackoverflow.com/a/25829843/
 OK - unit test action filters
 OK - error handling if RecaptchaVerificationResponseModel result not Success, checked
 OK - mock UserManager
-- use TS aliases: https://github.com/labs42io/clean-code-typescript
+- use path TS aliases: https://github.com/labs42io/clean-code-typescript
 - TSLint: https://github.com/labs42io/clean-code-typescript
 - TS method comments - remove them, update method/variable names
 - testy integracyjne backend

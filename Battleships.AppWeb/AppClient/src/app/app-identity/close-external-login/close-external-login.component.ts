@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { LoginResponse } from "../../app-core/_models/login-response.model";
 
-import { AuthService } from '../../app-core/_services/auth.service';
+import { AuthService } from '@services/auth.service';
 
 @Component({
   templateUrl: './close-external-login.component.html',

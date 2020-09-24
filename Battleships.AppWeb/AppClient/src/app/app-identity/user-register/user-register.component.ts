@@ -2,14 +2,14 @@ import { Component } from "@angular/core";
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
-import { environment } from '../../../environments/environment';
+import { environment } from '@environments/environment';
 
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { NgxSpinnerService } from "ngx-spinner";
-import { SecurityService } from "../../app-core/_services/security.service";
+import { SecurityService } from "@services/security.service";
 
 import { NewUser } from "../../app-core/_models/new-user.model";
-import { AuthService } from '../../app-core/_services/auth.service';
+import { AuthService } from '@services/auth.service';
 
 @Component({
   selector: 'user-register',

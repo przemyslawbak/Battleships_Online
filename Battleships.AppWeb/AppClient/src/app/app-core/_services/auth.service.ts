@@ -4,7 +4,7 @@ import { HttpClient, HttpRequest } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { Observable } from "rxjs";
 import { map } from 'rxjs/operators';
-import { environment } from '../../../environments/environment';
+import { environment } from '@environments/environment';
 
 import { SecurityService } from "../_services/security.service";
 import { NgxSpinnerService } from "ngx-spinner";
