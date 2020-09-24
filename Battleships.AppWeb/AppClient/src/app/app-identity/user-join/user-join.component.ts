@@ -1,18 +1,22 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
 
 import { AuthService } from '@services/auth.service';
 @Component({
-  selector: "join",
-  templateUrl: "./user-join.component.html",
-  styleUrls: ['./user-join.component.css']
+  selector: 'join',
+  templateUrl: './user-join.component.html',
+  styleUrls: ['./user-join.component.css'],
 })
 export class JoinComponent implements OnInit {
   title: string;
   form: FormGroup;
-  constructor(private router: Router, private formBuilder: FormBuilder, private authService: AuthService) {
-    //initialize the form
+  constructor(
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private authService: AuthService
+  ) {
+    // initialize the form
     this.createForm();
   }
 
@@ -23,12 +27,11 @@ export class JoinComponent implements OnInit {
   }
 
   public onSubmit() {
-    let email = this.form.value.Email;
-    let password = this.form.value.Password;
-    this.authService.login(email, password)
-      .subscribe(() => {
-        this.router.navigate(['']);
-      });
+    const email = this.form.value.Email;
+    const password = this.form.value.Password;
+    this.authService.login(email, password).subscribe(() => {
+      this.router.navigate(['']);
+    });
   }
 
   public onBack() {
@@ -37,19 +40,19 @@ export class JoinComponent implements OnInit {
 
   // returns TRUE if the FormControl is valid
   public isValid(name: string) {
-    let e = this.getFormControl(name);
+    const e = this.getFormControl(name);
     return e && e.valid;
   }
 
   // returns TRUE if the FormControl has been changed
   public isChanged(name: string) {
-    let e = this.getFormControl(name);
+    const e = this.getFormControl(name);
     return e && (e.dirty || e.touched);
   }
 
   // returns TRUE if the FormControl is invalid after user changes
   public hasError(name: string) {
-    let e = this.getFormControl(name);
+    const e = this.getFormControl(name);
     return e && (e.dirty || e.touched) && !e.valid;
   }
 
@@ -60,11 +63,8 @@ export class JoinComponent implements OnInit {
 
   private createForm() {
     this.form = this.formBuilder.group({
-      Email: ['',
-        [Validators.required,
-        Validators.email]
-      ],
-      Password: ['', Validators.required]
+      Email: ['', [Validators.required, Validators.email]],
+      Password: ['', Validators.required],
     });
   }
 }

@@ -24,7 +24,7 @@ OK - unit test action filters
 OK - error handling if RecaptchaVerificationResponseModel result not Success, checked
 OK - mock UserManager
 OK - use path TS aliases: https://github.com/labs42io/clean-code-typescript
-- TSLint: https://github.com/labs42io/clean-code-typescript
+- ESLint + Prettier: https://angular.io/cli/lint
 - TS method comments - remove them, update method/variable names
 - testy integracyjne backend
 - front-end unit testing

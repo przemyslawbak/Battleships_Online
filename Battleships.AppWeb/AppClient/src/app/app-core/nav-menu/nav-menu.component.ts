@@ -17,7 +17,7 @@ export class NavMenuComponent {
     if (this.auth.isLoggedIn()) {
       return this.auth.getAuth()!.displayName;
     } else {
-      return "guest";
+      return 'guest';
     }
   }
 
@@ -30,7 +30,7 @@ export class NavMenuComponent {
   }
 
   public logout(): boolean {
-    let result = this.auth.logout();
+    const result = this.auth.logout();
     console.log(result);
     return result;
   }

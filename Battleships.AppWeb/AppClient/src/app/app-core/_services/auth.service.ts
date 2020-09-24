@@ -1,35 +1,35 @@
-import { Inject, Injectable, PLATFORM_ID } from "@angular/core";
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { HttpClient, HttpRequest } from "@angular/common/http";
-import { Router } from "@angular/router";
-import { Observable } from "rxjs";
+import { HttpClient, HttpRequest } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 
-import { SecurityService } from "@services/security.service";
-import { NgxSpinnerService } from "ngx-spinner";
+import { SecurityService } from '@services/security.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
-import { LoginResponse } from "@models/login-response.model";
+import { LoginResponse } from '@models/login-response.model';
 
 @Injectable()
 export class AuthService {
-  authKey: string = "auth";
+  authKey = 'auth';
 
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: any, private router: Router, private spinner: NgxSpinnerService, private securityService: SecurityService) { }
 
   public login(email: string, password: string): Observable<boolean> {
-    let url = environment.apiUrl + "api/token/auth";
-    let data = {
+    const url = environment.apiUrl + 'api/token/auth';
+    const data = {
       Email: email,
       Password: password,
-      GrantType: "password"
+      GrantType: 'password'
     };
 
     return this.getTokenResponse(url, data);
   }
 
   public addAuthHeader(request: HttpRequest<any>): HttpRequest<any> {
-    let token = this.getAuth()!.token;
+    const token = this.getAuth()!.token;
     if (token) {
       request = request.clone({
         setHeaders: {
@@ -42,8 +42,8 @@ export class AuthService {
   }
 
   public refreshToken(): Observable<boolean> {
-    let url = environment.apiUrl + "api/token/refresh-token";
-    let data = {
+    const url = environment.apiUrl + 'api/token/refresh-token';
+    const data = {
       Email: this.getAuth().email,
       RefreshToken: this.getAuth().refreshToken
     };
@@ -52,8 +52,8 @@ export class AuthService {
 
   public logout(): boolean {
     this.spinner.show();
-    let url = environment.apiUrl + "api/token/revoke-token";
-    let data = {
+    const url = environment.apiUrl + 'api/token/revoke-token';
+    const data = {
       UserName: this.getAuth().user,
       RefreshToken: this.getAuth().refreshToken,
       Token: this.getAuth().token
@@ -84,7 +84,7 @@ export class AuthService {
 
   public getAuth(): LoginResponse | null {
     if (isPlatformBrowser(this.platformId)) {
-      let i = localStorage.getItem(this.authKey);
+      const i = localStorage.getItem(this.authKey);
       if (i) {
         return JSON.parse(i);
       }
@@ -93,7 +93,7 @@ export class AuthService {
   }
 
   public isAdmin(): boolean {
-    if (this.getAuth().role === "Admin") {
+    if (this.getAuth().role === 'Admin') {
       return true;
     }
 
@@ -122,7 +122,7 @@ export class AuthService {
     return this.http.post<LoginResponse>(url, data)
       .pipe(
         map((res) => {
-          let token = res && res.token;
+          const token = res && res.token;
           if (token) {
             this.setAuth(res);
             this.spinner.hide();
@@ -130,6 +130,6 @@ export class AuthService {
           }
           this.spinner.hide();
           return false;
-        }))
+        }));
   }
 }

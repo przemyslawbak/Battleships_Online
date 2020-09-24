@@ -1,7 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { LoginResponse } from "@models/login-response.model";
+import { LoginResponse } from '@models/login-response.model';
 
 import { AuthService } from '@services/auth.service';
 
@@ -34,7 +34,7 @@ export class CloseComponent implements OnInit {
     const token = this.route.snapshot.paramMap.get('token');
     const refresh = this.route.snapshot.paramMap.get('refresh');
 
-    let model = <LoginResponse>{};
+    const model = {} as LoginResponse;
     model.email = email;
     model.displayName = user;
     model.user = user;

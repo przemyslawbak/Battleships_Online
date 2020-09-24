@@ -1,15 +1,15 @@
-//angular
+// angular
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-//custom modules
+// custom modules
 import { AppCoreModule } from './app-core/app-core.module';
 import { AppTrialsModule } from './app-trials/app-trials.module';
 import { AppIdentityModule } from './app-identity/app-identity.module';
 import { AppRoutingModule } from './app-routing.module';
 
-//external libraries
-import { NgxSpinnerModule } from "ngx-spinner";
+// external libraries
+import { NgxSpinnerModule } from 'ngx-spinner';
 import { AppComponent } from './app.component';
 
 

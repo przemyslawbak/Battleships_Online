@@ -1,14 +1,14 @@
-import { Component } from "@angular/core";
+import { Component } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { Router } from "@angular/router";
-import { HttpClient } from "@angular/common/http";
+import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
 
 import { ReCaptchaV3Service } from 'ng-recaptcha';
-import { NgxSpinnerService } from "ngx-spinner";
-import { SecurityService } from "@services/security.service";
+import { NgxSpinnerService } from 'ngx-spinner';
+import { SecurityService } from '@services/security.service';
 
-import { NewUser } from "@models/new-user.model";
+import { NewUser } from '@models/new-user.model';
 import { AuthService } from '@services/auth.service';
 
 @Component({
@@ -25,17 +25,17 @@ export class RegisterComponent {
   }
 
   public isValid(name: string) {
-    let e = this.getFormControl(name);
+    const e = this.getFormControl(name);
     return e && e.valid;
   }
 
   public isChanged(name: string) {
-    let e = this.getFormControl(name);
+    const e = this.getFormControl(name);
     return e && (e.dirty || e.touched);
   }
 
   public hasError(name: string) {
-    let e = this.getFormControl(name);
+    const e = this.getFormControl(name);
     return e && (e.dirty || e.touched) && !e.valid;
   }
 
@@ -44,12 +44,12 @@ export class RegisterComponent {
     this.recaptchaV3Service.execute('formSubmit')
       .subscribe(
         (token) => {
-          this.onSubmit(token)
+          this.onSubmit(token);
         });
   }
 
   public onBack() {
-    this.router.navigate(["join"]);
+    this.router.navigate(['join']);
   }
 
   public getFormControl(name: string) {
@@ -64,12 +64,12 @@ export class RegisterComponent {
   }
 
   private passwordConfirmValidator(control: FormControl): any {
-    let p = control.root.get('Password');
-    let pc = control.root.get('PasswordConfirm');
+    const p = control.root.get('Password');
+    const pc = control.root.get('PasswordConfirm');
     if (p && pc) {
       if (p.value !== pc.value) {
         pc.setErrors(
-          { 'PasswordMismatch': true }
+          { PasswordMismatch: true }
         );
       }
       else {
@@ -94,13 +94,13 @@ export class RegisterComponent {
   }
 
   private onSubmit(token: string) {
-    let model = <NewUser>{};
+    const model = {} as NewUser;
     model.displayName = this.form.value.DisplayName;
     model.email = this.form.value.Email;
     model.password = this.form.value.Password;
     model.username = this.form.value.DisplayName;
     model.captchaToken = token;
-    let url = environment.apiUrl + 'api/user/register';
+    const url = environment.apiUrl + 'api/user/register';
     this.securityService.delayForBruteForce(5);
     this.http.post(url, model)
       .subscribe(

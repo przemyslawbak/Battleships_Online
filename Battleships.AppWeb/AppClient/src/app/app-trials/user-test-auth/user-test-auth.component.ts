@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
-import { NgxSpinnerService } from "ngx-spinner";
+import { HttpClient } from '@angular/common/http';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { environment } from '@environments/environment';
 
 import { AuthService } from '@services/auth.service';
@@ -14,16 +14,16 @@ export class TestComponent implements OnInit {
   constructor(private http: HttpClient, public auth: AuthService, private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
-    this.executeCall()
+    this.executeCall();
   }
 
   executeCall(): void {
     this.spinner.show();
-    let url = environment.apiUrl + 'api/user/test';
+    const url = environment.apiUrl + 'api/user/test';
     this.http.get<string>(url)
       .subscribe(
         (val) => {
-          console.log("POST call successful value returned in body", val);
+          console.log('POST call successful value returned in body', val);
           this.spinner.hide();
         });
   }

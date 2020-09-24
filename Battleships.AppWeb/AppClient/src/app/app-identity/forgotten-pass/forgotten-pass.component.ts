@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from "@angular/router";
-import { HttpClient } from "@angular/common/http";
+import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
 
 import { ModalService } from '@services/modal.service';
-import { NgxSpinnerService } from "ngx-spinner";
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 
-import { PassForgottenModel } from "@models/password-forgotten.model";
+import { PassForgottenModel } from '@models/password-forgotten.model';
 
 @Component({
   templateUrl: './forgotten-pass.component.html',
@@ -21,7 +21,7 @@ export class ForgottenComponent {
   }
 
   private onSubmit(captchaToken: string) {
-    let model = <PassForgottenModel>{};
+    const model = {} as PassForgottenModel;
     model.email = this.form.value.Email;
     model.captchaToken = captchaToken;
     const url = environment.apiUrl + 'api/user/reset';
@@ -39,17 +39,17 @@ export class ForgottenComponent {
     this.recaptchaV3Service.execute('formSubmit')
       .subscribe(
         (token) => {
-          this.onSubmit(token)
+          this.onSubmit(token);
         });
   }
 
   public hasError(name: string) {
-    let e = this.getFormControl(name);
+    const e = this.getFormControl(name);
     return e && (e.dirty || e.touched) && !e.valid;
   }
 
   public onBack() {
-    this.router.navigate(["join"]);
+    this.router.navigate(['join']);
   }
 
   private getFormControl(name: string) {

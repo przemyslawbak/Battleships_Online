@@ -1,12 +1,12 @@
-import { Injectable } from "@angular/core";
-import { HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
-import { Router } from "@angular/router";
-import { NgxSpinnerService } from "ngx-spinner";
+import { Injectable } from '@angular/core';
+import { HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { catchError, switchMap, filter, take } from "rxjs/operators";
+import { catchError, switchMap, filter, take } from 'rxjs/operators';
 
-import { SecurityService } from "@services/security.service";
-import { AuthService } from "@services/auth.service";
+import { SecurityService } from '@services/security.service';
+import { AuthService } from '@services/auth.service';
 import { ModalService } from '@services/modal.service';
 
 @Injectable()
@@ -42,7 +42,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                 this.isRefreshing = false;
                 if (authResult) {
                   this.refreshTokenSubject.next(authResult);
-                  let modifiedRequest = this.auth.addAuthHeader(request);
+                  const modifiedRequest = this.auth.addAuthHeader(request);
                   return next.handle(modifiedRequest);
                 } else {
                   this.auth.logout();
@@ -53,12 +53,12 @@ export class ErrorInterceptor implements HttpInterceptor {
               filter(authResult => authResult != null),
               take(1),
               switchMap(() => {
-                let modifiedRequest = this.auth.addAuthHeader(request);
+                const modifiedRequest = this.auth.addAuthHeader(request);
                 return next.handle(modifiedRequest);
               }));
           }
         } else {
-          return next.handle(this.auth.addAuthHeader(request))
+          return next.handle(this.auth.addAuthHeader(request));
         }
       } else {
         this.router.navigate(['join']);
@@ -71,7 +71,7 @@ export class ErrorInterceptor implements HttpInterceptor {
       this.genericErrorHandler(error);
     }
   }
-  
+
   private genericErrorHandler(error: any) {
     this.modalService.open('info-modal', error.error);
     this.spinner.hide();

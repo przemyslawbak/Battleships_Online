@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from "@angular/router";
-import { HttpClient } from "@angular/common/http";
-import { NgxSpinnerService } from "ngx-spinner";
+import { Router, ActivatedRoute } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { environment } from '@environments/environment';
 
 import { ModalService } from '@services/modal.service';
 
-import { PassResetModel } from "@models/password-reset.model";
+import { PassResetModel } from '@models/password-reset.model';
 
 @Component({
   templateUrl: './pass-reset.component.html',
@@ -27,7 +27,7 @@ export class PassResetComponent implements OnInit {
   public onSubmit() {
     this.spinner.show();
     this.passModel.password = this.form.value.Password;
-    let url = environment.apiUrl + 'api/user/new-password';
+    const url = environment.apiUrl + 'api/user/new-password';
     this.http.post(url, this.passModel)
       .subscribe(
         () => {
@@ -38,11 +38,11 @@ export class PassResetComponent implements OnInit {
   }
 
   public onBack() {
-    this.router.navigate(["join"]);
+    this.router.navigate(['join']);
   }
 
   public hasError(name: string) {
-    let e = this.getFormControl(name);
+    const e = this.getFormControl(name);
     return e && (e.dirty || e.touched) && !e.valid;
   }
 
@@ -56,12 +56,12 @@ export class PassResetComponent implements OnInit {
   }
 
   private passwordConfirmValidator(control: FormControl): any {
-    let p = control.root.get('Password');
-    let pc = control.root.get('PasswordConfirm');
+    const p = control.root.get('Password');
+    const pc = control.root.get('PasswordConfirm');
     if (p && pc) {
       if (p.value !== pc.value) {
         pc.setErrors(
-          { 'PasswordMismatch': true }
+          { PasswordMismatch: true }
         );
       }
       else {
@@ -79,7 +79,7 @@ export class PassResetComponent implements OnInit {
     const email = this.route.snapshot.paramMap.get('email');
     const token = this.route.snapshot.paramMap.get('token');
 
-    let model = <PassResetModel>{};
+    const model = {} as PassResetModel;
     model.email = email;
     model.password = '';
     model.token = token.replace(/\$/g, '/');
