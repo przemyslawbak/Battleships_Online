@@ -26,8 +26,8 @@ OK - mock UserManager
 OK - use path TS aliases: https://github.com/labs42io/clean-code-typescript
 OK - ESLint + Prettier: https://angular.io/cli/lint
 OK - TS method comments - remove them, update method/variable names
-- testy integracyjne backend
-- front-end unit testing
+- front-end unit testing: https://angular.io/guide/testing + Freeman
+- .pipe(delay(5000)) w security service
 OK - register new user
 OK - after login display user name
 OK - login after registering
@@ -70,3 +70,4 @@ end:
 - protect server controllers
 
 future:
+- testy integracyjne backend - Database, Request-response pipeline
