@@ -8,6 +8,7 @@ import { AppRoutingModule } from '../app-routing.module';
 import { ModalComponent } from './modal-views/modal-views.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 
+import { HttpService } from '@services/http.service';
 import { ModalService } from '@services/modal.service';
 import { SecurityService } from '@services/security.service';
 import { AuthService } from '@services/auth.service';
@@ -40,6 +41,7 @@ import { ErrorInterceptor } from './_helpers/error.interceptor';
     ModalService,
     SecurityService,
     AuthService,
+    HttpService,
     AuthGuard,
   ],
 })
