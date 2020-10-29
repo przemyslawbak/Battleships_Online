@@ -15,7 +15,7 @@ export class NavMenuComponent {
 
   public getUserDisplayName() {
     if (this.auth.isLoggedIn()) {
-      return this.auth.getAuth()!.displayName;
+      return this.auth.getAuth().displayName ?? 'logged in user';
     } else {
       return 'guest';
     }
