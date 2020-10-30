@@ -1,0 +1,21 @@
+.gameMenuBtn {
+  background-color: #4caf50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  height: 85px;
+  font-size: 15px;
+  border: 1px solid #90ee90;
+  text-align: center;
+}
+
+.gameMenuBtn span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
