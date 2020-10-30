@@ -50,6 +50,10 @@ const routes: Routes = [
     path: '',
     component: GameMainComponent,
   },
+  {
+    path: 'game',
+    component: GameMainComponent,
+  },
 ];
 
 @NgModule({
