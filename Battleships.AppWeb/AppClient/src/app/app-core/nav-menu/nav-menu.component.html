@@ -4,48 +4,32 @@
   >
     <div class="container">
       <a class="navbar-brand" [routerLink]="['/']">Battleships Online</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target=".navbar-collapse"
-        aria-label="Toggle navigation"
-        [attr.aria-expanded]="isExpanded"
-        (click)="toggle()"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div
-        class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse"
-        [ngClass]="{ show: isExpanded }"
-      >
-        <ul class="navbar-nav flex-grow">
-          <li
-            class="nav-item"
-            [routerLinkActive]="['link-active']"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
-            <a class="nav-link text-dark" [routerLink]="['game']">Home</a>
-          </li>
-          <li *ngIf="!this.auth.isLoggedIn()">
-            <a class="nav-link text-dark" [routerLink]="['join']">Join</a>
-          </li>
-          <li *ngIf="this.auth.isLoggedIn()">
-            <a (click)="logout()">
-              <span class="nav-link text-dark"
-                >Logout {{ this.getUserDisplayName() }}</span
-              >
-            </a>
-            <a class="nav-link text-dark" [routerLink]="['test']">Test</a>
-            <a
-              *ngIf="this.auth.isAdmin()"
-              class="nav-link text-dark"
-              [routerLink]="['admin']"
-              >Admin</a
+      <ul class="navbar-nav flex-grow">
+        <li
+          class="nav-item"
+          [routerLinkActive]="['link-active']"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <a class="nav-link text-dark" [routerLink]="['game']">Game</a>
+        </li>
+        <li *ngIf="!this.auth.isLoggedIn()">
+          <a class="nav-link text-dark" [routerLink]="['join']">Join</a>
+        </li>
+        <li *ngIf="this.auth.isLoggedIn()">
+          <a (click)="logout()">
+            <span class="nav-link text-dark"
+              >Logout {{ this.getUserDisplayName() }}</span
             >
-          </li>
-        </ul>
-      </div>
+          </a>
+          <a class="nav-link text-dark" [routerLink]="['test']">Test</a>
+          <a
+            *ngIf="this.auth.isAdmin()"
+            class="nav-link text-dark"
+            [routerLink]="['admin']"
+            >Admin</a
+          >
+        </li>
+      </ul>
     </div>
   </nav>
 </header>
