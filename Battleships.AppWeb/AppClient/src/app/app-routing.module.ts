@@ -12,6 +12,7 @@ import { UserRole } from '@models/user-role.model';
 
 import { TestComponent } from './app-trials/user-test-auth/user-test-auth.component';
 import { AdminComponent } from './app-trials/admin-test-auth/admin-test-auth.component';
+import { GameComponent } from './app-game/game-main/game-main.component';
 
 const routes: Routes = [
   {
@@ -47,8 +48,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/',
-    pathMatch: 'full',
+    component: GameComponent,
   },
 ];
 

@@ -1,3 +1,4 @@
+identity
 OK - add Google external login providers
 OK - recaptcha v3: forgotten, register
 OK - what to do if StatusCode = 429? (robot)
@@ -26,8 +27,6 @@ OK - mock UserManager
 OK - use path TS aliases: https://github.com/labs42io/clean-code-typescript
 OK - ESLint + Prettier: https://angular.io/cli/lint
 OK - TS method comments - remove them, update method/variable names
-- front-end unit testing: https://angular.io/guide/testing + Freeman
-- .pipe(delay(5000)) w security service
 OK - register new user
 OK - after login display user name
 OK - login after registering
@@ -63,11 +62,16 @@ OK - move modal service to `services` directory
 OK - bug 2x hits RefreshToken
 OK - error handling in client app
 
-education:
+main:
+- menu: (start new game -> auth ?? start : login) (join open game) (share) (results)
+- game creator: vs player/vs computer, invite friend with link, wait for someone to connect
+- gameplay: chat, 2 game boards, timer (20s), players status, options: (give up game)
 
 end:
 - clean up JS console.log rows
 - protect server controllers
+- .pipe(delay(5000)) w security service
 
 future:
 - testy integracyjne backend - Database, Request-response pipeline
+- front-end unit testing: https://angular.io/guide/testing + Freeman
