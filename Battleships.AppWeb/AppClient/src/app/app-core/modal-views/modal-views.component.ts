@@ -25,17 +25,10 @@ export class ModalComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    if (!this.id) {
-      console.error('modal must have an id');
-      return;
-    }
-
     document.body.appendChild(this.element);
 
     this.element.addEventListener('click', (el) => {
-      if (el.target.className === 'jw-modal') {
-        this.close();
-      }
+      this.close();
     });
 
     this.modalService.add(this);
