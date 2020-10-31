@@ -20,7 +20,6 @@ import { AdminComponent } from './app-trials/admin-test-auth/admin-test-auth.com
 import { GameMainComponent } from './app-game/game-main/game-main.component';
 import { GameBestComponent } from './app-game/game-best/game-best.component';
 import { GameEnterComponent } from './app-game/game-enter/game-enter.component';
-import { GameShareComponent } from './app-game/game-share/game-share.component';
 import { GameStartComponent } from './app-game/game-start/game-start.component';
 
 const routes: Routes = [
@@ -32,10 +31,6 @@ const routes: Routes = [
     path: 'enter',
     component: GameEnterComponent,
     canActivate: [AuthGuard],
-  },
-  {
-    path: 'share',
-    component: GameShareComponent,
   },
   {
     path: 'start',

@@ -6,7 +6,6 @@ import { GameMainComponent } from './game-main/game-main.component';
 import { GameStartComponent } from './game-start/game-start.component';
 import { GameEnterComponent } from './game-enter/game-enter.component';
 import { GameBestComponent } from './game-best/game-best.component';
-import { GameShareComponent } from './game-share/game-share.component';
 
 @NgModule({
   imports: [AppRoutingModule],
@@ -16,7 +15,6 @@ import { GameShareComponent } from './game-share/game-share.component';
     GameStartComponent,
     GameEnterComponent,
     GameBestComponent,
-    GameShareComponent,
   ],
   exports: [GameMenuComponent, GameMainComponent],
   providers: [],
