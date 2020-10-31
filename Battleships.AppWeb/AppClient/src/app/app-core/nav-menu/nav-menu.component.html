@@ -13,7 +13,7 @@
           <a class="nav-link text-dark" [routerLink]="['game']">Game</a>
         </li>
         <li *ngIf="!this.auth.isLoggedIn()">
-          <a class="nav-link text-dark" [routerLink]="['join']">Join</a>
+          <a class="nav-link text-dark" [routerLink]="['join']">Join site</a>
         </li>
         <li *ngIf="this.auth.isLoggedIn()">
           <a (click)="logout()">
