@@ -33,10 +33,6 @@ export class JoinComponent implements OnInit {
     });
   }
 
-  public onBack() {
-    this.router.navigate(['']);
-  }
-
   public isValid(name: string) {
     const e = this.getFormControl(name);
     return e && e.valid;

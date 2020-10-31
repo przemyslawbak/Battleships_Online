@@ -8,10 +8,4 @@ import { AuthService } from '@services/auth.service';
 })
 export class GameStartComponent {
   constructor(private router: Router, private auth: AuthService) {}
-
-  public ngOnInit() {
-    if (!this.auth.isLoggedIn()) {
-      this.router.navigate(['join']);
-    }
-  }
 }

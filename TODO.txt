@@ -63,9 +63,10 @@ OK - bug 2x hits RefreshToken
 OK - error handling in client app
 
 main:
-- menu: (start new game -> auth ?? start : login) (join open game) (share) (results)
-- game header pic
-- menu btns na bootstrap
+OK - menu: (start new game -> auth ?? start : login) (join open game) (share) (results)
+OK - game header pic
+NO - menu btns na bootstrap
+- do something with return URL from AuthGuard
 - game creator: vs player/vs computer, invite friend with link, wait for someone to connect
 - gameplay: chat, 2 game boards, timer (20s), players status, options: (give up game)
 

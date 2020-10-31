@@ -31,6 +31,7 @@ const routes: Routes = [
   {
     path: 'enter',
     component: GameEnterComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'share',
@@ -39,6 +40,7 @@ const routes: Routes = [
   {
     path: 'start',
     component: GameStartComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'join',
