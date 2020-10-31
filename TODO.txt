@@ -64,6 +64,8 @@ OK - error handling in client app
 
 main:
 - menu: (start new game -> auth ?? start : login) (join open game) (share) (results)
+- game header pic
+- menu btns na bootstrap
 - game creator: vs player/vs computer, invite friend with link, wait for someone to connect
 - gameplay: chat, 2 game boards, timer (20s), players status, options: (give up game)
 
