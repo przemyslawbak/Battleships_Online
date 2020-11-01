@@ -1,0 +1,18 @@
+thead {
+  height: 85px;
+}
+
+th {
+  background-color: #4caf50;
+  color: white;
+  font-weight: normal;
+  font-size: 18px;
+  border: 1px solid #90ee90;
+}
+.gameHeaderPic {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("../../../assets/images/top.jpg");
+  height: 85px;
+}

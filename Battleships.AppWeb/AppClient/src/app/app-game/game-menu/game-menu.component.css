@@ -1,6 +1,5 @@
 .gameMenuBtn {
-  background-color: #4caf50; /* Green */
-  border: none;
+  background-color: #4caf50;
   padding: 15px 32px;
   text-align: center;
   text-decoration: none;
@@ -8,7 +7,6 @@
   height: 85px;
   font-size: 18px;
   border: 1px solid #90ee90;
-  text-align: center;
 }
 
 .gameMenuBtn span {

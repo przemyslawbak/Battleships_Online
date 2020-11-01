@@ -1,1 +1,19 @@
-<p>sbest players!</p>
+<div class="gameHeaderPic col-sm"></div>
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Multiplayer wins</th>
+      <th scope="col">AI wins</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let joke of this.playersList; let i = index">
+      <th scope="row">{{ i + 1 }}</th>
+      <td>{{ joke.displayName }}</td>
+      <td>{{ joke.wonMultiplayerGames }}</td>
+      <td>{{ joke.wonAiGames }}</td>
+    </tr>
+  </tbody>
+</table>
