@@ -92,13 +92,14 @@ namespace Battleships_Online
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddTransient<ITokenRepository, EFTokenRepository>();
+            services.AddTransient<IUserRepository, EFUserRepository>();
             services.AddTransient<TokenManagerMiddleware>();
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IInputSanitizer, InputSanitizer>();
             services.AddTransient<ITokenService, TokenService>();
             services.AddTransient<IHttpService, HttpService>();
-            services.AddTransient<ITokenRepository, EFTokenRepository>();
             services.AddTransient<IHttpClientProvider, HttpClientProvider>();
             services.AddScoped<ValidateModelAttribute>();
             services.AddScoped<VerifyCaptchaAttribute>();

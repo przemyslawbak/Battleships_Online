@@ -1,9 +1,11 @@
 ﻿using Battleships.AppWeb.Helpers;
+using Battleships.DAL;
 using Battleships.Models;
 using Battleships.Models.ViewModels;
 using Battleships.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Battleships.AppWeb.Controllers
@@ -12,11 +14,13 @@ namespace Battleships.AppWeb.Controllers
     public class UserController : Controller
     {
         private readonly IUserService _userService;
+        private readonly IUserRepository _userRepo;
         private readonly IInputSanitizer _sanitizer;
         private readonly IEmailSender _emailSender;
 
-        public UserController(IUserService userService, IInputSanitizer sanitizer, IEmailSender emailSender)
+        public UserController(IUserService userService, IInputSanitizer sanitizer, IEmailSender emailSender, IUserRepository userRepo)
         {
+            _userRepo = userRepo;
             _userService = userService;
             _sanitizer = sanitizer;
             _emailSender = emailSender;
@@ -42,6 +46,17 @@ namespace Battleships.AppWeb.Controllers
         public IActionResult GetAdminTest()
         {
             return new OkObjectResult(new { Message = "This is data for admin only!" });
+        }
+
+        /// <summary>
+        /// GET: api/user/best
+        /// </summary>
+        /// <returns>List of top 10 players.</returns>
+        [HttpGet("best")]
+        public IActionResult GetBestPLayers()
+        {
+            List<BestPlayersViewModel> list = _userRepo.GetTop10Players();
+            return new OkObjectResult(list);
         }
 
         /// <summary>
@@ -129,5 +144,7 @@ namespace Battleships.AppWeb.Controllers
 
             return Ok();
         }
+
+
     }
 }
