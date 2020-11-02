@@ -74,7 +74,7 @@ const routes: Routes = [
   },
   {
     path: 'game',
-    component: GameMainComponent,
+    redirectTo: '',
   },
 ];
 

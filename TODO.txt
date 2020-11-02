@@ -66,7 +66,8 @@ main:
 OK - menu: (start new game -> auth ?? start : login) (join open game) (share) (results)
 OK - game header pic
 NO - menu btns na bootstrap
-- do something with return URL from AuthGuard
+OK - do something with return URL from AuthGuard
+- redirect somewhere from `Game` btn
 - game creator: vs player/vs computer, invite friend with link, wait for someone to connect
 - gameplay: chat, 2 game boards, timer (20s), players status, options: (give up game)
 - edit profile view
