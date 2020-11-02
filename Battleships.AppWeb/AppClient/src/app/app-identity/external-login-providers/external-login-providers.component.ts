@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { environment } from '@environments/environment';
 
@@ -18,13 +18,15 @@ declare let window: any;
 })
 export class LoginExternalProvidersComponent implements OnInit {
   private externalProviderWindow: Window;
+  private returnUrl: string;
 
   constructor(
     private router: Router,
     private auth: AuthService,
     @Inject(PLATFORM_ID) private platformId: any,
     private spinner: NgxSpinnerService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private route: ActivatedRoute
   ) {}
 
   public ngOnInit() {
@@ -32,9 +34,11 @@ export class LoginExternalProvidersComponent implements OnInit {
       return;
     }
 
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+
     this.closePopUpWindow();
     if (!window.externalProviderLogin) {
-      window.externalProviderLogin = function(auth: LoginResponse) {
+      window.externalProviderLogin = function (auth: LoginResponse) {
         this.zone.run(() => {
           this.auth.setAuth(auth);
           this.router.navigate(['']);
@@ -74,7 +78,7 @@ export class LoginExternalProvidersComponent implements OnInit {
 
   private handleCloseExternalProvider() {
     if (this.auth.isLoggedIn()) {
-      this.router.navigate(['']);
+      this.router.navigateByUrl(this.returnUrl);
       this.closePopUpWindow();
     } else {
       this.modalService.open(

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { AuthService } from '@services/auth.service';
 @Component({
@@ -9,12 +9,13 @@ import { AuthService } from '@services/auth.service';
   styleUrls: ['./user-join.component.css'],
 })
 export class JoinComponent implements OnInit {
-  title: string;
-  form: FormGroup;
+  private returnUrl: string;
+  public form: FormGroup;
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private route: ActivatedRoute
   ) {
     this.createForm();
   }
@@ -23,13 +24,15 @@ export class JoinComponent implements OnInit {
     if (this.authService.isLoggedIn()) {
       this.router.navigate(['']);
     }
+
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   public onSubmit() {
     const email = this.form.value.Email;
     const password = this.form.value.Password;
     this.authService.login(email, password).subscribe(() => {
-      this.router.navigate(['']);
+      this.router.navigateByUrl(this.returnUrl);
     });
   }
 
