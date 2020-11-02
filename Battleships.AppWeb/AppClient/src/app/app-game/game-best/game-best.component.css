@@ -1,5 +1,5 @@
 thead {
-  height: 85px;
+  border: 1px solid #90ee90;
 }
 
 th {
@@ -7,7 +7,7 @@ th {
   color: white;
   font-weight: normal;
   font-size: 18px;
-  border: 1px solid #90ee90;
+  border-bottom-width: 1px !important;
 }
 .gameHeaderPic {
   background-position: center;
