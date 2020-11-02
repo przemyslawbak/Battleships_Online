@@ -17,7 +17,6 @@ import { NewUser } from '@models/new-user.model';
 import { AuthService } from '@services/auth.service';
 
 @Component({
-  selector: 'user-register',
   templateUrl: './user-register.component.html',
   styleUrls: ['./user-register.component.css'],
 })
