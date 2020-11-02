@@ -1,12 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable()
 export class HttpService {
-  constructor(private http: HttpClient) {}
+  private result: any;
+  constructor(private http: HttpClient, private spinner: NgxSpinnerService) {}
 
-  getData(url: string): Observable<any> {
+  public getData(url: string): Observable<any> {
+    this.spinner.show();
+    this.result = this.requestResult(url);
+    this.spinner.hide();
+    return this.result;
+  }
+
+  private requestResult(url: string): Observable<any> {
     return this.http.get<any>(url);
   }
 }
