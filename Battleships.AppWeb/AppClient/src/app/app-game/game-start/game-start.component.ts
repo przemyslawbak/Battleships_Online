@@ -107,9 +107,5 @@ export class GameStartComponent {
     this.http.post(url, model).subscribe(() => {
       this.spinner.hide();
     });
-    console.log('ai: ' + this.form.value.GameAi);
-    console.log('multi: ' + this.form.value.GameMulti);
-    console.log('open: ' + this.form.value.GameOpen);
-    console.log('link: ' + this.form.value.GameLink);
   }
 }
