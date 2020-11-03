@@ -21,7 +21,7 @@ import { AuthService } from '@services/auth.service';
   styleUrls: ['./user-register.component.css'],
 })
 export class RegisterComponent {
-  form: FormGroup;
+  public form: FormGroup;
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,

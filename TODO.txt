@@ -67,6 +67,7 @@ OK - menu: (start new game -> auth ?? start : login) (join open game) (share) (r
 OK - game header pic
 NO - menu btns na bootstrap
 OK - do something with return URL from AuthGuard
+- checkboxes, validate
 - if no players found, display in best players view something about it
 - redirect somewhere from `Game` btn
 - game creator: vs player/vs computer, invite friend with link, wait for someone to connect
