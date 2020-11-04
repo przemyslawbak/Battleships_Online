@@ -69,8 +69,8 @@ NO - menu btns na bootstrap
 OK - do something with return URL from AuthGuard
 OK - checkboxes, validate
 OK - game creator: vs player/vs computer, invite friend with link, wait for someone to connect
-- when waiting for external login, some view in opened window
-- endpoint for game creator
+OK - when waiting for external login, some view in opened window: ExternalLoginAsync-> ExternalLoginCallback -> 
+OK - endpoint for game creator
 - if no players found, display in best players view something about it
 - redirect somewhere from `Game` btn
 - gameplay: chat, 2 game boards, timer (20s), players status, options: (give up game)

@@ -66,6 +66,65 @@ export class LoginExternalProvidersComponent implements OnInit {
       params,
       false
     );
+    let html =
+      '<!doctype html>\
+<html lang="en">\
+<head>\
+    <style>\
+        .wait {\
+          margin-left: auto;\
+              margin-right: auto;\
+              margin-top: 30px;\
+              display:block;\
+              width: 210px;\
+              font-size: 20px;\
+        }\
+        .loader {\
+          margin-left: auto;\
+          margin-right: auto;\
+              margin-top: 30px;\
+            border: 16px solid #f3f3f3;\
+            border-radius: 50%;\
+            border-top: 16px solid #3498db;\
+            width: 120px;\
+            height: 120px;\
+            -webkit-animation: spin 2s linear infinite; /* Safari */\
+            animation: spin 2s linear infinite;\
+        }\
+\
+        /* Safari */\
+        @-webkit-keyframes spin {\
+            0% {\
+                -webkit-transform: rotate(0deg);\
+            }\
+\
+            100% {\
+                -webkit-transform: rotate(360deg);\
+            }\
+        }\
+\
+        @keyframes spin {\
+            0% {\
+                transform: rotate(0deg);\
+            }\
+\
+            100% {\
+                transform: rotate(360deg);\
+            }\
+        }\
+    </style>\
+    <meta charset="utf-8">\
+    <title>External Login</title>\
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">\
+</head>\
+<body>\
+    <div class="loader"></div>\
+    <div class="wait"/>\
+        Please wait, redirecting...\
+    </div>\
+</body>\
+</html>';
+    this.externalProviderWindow.document.body.innerHTML = html;
     const checkIntervalId = setInterval(() => {
       if (this.externalProviderWindow.closed) {
         clearInterval(checkIntervalId);
