@@ -103,7 +103,7 @@ export class GameStartComponent {
     model.gameMulti = this.form.value.GameMulti;
     model.gameLink = this.form.value.GameLink;
     model.gameOpen = this.form.value.GameOpen;
-    const url = environment.apiUrl + 'api/user/register'; //todo: change url
+    const url = environment.apiUrl + 'api/game/start';
     this.http.post(url, model).subscribe(() => {
       this.spinner.hide();
     });
