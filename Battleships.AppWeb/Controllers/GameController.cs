@@ -11,12 +11,12 @@ namespace Battleships.AppWeb.Controllers
         /// <summary>
         /// GET: api/game/start
         /// </summary>
-        /// <returns>Status code with object.</returns>
+        /// <returns>Status code.</returns>
         [HttpPost("start")]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin, User")]
         public IActionResult StartGame(GameStartViewModel model)
         {
-            return Json("dupa"); //todo: now what?
+            return Ok("dupa");
         }
     }
 }

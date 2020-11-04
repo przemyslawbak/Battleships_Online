@@ -2,9 +2,9 @@
 {
     public class GameStartViewModel
     {
-        public bool IsGameAi { get; set; }
-        public bool IsGameMulti { get; set; }
-        public bool IsGameOpen { get; set; }
-        public bool IsGameLink { get; set; }
+        public bool GameAi { get; set; }
+        public bool GameMulti { get; set; }
+        public bool GameOpen { get; set; }
+        public bool GameLink { get; set; }
     }
 }
