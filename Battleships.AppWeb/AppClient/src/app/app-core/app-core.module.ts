@@ -12,6 +12,7 @@ import { HttpService } from '@services/http.service';
 import { ModalService } from '@services/modal.service';
 import { SecurityService } from '@services/security.service';
 import { AuthService } from '@services/auth.service';
+import { GameService } from '@services/game.service';
 
 import { AuthGuard } from './_helpers/auth.guard';
 import { JtwInterceptor } from './_helpers/jtw.interceptor';
@@ -43,6 +44,7 @@ import { ErrorInterceptor } from './_helpers/error.interceptor';
     AuthService,
     HttpService,
     AuthGuard,
+    GameService,
   ],
 })
 export class AppCoreModule {}
