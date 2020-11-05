@@ -6,6 +6,7 @@ import { GameStart } from '@models/game-start';
 import { environment } from '@environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { GameService } from '@services/game.service';
 
 @Component({
   templateUrl: './game-start.component.html',
@@ -20,7 +21,8 @@ export class GameStartComponent {
     private router: Router,
     private auth: AuthService,
     private formBuilder: FormBuilder,
-    private http: HttpClient
+    private http: HttpClient,
+    private game: GameService
   ) {
     this.createForm();
   }
@@ -103,6 +105,7 @@ export class GameStartComponent {
     model.gameMulti = this.form.value.GameMulti;
     model.gameLink = this.form.value.GameLink;
     model.gameOpen = this.form.value.GameOpen;
+    this.game.setGame(model);
     const url = environment.apiUrl + 'api/game/start';
     this.http.post(url, model).subscribe(() => {
       this.spinner.hide();

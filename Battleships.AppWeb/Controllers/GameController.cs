@@ -16,7 +16,7 @@ namespace Battleships.AppWeb.Controllers
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin, User")]
         public IActionResult StartGame(GameStartViewModel model)
         {
-            return Ok("dupa");
+            return Ok();
         }
     }
 }
