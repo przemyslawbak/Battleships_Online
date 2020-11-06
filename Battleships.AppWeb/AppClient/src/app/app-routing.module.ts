@@ -21,11 +21,17 @@ import { GameMainComponent } from './app-game/game-main/game-main.component';
 import { GameBestComponent } from './app-game/game-best/game-best.component';
 import { GameEnterComponent } from './app-game/game-enter/game-enter.component';
 import { GameStartComponent } from './app-game/game-start/game-start.component';
+import { GamePlayComponent } from './app-game/game-play/game-play.component';
 
 const routes: Routes = [
   {
     path: 'best',
     component: GameBestComponent,
+  },
+  {
+    path: 'play',
+    component: GamePlayComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'enter',

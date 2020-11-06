@@ -8,6 +8,7 @@ import { GameMainComponent } from './game-main/game-main.component';
 import { GameStartComponent } from './game-start/game-start.component';
 import { GameEnterComponent } from './game-enter/game-enter.component';
 import { GameBestComponent } from './game-best/game-best.component';
+import { GamePlayComponent } from './game-play/game-play.component';
 
 @NgModule({
   imports: [AppRoutingModule, BrowserModule, FormsModule, ReactiveFormsModule],
@@ -17,6 +18,7 @@ import { GameBestComponent } from './game-best/game-best.component';
     GameStartComponent,
     GameEnterComponent,
     GameBestComponent,
+    GamePlayComponent,
   ],
   exports: [GameMenuComponent, GameMainComponent],
   providers: [],

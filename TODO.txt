@@ -71,12 +71,12 @@ OK - checkboxes, validate
 OK - game creator: vs player/vs computer, invite friend with link, wait for someone to connect
 OK - when waiting for external login, some view in opened window: ExternalLoginAsync-> ExternalLoginCallback -> 
 OK - endpoint for game creator
+OK - redirect somewhere from `Game` btn-> if game != null -> game, else -> start game
+- should on logout erase game service data? yes
 - gameplay: chat, 2 game boards, timer (20s), players status, options: (give up game)
-- should on logout erase game service data?
 - game rules
 - privacy policy
 - if no players found, display in best players view something about it
-- redirect somewhere from `Game` btn
 - edit profile view
 
 end:
