@@ -72,7 +72,7 @@ OK - game creator: vs player/vs computer, invite friend with link, wait for some
 OK - when waiting for external login, some view in opened window: ExternalLoginAsync-> ExternalLoginCallback -> 
 OK - endpoint for game creator
 OK - redirect somewhere from `Game` btn-> if game != null -> game, else -> start game
-- should on logout erase game service data? yes
+OK - should on logout erase game service data? no
 - gameplay: chat, 2 game boards, timer (20s), players status, options: (give up game)
 - game rules
 - privacy policy
