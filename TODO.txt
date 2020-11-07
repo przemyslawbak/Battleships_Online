@@ -73,13 +73,21 @@ OK - when waiting for external login, some view in opened window: ExternalLoginA
 OK - endpoint for game creator
 OK - redirect somewhere from `Game` btn-> if game != null -> game, else -> start game
 OK - should on logout erase game service data? no
-- gameplay: chat, 2 game boards, timer (20s), players status, options: (give up game)
+- display: DEPLOY SHIPS
+- game boards (for 2 players): canvas drawings
+- deploy ships (limited time: 1-2min)
+- display: BATTLE, you: name, opponent: name/ai,
+- whose turn is? 
+- chat window (if 2 players)
+- opponent (who is: ai/players name)
+- timer (20-30s)
 - game rules
 - privacy policy
 - if no players found, display in best players view something about it
 - edit profile view
 
 end:
+- favicon
 - clean up JS console.log rows
 - protect server controllers
 - .pipe(delay(5000)) w security service

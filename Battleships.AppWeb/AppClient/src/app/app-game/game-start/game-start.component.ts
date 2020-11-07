@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '@services/auth.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { GameStart } from '@models/game-start';
+import { GameState } from '@models/game-state.model';
+import { GameStage } from '@models/game-state.model';
 import { environment } from '@environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -19,7 +19,6 @@ export class GameStartComponent {
   constructor(
     private spinner: NgxSpinnerService,
     private router: Router,
-    private auth: AuthService,
     private formBuilder: FormBuilder,
     private http: HttpClient,
     private game: GameService
@@ -100,11 +99,12 @@ export class GameStartComponent {
 
   public onSubmit() {
     this.spinner.show();
-    const model = {} as GameStart;
+    const model = {} as GameState;
     model.gameAi = this.form.value.GameAi;
     model.gameMulti = this.form.value.GameMulti;
     model.gameLink = this.form.value.GameLink;
     model.gameOpen = this.form.value.GameOpen;
+    model.gameStage = GameStage.Deploy;
     this.game.setGame(model);
     const url = environment.apiUrl + 'api/game/start';
     this.http.post(url, model).subscribe(() => {

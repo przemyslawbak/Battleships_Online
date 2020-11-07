@@ -1,6 +1,6 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { GameStart } from '@models/game-start';
+import { GameState } from '@models/game-state.model';
 
 @Injectable()
 export class GameService {
@@ -8,7 +8,7 @@ export class GameService {
 
   constructor(@Inject(PLATFORM_ID) private platformId: any) {}
 
-  public setGame(game: GameStart | null): boolean {
+  public setGame(game: GameState | null): boolean {
     if (isPlatformBrowser(this.platformId)) {
       if (game) {
         localStorage.setItem(this.gameKey, JSON.stringify(game));
@@ -18,7 +18,7 @@ export class GameService {
     return false;
   }
 
-  public getGame(): GameStart | null {
+  public getGame(): GameState | null {
     if (isPlatformBrowser(this.platformId)) {
       const i = localStorage.getItem(this.gameKey);
       if (i) {
