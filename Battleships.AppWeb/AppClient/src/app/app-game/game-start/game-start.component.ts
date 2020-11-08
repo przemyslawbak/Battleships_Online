@@ -8,6 +8,7 @@ import { environment } from '@environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { GameService } from '@services/game.service';
+import { AuthService } from '@services/auth.service';
 
 @Component({
   templateUrl: './game-start.component.html',
@@ -22,7 +23,8 @@ export class GameStartComponent {
     private router: Router,
     private formBuilder: FormBuilder,
     private http: HttpClient,
-    private game: GameService
+    private game: GameService,
+    public auth: AuthService
   ) {
     this.createForm();
   }
@@ -121,6 +123,8 @@ export class GameStartComponent {
     model.gameTurnNumber = 0;
     model.player1Fleet = this.createFleet();
     model.player2Fleet = this.createFleet();
+    model.host = this.auth.getAuth().displayName;
+    model.guest = this.getGuestName(model.gameAi);
     return model;
   }
 
@@ -128,6 +132,14 @@ export class GameStartComponent {
     let min = Math.ceil(10000000000);
     let max = Math.floor(99999999999);
     return Math.floor(Math.random() * (max - min) + min);
+  }
+
+  private getGuestName(ai: boolean): string {
+    if (ai) {
+      return 'Computer AI';
+    }
+
+    return '';
   }
 
   private createFleet(): boolean[][] {

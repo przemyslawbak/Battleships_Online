@@ -19,4 +19,6 @@ export interface GameState {
   gameTurnNumber: number;
   player1Fleet: boolean[][];
   player2Fleet: boolean[][];
+  host: string;
+  guest: string;
 }
