@@ -1,5 +1,14 @@
-.gameBoard {
-  border: solid 2px;
+.gameStatus,
+.gameChat {
+  border: solid 1px;
+}
+
+.row {
+  margin-top: 10px;
+}
+
+table {
+  margin: 5px;
 }
 
 table td {
