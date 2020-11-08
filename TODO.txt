@@ -87,6 +87,7 @@ OK - should on logout erase game service data? no
 - privacy policy
 - if no players found, display in best players view something about it
 - edit profile view
+- greater font size for small screens
 
 end:
 - favicon

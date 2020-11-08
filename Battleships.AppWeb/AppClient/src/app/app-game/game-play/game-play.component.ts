@@ -12,8 +12,6 @@ export class GamePlayComponent implements OnInit {
   public whoseTurn: string;
   public gameTurnNumber: number;
   public opponent: string;
-  @ViewChild('boardP1', { static: true })
-  public canvas: ElementRef<HTMLCanvasElement>;
   public ctx: CanvasRenderingContext2D;
   public boardP1: number[][];
   public boardP2: number[][];
@@ -25,7 +23,7 @@ export class GamePlayComponent implements OnInit {
     if (!this.game.getGame()) {
       this.router.navigate(['start']);
     } else {
-      this.initBoard();
+      this.initBoards();
       this.initVar();
     }
   }
@@ -38,18 +36,16 @@ export class GamePlayComponent implements OnInit {
     this.opponent = game.guest; //todo: how to get opponents name?
   }
 
-  initBoard(): void {
-    //todo: paint
-    this.ctx = this.canvas.nativeElement.getContext('2d');
-    this.ctx.canvas.width = COLS * BLOCK_SIZE;
-    this.ctx.canvas.height = ROWS * BLOCK_SIZE;
-    this.ctx.scale(BLOCK_SIZE, BLOCK_SIZE);
-
+  initBoards(): void {
     this.boardP1 = this.getEmptyBoard();
     this.boardP2 = this.getEmptyBoard();
 
-    console.table(this.boardP1);
-    console.table(this.boardP2);
+    this.drawBoard(this.boardP1);
+    this.drawBoard(this.boardP2);
+  }
+
+  private drawBoard(board: number[][]): void {
+    //todo: draw
   }
 
   public onBack(): void {

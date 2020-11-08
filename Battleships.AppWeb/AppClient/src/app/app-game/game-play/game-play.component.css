@@ -1,0 +1,18 @@
+.gameBoard {
+  border: solid 2px;
+}
+
+table td {
+  border: solid 1px;
+  width: 3vw;
+  height: 3vw;
+  text-align: center;
+}
+
+@media (max-width: 750px) {
+  table td {
+    width: 9vw;
+    height: 9vw;
+    font-size: 30px;
+  }
+}
