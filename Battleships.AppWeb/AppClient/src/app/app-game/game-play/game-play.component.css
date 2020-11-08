@@ -3,12 +3,17 @@
   border: solid 1px;
 }
 
+.dataRow {
+  min-height: 150px;
+  margin-top: 10px;
+}
+
 .row {
   margin-top: 10px;
 }
 
 table {
-  margin: 5px;
+  margin: 20px;
 }
 
 table td {

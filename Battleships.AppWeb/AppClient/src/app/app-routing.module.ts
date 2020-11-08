@@ -29,7 +29,7 @@ const routes: Routes = [
     component: GameBestComponent,
   },
   {
-    path: 'play',
+    path: 'play/:id',
     component: GamePlayComponent,
     canActivate: [AuthGuard],
   },

@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { GameService } from '@services/game.service';
 import { AuthService } from '@services/auth.service';
+import { COLS, ROWS } from '../constants';
 
 @Component({
   templateUrl: './game-start.component.html',
@@ -107,7 +108,7 @@ export class GameStartComponent {
     const url = environment.apiUrl + 'api/game/start';
     this.http.post(url, model).subscribe(() => {
       this.spinner.hide();
-      this.router.navigate(['play']);
+      this.router.navigate(['play/' + model.gameId]);
     });
   }
 
@@ -119,13 +120,21 @@ export class GameStartComponent {
     model.gameLink = this.form.value.GameLink;
     model.gameOpen = this.form.value.GameOpen;
     model.gameStage = GameStage.Deploying;
-    model.gameTurnPlayer = WhoseTurn.Guest;
+    model.gameTurnPlayer = WhoseTurn.Player1;
     model.gameTurnNumber = 0;
     model.player1Fleet = this.createFleet();
     model.player2Fleet = this.createFleet();
-    model.host = this.auth.getAuth().displayName;
-    model.guest = this.getGuestName(model.gameAi);
+    model.players = [
+      this.getGuestName(model.gameAi),
+      this.auth.getAuth().displayName,
+    ];
+    model.boardP1 = this.getEmptyBoard();
+    model.boardP2 = this.getEmptyBoard();
     return model;
+  }
+
+  public getEmptyBoard(): number[][] {
+    return Array.from({ length: ROWS }, () => Array(COLS).fill(0));
   }
 
   private getUniqueId(): number {

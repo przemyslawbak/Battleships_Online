@@ -1,32 +1,29 @@
 <div class="container">
   <div class="row">
     <div class="col-md-6">
-      <div class="col-md-11 gameStatus">
+      <div class="col-md-8 gameStatus dataRow">
         <p>Status: {{ gameStatus }}</p>
         <p>Turn number: {{ gameTurnNumber }}</p>
         <p>Turn of: {{ whoseTurn }}</p>
-        <p>Opponent: {{ opponent }}</p>
       </div>
     </div>
-    <div class="col-md-6 gameChat">
-      <div class="col-md-11">
+    <div class="col-md-6 gameChat dataRow">
+      <div class="col-md-12">
         <p>Game chat will be here</p>
       </div>
     </div>
   </div>
   <div class="row">
     <div class="col-md-6">
-      <div>Player 1</div>
+      <div>Player 1: {{ player2 }}</div>
       <table>
         <tr *ngFor="let row of boardP1; let j = index">
           <td
             *ngFor="let col of row; let k = index"
-            (click)="fireTorpedo()"
             [style.background-color]="col.used ? '' : 'transparent'"
             [class.win]="col.status == 'win'"
             [class.fail]="col.status !== 'win'"
             class="battleship-tile"
-            id="t{{ i }}{{ j }}{{ k }}"
           >
             {{ col.value == "X" ? "X" : "💀" }}
           </td>
@@ -34,17 +31,16 @@
       </table>
     </div>
     <div class="col-md-6">
-      <div>Player 2</div>
+      <div>Player 2: {{ player1 }}</div>
       <table>
         <tr *ngFor="let row of boardP2; let j = index">
           <td
             *ngFor="let col of row; let k = index"
-            (click)="fireTorpedo($event)"
+            (click)="fireTorpedo(j, k)"
             [style.background-color]="col.used ? '' : 'transparent'"
             [class.win]="col.status == 'win'"
             [class.fail]="col.status !== 'win'"
             class="battleship-tile"
-            id="t{{ i }}{{ j }}{{ k }}"
           >
             {{ col.value == "X" ? "X" : "💀" }}
           </td>

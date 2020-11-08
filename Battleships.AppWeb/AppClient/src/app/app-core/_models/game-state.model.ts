@@ -4,8 +4,8 @@ export enum GameStage {
 }
 
 export enum WhoseTurn {
-  Host = 'Host',
-  Guest = 'Guest',
+  Player1 = 'Player 1',
+  Player2 = 'Player 2',
 }
 
 export interface GameState {
@@ -19,6 +19,7 @@ export interface GameState {
   gameTurnNumber: number;
   player1Fleet: boolean[][];
   player2Fleet: boolean[][];
-  host: string;
-  guest: string;
+  players: string[];
+  boardP1: number[][];
+  boardP2: number[][];
 }
