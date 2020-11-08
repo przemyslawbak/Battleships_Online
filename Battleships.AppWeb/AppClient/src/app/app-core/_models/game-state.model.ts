@@ -1,11 +1,11 @@
 export enum GameStage {
-  Deploy,
-  Play,
+  Deploying = 'Deploying ships',
+  Playing = 'Game started',
 }
 
 export enum WhoseTurn {
-  Host,
-  Guest,
+  Host = 'Host',
+  Guest = 'Guest',
 }
 
 export interface GameState {
@@ -15,5 +15,8 @@ export interface GameState {
   gameLink: boolean;
   gameId: number;
   gameStage: GameStage;
-  gameTurn: WhoseTurn;
+  gameTurnPlayer: WhoseTurn;
+  gameTurnNumber: number;
+  player1Fleet: boolean[][];
+  player2Fleet: boolean[][];
 }

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { GameState } from '@models/game-state.model';
 import { GameStage } from '@models/game-state.model';
+import { WhoseTurn } from '@models/game-state.model';
 import { environment } from '@environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -99,17 +100,48 @@ export class GameStartComponent {
 
   public onSubmit() {
     this.spinner.show();
-    const model = {} as GameState;
-    model.gameAi = this.form.value.GameAi;
-    model.gameMulti = this.form.value.GameMulti;
-    model.gameLink = this.form.value.GameLink;
-    model.gameOpen = this.form.value.GameOpen;
-    model.gameStage = GameStage.Deploy;
+    let model = this.initGameModel();
     this.game.setGame(model);
     const url = environment.apiUrl + 'api/game/start';
     this.http.post(url, model).subscribe(() => {
       this.spinner.hide();
       this.router.navigate(['play']);
     });
+  }
+
+  private initGameModel(): GameState {
+    let model = {} as GameState;
+    model.gameId = this.getUniqueId();
+    model.gameAi = this.form.value.GameAi;
+    model.gameMulti = this.form.value.GameMulti;
+    model.gameLink = this.form.value.GameLink;
+    model.gameOpen = this.form.value.GameOpen;
+    model.gameStage = GameStage.Deploying;
+    model.gameTurnPlayer = WhoseTurn.Guest;
+    model.gameTurnNumber = 0;
+    model.player1Fleet = this.createFleet();
+    model.player2Fleet = this.createFleet();
+    return model;
+  }
+
+  private getUniqueId(): number {
+    let min = Math.ceil(10000000000);
+    let max = Math.floor(99999999999);
+    return Math.floor(Math.random() * (max - min) + min);
+  }
+
+  private createFleet(): boolean[][] {
+    return [
+      [false],
+      [false],
+      [false],
+      [false],
+      [false, false],
+      [false, false],
+      [false, false],
+      [false, false, false],
+      [false, false, false],
+      [false, false, false, false],
+    ];
   }
 }

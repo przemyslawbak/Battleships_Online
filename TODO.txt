@@ -73,6 +73,8 @@ OK - when waiting for external login, some view in opened window: ExternalLoginA
 OK - endpoint for game creator
 OK - redirect somewhere from `Game` btn-> if game != null -> game, else -> start game
 OK - should on logout erase game service data? no
+- ship element / component
+- list of ships for each player
 - display: DEPLOY SHIPS
 - game boards (for 2 players): canvas drawings
 - deploy ships (limited time: 1-2min)
