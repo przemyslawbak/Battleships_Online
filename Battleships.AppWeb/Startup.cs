@@ -1,4 +1,5 @@
 ﻿using Battleships.AppWeb.Helpers;
+using Battleships.AppWeb.Hubs;
 using Battleships.DAL;
 using Battleships.Models;
 using Battleships.Services;
@@ -103,6 +104,7 @@ namespace Battleships_Online
             services.AddTransient<IHttpClientProvider, HttpClientProvider>();
             services.AddScoped<ValidateModelAttribute>();
             services.AddScoped<VerifyCaptchaAttribute>();
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -124,6 +126,10 @@ namespace Battleships_Online
 
             app.UseCors("CorsPolicy");
             app.UseAuthentication();
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<MessageHub>("/messageHub");
+            });
             app.UseMiddleware<TokenManagerMiddleware>();
             app.UseMvc();
         }

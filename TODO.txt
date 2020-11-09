@@ -89,6 +89,7 @@ OK - should on logout erase game service data? no
 - edit profile view
 - greater font size for small screens
 - how to store user token? https://4programmers.net/Forum/JavaScript/345867-stan_programu_angular_dla_wielu_uzytkownikow?p=1722208#id1722208
+- in main component constructor needed?
 
 end:
 - favicon

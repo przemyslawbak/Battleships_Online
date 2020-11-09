@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GameService } from '@services/game.service';
+import { SignalRService } from '@services/signal-r.service';
 
 @Component({
   templateUrl: './game-play.component.html',
@@ -19,18 +20,21 @@ export class GamePlayComponent implements OnInit {
   constructor(
     private router: Router,
     private game: GameService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private signalRService: SignalRService
   ) {}
 
   public ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    console.log('id: ' + id);
     console.log(this.game.getGame());
     if (!this.game.getGame()) {
       this.router.navigate(['start']);
     } else {
       this.initVar();
       this.drawBoards();
+      this.signalRService.startConnection();
+      this.signalRService.addMessageListener();
+      this.signalRService.broadcastMessage();
     }
   }
 

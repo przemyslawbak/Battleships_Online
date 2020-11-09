@@ -13,6 +13,7 @@ import { ModalService } from '@services/modal.service';
 import { SecurityService } from '@services/security.service';
 import { AuthService } from '@services/auth.service';
 import { GameService } from '@services/game.service';
+import { SignalRService } from '@services/signal-r.service';
 
 import { AuthGuard } from './_helpers/auth.guard';
 import { JtwInterceptor } from './_helpers/jtw.interceptor';
@@ -45,6 +46,7 @@ import { ErrorInterceptor } from './_helpers/error.interceptor';
     HttpService,
     AuthGuard,
     GameService,
+    SignalRService,
   ],
 })
 export class AppCoreModule {}
