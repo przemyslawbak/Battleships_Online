@@ -19,7 +19,8 @@ export interface GameState {
   gameTurnNumber: number;
   player1Fleet: boolean[][];
   player2Fleet: boolean[][];
-  players: string[];
+  playersDisplay: string[];
+  playersNames: string[];
   boardP1: number[][];
   boardP2: number[][];
 }

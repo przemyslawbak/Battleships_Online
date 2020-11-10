@@ -26,7 +26,6 @@ export class GamePlayComponent implements OnInit {
 
   public ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    console.log('id: ' + id);
     if (id) {
       //todo: if game exists-> see if client was already playing this game id
       //todo: if want to join-> see if no restricted
@@ -64,8 +63,8 @@ export class GamePlayComponent implements OnInit {
     this.gameStatus = game.gameStage;
     this.whoseTurn = game.gameTurnPlayer;
     this.gameTurnNumber = game.gameTurnNumber;
-    this.player1 = game.players[0];
-    this.player2 = game.players[1];
+    this.player1 = game.playersDisplay[0];
+    this.player2 = game.playersDisplay[1];
     this.boardP1 = game.boardP1;
     this.boardP2 = game.boardP2;
   }

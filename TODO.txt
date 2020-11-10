@@ -73,8 +73,10 @@ OK - when waiting for external login, some view in opened window: ExternalLoginA
 OK - endpoint for game creator
 OK - redirect somewhere from `Game` btn-> if game != null -> game, else -> start game
 OK - should on logout erase game service data? no
-- add auth verification to the signalR
+OK - add auth verification to the signalR
+- find active game id when entering URL
 - add game (url) verification to the signalR
+- chat window (if 2 players at the same game id)
 OK - ship element / component
 OK - list of ships for each player
 OK - display: DEPLOY SHIPS
@@ -82,7 +84,6 @@ OK - game boards (for 2 players): canvas drawings
 - deploy ships (limited time: 1-2min)
 OK - display: BATTLE, you: name, opponent: name/ai,
 - whose turn is? 
-- chat window (if 2 players)
 OK - opponent (who is: ai/players name)
 - timer (20-30s)
 - game rules
