@@ -6,14 +6,17 @@ using Battleships.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Battleships_Online
 {
@@ -57,6 +60,22 @@ namespace Battleships_Online
                     ValidAudience = Configuration["Auth:JsonWebToken:Audience"],
                     ClockSkew = TimeSpan.Zero, //https://stackoverflow.com/a/46231102/12603542
                     //RequireExpirationTime = false
+                };
+                cfg.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        StringValues accessToken = context.Request.Query["access_token"];
+                        // If the request is for SignalR hub
+                        PathString path = context.HttpContext.Request.Path;
+                        if (!string.IsNullOrEmpty(accessToken) &&
+                            path.StartsWithSegments("/messageHub"))
+                        {
+                            // Read the token out of the query string
+                            context.Token = accessToken;
+                        }
+                        return Task.CompletedTask;
+                    }
                 };
             })
             .AddGoogle(options =>
