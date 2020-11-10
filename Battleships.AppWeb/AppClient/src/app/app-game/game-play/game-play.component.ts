@@ -34,7 +34,7 @@ export class GamePlayComponent implements OnInit {
       this.drawBoards();
       this.signalRService.startConnection();
       this.signalRService.addMessageListener();
-      this.signalRService.broadcastMessage();
+      this.signalRService.broadcastMessage(); //todo: remove after testing
     }
   }
 
