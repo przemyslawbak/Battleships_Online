@@ -34,6 +34,11 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'play',
+    component: GamePlayComponent,
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'enter',
     component: GameEnterComponent,
     canActivate: [AuthGuard],
