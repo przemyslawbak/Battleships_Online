@@ -26,16 +26,31 @@ export class GamePlayComponent implements OnInit {
 
   public ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    console.log(this.game.getGame());
-    if (!this.game.getGame()) {
-      this.router.navigate(['start']);
+    console.log('id: ' + id);
+    if (id) {
+      //todo: if game exists-> see if client was already playing this game id
+      //todo: if want to join-> see if no restricted
+      //todo: if game restricted-> message
+      //todo: if game is full-> message
+      //todo: if game NOT exists-> message
+
+      //todo: if can play:
+      this.initGame();
     } else {
-      this.initVar();
-      this.drawBoards();
-      this.signalRService.startConnection();
-      this.signalRService.addMessageListener();
-      this.signalRService.broadcastMessage(); //todo: remove after testing
+      if (this.game.isGameStarted()) {
+        this.router.navigate(['play/' + this.game.getGame().gameId]);
+      } else {
+        this.router.navigate(['start']);
+      }
     }
+  }
+
+  private initGame(): void {
+    this.initVar();
+    this.drawBoards();
+    this.signalRService.startConnection();
+    this.signalRService.addMessageListener();
+    this.signalRService.broadcastMessage(); //todo: remove after testing
   }
 
   public fireTorpedo(j: number, k: number) {
