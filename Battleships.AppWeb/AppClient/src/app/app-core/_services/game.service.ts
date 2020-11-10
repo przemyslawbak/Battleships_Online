@@ -27,4 +27,12 @@ export class GameService {
     }
     return null;
   }
+
+  public isGameStarted(): boolean {
+    if (this.getGame()) {
+      return true;
+    }
+
+    return false;
+  }
 }
