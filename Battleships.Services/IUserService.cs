@@ -15,6 +15,7 @@ namespace Battleships.Services
         Task<bool> ResetPassword(AppUser user, string token, string password);
         string GenerateUsername(string userName);
         AuthenticationProperties GetExternalAuthenticationProperties(string provider, string v);
+        Task<string> GetUserNameById(string id);
         Task<ExternalLoginInfo> GetExternalLogin();
         Task<bool> VerifyUsersPassword(AppUser user, string password);
         string GenerateRandomPassword();

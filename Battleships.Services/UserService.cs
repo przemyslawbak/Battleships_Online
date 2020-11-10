@@ -226,5 +226,11 @@ namespace Battleships.Services
                 return false;
             }
         }
+
+        public async Task<string> GetUserNameById(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            return user.UserName;
+        }
     }
 }
