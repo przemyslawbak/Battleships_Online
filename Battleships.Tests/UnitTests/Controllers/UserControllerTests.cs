@@ -1,4 +1,5 @@
 ﻿using Battleships.AppWeb.Controllers;
+using Battleships.DAL;
 using Battleships.Models;
 using Battleships.Models.ViewModels;
 using Battleships.Services;
@@ -15,6 +16,7 @@ namespace Battleships.Tests.UnitTests.Controllers
     public class UserControllerTests
     {
         private readonly Mock<IUserService> _userServiceMock;
+        private readonly Mock<IUserRepository> _repoMock;
         private readonly Mock<IInputSanitizer> _sanitizerMock;
         private readonly Mock<IEmailSender> _emailSenderMock;
         private readonly UserController _controller;
@@ -56,6 +58,7 @@ namespace Battleships.Tests.UnitTests.Controllers
             _userServiceMock = new Mock<IUserService>();
             _sanitizerMock = new Mock<IInputSanitizer>();
             _emailSenderMock = new Mock<IEmailSender>();
+            _repoMock = new Mock<IUserRepository>();
 
             _sanitizerMock.Setup(mock => mock.CleanUp(It.IsAny<string>())).Returns(It.IsAny<string>());
             _sanitizerMock.Setup(mock => mock.SanitizeRegisteringUserInputs(It.IsAny<UserRegisterViewModel>())).Returns(_properRegisterUserModel);
@@ -66,7 +69,7 @@ namespace Battleships.Tests.UnitTests.Controllers
             _userServiceMock.Setup(mock => mock.CreateNewUserAndAddToDbAsync(It.IsAny<UserRegisterViewModel>())).ReturnsAsync(true);
             _emailSenderMock.Setup(mock => mock.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
 
-            _controller = new UserController(_userServiceMock.Object, _sanitizerMock.Object, _emailSenderMock.Object);
+            _controller = new UserController(_userServiceMock.Object, _sanitizerMock.Object, _emailSenderMock.Object, _repoMock.Object);
         }
 
         [Fact]
