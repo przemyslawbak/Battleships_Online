@@ -104,7 +104,6 @@ export class GameStartComponent {
   public onSubmit() {
     this.spinner.show();
     let model = this.initGameModel();
-    this.game.setGame(model);
     const url = environment.apiUrl + 'api/game/start';
     this.http.post(url, model).subscribe(() => {
       this.spinner.hide();
@@ -139,8 +138,8 @@ export class GameStartComponent {
   }
 
   private getUniqueId(): number {
-    let min = Math.ceil(10000000000);
-    let max = Math.floor(99999999999);
+    let min = Math.ceil(100000000);
+    let max = Math.floor(999999999);
     return Math.floor(Math.random() * (max - min) + min);
   }
 

@@ -35,12 +35,12 @@ export class GamePlayComponent implements OnInit {
         if (game) {
           alert('game state OK');
           //todo: check if player is already playing it
-          //if playing already: this.game = game; ->init
+          //if playing already: set this.game = game; ->init
           //if NOT playing already: check if multiplayer
           //if NOT multiplayer: cancel-> message
           //if multiplayer: check if free slot
           //if NOT free slot: cancel-> message
-          //if free slot: this.game = game; -> update props ->init
+          //if free slot: set this.game = game; -> update props ->init
         } else {
           alert('game state NOT OK');
           //message: game could not be found
