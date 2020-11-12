@@ -1,11 +1,11 @@
 export enum GameStage {
-  Deploying = 'Deploying ships',
-  Playing = 'Game started',
+  Deploying,
+  Playing,
 }
 
 export enum WhoseTurn {
-  Player1 = 'Player 1',
-  Player2 = 'Player 2',
+  Player1,
+  Player2,
 }
 
 export interface GameState {
