@@ -1,17 +1,20 @@
+import { AuthService } from '@services/auth.service';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GameService } from '@services/game.service';
 import { SignalRService } from '@services/signal-r.service';
 import { HttpService } from '@services/http.service';
 import { environment } from '@environments/environment';
+import { ModalService } from '@services/modal.service';
+import { GameState } from '@models/game-state.model';
 
 @Component({
   templateUrl: './game-play.component.html',
   styleUrls: ['./game-play.component.css'],
 })
 export class GamePlayComponent implements OnInit {
-  public gameStatus: string;
-  public whoseTurn: string;
+  public gameStatus: any;
+  public whoseTurn: any;
   public gameTurnNumber: number;
   public player1: string;
   public player2: string;
@@ -20,6 +23,8 @@ export class GamePlayComponent implements OnInit {
   public boardP2: number[][];
 
   constructor(
+    private auth: AuthService,
+    private modalService: ModalService,
     private router: Router,
     private game: GameService,
     private route: ActivatedRoute,
@@ -27,30 +32,42 @@ export class GamePlayComponent implements OnInit {
     private http: HttpService
   ) {}
 
+  //todo: clean up this method
   public ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       const url = environment.apiUrl + 'api/game/join?id=' + id;
       this.http.getData(url).subscribe((game) => {
         if (game) {
-          alert('game state OK');
-          //todo: check if player is already playing it
-          //if playing already: set this.game = game; ->init
-          //if NOT playing already: check if multiplayer
-          //if NOT multiplayer: cancel-> message
-          //if multiplayer: check if free slot
-          //if NOT free slot: cancel-> message
-          //if free slot: set this.game = game; -> update props ->init
+          let gameState: GameState = game;
+          if (gameState.playersNames.includes(this.auth.getAuth().user)) {
+            this.initGame(gameState);
+          } else {
+            if (gameState.gameMulti) {
+              if (gameState.playersNames.includes('')) {
+                if (gameState.playersNames[0] === '') {
+                  gameState.playersNames[0] = this.auth.getAuth().user;
+                } else {
+                  gameState.playersNames[1] = this.auth.getAuth().user;
+                }
+                this.initGame(gameState);
+              } else {
+                this.modalService.open(
+                  'info-modal',
+                  'There is no free space for the player yet.'
+                );
+              }
+            } else {
+              this.modalService.open(
+                'info-modal',
+                'Game is for singe player only.'
+              );
+            }
+          }
         } else {
-          alert('game state NOT OK');
-          //message: game could not be found
+          this.modalService.open('info-modal', 'Could not find game.');
         }
       });
-      //if game slot empty join game (update game status), else message
-
-      //todo: add messages[] property to the game status model, keep limited qty of messages
-      //todo: if can play:
-      this.initGame();
     } else {
       if (this.game.isGameStarted()) {
         this.router.navigate(['play/' + this.game.getGame().gameId]);
@@ -60,9 +77,9 @@ export class GamePlayComponent implements OnInit {
     }
   }
 
-  private initGame(): void {
-    this.initVar();
-    this.drawBoards();
+  private initGame(game: GameState): void {
+    this.game.setGame(game);
+    this.initVar(game);
     this.signalRService.startConnection();
     this.signalRService.addGameStateListener();
     this.signalRService.broadcastGameState();
@@ -74,24 +91,14 @@ export class GamePlayComponent implements OnInit {
     //todo: check for ship being hit
   }
 
-  private initVar(): void {
-    let game = this.game.getGame();
-    this.gameStatus = game.gameStage.toString();
-    this.whoseTurn = game.gameTurnPlayer.toString();
+  private initVar(game: GameState): void {
+    this.gameStatus = game.gameStage;
+    this.whoseTurn = game.gameTurnPlayer;
     this.gameTurnNumber = game.gameTurnNumber;
     this.player1 = game.playersDisplay[0];
     this.player2 = game.playersDisplay[1];
     this.boardP1 = game.boardP1;
     this.boardP2 = game.boardP2;
-  }
-
-  private drawBoards(): void {
-    this.drawBoard(this.boardP1);
-    this.drawBoard(this.boardP2);
-  }
-
-  private drawBoard(board: number[][]): void {
-    //todo: draw
   }
 
   public onBack(): void {
