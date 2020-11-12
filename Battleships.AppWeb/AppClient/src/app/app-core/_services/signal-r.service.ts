@@ -15,13 +15,24 @@ export class SignalRService {
 
   constructor(public auth: AuthService) {}
 
-  public startConnection = () => {
+  public startConnection = (): void => {
     const token = this.auth.getAuth().token;
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(this.url, { accessTokenFactory: () => token })
       .build();
     this.start();
+
+    this.hubConnection.onclose(() => this.connectionClosed());
   };
+
+  public stopConnection = (): void => {
+    this.hubConnection.stop();
+  };
+
+  private connectionClosed(): void {
+    //trigerred when lost connection with server
+    alert('todo: SignalR connection closed');
+  }
 
   private start() {
     this.thenable = this.hubConnection.start();
