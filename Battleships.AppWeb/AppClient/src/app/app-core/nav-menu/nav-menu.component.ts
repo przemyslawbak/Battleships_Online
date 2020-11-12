@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { AuthService } from '@services/auth.service';
 import { GameService } from '@services/game.service';
+import { SignalRService } from '@services/signal-r.service';
 
 @Component({
   selector: 'app-nav-menu',
@@ -14,7 +15,8 @@ export class NavMenuComponent {
   constructor(
     public auth: AuthService,
     private game: GameService,
-    private router: Router
+    private router: Router,
+    private signalRService: SignalRService
   ) {}
 
   public getUserDisplayName() {
@@ -26,6 +28,7 @@ export class NavMenuComponent {
   }
 
   public logout(): boolean {
+    this.signalRService.stopConnection();
     const result = this.auth.logout();
     console.log(result);
     return result;
