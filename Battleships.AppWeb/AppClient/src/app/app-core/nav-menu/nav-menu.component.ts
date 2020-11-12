@@ -19,7 +19,7 @@ export class NavMenuComponent {
     private signalRService: SignalRService
   ) {}
 
-  public getUserDisplayName() {
+  public getUserDisplayName(): string {
     if (this.auth.isLoggedIn()) {
       return this.auth.getAuth().displayName ?? 'logged in user';
     } else {
