@@ -119,6 +119,7 @@ namespace Battleships_Online
             services.AddTransient<ITokenService, TokenService>();
             services.AddTransient<IHttpService, HttpService>();
             services.AddTransient<IHttpClientProvider, HttpClientProvider>();
+            services.AddTransient<IMemoryAccess, MemoryAccess>();
             services.AddScoped<ValidateModelAttribute>();
             services.AddScoped<VerifyCaptchaAttribute>();
             services.AddSignalR();
