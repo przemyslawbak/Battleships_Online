@@ -93,12 +93,14 @@ OK - opponent (who is: ai/players name)
 - greater font size for small screens
 - how to store user token? https://4programmers.net/Forum/JavaScript/345867-stan_programu_angular_dla_wielu_uzytkownikow?p=1722208#id1722208
 - in main component constructor needed?
+OK - what if hubConnection.onclose?
 
 end:
 - favicon
 - clean up JS console.log rows
 - protect server controllers
 - .pipe(delay(5000)) w security service
+- Hub move to project: Hubs
 
 future:
 - testy integracyjne backend - Database, Request-response pipeline
