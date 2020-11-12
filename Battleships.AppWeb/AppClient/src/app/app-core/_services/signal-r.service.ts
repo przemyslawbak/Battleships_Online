@@ -1,62 +1,62 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@aspnet/signalr';
 import { environment } from '@environments/environment';
-import { SignalRObject } from '@models/signal-r.model';
+import { GameState } from '@models/game-state.model';
 import { AuthService } from '@services/auth.service';
+import { GameService } from '@services/game.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SignalRService {
-  private message: SignalRObject;
+  private gameState: GameState;
   private hubConnection: signalR.HubConnection;
   private url = environment.apiUrl + 'messageHub';
   private thenable: Promise<void>;
 
-  constructor(public auth: AuthService) {}
+  constructor(public auth: AuthService, private game: GameService) {}
 
   public startConnection = (): void => {
-    const token = this.auth.getAuth().token;
-    this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(this.url, { accessTokenFactory: () => token })
-      .build();
-    this.start();
+    if (!this.hubConnection) {
+      console.log('opening game connection');
+      const token = this.auth.getAuth().token;
+      this.hubConnection = new signalR.HubConnectionBuilder()
+        .withUrl(this.url, { accessTokenFactory: () => token })
+        .build();
+      this.startHubConnection();
 
-    this.hubConnection.onclose(() => this.connectionClosed());
+      this.hubConnection.onclose(() => this.connectionHubClosed());
+    }
   };
 
-  public stopConnection = (): void => {
-    this.hubConnection.stop();
-  };
-
-  private connectionClosed(): void {
-    //trigerred when lost connection with server
-    alert('todo: SignalR connection closed');
-  }
-
-  private start() {
+  private startHubConnection() {
     this.thenable = this.hubConnection.start();
     this.thenable
       .then(() => console.log('Connection started!'))
       .catch((err) => console.log('Error while establishing connection :('));
   }
 
-  public addMessageListener = () => {
+  public stopConnection = (): void => {
+    if (this.hubConnection) {
+      this.hubConnection.stop();
+    }
+  };
+
+  private connectionHubClosed(): void {
+    //trigerred when lost connection with server
+    alert('todo: SignalR connection closed');
+  }
+
+  public addGameStateListener = (): void => {
     this.hubConnection.on('ReceiveMessage', (message) => {
-      this.message = message;
-      console.log('received: ' + this.message.someMessage);
+      this.gameState = message;
     });
   };
 
-  public broadcastMessage = () => {
+  public broadcastGameState = (): void => {
     this.thenable.then(() => {
       const name = this.auth.getAuth().displayName;
-      let message = {} as SignalRObject;
-      message.isSomething = true;
-      message.someArray = ['one', 'two'];
-      message.someMessage = 'fuck off';
-      message.someName = name;
-      message.someNumber = 69;
+      let message = this.game.getGame();
       this.hubConnection
         .invoke('SendMessage', message)
         .catch((err) => console.error(err));
