@@ -18,7 +18,6 @@ export class SignalRService {
 
   public startConnection = (): void => {
     if (!this.hubConnection) {
-      console.log('opening game connection');
       const token = this.auth.getAuth().token;
       this.hubConnection = new signalR.HubConnectionBuilder()
         .withUrl(this.url, { accessTokenFactory: () => token })
@@ -33,7 +32,9 @@ export class SignalRService {
     this.thenable = this.hubConnection.start();
     this.thenable
       .then(() => console.log('Connection started!'))
-      .catch((err) => console.log('Error while establishing connection :('));
+      .catch((err) =>
+        console.log('Error while establishing connection :( ' + err)
+      );
   }
 
   public stopConnection = (): void => {
@@ -44,6 +45,7 @@ export class SignalRService {
 
   private connectionHubClosed(): void {
     //trigerred when lost connection with server
+    this.hubConnection = null;
     alert('todo: SignalR connection closed');
   }
 
@@ -59,7 +61,7 @@ export class SignalRService {
       let message = this.game.getGame();
       this.hubConnection
         .invoke('SendMessage', message)
-        .catch((err) => console.error(err));
+        .catch((err) => console.error('broadcast error: ' + err));
     });
   };
 }
