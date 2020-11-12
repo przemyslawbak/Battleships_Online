@@ -46,12 +46,15 @@ namespace Battleships.DAL
                 _context.RefreshTokens.Remove(_context.RefreshTokens.First(tokens => tokens.Email == email));
             }
 
+            if (ip == "0.0.0.1") ip = "127.0.0.1";
+
             _context.RefreshTokens.Add(new RefreshToken() { IpAddress = ip, Token = refreshToken, Email = email });
             _context.SaveChanges();
         }
 
         public bool VerifyReceivedToken(string refreshToken, string email, string ip)
         {
+            System.Collections.Generic.List<RefreshToken> list = _context.RefreshTokens.ToList();
             bool verify = _context.RefreshTokens.Any(tokens => tokens.Token == refreshToken && tokens.IpAddress == ip && tokens.Email == email);
 
             return verify;
