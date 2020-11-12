@@ -22,12 +22,38 @@ namespace Battleships.AppWeb.Hubs
         }
         public async Task SendMessage(GameStateModel game)
         {
-            UpdateCacheGameList(game);
+            UpdateExistingGame(game);
 
             await Clients.All.SendAsync("ReceiveMessage", game); //todo: send only to users in this game
         }
 
-        private void UpdateCacheGameList(GameStateModel game)
+
+        public override async Task OnDisconnectedAsync(Exception ex)
+        {
+            string player = await GetUserName(Context.User.Identity.Name);
+
+            List<GameStateModel> playersGames = _memoryAccess.GetGameList().Where(g => g.PlayersNames.Any(player.Contains)).ToList();
+            foreach (var game in playersGames)
+            {
+                game.PlayersNames = game.PlayersNames.Select(p => p.Replace(player, string.Empty)).ToArray();
+                await Clients.All.SendAsync("ReceiveMessage", game);
+
+                if (game.PlayersNames[0] == string.Empty && game.PlayersNames[1] == string.Empty)
+                {
+                    RemoveGameFromCacheGameList(game.GameId);
+                }
+            }
+        }
+
+        private void RemoveGameFromCacheGameList(int gameId)
+        {
+            List<GameStateModel> games = _memoryAccess.GetGameList();
+            GameStateModel game = _memoryAccess.GetGameList().Where(g => g.GameId == gameId).FirstOrDefault();
+            games.Remove(game);
+            _memoryAccess.SetGameList(games);
+        }
+
+        private void UpdateExistingGame(GameStateModel game)
         {
             List<GameStateModel> games = _memoryAccess.GetGameList();
             GameStateModel thisGame = games.Where(g => g.GameId == game.GameId).FirstOrDefault();
@@ -37,19 +63,6 @@ namespace Battleships.AppWeb.Hubs
             }
             games.Add(game);
             _memoryAccess.SetGameList(games);
-        }
-
-        public override async Task OnConnectedAsync()
-        {
-            //todo: do I need this?
-        }
-
-        public override async Task OnDisconnectedAsync(Exception ex)
-        {
-            //remove player from all games
-            GameStateModel game = new GameStateModel();
-
-            await Clients.All.SendAsync("ReceiveMessage", game);
         }
 
         private async Task<string> GetUserName(string id)
