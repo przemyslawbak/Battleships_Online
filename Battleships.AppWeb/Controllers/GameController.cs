@@ -1,4 +1,5 @@
 ﻿using Battleships.Models;
+using Battleships.Models.ViewModels;
 using Battleships.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -50,6 +51,25 @@ namespace Battleships.AppWeb.Controllers
             }
 
             return Json(model);
+        }
+
+        /// <summary>
+        /// GET: api/game/open
+        /// </summary>
+        /// <returns>List of open games.</returns>
+        [HttpGet("open")]
+        public IActionResult GetBestPLayers()
+        {
+            List<GameListedViewModel> list = (from game in _memoryAccess.GetGameList()
+                                        .Where(g => g.GameOpen == true)
+                       select new GameListedViewModel()
+                       {
+                           GameId = game.GameId,
+                           GameTurnNumber = game.GameTurnNumber,
+                           PlayersNames = game.PlayersNames
+                       }).ToList();
+
+            return new OkObjectResult(list);
         }
     }
 }
