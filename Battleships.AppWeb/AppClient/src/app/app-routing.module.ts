@@ -39,7 +39,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'join',
+    path: 'open',
     component: GameJoinComponent,
     canActivate: [AuthGuard],
   },
@@ -90,7 +90,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
