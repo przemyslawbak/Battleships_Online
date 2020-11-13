@@ -1,1 +1,23 @@
-<p>entering open game!</p>
+<div class="gameHeaderPic col-sm rounded-top"></div>
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Turn</th>
+      <th scope="col">Players</th>
+      <th scope="col">Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let game of this.gameList; let i = index">
+      <th scope="row">{{ i + 1 }}</th>
+      <td>{{ game.gameTurnNumber }}</td>
+      <td>{{ game.playing }} / {{ game.totalPlayers }}</td>
+      <td>
+        <a class="nav-link text-light" [routerLink]="['play/' + game.gameId]">
+          Join game
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>

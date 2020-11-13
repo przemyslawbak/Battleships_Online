@@ -97,6 +97,7 @@ OK - opponent (who is: ai/players name)
 - in main component constructor needed?
 OK - what if hubConnection.onclose?
 - read agout API return types
+- all http to the service
 
 end:
 - favicon
