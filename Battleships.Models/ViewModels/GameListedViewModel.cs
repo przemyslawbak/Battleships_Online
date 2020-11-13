@@ -4,6 +4,7 @@
     {
         public int GameId { get; set; }
         public int GameTurnNumber { get; set; }
-        public string[] PlayersNames { get; set; }
+        public int Playing { get; set; }
+        public int TotalPlayers { get; set; }
     }
 }

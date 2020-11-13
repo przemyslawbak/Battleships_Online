@@ -66,7 +66,8 @@ namespace Battleships.AppWeb.Controllers
                        {
                            GameId = game.GameId,
                            GameTurnNumber = game.GameTurnNumber,
-                           PlayersNames = game.PlayersNames
+                           Playing = game.PlayersNames.Count(p => !string.IsNullOrEmpty(p)),
+                           TotalPlayers = game.PlayersNames.Count()
                        }).ToList();
 
             return new OkObjectResult(list);
