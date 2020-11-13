@@ -54,6 +54,7 @@ namespace Battleships.DAL
 
         public bool VerifyReceivedToken(string refreshToken, string email, string ip)
         {
+            if (ip == "0.0.0.1") ip = "127.0.0.1";
             System.Collections.Generic.List<RefreshToken> list = _context.RefreshTokens.ToList();
             bool verify = _context.RefreshTokens.Any(tokens => tokens.Token == refreshToken && tokens.IpAddress == ip && tokens.Email == email);
 
