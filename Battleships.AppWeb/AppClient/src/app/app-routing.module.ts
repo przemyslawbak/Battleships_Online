@@ -25,39 +25,39 @@ import { GamePlayComponent } from './app-game/game-play/game-play.component';
 
 const routes: Routes = [
   {
-    path: 'best',
+    path: 'best-players',
     component: GameBestComponent,
   },
   {
-    path: 'play/:id',
+    path: 'play-game/:id',
     component: GamePlayComponent,
     canActivate: [AuthGuard],
   },
   {
-    path: 'play',
+    path: 'play-game',
     component: GamePlayComponent,
     canActivate: [AuthGuard],
   },
   {
-    path: 'open',
+    path: 'open-game',
     component: GameJoinComponent,
     canActivate: [AuthGuard],
   },
   {
-    path: 'start',
+    path: 'start-game',
     component: GameStartComponent,
     canActivate: [AuthGuard],
   },
   {
-    path: 'join',
+    path: 'join-site',
     component: JoinComponent,
   },
   {
-    path: 'register',
+    path: 'register-user',
     component: RegisterComponent,
   },
   {
-    path: 'forgotten',
+    path: 'forgotten-pass',
     component: ForgottenComponent,
   },
   {
@@ -82,10 +82,6 @@ const routes: Routes = [
   {
     path: '',
     component: GameMainComponent,
-  },
-  {
-    path: 'game',
-    redirectTo: '',
   },
 ];
 

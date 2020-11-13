@@ -82,6 +82,9 @@ OK - display: DEPLOY SHIPS
 OK - game boards (for 2 players): canvas drawings
 OK - delete game from cached list if no more players
 - chat window (if 2 players at the same game id)
+- join open game view + component
+- what if when joining open game I wnat to join game that I started?
+- what with opened games if player creates new game?
 - deploy ships (limited time: 1-2min)
 OK - display: BATTLE, you: name, opponent: name/ai,
 - whose turn is? 
@@ -98,6 +101,7 @@ OK - opponent (who is: ai/players name)
 OK - what if hubConnection.onclose?
 - read agout API return types
 - all http to the service
+- if one user logged in, do not allow it second time
 
 end:
 - favicon

@@ -41,10 +41,13 @@ export class GamePlayComponent implements OnInit {
         if (game) {
           let gameState: GameState = game;
           if (gameState.playersNames.includes(this.auth.getAuth().user)) {
+            //if played already
             this.initGame(gameState);
           } else {
             if (gameState.gameMulti) {
+              //if multiplayer
               if (gameState.playersNames.includes('')) {
+                //if empty slot
                 if (gameState.playersNames[0] === '') {
                   gameState.playersNames[0] = this.auth.getAuth().user;
                 } else {
@@ -54,8 +57,9 @@ export class GamePlayComponent implements OnInit {
               } else {
                 this.modalService.open(
                   'info-modal',
-                  'There is no free space for the player yet.'
+                  'There is no empty player slot available.'
                 );
+                this.router.navigate(['open-game']);
               }
             } else {
               this.modalService.open(
@@ -70,9 +74,9 @@ export class GamePlayComponent implements OnInit {
       });
     } else {
       if (this.game.isGameStarted()) {
-        this.router.navigate(['play/' + this.game.getGame().gameId]);
+        this.router.navigate(['play-game/' + this.game.getGame().gameId]);
       } else {
-        this.router.navigate(['start']);
+        this.router.navigate(['start-game']);
       }
     }
   }

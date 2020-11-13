@@ -81,7 +81,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           return next.handle(this.auth.addAuthHeader(request));
         }
       } else {
-        this.router.navigate(['join']);
+        this.router.navigate(['join-site']);
       }
     } else if (error.status === 429) {
       this.securityService.delayForBruteForce(10);

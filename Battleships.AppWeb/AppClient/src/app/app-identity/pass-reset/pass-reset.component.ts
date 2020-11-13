@@ -46,12 +46,12 @@ export class PassResetComponent implements OnInit {
         'Now you can log in with your password.'
       );
       this.spinner.hide();
-      this.router.navigate(['join']);
+      this.router.navigate(['join-site']);
     });
   }
 
   public onBack() {
-    this.router.navigate(['join']);
+    this.router.navigate(['join-site']);
   }
 
   public hasError(name: string) {

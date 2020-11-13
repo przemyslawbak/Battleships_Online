@@ -58,7 +58,7 @@ export class RegisterComponent {
   }
 
   public onBack() {
-    this.router.navigate(['join']);
+    this.router.navigate(['join-site']);
   }
 
   public getFormControl(name: string) {

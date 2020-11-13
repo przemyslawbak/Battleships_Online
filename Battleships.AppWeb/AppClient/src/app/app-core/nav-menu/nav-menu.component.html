@@ -10,10 +10,12 @@
           [routerLinkActive]="['link-active']"
           [routerLinkActiveOptions]="{ exact: true }"
         >
-          <a class="nav-link text-dark" [routerLink]="['play']">Game</a>
+          <a class="nav-link text-dark" [routerLink]="['play-game']">Game</a>
         </li>
         <li *ngIf="!this.auth.isLoggedIn()">
-          <a class="nav-link text-dark" [routerLink]="['join']">Join site</a>
+          <a class="nav-link text-dark" [routerLink]="['join-site']"
+            >Join site</a
+          >
         </li>
         <li *ngIf="this.auth.isLoggedIn()">
           <a (click)="logout()">

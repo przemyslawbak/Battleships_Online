@@ -55,7 +55,7 @@ export class ForgottenComponent {
   }
 
   public onBack() {
-    this.router.navigate(['join']);
+    this.router.navigate(['join-site']);
   }
 
   private getFormControl(name: string) {

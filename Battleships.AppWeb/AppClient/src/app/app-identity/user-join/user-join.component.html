@@ -6,35 +6,61 @@
       <h2 class="login-title">or Login with</h2>
       <form [formGroup]="form" (ngSubmit)="onSubmit()" class="login-form">
         <div *ngIf="form.errors?.auth" class="error-panel help-block">
-          {{form.errors.auth}}
+          {{ form.errors.auth }}
         </div>
-        <div class="form-group" [ngClass]="{ 'has-error has-feedback' : hasError('Email') }">
-          <input type="text" required formControlName="Email" class="form-control" placeholder="Email address" />
-          <span *ngIf="hasError('Email')" class="glyphicon glyphicon-remove form-controlfeedback"
-            aria-hidden="true"></span>
+        <div
+          class="form-group"
+          [ngClass]="{ 'has-error has-feedback': hasError('Email') }"
+        >
+          <input
+            type="text"
+            required
+            formControlName="Email"
+            class="form-control"
+            placeholder="Email address"
+          />
+          <span
+            *ngIf="hasError('Email')"
+            class="glyphicon glyphicon-remove form-controlfeedback"
+            aria-hidden="true"
+          ></span>
           <div *ngIf="hasError('Email')" class="help-block">
             Please insert registered e-mail address.
           </div>
         </div>
-        <div class="form-group" [ngClass]="{ 'has-error has-feedback' : hasError('Password') }">
-          <input type="password" required formControlName="Password" class="form-control" placeholder="Password" />
-          <span *ngIf="hasError('Password')" class="glyphicon glyphicon-remove form-controlfeedback"
-            aria-hidden="true"></span>
+        <div
+          class="form-group"
+          [ngClass]="{ 'has-error has-feedback': hasError('Password') }"
+        >
+          <input
+            type="password"
+            required
+            formControlName="Password"
+            class="form-control"
+            placeholder="Password"
+          />
+          <span
+            *ngIf="hasError('Password')"
+            class="glyphicon glyphicon-remove form-controlfeedback"
+            aria-hidden="true"
+          ></span>
           <div *ngIf="hasError('Password')" class="help-block">
             Please insert a password.
           </div>
         </div>
-        <button type="submit" [disabled]="form.invalid" class="btn btn-md btn-success btn-block btn-signin">
+        <button
+          type="submit"
+          [disabled]="form.invalid"
+          class="btn btn-md btn-success btn-block btn-signin"
+        >
           Sign in
         </button>
       </form>
       <div class="login-link">
-        <a [routerLink]="['/forgotten']">
-          Forgot the password?
-        </a>
+        <a [routerLink]="['/forgotten-pass']"> Forgot the password? </a>
       </div>
       <div class="login-link">
-        <a [routerLink]="['/register']">
+        <a [routerLink]="['/register-user']">
           Don't have an account? Click here to create one!
         </a>
       </div>

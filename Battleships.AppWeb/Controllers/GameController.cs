@@ -58,7 +58,8 @@ namespace Battleships.AppWeb.Controllers
         /// </summary>
         /// <returns>List of open games.</returns>
         [HttpGet("open")]
-        public IActionResult GetBestPLayers()
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin, User")]
+        public IActionResult GetOpenGames()
         {
             List<GameListedViewModel> list = (from game in _memoryAccess.GetGameList()
                                         .Where(g => g.GameOpen == true)

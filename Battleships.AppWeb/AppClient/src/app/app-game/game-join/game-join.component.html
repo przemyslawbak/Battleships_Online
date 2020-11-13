@@ -14,7 +14,10 @@
       <td>{{ game.gameTurnNumber }}</td>
       <td>{{ game.playing }} / {{ game.totalPlayers }}</td>
       <td>
-        <a class="nav-link text-light" [routerLink]="['play/' + game.gameId]">
+        <a
+          class="nav-link text-dark"
+          [routerLink]="['/play-game/', game.gameId]"
+        >
           Join game
         </a>
       </td>

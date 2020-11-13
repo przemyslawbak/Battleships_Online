@@ -144,7 +144,7 @@ export class LoginExternalProvidersComponent implements OnInit {
         'info-modal',
         'Something went wrong. Please try again.'
       );
-      this.router.navigate(['join']);
+      this.router.navigate(['join-site']);
     }
     this.spinner.hide();
   }
