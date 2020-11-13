@@ -5,7 +5,8 @@
       <th scope="col">#</th>
       <th scope="col">Turn</th>
       <th scope="col">Players</th>
-      <th scope="col">Link</th>
+      <th scope="col">Info</th>
+      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
@@ -14,11 +15,16 @@
       <td>{{ game.gameTurnNumber }}</td>
       <td>{{ game.playing }} / {{ game.totalPlayers }}</td>
       <td>
+        <span class="text-danger" *ngIf="this.currentGame === game.gameId">
+          Playing now
+        </span>
+      </td>
+      <td>
         <a
-          class="nav-link text-dark"
+          class="btn btn-md btn-success"
           [routerLink]="['/play-game/', game.gameId]"
         >
-          Join game
+          Play
         </a>
       </td>
     </tr>
