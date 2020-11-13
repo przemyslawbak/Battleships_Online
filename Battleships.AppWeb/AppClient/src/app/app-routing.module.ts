@@ -19,7 +19,7 @@ import { AdminComponent } from './app-trials/admin-test-auth/admin-test-auth.com
 //game
 import { GameMainComponent } from './app-game/game-main/game-main.component';
 import { GameBestComponent } from './app-game/game-best/game-best.component';
-import { GameEnterComponent } from './app-game/game-enter/game-enter.component';
+import { GameJoinComponent } from './app-game/game-join/game-join.component';
 import { GameStartComponent } from './app-game/game-start/game-start.component';
 import { GamePlayComponent } from './app-game/game-play/game-play.component';
 
@@ -39,8 +39,8 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'enter',
-    component: GameEnterComponent,
+    path: 'join',
+    component: GameJoinComponent,
     canActivate: [AuthGuard],
   },
   {

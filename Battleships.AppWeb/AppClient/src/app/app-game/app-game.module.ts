@@ -6,7 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GameMenuComponent } from './game-menu/game-menu.component';
 import { GameMainComponent } from './game-main/game-main.component';
 import { GameStartComponent } from './game-start/game-start.component';
-import { GameEnterComponent } from './game-enter/game-enter.component';
+import { GameJoinComponent } from './game-join/game-join.component';
 import { GameBestComponent } from './game-best/game-best.component';
 import { GamePlayComponent } from './game-play/game-play.component';
 
@@ -16,7 +16,7 @@ import { GamePlayComponent } from './game-play/game-play.component';
     GameMenuComponent,
     GameMainComponent,
     GameStartComponent,
-    GameEnterComponent,
+    GameJoinComponent,
     GameBestComponent,
     GamePlayComponent,
   ],
