@@ -9,11 +9,11 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let joke of this.playersList; let i = index">
+    <tr *ngFor="let player of this.playersList; let i = index">
       <th scope="row">{{ i + 1 }}</th>
-      <td>{{ joke.displayName }}</td>
-      <td>{{ joke.wonMultiplayerGames }}</td>
-      <td>{{ joke.wonAiGames }}</td>
+      <td>{{ player.displayName }}</td>
+      <td>{{ player.wonMultiplayerGames }}</td>
+      <td>{{ player.wonAiGames }}</td>
     </tr>
   </tbody>
 </table>
