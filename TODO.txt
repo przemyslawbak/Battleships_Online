@@ -85,7 +85,7 @@ OK - join open game view + component
 OK - what if joining open game I wnat to join game that I started?
 OK - what with played games if player creates new game? - disconnect signalr first, show message, clear gamestate
 OK - what with played games if player joins other game? - disconnect signalr first, show message, clear gamestate
-- clear client game state on lost connection
+OK - clear client game state on lost connection
 - chat window (if 2 players at the same game id)
 OK - display: BATTLE, you: name, opponent: name/ai,
 - whose turn is? 

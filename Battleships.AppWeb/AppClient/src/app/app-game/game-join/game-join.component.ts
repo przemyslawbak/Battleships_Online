@@ -42,7 +42,7 @@ export class GameJoinComponent implements OnInit {
       if (this.game.isGameStarted()) {
         this.modalService.open(
           'info-modal',
-          'You are disconnected from previous game.'
+          'You have been disconnected from previous game.'
         );
       }
       this.game.setGame(null);

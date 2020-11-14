@@ -39,6 +39,7 @@ export class SignalRService {
 
   public stopConnection = (): void => {
     if (this.hubConnection) {
+      this.game.setGame(null);
       this.hubConnection.stop();
     }
   };
@@ -46,7 +47,6 @@ export class SignalRService {
   private connectionHubClosed(): void {
     //trigerred when lost connection with server
     this.hubConnection = null;
-    alert('todo: SignalR connection closed');
   }
 
   public addGameStateListener = (): void => {

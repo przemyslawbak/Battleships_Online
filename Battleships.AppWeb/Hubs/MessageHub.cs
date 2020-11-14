@@ -27,7 +27,6 @@ namespace Battleships.AppWeb.Hubs
             await Clients.All.SendAsync("ReceiveMessage", game); //todo: send only to users in this game
         }
 
-
         public override async Task OnDisconnectedAsync(Exception ex)
         {
             string player = await GetUserName(Context.User.Identity.Name);
