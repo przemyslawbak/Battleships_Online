@@ -7,6 +7,8 @@ import { WhoseTurn } from '@models/game-state.model';
 import { environment } from '@environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { SignalRService } from '@services/signal-r.service';
+import { ModalService } from '@services/modal.service';
 import { GameService } from '@services/game.service';
 import { AuthService } from '@services/auth.service';
 import { COLS, ROWS } from '../constants';
@@ -20,11 +22,13 @@ export class GameStartComponent {
   public disabledChecks: boolean;
 
   constructor(
+    private modalService: ModalService,
     private spinner: NgxSpinnerService,
     private router: Router,
     private formBuilder: FormBuilder,
     private http: HttpClient,
     private game: GameService,
+    private signalRService: SignalRService,
     public auth: AuthService
   ) {
     this.createForm();
@@ -102,6 +106,14 @@ export class GameStartComponent {
   }
 
   public onSubmit() {
+    this.signalRService.stopConnection();
+    if (this.game.isGameStarted()) {
+      this.modalService.open(
+        'info-modal',
+        'You are disconnected from previous game.'
+      );
+    }
+    this.game.setGame(null);
     this.spinner.show();
     let model = this.initGameModel();
     const url = environment.apiUrl + 'api/game/start';

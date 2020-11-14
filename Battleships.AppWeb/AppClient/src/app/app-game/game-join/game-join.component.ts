@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '@environments/environment';
+import { Router } from '@angular/router';
 
 import { AuthService } from '@services/auth.service';
 import { HttpService } from '@services/http.service';
 import { GameService } from '@services/game.service';
+import { SignalRService } from '@services/signal-r.service';
+import { ModalService } from '@services/modal.service';
 
 import { OpenGames } from '@models/open-games';
 
@@ -16,14 +19,35 @@ export class GameJoinComponent implements OnInit {
   public currentGame: number;
 
   constructor(
+    private router: Router,
+    private modalService: ModalService,
+    private signalRService: SignalRService,
     private http: HttpService,
     public auth: AuthService,
     public game: GameService
   ) {}
 
   public ngOnInit(): void {
-    this.currentGame = this.game.getGame().gameId;
+    if (this.game.isGameStarted()) {
+      this.currentGame = this.game.getGame().gameId;
+    } else {
+      this.currentGame = 0;
+    }
     this.executeCall();
+  }
+
+  public redirect(gameId: number): void {
+    if (this.currentGame != gameId) {
+      this.signalRService.stopConnection();
+      if (this.game.isGameStarted()) {
+        this.modalService.open(
+          'info-modal',
+          'You are disconnected from previous game.'
+        );
+      }
+      this.game.setGame(null);
+      this.router.navigate(['play-game/' + gameId]);
+    }
   }
 
   private executeCall(): void {

@@ -20,7 +20,7 @@ namespace Battleships.AppWeb.Hubs
             _userService = userService;
             _memoryAccess = memory;
         }
-        public async Task SendMessage(GameStateModel game)
+        public async Task SendMessage(GameStateModel game) //todo: SendMessageAndUpdateCachedGame(GameStateModel game)
         {
             UpdateExistingGame(game);
 
@@ -36,7 +36,7 @@ namespace Battleships.AppWeb.Hubs
             foreach (var game in playersGames)
             {
                 game.PlayersNames = game.PlayersNames.Select(p => p.Replace(player, string.Empty)).ToArray();
-                await Clients.All.SendAsync("ReceiveMessage", game);
+                await SendMessage(game);
 
                 if (game.PlayersNames[0] == string.Empty && game.PlayersNames[1] == string.Empty)
                 {
@@ -65,7 +65,7 @@ namespace Battleships.AppWeb.Hubs
             _memoryAccess.SetGameList(games);
         }
 
-        private async Task<string> GetUserName(string id)
+        private async Task<string> GetUserName(string id) //todo: remove username from models, replace with user ID
         {
             return await _userService.GetUserNameById(id);
         }
