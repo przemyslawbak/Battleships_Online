@@ -229,8 +229,14 @@ namespace Battleships.Services
 
         public async Task<string> GetUserNameById(string id)
         {
-            var user = await _userManager.FindByIdAsync(id);
+            AppUser user = await _userManager.FindByIdAsync(id);
             return user.UserName;
+        }
+
+        public async Task<string> GetUserDisplayById(string id)
+        {
+            AppUser user = await _userManager.FindByIdAsync(id);
+            return user.DisplayName;
         }
     }
 }

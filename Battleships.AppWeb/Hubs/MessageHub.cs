@@ -29,12 +29,14 @@ namespace Battleships.AppWeb.Hubs
 
         public override async Task OnDisconnectedAsync(Exception ex)
         {
-            string player = await GetUserName(Context.User.Identity.Name);
+            string userName = await GetUserName(Context.User.Identity.Name);
+            string userDisplay = await GetUserDisplay(Context.User.Identity.Name);
 
-            List<GameStateModel> playersGames = _memoryAccess.GetGameList().Where(g => g.PlayersNames.Any(player.Contains)).ToList();
+            List<GameStateModel> playersGames = _memoryAccess.GetGameList().Where(g => g.PlayersNames.Any(userName.Contains)).ToList();
             foreach (var game in playersGames)
             {
-                game.PlayersNames = game.PlayersNames.Select(p => p.Replace(player, string.Empty)).ToArray();
+                game.PlayersNames = game.PlayersNames.Select(p => p.Replace(userName, string.Empty)).ToArray();
+                game.PlayersDisplay = game.PlayersDisplay.Select(p => p.Replace(userDisplay, string.Empty)).ToArray();
                 await SendMessage(game);
 
                 if (game.PlayersNames[0] == string.Empty && game.PlayersNames[1] == string.Empty)
@@ -62,6 +64,11 @@ namespace Battleships.AppWeb.Hubs
             }
             games.Add(game);
             _memoryAccess.SetGameList(games);
+        }
+
+        private async Task<string> GetUserDisplay(string id)
+        {
+            return await _userService.GetUserDisplayById(id);
         }
 
         private async Task<string> GetUserName(string id) //todo: remove username from models, replace with user ID

@@ -13,6 +13,7 @@ import { GameState } from '@models/game-state.model';
   styleUrls: ['./game-play.component.css'],
 })
 export class GamePlayComponent implements OnInit {
+  public messages: string[];
   public gameStatus: any;
   public whoseTurn: any;
   public gameTurnNumber: number;
@@ -50,8 +51,10 @@ export class GamePlayComponent implements OnInit {
                 //if empty slot
                 if (gameState.playersNames[0] === '') {
                   gameState.playersNames[0] = this.auth.getAuth().user;
+                  gameState.playersDisplay[0] = this.auth.getAuth().displayName;
                 } else {
                   gameState.playersNames[1] = this.auth.getAuth().user;
+                  gameState.playersDisplay[1] = this.auth.getAuth().displayName;
                 }
                 this.initGame(gameState);
               } else {

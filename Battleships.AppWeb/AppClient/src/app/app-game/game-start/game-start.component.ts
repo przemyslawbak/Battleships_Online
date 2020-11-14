@@ -135,10 +135,7 @@ export class GameStartComponent {
     model.gameTurnNumber = 0;
     model.player1Fleet = this.createFleet();
     model.player2Fleet = this.createFleet();
-    model.playersDisplay = [
-      this.getGuestName(model.gameAi),
-      this.auth.getAuth().displayName,
-    ];
+    model.playersDisplay = ['', this.auth.getAuth().displayName];
     model.playersNames = ['', this.auth.getAuth().user];
     model.boardP1 = this.getEmptyBoard();
     model.boardP2 = this.getEmptyBoard();
