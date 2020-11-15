@@ -51,7 +51,7 @@ export class SignalRService {
 
   public addGameStateListener = (): void => {
     this.hubConnection.on('ReceiveMessage', (message) => {
-      this.gameState = message;
+      this.game.setGame(message);
     });
   };
 

@@ -22,6 +22,8 @@ export class GamePlayComponent implements OnInit {
   public ctx: CanvasRenderingContext2D;
   public boardP1: number[][];
   public boardP2: number[][];
+  private gameState: GameState;
+  private _sub: any;
 
   constructor(
     private auth: AuthService,
@@ -33,8 +35,14 @@ export class GamePlayComponent implements OnInit {
     private http: HttpService
   ) {}
 
+  ngOnDestroy() {
+    //prevent memory leak when component destroyed
+    this._sub.unsubscribe();
+  }
+
   //todo: clean up this method
   public ngOnInit(): void {
+    this.initVar();
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       const url = environment.apiUrl + 'api/game/join?id=' + id;
@@ -84,9 +92,25 @@ export class GamePlayComponent implements OnInit {
     }
   }
 
+  private initVar() {
+    this.gameState = this.game.gameState;
+    //https://stackoverflow.com/a/34714574
+    this._sub = this.game.gameStateChange.subscribe((game) => {
+      this.gameState = game;
+      this.gameStatus = this.gameState.gameStage;
+      this.whoseTurn = this.gameState.gameTurnPlayer;
+      this.gameTurnNumber = this.gameState.gameTurnNumber;
+      this.player1 = this.gameState.playersDisplay[0];
+      this.player2 = this.gameState.playersDisplay[1];
+      this.boardP1 = this.gameState.boardP1;
+      this.boardP2 = this.gameState.boardP2;
+      console.log(this.player1);
+      console.log(this.player2);
+    });
+  }
+
   private initGame(game: GameState): void {
     this.game.setGame(game);
-    this.initVar(game);
     this.signalRService.startConnection();
     this.signalRService.addGameStateListener();
     this.signalRService.broadcastGameState();
@@ -96,16 +120,6 @@ export class GamePlayComponent implements OnInit {
     alert('attacked: ' + j + '/' + k);
     //todo: check for valid hit
     //todo: check for ship being hit
-  }
-
-  private initVar(game: GameState): void {
-    this.gameStatus = game.gameStage;
-    this.whoseTurn = game.gameTurnPlayer;
-    this.gameTurnNumber = game.gameTurnNumber;
-    this.player1 = game.playersDisplay[0];
-    this.player2 = game.playersDisplay[1];
-    this.boardP1 = game.boardP1;
-    this.boardP2 = game.boardP2;
   }
 
   public onBack(): void {

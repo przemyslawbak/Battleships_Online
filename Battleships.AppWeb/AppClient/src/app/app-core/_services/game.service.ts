@@ -1,35 +1,32 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { Injectable } from '@angular/core';
 import { GameState } from '@models/game-state.model';
+import { Subject } from 'rxjs';
 
 @Injectable()
 export class GameService {
-  gameKey = 'game';
-
-  constructor(@Inject(PLATFORM_ID) private platformId: any) {}
+  public gameState: GameState;
+  public gameStateChange: Subject<GameState> = new Subject<GameState>();
 
   public setGame(game: GameState | null): boolean {
-    if (isPlatformBrowser(this.platformId)) {
-      if (game) {
-        localStorage.setItem(this.gameKey, JSON.stringify(game));
-        return true;
-      }
+    if (game) {
+      this.gameState = game;
+      this.gameStateChange.next(this.gameState);
+      return true;
     }
+
     return false;
   }
 
   public getGame(): GameState | null {
-    if (isPlatformBrowser(this.platformId)) {
-      const i = localStorage.getItem(this.gameKey);
-      if (i) {
-        return JSON.parse(i);
-      }
+    if (this.gameState) {
+      return this.gameState;
     }
+
     return null;
   }
 
   public isGameStarted(): boolean {
-    if (this.getGame()) {
+    if (this.gameState) {
       return true;
     }
 
