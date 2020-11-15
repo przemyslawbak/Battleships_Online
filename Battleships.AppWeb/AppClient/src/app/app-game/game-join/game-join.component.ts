@@ -33,7 +33,7 @@ export class GameJoinComponent implements OnInit {
     } else {
       this.currentGame = 0;
     }
-    this.executeCall();
+    this.getOpenGames();
   }
 
   public redirect(gameId: number): void {
@@ -46,11 +46,12 @@ export class GameJoinComponent implements OnInit {
         );
       }
       this.game.setGame(null);
-      this.router.navigate(['play-game/' + gameId]);
     }
+
+    this.router.navigate(['play-game/' + gameId]);
   }
 
-  private executeCall(): void {
+  private getOpenGames(): void {
     const url = environment.apiUrl + 'api/game/open';
     this.http.getData(url).subscribe((val) => {
       this.gameList = val;

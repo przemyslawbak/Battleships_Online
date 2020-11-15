@@ -42,29 +42,28 @@ export class GamePlayComponent implements OnInit {
 
   //todo: clean up this method
   public ngOnInit(): void {
-    this.initVar();
+    this.initGameSubscription();
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       const url = environment.apiUrl + 'api/game/join?id=' + id;
       this.http.getData(url).subscribe((game) => {
         if (game) {
-          let gameState: GameState = game;
-          if (gameState.playersNames.includes(this.auth.getAuth().user)) {
+          if (game.playersNames.includes(this.auth.getAuth().user)) {
             //if played already
-            this.initGame(gameState);
+            this.initGame(game);
           } else {
-            if (gameState.gameMulti) {
+            if (game.gameMulti) {
               //if multiplayer
-              if (gameState.playersNames.includes('')) {
+              if (game.playersNames.includes('')) {
                 //if empty slot
-                if (gameState.playersNames[0] === '') {
-                  gameState.playersNames[0] = this.auth.getAuth().user;
-                  gameState.playersDisplay[0] = this.auth.getAuth().displayName;
+                if (game.playersNames[0] === '') {
+                  game.playersNames[0] = this.auth.getAuth().user;
+                  game.playersDisplay[0] = this.auth.getAuth().displayName;
                 } else {
-                  gameState.playersNames[1] = this.auth.getAuth().user;
-                  gameState.playersDisplay[1] = this.auth.getAuth().displayName;
+                  game.playersNames[1] = this.auth.getAuth().user;
+                  game.playersDisplay[1] = this.auth.getAuth().displayName;
                 }
-                this.initGame(gameState);
+                this.initGame(game);
               } else {
                 this.modalService.open(
                   'info-modal',
@@ -85,14 +84,21 @@ export class GamePlayComponent implements OnInit {
       });
     } else {
       if (this.game.isGameStarted()) {
-        this.router.navigate(['play-game/' + this.game.getGame().gameId]);
+        this.router.navigate(['play-game/' + this.gameState.gameId]);
       } else {
         this.router.navigate(['start-game']);
       }
     }
   }
 
-  private initVar() {
+  private initGame(game: GameState): void {
+    this.game.setGame(game);
+    this.signalRService.startConnection();
+    this.signalRService.addGameStateListener();
+    this.signalRService.broadcastGameState();
+  }
+
+  private initGameSubscription() {
     this.gameState = this.game.gameState;
     //https://stackoverflow.com/a/34714574
     this._sub = this.game.gameStateChange.subscribe((game) => {
@@ -104,16 +110,7 @@ export class GamePlayComponent implements OnInit {
       this.player2 = this.gameState.playersDisplay[1];
       this.boardP1 = this.gameState.boardP1;
       this.boardP2 = this.gameState.boardP2;
-      console.log(this.player1);
-      console.log(this.player2);
     });
-  }
-
-  private initGame(game: GameState): void {
-    this.game.setGame(game);
-    this.signalRService.startConnection();
-    this.signalRService.addGameStateListener();
-    this.signalRService.broadcastGameState();
   }
 
   public fireTorpedo(j: number, k: number) {

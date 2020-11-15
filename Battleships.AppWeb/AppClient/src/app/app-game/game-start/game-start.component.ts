@@ -115,7 +115,7 @@ export class GameStartComponent {
     }
     this.game.setGame(null);
     this.spinner.show();
-    let model = this.initGameModel();
+    let model = this.initGameStartState();
     const url = environment.apiUrl + 'api/game/start';
     this.http.post(url, model).subscribe(() => {
       this.spinner.hide();
@@ -123,7 +123,7 @@ export class GameStartComponent {
     });
   }
 
-  private initGameModel(): GameState {
+  private initGameStartState(): GameState {
     let model = {} as GameState;
     model.gameId = this.getUniqueId();
     model.gameAi = this.form.value.GameAi;

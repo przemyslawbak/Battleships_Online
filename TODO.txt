@@ -88,7 +88,7 @@ OK - what with played games if player joins other game? - disconnect signalr fir
 OK - clear client game state on lost connection
 OK - updating displayed names array
 OK - update game-play component on game.service state change: https://stackoverflow.com/a/43161506
-- can not join played game
+OK - can not join played game
 - chat window (if 2 players at the same game id)
 OK - display: BATTLE, you: name, opponent: name/ai,
 - whose turn is? 
@@ -107,6 +107,7 @@ OK - what if hubConnection.onclose?
 - read agout API return types
 - all http to the service
 - if one user logged in, do not allow it second time
+- in game service replace getGame() with gameState property reference
 
 end:
 - favicon
