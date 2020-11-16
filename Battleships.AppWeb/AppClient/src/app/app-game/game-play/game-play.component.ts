@@ -14,6 +14,7 @@ import { GameState } from '@models/game-state.model';
   styleUrls: ['./game-play.component.css'],
 })
 export class GamePlayComponent implements OnInit {
+  public userName: string;
   public chatMessage: string = '';
   public chatMessages: Array<ChatMessage> = [];
   public messages: string[];
@@ -48,6 +49,7 @@ export class GamePlayComponent implements OnInit {
 
   //todo: clean up this method
   public ngOnInit(): void {
+    this.userName = this.auth.getAuth().user;
     this.initGameSubscription();
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
@@ -124,6 +126,8 @@ export class GamePlayComponent implements OnInit {
     this.message = this.signalRService.message;
     this._subMessage = this.signalRService.messageChange.subscribe(
       (message: ChatMessage) => {
+        console.log(this.auth.getAuth().user);
+        console.log(message.userName);
         this.message = message;
         this.chatMessages = [this.message].concat(this.chatMessages);
       }

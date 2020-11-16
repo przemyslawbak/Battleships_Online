@@ -35,10 +35,12 @@ namespace Battleships.AppWeb.Hubs
                 {
                     string id = GetConnectionId(user);
                     string displayName = await GetUserDisplay(Context.User.Identity.Name);
+                    string userName = await GetUserName(Context.User.Identity.Name);
                     ChatMessageViewModel msg = new ChatMessageViewModel()
                     {
                         DisplayName = displayName,
-                        Message = message
+                        Message = message,
+                        UserName = userName
                     };
                     await Clients.Client(id).SendAsync("ReceiveChatMessage", msg);
                 }

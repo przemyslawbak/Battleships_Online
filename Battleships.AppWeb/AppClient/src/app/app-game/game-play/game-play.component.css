@@ -39,6 +39,14 @@
   margin-top: 10px;
 }
 
+.greenColor {
+  color: green;
+}
+
+.redColor {
+  color: red;
+}
+
 table {
   margin: 20px;
 }

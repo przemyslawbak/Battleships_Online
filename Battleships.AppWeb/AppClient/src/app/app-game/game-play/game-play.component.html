@@ -10,7 +10,12 @@
     <div class="col-md-6 gameChat dataRow">
       <div class="chatDisplay">
         <div *ngFor="let message of this.chatMessages">
-          <span>{{ message.displayName }}: </span>
+          <span *ngIf="this.userName == message.userName" class="greenColor"
+            >{{ message.displayName }}:
+          </span>
+          <span *ngIf="this.userName != message.userName" class="redColor"
+            >{{ message.displayName }}:
+          </span>
           <span>{{ message.message }}</span>
         </div>
       </div>
