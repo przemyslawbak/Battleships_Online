@@ -13,6 +13,22 @@ namespace Battleships.Services
             _cache = memoryCache;
         }
 
+        public Dictionary<string, string> GetUserConnectionIdList()
+        {
+            if (!_cache.TryGetValue(CacheKeys.ConnectionIdList, out Dictionary<string, string> result))
+            {
+                result = new Dictionary<string, string>();
+                _cache.Set(CacheKeys.ConnectionIdList, result);
+            }
+
+            return result;
+        }
+
+        public void SetConnectionIdList(Dictionary<string, string> list)
+        {
+            _cache.Set(CacheKeys.ConnectionIdList, list);
+        }
+
         public List<GameStateModel> GetGameList()
         {
             if (!_cache.TryGetValue(CacheKeys.GameList, out List<GameStateModel> result))
@@ -32,6 +48,7 @@ namespace Battleships.Services
         public static class CacheKeys
         {
             public static string GameList { get { return "_GameList"; } }
+            public static string ConnectionIdList { get { return "_ConnectionIdList"; } }
         }
     }
 }

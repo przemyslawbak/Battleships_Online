@@ -68,8 +68,7 @@ namespace Battleships_Online
                         StringValues accessToken = context.Request.Query["access_token"];
                         // If the request is for SignalR hub
                         PathString path = context.HttpContext.Request.Path;
-                        if (!string.IsNullOrEmpty(accessToken) &&
-                            path.StartsWithSegments("/messageHub"))
+                        if (!string.IsNullOrEmpty(accessToken))
                         {
                             // Read the token out of the query string
                             context.Token = accessToken;

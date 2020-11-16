@@ -24,16 +24,48 @@ namespace Battleships.AppWeb.Hubs
         {
             UpdateExistingGame(game);
 
-            await Clients.All.SendAsync("ReceiveMessage", game); //todo: send only to users in this game
+            await SendToUsersInGame(game);
+        }
+
+        private async Task SendToUsersInGame(GameStateModel game)
+        {
+            foreach (string user in game.PlayersNames)
+            {
+                if (!string.IsNullOrEmpty(user))
+                {
+                    string id = GetConnectionId(user);
+                    await Clients.Client(id).SendAsync("ReceiveMessage", game);
+                }
+            }
+        }
+
+        private string GetConnectionId(string user)
+        {
+            Dictionary<string, string> ids = _memoryAccess.GetUserConnectionIdList();
+            return ids[user];
+        }
+
+        public override async Task OnConnectedAsync()
+        {
+            string userName = await GetUserName(Context.User.Identity.Name);
+            string connectionId = Context.ConnectionId;
+
+            Dictionary<string, string> ids = _memoryAccess.GetUserConnectionIdList();
+            ids.Add(userName, connectionId);
+
+            _memoryAccess.SetConnectionIdList(ids);
         }
 
         public override async Task OnDisconnectedAsync(Exception ex)
         {
             string userName = await GetUserName(Context.User.Identity.Name);
             string userDisplay = await GetUserDisplay(Context.User.Identity.Name);
+            Dictionary<string, string> ids = _memoryAccess.GetUserConnectionIdList();
+            ids.Remove(userName);
+            _memoryAccess.SetConnectionIdList(ids);
 
             List<GameStateModel> playersGames = _memoryAccess.GetGameList().Where(g => g.PlayersNames.Any(userName.Contains)).ToList();
-            foreach (var game in playersGames)
+            foreach (GameStateModel game in playersGames)
             {
                 game.PlayersNames = game.PlayersNames.Select(p => p.Replace(userName, string.Empty)).ToArray();
                 game.PlayersDisplay = game.PlayersDisplay.Select(p => p.Replace(userDisplay, string.Empty)).ToArray();

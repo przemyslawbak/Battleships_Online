@@ -4,6 +4,7 @@ import { environment } from '@environments/environment';
 import { GameState } from '@models/game-state.model';
 import { AuthService } from '@services/auth.service';
 import { GameService } from '@services/game.service';
+import { ModalService } from '@services/modal.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,11 @@ export class SignalRService {
   private url = environment.apiUrl + 'messageHub';
   private thenable: Promise<void>;
 
-  constructor(public auth: AuthService, private game: GameService) {}
+  constructor(
+    private modalService: ModalService,
+    public auth: AuthService,
+    private game: GameService
+  ) {}
 
   public startConnection = (): void => {
     if (!this.hubConnection) {
@@ -45,13 +50,21 @@ export class SignalRService {
   };
 
   private connectionHubClosed(): void {
-    //trigerred when lost connection with server
+    if (this.game.isGameStarted()) {
+      this.modalService.open(
+        'info-modal',
+        'You have been disconnected from previous game.'
+      );
+    }
     this.hubConnection = null;
   }
 
   public addGameStateListener = (): void => {
-    this.hubConnection.on('ReceiveMessage', (message) => {
-      this.game.setGame(message);
+    this.hubConnection.on('ReceiveMessage', (message: GameState) => {
+      console.log('hit message');
+      if (message.gameId == this.game.gameState.gameId) {
+        this.game.setGame(message);
+      }
     });
   };
 

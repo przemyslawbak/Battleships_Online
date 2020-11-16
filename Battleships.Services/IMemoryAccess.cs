@@ -7,5 +7,7 @@ namespace Battleships.Services
     {
         List<GameStateModel> GetGameList();
         void SetGameList(List<GameStateModel> games);
+        Dictionary<string, string> GetUserConnectionIdList();
+        void SetConnectionIdList(Dictionary<string, string> ids);
     }
 }

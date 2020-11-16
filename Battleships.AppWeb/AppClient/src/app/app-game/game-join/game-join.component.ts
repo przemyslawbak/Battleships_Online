@@ -6,7 +6,6 @@ import { AuthService } from '@services/auth.service';
 import { HttpService } from '@services/http.service';
 import { GameService } from '@services/game.service';
 import { SignalRService } from '@services/signal-r.service';
-import { ModalService } from '@services/modal.service';
 
 import { OpenGames } from '@models/open-games';
 
@@ -20,7 +19,6 @@ export class GameJoinComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private modalService: ModalService,
     private signalRService: SignalRService,
     private http: HttpService,
     public auth: AuthService,
@@ -39,12 +37,6 @@ export class GameJoinComponent implements OnInit {
   public redirect(gameId: number): void {
     if (this.currentGame != gameId) {
       this.signalRService.stopConnection();
-      if (this.game.isGameStarted()) {
-        this.modalService.open(
-          'info-modal',
-          'You have been disconnected from previous game.'
-        );
-      }
       this.game.setGame(null);
     }
 
