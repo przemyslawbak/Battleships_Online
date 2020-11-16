@@ -1,5 +1,6 @@
+import { ChatMessage } from './../../app-core/_models/chat-message.model';
 import { AuthService } from '@services/auth.service';
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GameService } from '@services/game.service';
 import { SignalRService } from '@services/signal-r.service';
@@ -13,6 +14,8 @@ import { GameState } from '@models/game-state.model';
   styleUrls: ['./game-play.component.css'],
 })
 export class GamePlayComponent implements OnInit {
+  public chatMessage: string = '';
+  public chatMessages: Array<ChatMessage> = [];
   public messages: string[];
   public gameStatus: any;
   public whoseTurn: any;
@@ -23,7 +26,9 @@ export class GamePlayComponent implements OnInit {
   public boardP1: number[][];
   public boardP2: number[][];
   private gameState: GameState;
-  private _sub: any;
+  private _subGame: any;
+  private message: ChatMessage;
+  private _subMessage: any;
 
   constructor(
     private auth: AuthService,
@@ -37,7 +42,8 @@ export class GamePlayComponent implements OnInit {
 
   ngOnDestroy() {
     //prevent memory leak when component destroyed
-    this._sub.unsubscribe();
+    this._subGame.unsubscribe();
+    this._subMessage.unsubscribe();
   }
 
   //todo: clean up this method
@@ -105,7 +111,7 @@ export class GamePlayComponent implements OnInit {
   private initGameSubscription() {
     this.gameState = this.game.gameState;
     //https://stackoverflow.com/a/34714574
-    this._sub = this.game.gameStateChange.subscribe((game) => {
+    this._subGame = this.game.gameStateChange.subscribe((game) => {
       this.gameState = game;
       this.gameStatus = this.gameState.gameStage;
       this.whoseTurn = this.gameState.gameTurnPlayer;
@@ -115,6 +121,13 @@ export class GamePlayComponent implements OnInit {
       this.boardP1 = this.gameState.boardP1;
       this.boardP2 = this.gameState.boardP2;
     });
+    this.message = this.signalRService.message;
+    this._subMessage = this.signalRService.messageChange.subscribe(
+      (message: ChatMessage) => {
+        this.message = message;
+        this.chatMessages = [this.message].concat(this.chatMessages);
+      }
+    );
   }
 
   public fireTorpedo(j: number, k: number) {
@@ -125,5 +138,12 @@ export class GamePlayComponent implements OnInit {
 
   public onBack(): void {
     this.router.navigate(['']);
+  }
+
+  public sendChatMessage(): void {
+    if (this.chatMessage != '') {
+      this.signalRService.broadcastChatMessage(this.chatMessage);
+      this.chatMessage = '';
+    }
   }
 }

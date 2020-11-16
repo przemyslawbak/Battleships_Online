@@ -1,10 +1,37 @@
 .gameStatus,
 .gameChat {
   border: solid 1px;
+  position: relative;
+}
+
+.chatDisplay {
+  height: 65%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.textInputRow {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
+.textInputRow input {
+  width: 75%;
+  height: 100%;
+  margin: 5px;
+  margin-left: -5px;
+}
+
+.textInputRow button {
+  width: 20%;
+  height: 100%;
+  margin: 5px;
 }
 
 .dataRow {
   min-height: 150px;
+  height: 10vw;
   margin-top: 10px;
 }
 

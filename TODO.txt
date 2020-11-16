@@ -91,7 +91,11 @@ OK - update game-play component on game.service state change: https://stackoverf
 OK - can not join played game
 OK - sending hu messages only to users from game
 OK - chat info when player disconnects SiganlR
-- chat messages
+OK - chat messages
+OK - push to chatMessages on received message
+- chat msg on enter
+- chat user colors: me green, enemy: red
+- when rejoining game, subscries to messaging again, fix that
 - refirect to main on being disconnected, remove redirection from logout (auth service)
 - chat window (if 2 players at the same game id, and send only to opponent? or to himslef too, for client game state update?)
 OK - chat info when player joins game
