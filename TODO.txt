@@ -93,7 +93,7 @@ OK - sending hu messages only to users from game
 OK - chat info when player disconnects SiganlR
 OK - chat messages
 OK - push to chatMessages on received message
-- chat msg on enter
+OK - chat msg on enter
 - chat user colors: me green, enemy: red
 - when rejoining game, subscries to messaging again, fix that
 - refirect to main on being disconnected, remove redirection from logout (auth service)

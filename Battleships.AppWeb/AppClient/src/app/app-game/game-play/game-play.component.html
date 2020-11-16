@@ -15,7 +15,11 @@
         </div>
       </div>
       <div class="col-md-12 textInputRow">
-        <input type="text" [(ngModel)]="chatMessage" />
+        <input
+          type="text"
+          [(ngModel)]="chatMessage"
+          (keyup.enter)="sendChatMessage()"
+        />
         <button
           type="button"
           class="btn btn-md btn-success"
