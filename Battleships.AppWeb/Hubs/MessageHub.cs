@@ -94,6 +94,8 @@ namespace Battleships.AppWeb.Hubs
             {
                 game.PlayersNames = game.PlayersNames.Select(p => p.Replace(userName, string.Empty)).ToArray();
                 game.PlayersDisplay = game.PlayersDisplay.Select(p => p.Replace(userDisplay, string.Empty)).ToArray();
+
+                await SendChatMessageToUsersInGame("Left the game.", game.PlayersNames);
                 await SendGameState(game);
 
                 if (game.PlayersNames[0] == string.Empty && game.PlayersNames[1] == string.Empty)

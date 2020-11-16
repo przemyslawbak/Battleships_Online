@@ -90,10 +90,11 @@ OK - updating displayed names array
 OK - update game-play component on game.service state change: https://stackoverflow.com/a/43161506
 OK - can not join played game
 OK - sending hu messages only to users from game
-- chat window (if 2 players at the same game id, and send only to opponent? or to himslef too, for client game state update?)
-- chat info when player joins game
-- chat info when player disconnects
+OK - chat info when player disconnects SiganlR
 - chat messages
+- refirect to main on being disconnected, remove redirection from logout (auth service)
+- chat window (if 2 players at the same game id, and send only to opponent? or to himslef too, for client game state update?)
+OK - chat info when player joins game
 - deploy ships (limited time: 1-2min)
 OK - display: BATTLE, you: name, opponent: name/ai,
 - whose turn is? 
