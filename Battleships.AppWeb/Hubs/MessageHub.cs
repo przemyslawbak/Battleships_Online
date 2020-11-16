@@ -1,4 +1,5 @@
 ﻿using Battleships.Models;
+using Battleships.Models.ViewModels;
 using Battleships.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
@@ -20,21 +21,45 @@ namespace Battleships.AppWeb.Hubs
             _userService = userService;
             _memoryAccess = memory;
         }
-        public async Task SendMessage(GameStateModel game) //todo: SendMessageAndUpdateCachedGame(GameStateModel game)
+
+        public async Task SendChatMessage(string message, string[] playersNames)
+        {
+            await SendChatMessageToUsersInGame(message, playersNames);
+        }
+
+        private async Task SendChatMessageToUsersInGame(string message, string[] playersNames)
+        {
+            foreach (string user in playersNames)
+            {
+                if (!string.IsNullOrEmpty(user))
+                {
+                    string id = GetConnectionId(user);
+                    string displayName = await GetUserDisplay(Context.User.Identity.Name);
+                    ChatMessageViewModel msg = new ChatMessageViewModel()
+                    {
+                        DisplayName = displayName,
+                        Message = message
+                    };
+                    await Clients.Client(id).SendAsync("ReceiveChatMessage", msg);
+                }
+            }
+        }
+
+        public async Task SendGameState(GameStateModel game)
         {
             UpdateExistingGame(game);
 
-            await SendToUsersInGame(game);
+            await SendGameStateToUsersInGame(game);
         }
 
-        private async Task SendToUsersInGame(GameStateModel game)
+        private async Task SendGameStateToUsersInGame(GameStateModel game)
         {
             foreach (string user in game.PlayersNames)
             {
                 if (!string.IsNullOrEmpty(user))
                 {
                     string id = GetConnectionId(user);
-                    await Clients.Client(id).SendAsync("ReceiveMessage", game);
+                    await Clients.Client(id).SendAsync("ReceiveGameState", game);
                 }
             }
         }
@@ -69,7 +94,7 @@ namespace Battleships.AppWeb.Hubs
             {
                 game.PlayersNames = game.PlayersNames.Select(p => p.Replace(userName, string.Empty)).ToArray();
                 game.PlayersDisplay = game.PlayersDisplay.Select(p => p.Replace(userDisplay, string.Empty)).ToArray();
-                await SendMessage(game);
+                await SendGameState(game);
 
                 if (game.PlayersNames[0] == string.Empty && game.PlayersNames[1] == string.Empty)
                 {

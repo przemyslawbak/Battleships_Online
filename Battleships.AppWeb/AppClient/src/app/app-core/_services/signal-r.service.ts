@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as signalR from '@aspnet/signalr';
 import { environment } from '@environments/environment';
 import { GameState } from '@models/game-state.model';
+import { ChatMessage } from '@models/chat-message.model';
 import { AuthService } from '@services/auth.service';
 import { GameService } from '@services/game.service';
 import { ModalService } from '@services/modal.service';
@@ -10,7 +11,6 @@ import { ModalService } from '@services/modal.service';
   providedIn: 'root',
 })
 export class SignalRService {
-  private gameState: GameState;
   private hubConnection: signalR.HubConnection;
   private url = environment.apiUrl + 'messageHub';
   private thenable: Promise<void>;
@@ -60,8 +60,7 @@ export class SignalRService {
   }
 
   public addGameStateListener = (): void => {
-    this.hubConnection.on('ReceiveMessage', (message: GameState) => {
-      console.log('hit message');
+    this.hubConnection.on('ReceiveGameState', (message: GameState) => {
       if (message.gameId == this.game.gameState.gameId) {
         this.game.setGame(message);
       }
@@ -73,8 +72,24 @@ export class SignalRService {
       const name = this.auth.getAuth().displayName;
       let message = this.game.getGame();
       this.hubConnection
-        .invoke('SendMessage', message)
-        .catch((err) => console.error('broadcast error: ' + err));
+        .invoke('SendGameState', message)
+        .catch((err) => console.error('game state broadcast error: ' + err));
+    });
+  };
+
+  public addChatMessageListener = (): void => {
+    this.hubConnection.on('ReceiveChatMessage', (message: ChatMessage) => {
+      console.log(message.displayName + ' is writing: ' + message.message);
+      //todo: do something with message
+    });
+  };
+
+  public broadcastChatMessage = (message: string): void => {
+    this.thenable.then(() => {
+      let playersNames = this.game.getGame().playersNames;
+      this.hubConnection
+        .invoke('SendChatMessage', message, playersNames)
+        .catch((err) => console.error('chat broadcast error: ' + err));
     });
   };
 }

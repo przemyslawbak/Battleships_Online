@@ -64,6 +64,9 @@ export class GamePlayComponent implements OnInit {
                   game.playersDisplay[1] = this.auth.getAuth().displayName;
                 }
                 this.initGame(game);
+                this.signalRService.broadcastChatMessage(
+                  'Connected to the game.'
+                );
               } else {
                 this.modalService.open(
                   'info-modal',
@@ -95,6 +98,7 @@ export class GamePlayComponent implements OnInit {
     this.game.setGame(game);
     this.signalRService.startConnection();
     this.signalRService.addGameStateListener();
+    this.signalRService.addChatMessageListener();
     this.signalRService.broadcastGameState();
   }
 
