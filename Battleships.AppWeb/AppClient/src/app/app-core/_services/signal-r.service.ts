@@ -7,6 +7,7 @@ import { AuthService } from '@services/auth.service';
 import { GameService } from '@services/game.service';
 import { ModalService } from '@services/modal.service';
 import { Subject } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +22,8 @@ export class SignalRService {
   constructor(
     private modalService: ModalService,
     public auth: AuthService,
-    private game: GameService
+    private game: GameService,
+    private router: Router
   ) {}
 
   public startConnection = (): void => {
@@ -56,8 +58,9 @@ export class SignalRService {
     if (this.game.isGameStarted()) {
       this.modalService.open(
         'info-modal',
-        'You have left the previous game you played.'
+        'You have been disconnected from previous game you played.'
       );
+      this.router.navigate(['']);
     }
     this.hubConnection = null;
   }
@@ -93,7 +96,6 @@ export class SignalRService {
       console.log(message.displayName + ' is writing: ' + message.message);
       this.message = message;
       this.messageChange.next(this.message);
-      //todo: do something with message
     });
   };
 

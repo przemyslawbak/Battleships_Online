@@ -18,9 +18,7 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     @Inject(PLATFORM_ID) private platformId: any,
-    private router: Router,
-    private spinner: NgxSpinnerService,
-    private securityService: SecurityService
+    private spinner: NgxSpinnerService
   ) {}
 
   public login(email: string, password: string): Observable<boolean> {
@@ -66,7 +64,6 @@ export class AuthService {
     };
     this.http.post<any>(url, data).subscribe(() => {
       this.spinner.hide();
-      this.router.navigate(['']);
     });
     this.setAuth(null);
     return true;
