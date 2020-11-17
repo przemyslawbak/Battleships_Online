@@ -99,19 +99,24 @@ OK - when rejoining game, subscribes to messaging again, fix that - initGame() m
 OK - redirect to main on being disconnected, remove redirection from logout (auth service)
 OK - chat window (if 2 players at the same game id, and send only to opponent? or to himslef too, for client game state update?)
 OK - chat info when player joins game
+- if multiiplayer, waiting for 2nd player
+- when 2nd player joins, start timer, ublock
 - deploy ships (limited time: 1-2min)
+- if not finished deploying, deploy randomly rest of them
+- 
 OK - display: BATTLE, you: name, opponent: name/ai,
 - whose turn is? 
 OK - opponent (who is: ai/players name)
 - game start view - btn width same like in join view
 - timer (20-30s)
-- game rules
-- privacy policy
-- if no players found, display in best players view something about it
+- add game rules
+- add privacy policy
+- if best players list empty, display in view something about it
+- if open games list empty, display in view something about it
 - edit profile view
 - greater font size for small screens
 - how to store user token? https://4programmers.net/Forum/JavaScript/345867-stan_programu_angular_dla_wielu_uzytkownikow?p=1722208#id1722208
-- in main component constructor needed?
+- in main component is constructor needed?
 OK - what if hubConnection.onclose?
 - read agout API return types
 - all http to the service
