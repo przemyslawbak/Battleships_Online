@@ -106,10 +106,16 @@ export class GamePlayComponent implements OnInit {
 
   private initGame(game: GameState): void {
     this.game.setGame(game);
+    this.resetMessageListeners();
+    this.signalRService.broadcastGameState();
+  }
+
+  private resetMessageListeners() {
     this.signalRService.startConnection();
+    this.signalRService.removeChatMessageListener();
+    this.signalRService.removeGameStateListener();
     this.signalRService.addChatMessageListener();
     this.signalRService.addGameStateListener();
-    this.signalRService.broadcastGameState();
   }
 
   private initGameSubscription() {

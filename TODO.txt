@@ -95,7 +95,7 @@ OK - chat messages
 OK - push to chatMessages on received message
 OK - chat msg on enter
 OK - chat user colors: me green, enemy: red
-- when rejoining game, subscribes to messaging again, fix that (initGame() method issue)
+OK - when rejoining game, subscribes to messaging again, fix that - initGame() method issue, or maybe HUB?
 - redirect to main on being disconnected, remove redirection from logout (auth service)
 OK - chat window (if 2 players at the same game id, and send only to opponent? or to himslef too, for client game state update?)
 OK - chat info when player joins game

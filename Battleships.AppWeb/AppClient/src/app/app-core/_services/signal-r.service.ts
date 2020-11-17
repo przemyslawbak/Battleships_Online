@@ -62,6 +62,10 @@ export class SignalRService {
     this.hubConnection = null;
   }
 
+  public removeGameStateListener(): void {
+    this.hubConnection.off('ReceiveGameState');
+  }
+
   public addGameStateListener = (): void => {
     this.hubConnection.on('ReceiveGameState', (message: GameState) => {
       if (message.gameId == this.game.gameState.gameId) {
@@ -79,6 +83,10 @@ export class SignalRService {
         .catch((err) => console.error('game state broadcast error: ' + err));
     });
   };
+
+  public removeChatMessageListener(): void {
+    this.hubConnection.off('ReceiveChatMessage');
+  }
 
   public addChatMessageListener = (): void => {
     this.hubConnection.on('ReceiveChatMessage', (message: ChatMessage) => {
