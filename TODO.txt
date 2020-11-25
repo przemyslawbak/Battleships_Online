@@ -62,7 +62,7 @@ OK - move modal service to `services` directory
 OK - bug 2x hits RefreshToken
 OK - error handling in client app
 
-main:
+starting game:
 OK - menu: (start new game -> auth ?? start : login) (join open game) (share) (results)
 OK - game header pic
 NO - menu btns na bootstrap
@@ -99,16 +99,33 @@ OK - when rejoining game, subscribes to messaging again, fix that - initGame() m
 OK - redirect to main on being disconnected, remove redirection from logout (auth service)
 OK - chat window (if 2 players at the same game id, and send only to opponent? or to himslef too, for client game state update?)
 OK - chat info when player joins game
-- if multiiplayer, waiting for 2nd player
-- when 2nd player joins, start timer, ublock
-- deploy ships (limited time: 1-2min)
-- if not finished deploying, deploy randomly rest of them
-- 
+- rearrange game-play view: chat on the right side, game status horizontal. And mobile view?
+
+game play:
+- create player model, part of game status model:
+	- his turn?
+	- his fleet / board
+	- his display name,
+	- his user name
+- update game status with:
+	- is deployment allowed?
+	- can be game started?
+- if player is waiting for another player, allow to start game with AI
+- if player joins the game, and his board is not deployed, redirect to deployment component
+- allow deployment after 2nd player joins the game, or when single player
+- give some time for deployment for each player, if multiplayer (2-3min)
+- when deployment is completed, redirect to the game component
+- in open game list display player names
+- if single player, hide remove chat
+- if not finished deploying on time, deploy randomly rest of the ships
+- move chat to separate component
+- move boards to separate component?
 OK - display: BATTLE, you: name, opponent: name/ai,
 - whose turn is? 
 OK - opponent (who is: ai/players name)
 - game start view - btn width same like in join view
 - timer (20-30s)
+- water / explosion / splash sprites
 - add game rules
 - add privacy policy
 - if best players list empty, display in view something about it
