@@ -1,3 +1,4 @@
+import { BoardCell } from '@models/board-cell.model';
 import { ChatMessage } from './../../app-core/_models/chat-message.model';
 import { AuthService } from '@services/auth.service';
 import { Component, OnInit } from '@angular/core';
@@ -19,13 +20,12 @@ export class GamePlayComponent implements OnInit {
   public chatMessages: Array<ChatMessage> = [];
   public messages: string[];
   public gameStatus: any;
-  public whoseTurn: any;
   public gameTurnNumber: number;
   public player1: string;
   public player2: string;
   public ctx: CanvasRenderingContext2D;
-  public boardP1: number[][];
-  public boardP2: number[][];
+  public boardP1: BoardCell[][];
+  public boardP2: BoardCell[][];
   private _subGame: any;
   private _subMessage: any;
 
@@ -40,37 +40,40 @@ export class GamePlayComponent implements OnInit {
   ) {}
 
   ngOnDestroy() {
-    //prevent memory leak when component destroyed
     if (this._subGame && this._subMessage) {
       this._subGame.unsubscribe();
       this._subMessage.unsubscribe();
     }
   }
 
-  //todo: clean up this method
+  //todo: clean up this crap
   public ngOnInit(): void {
     this.initGameSubscription();
     this.userName = this.auth.getAuth().user;
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       const url = environment.apiUrl + 'api/game/join?id=' + id;
-      this.http.getData(url).subscribe((game) => {
+      this.http.getData(url).subscribe((game: GameState) => {
         if (game) {
-          if (game.playersNames.includes(this.auth.getAuth().user)) {
+          let gameUserNames: string[] = [
+            game.players[0].userName,
+            game.players[1].userName,
+          ];
+          if (gameUserNames.includes(this.auth.getAuth().user)) {
             //if played already
             this.initGame(game);
             console.log('rejoin');
           } else {
             if (game.gameMulti) {
               //if multiplayer
-              if (game.playersNames.includes('')) {
+              if (gameUserNames.includes('')) {
                 //if empty slot
-                if (game.playersNames[0] === '') {
-                  game.playersNames[0] = this.auth.getAuth().user;
-                  game.playersDisplay[0] = this.auth.getAuth().displayName;
+                if (gameUserNames[0] === '') {
+                  game.players[0].userName = this.auth.getAuth().user;
+                  game.players[0].displayName = this.auth.getAuth().displayName;
                 } else {
-                  game.playersNames[1] = this.auth.getAuth().user;
-                  game.playersDisplay[1] = this.auth.getAuth().displayName;
+                  game.players[1].userName = this.auth.getAuth().user;
+                  game.players[1].displayName = this.auth.getAuth().displayName;
                 }
                 this.initGame(game);
                 console.log('join');
@@ -121,12 +124,11 @@ export class GamePlayComponent implements OnInit {
   private initGameSubscription() {
     this._subGame = this.game.gameStateChange.subscribe((game) => {
       this.gameStatus = game.gameStage;
-      this.whoseTurn = game.gameTurnPlayer;
       this.gameTurnNumber = game.gameTurnNumber;
-      this.player1 = game.playersDisplay[0];
-      this.player2 = game.playersDisplay[1];
-      this.boardP1 = game.boardP1;
-      this.boardP2 = game.boardP2;
+      this.player1 = game.players[0].displayName;
+      this.player2 = game.players[1].displayName;
+      this.boardP1 = game.players[0].board;
+      this.boardP2 = game.players[1].board;
       console.log('hit game');
     });
     this._subMessage = this.signalRService.messageChange.subscribe(

@@ -1,16 +1,17 @@
+import { ShipComponent } from './../game-ship/ship.component';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { GameState } from '@models/game-state.model';
 import { GameStage } from '@models/game-state.model';
-import { WhoseTurn } from '@models/game-state.model';
 import { environment } from '@environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SignalRService } from '@services/signal-r.service';
 import { GameService } from '@services/game.service';
 import { AuthService } from '@services/auth.service';
-import { COLS, ROWS } from '../constants';
+import { Player } from '@models/player.model';
+import { BoardCell } from '@models/board-cell.model';
 
 @Component({
   templateUrl: './game-start.component.html',
@@ -108,6 +109,7 @@ export class GameStartComponent {
     this.signalRService.stopConnection();
     this.game.setGame(null);
     let model = this.initGameStartState();
+    console.log(model);
     const url = environment.apiUrl + 'api/game/start';
     this.http.post(url, model).subscribe(() => {
       this.spinner.hide();
@@ -116,6 +118,20 @@ export class GameStartComponent {
   }
 
   private initGameStartState(): GameState {
+    let player1: Player = {
+      myTurn: true,
+      fleet: this.createFleet(),
+      board: this.getEmptyBoard(),
+      displayName: this.auth.getAuth().displayName,
+      userName: this.auth.getAuth().user,
+    } as Player;
+    let player2: Player = {
+      myTurn: true,
+      fleet: this.createFleet(),
+      board: this.getEmptyBoard(),
+      displayName: '',
+      userName: '',
+    } as Player;
     let model = {} as GameState;
     model.gameId = this.getUniqueId();
     model.gameAi = this.form.value.GameAi;
@@ -123,19 +139,27 @@ export class GameStartComponent {
     model.gameLink = this.form.value.GameLink;
     model.gameOpen = this.form.value.GameOpen;
     model.gameStage = GameStage.Deploying;
-    model.gameTurnPlayer = WhoseTurn.Player1;
-    model.gameTurnNumber = 0;
-    model.player1Fleet = this.createFleet();
-    model.player2Fleet = this.createFleet();
-    model.playersDisplay = ['', this.auth.getAuth().displayName];
-    model.playersNames = ['', this.auth.getAuth().user];
-    model.boardP1 = this.getEmptyBoard();
-    model.boardP2 = this.getEmptyBoard();
+    model.players = [player1, player2];
+    model.isDeploymentAllowed = false;
+    model.isStartAllowed = false;
     return model;
   }
 
-  public getEmptyBoard(): number[][] {
-    return Array.from({ length: ROWS }, () => Array(COLS).fill(0));
+  private getEmptyBoard(): BoardCell[][] {
+    let board: BoardCell[][] = [];
+    for (let i = 0; i < 10; i++) {
+      board[i] = [];
+      for (let j = 0; j < 10; j++) {
+        board[i][j] = {
+          row: j,
+          col: i,
+          value: 0,
+          colour: 'rgba(0, 162, 255, 0.2)',
+        } as BoardCell;
+      }
+    }
+
+    return board;
   }
 
   private getUniqueId(): number {
@@ -152,18 +176,19 @@ export class GameStartComponent {
     return '';
   }
 
-  private createFleet(): boolean[][] {
+  //todo: move to ship service?
+  private createFleet(): ShipComponent[] {
     return [
-      [false],
-      [false],
-      [false],
-      [false],
-      [false, false],
-      [false, false],
-      [false, false],
-      [false, false, false],
-      [false, false, false],
-      [false, false, false, false],
+      { size: 4, top: 0, left: 0, deployed: false, rotation: 0 },
+      { size: 3, top: 0, left: 0, deployed: false, rotation: 0 },
+      { size: 3, top: 0, left: 0, deployed: false, rotation: 0 },
+      { size: 2, top: 0, left: 0, deployed: false, rotation: 0 },
+      { size: 2, top: 0, left: 0, deployed: false, rotation: 0 },
+      { size: 2, top: 0, left: 0, deployed: false, rotation: 0 },
+      { size: 1, top: 0, left: 0, deployed: false, rotation: 0 },
+      { size: 1, top: 0, left: 0, deployed: false, rotation: 0 },
+      { size: 1, top: 0, left: 0, deployed: false, rotation: 0 },
+      { size: 1, top: 0, left: 0, deployed: false, rotation: 0 },
     ];
   }
 }

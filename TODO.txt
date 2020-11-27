@@ -102,14 +102,17 @@ OK - chat info when player joins game
 - rearrange game-play view: chat on the right side, game status horizontal. And mobile view?
 
 game play:
-- create player model, part of game status model:
-	- his turn?
-	- his fleet / board
-	- his display name,
-	- his user name
-- update game status with:
-	- is deployment allowed?
-	- can be game started?
+OK - create player model, part of game status model:
+	OK - his turn?
+	OK - his fleet / board
+	OK - his display name,
+	OK - his user name
+	OK - his board
+OK - update game status with:
+	OK - is deployment allowed?
+	OK - can be game started?
+OK - update backend
+- bug: display 1/1 in game list
 - if player is waiting for another player, allow to start game with AI
 - if player joins the game, and his board is not deployed, redirect to deployment component
 - allow deployment after 2nd player joins the game, or when single player

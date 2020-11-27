@@ -101,7 +101,10 @@ export class SignalRService {
 
   public broadcastChatMessage = (message: string): void => {
     this.thenable.then(() => {
-      let playersNames = this.game.getGame().playersNames;
+      let playersNames = [
+        this.game.getGame().players[0].userName,
+        this.game.getGame().players[1].userName,
+      ];
       this.hubConnection
         .invoke('SendChatMessage', message, playersNames)
         .catch((err) => console.error('chat broadcast error: ' + err));

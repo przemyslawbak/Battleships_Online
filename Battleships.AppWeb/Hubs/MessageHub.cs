@@ -56,13 +56,10 @@ namespace Battleships.AppWeb.Hubs
 
         private async Task SendGameStateToUsersInGame(GameStateModel game)
         {
-            foreach (string user in game.PlayersNames)
+            foreach (Player player in game.Players)
             {
-                if (!string.IsNullOrEmpty(user))
-                {
-                    string id = GetConnectionId(user);
-                    await Clients.Client(id).SendAsync("ReceiveGameState", game);
-                }
+                string id = GetConnectionId(player.UserName);
+                await Clients.Client(id).SendAsync("ReceiveGameState", game);
             }
         }
 
@@ -91,16 +88,24 @@ namespace Battleships.AppWeb.Hubs
             ids.Remove(userName);
             _memoryAccess.SetConnectionIdList(ids);
 
-            List<GameStateModel> playersGames = _memoryAccess.GetGameList().Where(g => g.PlayersNames.Any(userName.Contains)).ToList();
+            List<GameStateModel> playersGames = _memoryAccess.GetGameList().Where(g => g.Players.Any(p => p.UserName == userName)).ToList();
             foreach (GameStateModel game in playersGames)
             {
-                game.PlayersNames = game.PlayersNames.Select(p => p.Replace(userName, string.Empty)).ToArray();
-                game.PlayersDisplay = game.PlayersDisplay.Select(p => p.Replace(userDisplay, string.Empty)).ToArray();
+                foreach (var player in game.Players)
+                {
+                    if (player.UserName == userName)
+                    {
+                        player.UserName = string.Empty;
+                        player.DisplayName = string.Empty;
+                    }
+                }
 
-                await SendChatMessageToUsersInGame("Left the game.", game.PlayersNames);
+                string[] playerNames = new string[] { game.Players[0].UserName, game.Players[1].UserName };
+
+                await SendChatMessageToUsersInGame("Left the game.", playerNames);
                 await SendGameState(game);
 
-                if (game.PlayersNames[0] == string.Empty && game.PlayersNames[1] == string.Empty)
+                if (game.Players[0].UserName == string.Empty && game.Players[1].UserName == string.Empty)
                 {
                     RemoveGameFromCacheGameList(game.GameId);
                 }
