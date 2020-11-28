@@ -18,12 +18,10 @@ export class GamePlayComponent implements OnInit {
   public userName: string;
   public chatMessage: string = '';
   public chatMessages: Array<ChatMessage> = [];
-  public messages: string[];
   public gameStatus: any;
   public gameTurnNumber: number;
   public player1: string;
   public player2: string;
-  public ctx: CanvasRenderingContext2D;
   public boardP1: BoardCell[][];
   public boardP2: BoardCell[][];
   private _subGame: any;

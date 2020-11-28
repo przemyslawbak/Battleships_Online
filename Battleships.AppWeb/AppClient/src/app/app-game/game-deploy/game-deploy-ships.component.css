@@ -1,0 +1,71 @@
+.gameChat {
+  border: solid 1px;
+  position: relative;
+}
+
+.chatDisplay {
+  height: 65%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.textInputRow {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  height: 30%;
+}
+
+.textInputRow input {
+  width: 75%;
+  height: 80%;
+  margin: 5px;
+  margin-bottom: 10px;
+  margin-left: -5px;
+  display: inline-block;
+}
+
+.textInputRow button {
+  width: 20%;
+  height: 80%;
+  margin: 5px;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+
+.dataRow {
+  min-height: 150px;
+  height: 10vw;
+  margin-top: 10px;
+}
+
+.row {
+  margin-top: 10px;
+}
+
+.greenColor {
+  color: green;
+}
+
+.redColor {
+  color: red;
+}
+
+table {
+  margin: 20px;
+}
+
+table td {
+  border: solid 1px;
+  width: 3vw;
+  height: 3vw;
+  text-align: center;
+}
+
+@media (max-width: 750px) {
+  table td {
+    width: 9vw;
+    height: 9vw;
+    font-size: 30px;
+  }
+}

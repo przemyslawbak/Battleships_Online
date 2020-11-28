@@ -58,8 +58,11 @@ namespace Battleships.AppWeb.Hubs
         {
             foreach (Player player in game.Players)
             {
-                string id = GetConnectionId(player.UserName);
-                await Clients.Client(id).SendAsync("ReceiveGameState", game);
+                if (!string.IsNullOrEmpty(player.UserName))
+                {
+                    string id = GetConnectionId(player.UserName);
+                    await Clients.Client(id).SendAsync("ReceiveGameState", game);
+                }
             }
         }
 
