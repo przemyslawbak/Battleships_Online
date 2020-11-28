@@ -22,8 +22,13 @@ import { GameBestComponent } from './app-game/game-best/game-best.component';
 import { GameJoinComponent } from './app-game/game-join/game-join.component';
 import { GameStartComponent } from './app-game/game-start/game-start.component';
 import { GamePlayComponent } from './app-game/game-play/game-play.component';
+import { GameDeployShips } from './app-game/game-deploy/game-deploy-ships.component';
 
 const routes: Routes = [
+  {
+    path: 'deploy-ships',
+    component: GameDeployShips,
+  },
   {
     path: 'best-players',
     component: GameBestComponent,

@@ -112,9 +112,22 @@ OK - update game status with:
 	OK - is deployment allowed?
 	OK - can be game started?
 OK - update backend
-- bug: display 1/1 in game list
-- if player is waiting for another player, allow to start game with AI
-- if player joins the game, and his board is not deployed, redirect to deployment component
+OK - bug: display 1/1 in game list
+OK - in game-play-> init game - if player joins the game, and his board is not deployed, redirect to deployment component
+- bug: when player disconnects, and game is empty, still listed
+- in deploy view and component: 
+	- 'waiting for 2nd player' info,
+	- if 2nd player joined, allow deploying,
+	- if 2nd player quits, stop deploying,
+	- timer,
+	- if timer ends, auto deploy ships on board
+	- board, 
+	- ships or current ship, 
+	- 'clear board' btn resets board, and ships lists,
+	- 'quit' btn,
+	- 'finished' btn,
+	- game chat,
+	- after both completed, save game state and redirect to the game play
 - allow deployment after 2nd player joins the game, or when single player
 - give some time for deployment for each player, if multiplayer (2-3min)
 - when deployment is completed, redirect to the game component
@@ -123,6 +136,9 @@ OK - update backend
 - if not finished deploying on time, deploy randomly rest of the ships
 - move chat to separate component
 - move boards to separate component?
+- time in game chat
+- in open games list - if all slots are occupied, do not show button
+- if player is waiting for another player, allow to start game with AI
 OK - display: BATTLE, you: name, opponent: name/ai,
 - whose turn is? 
 OK - opponent (who is: ai/players name)

@@ -62,7 +62,6 @@ export class GamePlayComponent implements OnInit {
           if (gameUserNames.includes(this.auth.getAuth().user)) {
             //if played already
             this.initGame(game);
-            console.log('rejoin');
           } else {
             if (game.gameMulti) {
               //if multiplayer
@@ -76,7 +75,6 @@ export class GamePlayComponent implements OnInit {
                   game.players[1].displayName = this.auth.getAuth().displayName;
                 }
                 this.initGame(game);
-                console.log('join');
                 this.signalRService.broadcastChatMessage(
                   'Connected to the game.'
                 );
@@ -111,6 +109,10 @@ export class GamePlayComponent implements OnInit {
     this.game.setGame(game);
     this.resetMessageListeners();
     this.signalRService.broadcastGameState();
+    if (!game.isStartAllowed) {
+      this.router.navigate(['deploy-ships']);
+    }
+    //todo: else play the game
   }
 
   private resetMessageListeners() {
