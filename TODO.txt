@@ -114,7 +114,7 @@ OK - update game status with:
 OK - update backend
 OK - bug: display 1/1 in game list
 OK - in game-play-> init game - if player joins the game, and his board is not deployed, redirect to deployment component
-- bug: when player disconnects, and game is empty, still listed
+OK - bug: when player disconnects, and game is empty, still listed
 - in deploy view and component: 
 	- 'waiting for 2nd player' info,
 	- if 2nd player joined, allow deploying,

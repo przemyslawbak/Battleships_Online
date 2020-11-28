@@ -88,6 +88,7 @@ namespace Battleships.AppWeb.Hubs
             ids.Remove(userName);
             _memoryAccess.SetConnectionIdList(ids);
 
+            var list = _memoryAccess.GetGameList();
             List<GameStateModel> playersGames = _memoryAccess.GetGameList().Where(g => g.Players.Any(p => p.UserName == userName)).ToList();
             foreach (GameStateModel game in playersGames)
             {
@@ -103,11 +104,14 @@ namespace Battleships.AppWeb.Hubs
                 string[] playerNames = new string[] { game.Players[0].UserName, game.Players[1].UserName };
 
                 await SendChatMessageToUsersInGame("Left the game.", playerNames);
-                await SendGameState(game);
 
-                if (game.Players[0].UserName == string.Empty && game.Players[1].UserName == string.Empty)
+                if (playerNames[0] == string.Empty && playerNames[1] == string.Empty)
                 {
                     RemoveGameFromCacheGameList(game.GameId);
+                }
+                else
+                {
+                    await SendGameState(game);
                 }
             }
         }
