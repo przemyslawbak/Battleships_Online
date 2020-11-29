@@ -116,9 +116,9 @@ OK - bug: display 1/1 in game list
 OK - in game-play-> init game - if player joins the game, and his board is not deployed, redirect to deployment component
 OK - bug: when player disconnects, and game is empty, still listed
 - in deploy view and component: 
-	- 'waiting for 2nd player' info,
-	- if 2nd player joined, allow deploying,
-	- if 2nd player quits, stop deploying,
+	OK - 'waiting for 2nd player' info,
+	OK - if 2nd player joined, allow deploying,
+	OK - if 2nd player quits, stop deploying,
 	- timer,
 	- if timer ends, auto deploy ships on board
 	- board, 

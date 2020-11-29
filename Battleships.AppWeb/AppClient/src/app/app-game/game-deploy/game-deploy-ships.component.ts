@@ -53,6 +53,7 @@ export class GameDeployShips implements OnInit {
       this.boardP1 = game.players[0].board;
       this.boardP2 = game.players[1].board;
       console.log('hit game');
+      console.log('depl: ' + this.isDeploymentAllowed);
     });
     this._subMessage = this.signalRService.messageChange.subscribe(
       (message: ChatMessage) => {

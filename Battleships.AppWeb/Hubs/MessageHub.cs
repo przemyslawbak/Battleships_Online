@@ -56,6 +56,15 @@ namespace Battleships.AppWeb.Hubs
 
         private async Task SendGameStateToUsersInGame(GameStateModel game)
         {
+            if (string.IsNullOrEmpty(game.Players[0].UserName) || string.IsNullOrEmpty(game.Players[1].UserName))
+            {
+                game.IsDeploymentAllowed = false;
+            }
+            else
+            {
+                game.IsDeploymentAllowed = true;
+            }
+
             foreach (Player player in game.Players)
             {
                 if (!string.IsNullOrEmpty(player.UserName))

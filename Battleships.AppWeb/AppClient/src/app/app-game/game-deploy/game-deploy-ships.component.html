@@ -2,10 +2,18 @@
   <div class="row">
     <div class="col-md-6">
       <div class="col-md-8 gameStatus dataRow">
-        <p *ngIf="this.isDeploymentAllowed; else elseBlock">Deploy ships</p>
-        <ng-template #elseBlock
-          >Waiting for second player to join...</ng-template
-        >
+        <ng-template *ngIf="this.isDeploymentAllowed; else elseBlock">
+          <div class="col-xs-12">Deploy ships</div>
+        </ng-template>
+        <ng-template #elseBlock>
+          <div class="row">
+            <div class="col-sm-12">Waiting for second player to join...</div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">timer here</div>
+            <div class="col-sm-6">ships</div>
+          </div>
+        </ng-template>
       </div>
     </div>
     <div class="col-md-6 gameChat dataRow">
@@ -38,7 +46,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-6">
+    <div *ngIf="this.isDeploymentAllowed" class="col-md-6">
       <table>
         <tr *ngFor="let row of boardP1; let j = index">
           <td
