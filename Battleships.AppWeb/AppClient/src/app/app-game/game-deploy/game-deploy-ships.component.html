@@ -2,7 +2,10 @@
   <div class="row">
     <div class="col-md-6">
       <div class="col-md-8 gameStatus dataRow">
-        <div *ngIf="this.isDeploymentAllowed; else elseBlock">
+        <div
+          *ngIf="this.isDeploymentAllowed; then thenBlock; else elseBlock"
+        ></div>
+        <ng-template #thenBlock>
           <div class="row">
             <div class="col-sm-12">Deploy ships:</div>
           </div>
@@ -10,8 +13,8 @@
             <div class="col-sm-6">{{ count }} seconds</div>
             <div class="col-sm-6">ships here</div>
           </div>
-        </div>
-        <div #elseBlock>
+        </ng-template>
+        <ng-template #elseBlock>
           <div class="row">
             <div class="col-sm-12">Waiting for second player to join...</div>
           </div>
@@ -19,7 +22,7 @@
             <div class="col-sm-6">{{ count }} seconds</div>
             <div class="col-sm-6">no ship here</div>
           </div>
-        </div>
+        </ng-template>
       </div>
     </div>
     <div class="col-md-6 gameChat dataRow">

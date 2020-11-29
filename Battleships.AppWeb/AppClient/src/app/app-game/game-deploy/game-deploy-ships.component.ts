@@ -21,7 +21,7 @@ export class GameDeployShips implements OnInit {
   private _subMessage: any;
   public userName: string;
   private countDown: Subscription;
-  private count = 180;
+  public count = 180;
 
   constructor(
     private auth: AuthService,
@@ -47,7 +47,6 @@ export class GameDeployShips implements OnInit {
 
   private startCounter() {
     this.countDown = timer(0, 1000).subscribe(() => {
-      this.count--;
       if (this.isDeploymentAllowed) {
         this.count--;
       } else {

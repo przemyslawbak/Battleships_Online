@@ -119,7 +119,7 @@ OK - bug: when player disconnects, and game is empty, still listed
 	OK - 'waiting for 2nd player' info,
 	OK - if 2nd player joined, allow deploying,
 	OK - if 2nd player quits, stop deploying,
-	- timer,
+	OK - timer,
 	- if timer ends, auto deploy ships on board
 	- board, 
 	- ships or current ship, 
