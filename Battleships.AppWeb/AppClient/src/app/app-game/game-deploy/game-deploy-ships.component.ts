@@ -4,6 +4,8 @@ import { ChatMessage } from '@models/chat-message.model';
 import { AuthService } from '@services/auth.service';
 import { GameService } from '@services/game.service';
 import { SignalRService } from '@services/signal-r.service';
+import { Observable, Subscription, timer } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 
 @Component({
   templateUrl: './game-deploy-ships.component.html',
@@ -18,6 +20,8 @@ export class GameDeployShips implements OnInit {
   private _subGame: any;
   private _subMessage: any;
   public userName: string;
+  private countDown: Subscription;
+  private count = 180;
 
   constructor(
     private auth: AuthService,
@@ -26,6 +30,7 @@ export class GameDeployShips implements OnInit {
   ) {}
 
   ngOnDestroy() {
+    this.countDown = null; //todo: what if goes out the view?
     if (this._subGame && this._subMessage) {
       this._subGame.unsubscribe();
       this._subMessage.unsubscribe();
@@ -33,10 +38,25 @@ export class GameDeployShips implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.startCounter();
     this.userName = this.auth.getAuth().user;
     //todo: do I need to reset them?
     this.resetMessageListeners();
     this.initGameSubscription();
+  }
+
+  private startCounter() {
+    this.countDown = timer(0, 1000).subscribe(() => {
+      this.count--;
+      if (this.isDeploymentAllowed) {
+        this.count--;
+      } else {
+        this.count = 180;
+      }
+      //todo: if count == 0 => auto deploy => ready
+      console.log(this.count);
+      return this.count;
+    });
   }
 
   private resetMessageListeners() {
