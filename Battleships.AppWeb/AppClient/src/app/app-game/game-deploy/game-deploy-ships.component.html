@@ -10,8 +10,36 @@
             <div class="col-sm-12">Deploy ships:</div>
           </div>
           <div class="row">
-            <div class="col-sm-6">{{ count }} seconds</div>
-            <div class="col-sm-6">ships here</div>
+            <div class="col-sm-6">{{ count }} s.</div>
+            <div class="ships col-sm-6">
+              <h2>Available ships: {{ this.fleetWaiting.length }}</h2>
+              <div
+                class="droplist"
+                #list
+                (mouseover)="
+                  hoveredElement(
+                    list.getBoundingClientRect(),
+                    'list',
+                    -1,
+                    -1,
+                    list
+                  )
+                "
+              >
+                <div *ngIf="fleetWaiting.length > 0">
+                  <div [style.size]="50 * fleetWaiting[0].size + 'px'">
+                    <app-ship
+                      #nextItem
+                      [ngClass]="
+                        fleetWaiting[0].rotation === 90 ? 'rotate' : 'rotateNot'
+                      "
+                      [size]="fleetWaiting[0].size"
+                      (click)="setRotation(0 + '-fleetWaiting')"
+                    ></app-ship>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </ng-template>
         <ng-template #elseBlock>
@@ -56,19 +84,40 @@
   </div>
   <div class="row">
     <div *ngIf="this.isDeploymentAllowed" class="col-md-6">
-      <table>
-        <tr *ngFor="let row of boardP1; let j = index">
-          <td
-            *ngFor="let col of row; let k = index"
-            [style.background-color]="col.used ? '' : 'transparent'"
-            [class.win]="col.status == 'win'"
-            [class.fail]="col.status !== 'win'"
-            class="battleship-tile"
+      <div class="droplist">
+        <div *ngFor="let ship of fleetDeployed; let i = index">
+          <app-ship
+            id="{{ i }}"
+            [ngClass]="ship.rotation === 90 ? 'rotate' : 'rotateNot'"
+            [style.top.px]="ship.top"
+            [style.left.px]="ship.left"
+            [size]="ship.size"
           >
-            {{ col.value == "X" ? "X" : "💀" }}
-          </td>
-        </tr>
-      </table>
+          </app-ship>
+        </div>
+        <div class="board" #board>
+          <div class="row" *ngFor="let row of boardP1; let i = index">
+            <div *ngFor="let box of row; let j = index" id="columns">
+              <div
+                class="cell"
+                [style.backgroundColor]="box.color"
+                #cell
+                (mouseleave)="resetElement(cell)"
+                (mouseover)="
+                  hoveredElement(
+                    cell.getBoundingClientRect(),
+                    'cell',
+                    j,
+                    i,
+                    cell
+                  )
+                "
+                (click)="deployShip(j, i)"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
