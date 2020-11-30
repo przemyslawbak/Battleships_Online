@@ -121,8 +121,9 @@ OK - bug: when player disconnects, and game is empty, still listed
 	OK - if 2nd player quits, stop deploying,
 	OK - timer,
 	- if timer ends, auto deploy ships on board
-	- board, 
-	OK - ships or current ship, 
+	OK - board, 
+	OK - ships or current ship,
+	- add players prop 'deployed'
 	- 'clear board' btn resets board, and ships lists,
 	- 'quit' btn,
 	- 'finished' btn,
@@ -161,6 +162,7 @@ OK - what if hubConnection.onclose?
 - in game service replace getGame() with gameState property reference
 - leave game btn
 - after completed facebook login, add spinner too
+- html/body font
 
 end:
 - favicon

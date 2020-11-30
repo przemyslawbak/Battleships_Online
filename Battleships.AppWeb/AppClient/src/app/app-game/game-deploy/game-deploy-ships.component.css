@@ -99,21 +99,6 @@ table td {
   display: none;
 }
 
-.ship-box {
-  background-color: coral;
-  position: absolute;
-  top: 0;
-  height: 30px;
-  z-index: 100;
-}
-
-.ship-box-cell {
-  border: 1px dotted;
-  width: 30px;
-  height: 30px;
-  display: inline-block;
-}
-
 app-ship {
   position: absolute;
   cursor: pointer;
