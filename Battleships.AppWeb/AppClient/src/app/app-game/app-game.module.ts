@@ -10,13 +10,13 @@ import { GameJoinComponent } from './game-join/game-join.component';
 import { GameBestComponent } from './game-best/game-best.component';
 import { GamePlayComponent } from './game-play/game-play.component';
 import { ShipComponent } from './game-ship/ship.component';
-import { GameDeployShips } from './game-deploy/game-deploy-ships.component';
+import { GameDeployComponent } from './game-deploy/game-deploy-ships.component';
 
 @NgModule({
   imports: [AppRoutingModule, BrowserModule, FormsModule, ReactiveFormsModule],
   declarations: [
     ShipComponent,
-    GameDeployShips,
+    GameDeployComponent,
     GameMenuComponent,
     GameMainComponent,
     GameStartComponent,

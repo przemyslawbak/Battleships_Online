@@ -12,11 +12,11 @@ import { ShipComponent } from './../game-ship/ship.component';
   templateUrl: './game-deploy-ships.component.html',
   styleUrls: ['./game-deploy-ships.component.css'],
 })
-export class GameDeployShips implements OnInit {
+export class GameDeployComponent implements OnInit {
   public isDeploymentAllowed: boolean;
   public chatMessage: string = '';
   public chatMessages: Array<ChatMessage> = [];
-  public board: BoardCell[][];
+  public playersBoard: BoardCell[][];
   private _subGame: any;
   private _subMessage: any;
   public userName: string;
@@ -34,7 +34,8 @@ export class GameDeployShips implements OnInit {
     private signalRService: SignalRService,
     private game: GameService
   ) {
-    this.board = this.getEmptyBoard();
+    this.playersBoard = this.getEmptyBoard();
+    console.log(this.playersBoard);
     this.fleetWaiting = this.createFleet();
     this.fleetDeployed = [];
   }
@@ -128,7 +129,7 @@ export class GameDeployShips implements OnInit {
       this.dragEnd = this.hoverPlace;
       this.moveFromList1To2();
       for (let i = 0; i < dropCells.length; i++) {
-        this.board[dropCells[i].col][dropCells[i].row].value = 1;
+        this.playersBoard[dropCells[i].col][dropCells[i].row].value = 1;
       }
     }
   }
@@ -136,8 +137,9 @@ export class GameDeployShips implements OnInit {
   public resetElement(element: HTMLElement) {
     element.style.backgroundColor = 'rgba(0, 162, 255, 0.2)';
     for (let i = 0; i < this.lastDropCells.length; i++) {
-      this.board[this.lastDropCells[i].col][this.lastDropCells[i].row].color =
-        'rgba(0, 162, 255, 0.2)';
+      this.playersBoard[this.lastDropCells[i].col][
+        this.lastDropCells[i].row
+      ].color = 'rgba(0, 162, 255, 0.2)';
     }
   }
 
@@ -165,7 +167,7 @@ export class GameDeployShips implements OnInit {
         this.isDropAllowed = true;
         this.hoverPlace = dropPlace;
         for (let i = 0; i < dropCells.length; i++) {
-          this.board[dropCells[i].col][dropCells[i].row].color =
+          this.playersBoard[dropCells[i].col][dropCells[i].row].color =
             'rgb(0, 162, 255)';
         }
       } else {
@@ -230,12 +232,12 @@ export class GameDeployShips implements OnInit {
   ): boolean {
     for (let i = 0; i < 10; i++) {
       for (let j = 0; j < 10; j++) {
-        if (this.board[i][j].value !== 1) continue;
+        if (this.playersBoard[i][j].value !== 1) continue;
         for (let f = 0; f < forbiddenCells.length; f++) {
           if (
-            this.board[i][j].col == forbiddenCells[f].col &&
-            this.board[i][j].row == forbiddenCells[f].row &&
-            this.board[i][j].value == 1
+            this.playersBoard[i][j].col == forbiddenCells[f].col &&
+            this.playersBoard[i][j].row == forbiddenCells[f].row &&
+            this.playersBoard[i][j].value == 1
           ) {
             return false;
           }
@@ -329,7 +331,7 @@ export class GameDeployShips implements OnInit {
         ? ({ row: row, col: col + i, value: 0 } as BoardCell)
         : ({ row: row + i, col: col, value: 0 } as BoardCell);
 
-    let exists: boolean = this.board.some((b) =>
+    let exists: boolean = this.playersBoard.some((b) =>
       b.some((c) => c.row == item.row && c.col == item.col)
     );
 
