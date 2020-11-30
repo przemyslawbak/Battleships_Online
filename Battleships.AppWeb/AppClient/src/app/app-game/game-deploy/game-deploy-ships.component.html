@@ -7,12 +7,12 @@
         ></div>
         <ng-template #thenBlock>
           <div class="row">
-            <div class="col-sm-12">Deploy ships:</div>
+            <div class="col-sm-6">Deploy ships:</div>
+            <div class="col-sm-6">{{ count }} s.</div>
           </div>
           <div class="row">
-            <div class="col-sm-6">{{ count }} s.</div>
-            <div class="ships col-sm-6">
-              <h2>Available ships: {{ this.fleetWaiting.length }}</h2>
+            <div class="ships col-sm-12">
+              <div>Available ships: {{ this.fleetWaiting.length }}</div>
               <div
                 class="droplist"
                 #list
@@ -45,10 +45,6 @@
         <ng-template #elseBlock>
           <div class="row">
             <div class="col-sm-12">Waiting for second player to join...</div>
-          </div>
-          <div class="row">
-            <div class="col-sm-6">{{ count }} seconds</div>
-            <div class="col-sm-6">no ship here</div>
           </div>
         </ng-template>
       </div>
@@ -83,7 +79,7 @@
     </div>
   </div>
   <div class="row">
-    <div *ngIf="this.isDeploymentAllowed" class="col-md-6">
+    <div class="col-md-6">
       <div class="droplist">
         <div *ngFor="let ship of fleetDeployed; let i = index">
           <app-ship
@@ -96,10 +92,10 @@
           </app-ship>
         </div>
         <div class="board" #board>
-          <div class="row" *ngFor="let row of boardP1; let i = index">
+          <div class="boardRow" *ngFor="let row of board; let i = index">
             <div *ngFor="let box of row; let j = index" id="columns">
               <div
-                class="cell"
+                class="boardCell"
                 [style.backgroundColor]="box.color"
                 #cell
                 (mouseleave)="resetElement(cell)"

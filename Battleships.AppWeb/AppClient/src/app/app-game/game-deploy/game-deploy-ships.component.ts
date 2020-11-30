@@ -1,5 +1,3 @@
-import { DropModel } from './../../app-core/_models/drop-model';
-import { ShipComponent } from './../game-ship/ship.component';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { BoardCell } from '@models/board-cell.model';
 import { ChatMessage } from '@models/chat-message.model';
@@ -8,6 +6,8 @@ import { GameService } from '@services/game.service';
 import { SignalRService } from '@services/signal-r.service';
 import { Subscription, timer } from 'rxjs';
 import { PlayerService } from '@services/player.service';
+import { DropModel } from './../../app-core/_models/drop-model';
+import { ShipComponent } from './../game-ship/ship.component';
 
 @Component({
   templateUrl: './game-deploy-ships.component.html',
@@ -24,8 +24,8 @@ export class GameDeployShips implements OnInit {
   public userName: string;
   private countDown: Subscription;
   public count = 180;
-  public fleetWaiting: Array<ShipComponent>;
-  public fleetDeployed: Array<ShipComponent>;
+  public fleetWaiting: Array<ShipComponent> = [];
+  public fleetDeployed: Array<ShipComponent> = [];
   public hoverPlace: DropModel = {} as DropModel;
   public dragEnd: DropModel = {} as DropModel;
   public isDropAllowed: boolean = false;
@@ -50,8 +50,9 @@ export class GameDeployShips implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.playerNumber = this.startCounter();
+    this.playerNumber = this.player.getPlayerNumber();
     this.userName = this.auth.getAuth().user;
+    this.startCounter();
     //todo: do I need to reset them?
     this.resetMessageListeners();
     this.initGameSubscription();
@@ -59,13 +60,13 @@ export class GameDeployShips implements OnInit {
 
   private startCounter() {
     this.countDown = timer(0, 1000).subscribe(() => {
+      this.isDeploymentAllowed = true; //todo: remove later on
       if (this.isDeploymentAllowed) {
         this.count--;
       } else {
         this.count = 180;
       }
       //todo: if count == 0 => auto deploy => ready
-      console.log(this.count);
       return this.count;
     });
   }
@@ -81,10 +82,9 @@ export class GameDeployShips implements OnInit {
   private initGameSubscription() {
     this._subGame = this.game.gameStateChange.subscribe((game) => {
       this.isDeploymentAllowed = game.isDeploymentAllowed;
-      this.boardP1 = game.players[0].board;
-      this.felltP1 = game.players[0].fleet;
+      this.board = game.players[this.playerNumber].board;
+      this.fleetWaiting = game.players[this.playerNumber].fleet;
       console.log('hit game');
-      console.log('depl: ' + this.isDeploymentAllowed);
     });
     this._subMessage = this.signalRService.messageChange.subscribe(
       (message: ChatMessage) => {

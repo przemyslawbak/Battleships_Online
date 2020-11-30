@@ -12,6 +12,7 @@ import { HttpService } from '@services/http.service';
 import { ModalService } from '@services/modal.service';
 import { SecurityService } from '@services/security.service';
 import { AuthService } from '@services/auth.service';
+import { PlayerService } from '@services/player.service';
 import { GameService } from '@services/game.service';
 import { SignalRService } from '@services/signal-r.service';
 
@@ -40,6 +41,7 @@ import { ErrorInterceptor } from './_helpers/error.interceptor';
       useClass: ErrorInterceptor,
       multi: true,
     },
+    PlayerService,
     ModalService,
     SecurityService,
     AuthService,
