@@ -5,7 +5,6 @@ import { AuthService } from '@services/auth.service';
 import { GameService } from '@services/game.service';
 import { SignalRService } from '@services/signal-r.service';
 import { Subscription, timer } from 'rxjs';
-import { PlayerService } from '@services/player.service';
 import { DropModel } from './../../app-core/_models/drop-model';
 import { ShipComponent } from './../game-ship/ship.component';
 
@@ -14,18 +13,17 @@ import { ShipComponent } from './../game-ship/ship.component';
   styleUrls: ['./game-deploy-ships.component.css'],
 })
 export class GameDeployShips implements OnInit {
-  private playerNumber: number;
   public isDeploymentAllowed: boolean;
   public chatMessage: string = '';
   public chatMessages: Array<ChatMessage> = [];
-  public board: BoardCell[][]; //todo: ony 1p?
+  public board: BoardCell[][];
   private _subGame: any;
   private _subMessage: any;
   public userName: string;
   private countDown: Subscription;
   public count = 180;
-  public fleetWaiting: Array<ShipComponent> = [];
-  public fleetDeployed: Array<ShipComponent> = [];
+  public fleetWaiting: Array<ShipComponent>;
+  public fleetDeployed: Array<ShipComponent>;
   public hoverPlace: DropModel = {} as DropModel;
   public dragEnd: DropModel = {} as DropModel;
   public isDropAllowed: boolean = false;
@@ -34,9 +32,12 @@ export class GameDeployShips implements OnInit {
   constructor(
     private auth: AuthService,
     private signalRService: SignalRService,
-    private game: GameService,
-    private player: PlayerService
-  ) {}
+    private game: GameService
+  ) {
+    this.board = this.getEmptyBoard();
+    this.fleetWaiting = this.createFleet();
+    this.fleetDeployed = [];
+  }
 
   @ViewChild('board', { read: ElementRef, static: false }) boardElement: any;
   @ViewChild('nextItem', { read: ElementRef, static: false }) nextItem: any;
@@ -50,12 +51,28 @@ export class GameDeployShips implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.playerNumber = this.player.getPlayerNumber();
     this.userName = this.auth.getAuth().user;
     this.startCounter();
     //todo: do I need to reset them?
     this.resetMessageListeners();
     this.initGameSubscription();
+  }
+
+  public getEmptyBoard(): BoardCell[][] {
+    let board: BoardCell[][] = [];
+    for (let i = 0; i < 10; i++) {
+      board[i] = [];
+      for (let j = 0; j < 10; j++) {
+        board[i][j] = {
+          row: j,
+          col: i,
+          value: 0,
+          color: 'rgba(0, 162, 255, 0.2)',
+        } as BoardCell;
+      }
+    }
+
+    return board;
   }
 
   private startCounter() {
@@ -82,8 +99,6 @@ export class GameDeployShips implements OnInit {
   private initGameSubscription() {
     this._subGame = this.game.gameStateChange.subscribe((game) => {
       this.isDeploymentAllowed = game.isDeploymentAllowed;
-      this.board = game.players[this.playerNumber].board;
-      this.fleetWaiting = game.players[this.playerNumber].fleet;
       console.log('hit game');
     });
     this._subMessage = this.signalRService.messageChange.subscribe(
@@ -121,7 +136,7 @@ export class GameDeployShips implements OnInit {
   public resetElement(element: HTMLElement) {
     element.style.backgroundColor = 'rgba(0, 162, 255, 0.2)';
     for (let i = 0; i < this.lastDropCells.length; i++) {
-      this.board[this.lastDropCells[i].col][this.lastDropCells[i].row].colour =
+      this.board[this.lastDropCells[i].col][this.lastDropCells[i].row].color =
         'rgba(0, 162, 255, 0.2)';
     }
   }
@@ -150,7 +165,7 @@ export class GameDeployShips implements OnInit {
         this.isDropAllowed = true;
         this.hoverPlace = dropPlace;
         for (let i = 0; i < dropCells.length; i++) {
-          this.board[dropCells[i].col][dropCells[i].row].colour =
+          this.board[dropCells[i].col][dropCells[i].row].color =
             'rgb(0, 162, 255)';
         }
       } else {
@@ -319,5 +334,20 @@ export class GameDeployShips implements OnInit {
     );
 
     return exists ? item : ({ row: -1, col: -1, value: -1 } as BoardCell);
+  }
+
+  private createFleet(): Array<ShipComponent> {
+    return [
+      { size: 4, top: 0, left: 0, deployed: false, rotation: 0 },
+      { size: 3, top: 0, left: 0, deployed: false, rotation: 0 },
+      { size: 3, top: 0, left: 0, deployed: false, rotation: 0 },
+      { size: 2, top: 0, left: 0, deployed: false, rotation: 0 },
+      { size: 2, top: 0, left: 0, deployed: false, rotation: 0 },
+      { size: 2, top: 0, left: 0, deployed: false, rotation: 0 },
+      { size: 1, top: 0, left: 0, deployed: false, rotation: 0 },
+      { size: 1, top: 0, left: 0, deployed: false, rotation: 0 },
+      { size: 1, top: 0, left: 0, deployed: false, rotation: 0 },
+      { size: 1, top: 0, left: 0, deployed: false, rotation: 0 },
+    ];
   }
 }

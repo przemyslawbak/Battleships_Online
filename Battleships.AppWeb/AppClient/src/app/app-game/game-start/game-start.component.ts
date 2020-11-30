@@ -145,7 +145,13 @@ export class GameStartComponent {
     return model;
   }
 
-  private getEmptyBoard(): BoardCell[][] {
+  private getUniqueId(): number {
+    let min = Math.ceil(100000000);
+    let max = Math.floor(999999999);
+    return Math.floor(Math.random() * (max - min) + min);
+  }
+
+  public getEmptyBoard(): BoardCell[][] {
     let board: BoardCell[][] = [];
     for (let i = 0; i < 10; i++) {
       board[i] = [];
@@ -154,7 +160,7 @@ export class GameStartComponent {
           row: j,
           col: i,
           value: 0,
-          colour: 'rgba(0, 162, 255, 0.2)',
+          color: 'rgba(0, 162, 255, 0.2)',
         } as BoardCell;
       }
     }
@@ -162,22 +168,7 @@ export class GameStartComponent {
     return board;
   }
 
-  private getUniqueId(): number {
-    let min = Math.ceil(100000000);
-    let max = Math.floor(999999999);
-    return Math.floor(Math.random() * (max - min) + min);
-  }
-
-  private getGuestName(ai: boolean): string {
-    if (ai) {
-      return 'Computer AI';
-    }
-
-    return '';
-  }
-
-  //todo: move to ship service?
-  private createFleet(): ShipComponent[] {
+  private createFleet(): Array<ShipComponent> {
     return [
       { size: 4, top: 0, left: 0, deployed: false, rotation: 0 },
       { size: 3, top: 0, left: 0, deployed: false, rotation: 0 },

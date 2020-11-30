@@ -35,7 +35,7 @@
 }
 
 .dataRow {
-  min-height: 150px;
+  min-height: 160px;
   height: 10vw;
   margin-top: 10px;
 }
@@ -78,7 +78,7 @@ table td {
 
 .rotate {
   transform-origin: top left;
-  transform: translateX(50px) rotate(90deg);
+  transform: translateX(30px) rotate(90deg);
 }
 
 .rotateNot {
@@ -93,7 +93,6 @@ table td {
 
 .ships {
   height: 150px;
-  margin: 40px;
 }
 
 .cdk-drag-placeholder {
@@ -104,14 +103,14 @@ table td {
   background-color: coral;
   position: absolute;
   top: 0;
-  height: 50px;
+  height: 30px;
   z-index: 100;
 }
 
 .ship-box-cell {
   border: 1px dotted;
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
   display: inline-block;
 }
 
@@ -133,14 +132,14 @@ app-ship {
 }
 
 .boardCell {
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
   border: solid 1px #ccc;
   cursor: pointer;
 }
 
 .ship-box {
-  height: 50px;
+  height: 30px;
   border: solid 1px #ccc;
   color: rgba(0, 0, 0, 0.87);
   cursor: move;
