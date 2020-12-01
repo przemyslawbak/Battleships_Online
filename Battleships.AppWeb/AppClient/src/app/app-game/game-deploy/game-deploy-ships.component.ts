@@ -358,7 +358,7 @@ export class GameDeployComponent implements OnInit {
   }
 
   public quitGame(): void {
-    //
+    this.signalRService.stopConnection();
   }
 
   public autoDeploy(): void {
