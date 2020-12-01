@@ -366,6 +366,8 @@ export class GameDeployComponent implements OnInit {
   }
 
   public clearBoard(): void {
-    //
+    this.fleetWaiting = this.createFleet();
+    this.fleetDeployed = [];
+    this.playersBoard = this.getEmptyBoard();
   }
 }

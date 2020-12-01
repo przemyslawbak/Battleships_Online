@@ -124,7 +124,7 @@ OK - bug: when player disconnects, and game is empty, still listed
 	OK - board, 
 	OK - ships or current ship,
 	- add players prop 'deployed'
-	- 'clear board' btn resets board, and ships lists,
+	OK - 'clear board' btn resets board, and ships lists,
 	- 'quit' btn,
 	- 'finished' btn,
 	- 'auto deploy' btn,
@@ -163,6 +163,7 @@ OK - what if hubConnection.onclose?
 - leave game btn
 - after completed facebook login, add spinner too
 - html/body font
+- on ship deploy just change background color, do not deploy element?
 
 end:
 - favicon
