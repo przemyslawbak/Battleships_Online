@@ -1,4 +1,5 @@
-import { PlayerService } from './../../app-core/_services/player.service';
+import { GameStage, GameState } from '@models/game-state.model';
+import { PlayerService } from '@services/player.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { BoardCell } from '@models/board-cell.model';
 import { ChatMessage } from '@models/chat-message.model';
@@ -6,7 +7,7 @@ import { AuthService } from '@services/auth.service';
 import { GameService } from '@services/game.service';
 import { SignalRService } from '@services/signal-r.service';
 import { Subscription, timer } from 'rxjs';
-import { DropModel } from './../../app-core/_models/drop-model';
+import { DropModel } from '@models/drop-model';
 import { ShipComponent } from './../game-ship/ship.component';
 
 @Component({
@@ -371,11 +372,10 @@ export class GameDeployComponent implements OnInit {
 
   public confirm(): void {
     if (this.fleetDeployed.length == 10) {
-      this.game.gameState.players[
-        this.player.getPlayerNumber()
-      ].isDeployed = true;
+      let game: GameState = this.game.getGame();
+      game.players[this.player.getPlayerNumber()].isDeployed = true;
 
-      this.game.setGame(this.game.getGame());
+      this.signalRService.broadcastGameState(game);
     }
   }
 
