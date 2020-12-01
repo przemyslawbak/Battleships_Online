@@ -15,7 +15,7 @@ import { ShipComponent } from './../game-ship/ship.component';
   styleUrls: ['./game-deploy-ships.component.css'],
 })
 export class GameDeployComponent implements OnInit {
-  public isBoardClearNotAllowed: boolean;
+  public isDeployed: boolean;
   public isDeploymentAllowed: boolean;
   public chatMessage: string = '';
   public chatMessages: Array<ChatMessage> = [];
@@ -38,7 +38,7 @@ export class GameDeployComponent implements OnInit {
     private game: GameService,
     private player: PlayerService
   ) {
-    this.isBoardClearNotAllowed = false;
+    this.isDeployed = false;
     this.playersBoard = this.getEmptyBoard();
     console.log(this.playersBoard);
     this.fleetWaiting = this.createFleet();
@@ -84,7 +84,7 @@ export class GameDeployComponent implements OnInit {
   private startCounter() {
     this.countDown = timer(0, 1000).subscribe(() => {
       this.isDeploymentAllowed = true; //todo: remove later on
-      if (this.isDeploymentAllowed) {
+      if (this.isDeploymentAllowed && !this.isDeployed) {
         this.count--;
       } else {
         this.count = 180;
@@ -224,6 +224,8 @@ export class GameDeployComponent implements OnInit {
       if (dropPlace.length !== this.fleetWaiting[0].size) {
         result = false;
       }
+    } else {
+      result = false;
     }
 
     if (!this.isShipNotTouchingOther(dropPlace)) {
@@ -374,7 +376,7 @@ export class GameDeployComponent implements OnInit {
 
   public confirm(): void {
     if (this.fleetDeployed.length == 10) {
-      this.isBoardClearNotAllowed = true;
+      this.isDeployed = true;
       this.count = 0;
       let game: GameState = this.game.getGame();
       game.players[this.player.getPlayerNumber()].isDeployed = true;

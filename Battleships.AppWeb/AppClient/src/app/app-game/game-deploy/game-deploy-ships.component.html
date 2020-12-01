@@ -97,7 +97,7 @@
       </div>
       <div>
         <button
-          [disabled]="isBoardClearNotAllowed"
+          [disabled]="isDeployed"
           type="submit"
           class="btn btn-md btn-secondary"
           (click)="clearBoard()"
@@ -105,6 +105,7 @@
           Clear board
         </button>
         <button
+          [disabled]="isDeployed"
           type="submit"
           class="btn btn-md btn-secondary"
           (click)="autoDeploy()"
@@ -112,19 +113,20 @@
           Auto deploy
         </button>
         <button
-          type="submit"
-          class="btn btn-md btn-danger"
-          (click)="quitGame()"
-        >
-          Quit game
-        </button>
-        <button
+          [disabled]="isDeployed"
           [disabled]="fleetDeployed.length < 10"
           type="submit"
           class="btn btn-md btn-success"
           (click)="confirm()"
         >
           Deploy ships
+        </button>
+        <button
+          type="submit"
+          class="btn btn-md btn-danger"
+          (click)="quitGame()"
+        >
+          Quit game
         </button>
       </div>
       <div class="board" #board>

@@ -134,7 +134,7 @@ OK - bug: when player disconnects, and game is empty, still listed
 	OK - if 15s remaining, make it red,
 	OK - after finished deploying reset timer,
 	- after click `deploy ships` inform if waiting for 2nd player,
-	- if already `isDeployed`, skip logic on `confirm()`,
+	OK - if already `isDeployed`, skip logic on `confirm()`,
 	OK - if already `isDeployed`, disable `clear` btn,
 - if game-start to ai game? will be allowed?
 - allow deployment after 2nd player joins the game, or when single player
