@@ -15,6 +15,7 @@ import { ShipComponent } from './../game-ship/ship.component';
   styleUrls: ['./game-deploy-ships.component.css'],
 })
 export class GameDeployComponent implements OnInit {
+  public isBoardClearNotAllowed: boolean;
   public isDeploymentAllowed: boolean;
   public chatMessage: string = '';
   public chatMessages: Array<ChatMessage> = [];
@@ -37,6 +38,7 @@ export class GameDeployComponent implements OnInit {
     private game: GameService,
     private player: PlayerService
   ) {
+    this.isBoardClearNotAllowed = false;
     this.playersBoard = this.getEmptyBoard();
     console.log(this.playersBoard);
     this.fleetWaiting = this.createFleet();
@@ -372,9 +374,15 @@ export class GameDeployComponent implements OnInit {
 
   public confirm(): void {
     if (this.fleetDeployed.length == 10) {
+      this.isBoardClearNotAllowed = true;
+      this.count = 0;
       let game: GameState = this.game.getGame();
       game.players[this.player.getPlayerNumber()].isDeployed = true;
-
+      game.players[this.player.getPlayerNumber()].board = this.playersBoard;
+      this.signalRService.broadcastChatMessage(
+        this.game.getGame().players[this.player.getPlayerNumber()].displayName +
+          ' finished deploying ships.'
+      );
       this.signalRService.broadcastGameState(game);
     }
   }

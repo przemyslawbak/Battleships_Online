@@ -9,7 +9,9 @@
           <div class="row">
             <div class="col-sm-6">
               <div>Deploy ships:</div>
-              <h4>{{ count }} s.</h4>
+              <h4 [ngClass]="this.count < 30 ? 'redColor' : 'greenColor'">
+                {{ count }} s.
+              </h4>
               <div>Remaining ships:</div>
               <h4>{{ this.fleetWaiting.length }}</h4>
             </div>
@@ -95,6 +97,7 @@
       </div>
       <div>
         <button
+          [disabled]="isBoardClearNotAllowed"
           type="submit"
           class="btn btn-md btn-secondary"
           (click)="clearBoard()"
