@@ -1,3 +1,4 @@
+import { PlayerService } from './../../app-core/_services/player.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { BoardCell } from '@models/board-cell.model';
 import { ChatMessage } from '@models/chat-message.model';
@@ -32,7 +33,8 @@ export class GameDeployComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private signalRService: SignalRService,
-    private game: GameService
+    private game: GameService,
+    private player: PlayerService
   ) {
     this.playersBoard = this.getEmptyBoard();
     console.log(this.playersBoard);
@@ -354,7 +356,21 @@ export class GameDeployComponent implements OnInit {
   }
 
   public confirm(): void {
-    //
+    if (this.fleetDeployed.length == 10) {
+      this.game.gameState.players[
+        this.player.getPlayerNumber()
+      ].isDeployed = true;
+
+      this.game.setGame(this.game.getGame());
+
+      if (
+        this.game.getGame().players[0].isDeployed &&
+        this.game.getGame().players[1].isDeployed
+      ) {
+        //todo: start game!
+        alert('start');
+      }
+    }
   }
 
   public quitGame(): void {

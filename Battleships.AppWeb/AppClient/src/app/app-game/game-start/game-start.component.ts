@@ -119,14 +119,16 @@ export class GameStartComponent {
 
   private initGameStartState(): GameState {
     let player1: Player = {
-      myTurn: true,
+      isMyTurn: true,
+      isDeployed: false,
       fleet: this.createFleet(),
       board: this.getEmptyBoard(),
       displayName: this.auth.getAuth().displayName,
       userName: this.auth.getAuth().user,
     } as Player;
     let player2: Player = {
-      myTurn: true,
+      isMyTurn: true,
+      isDeployed: false,
       fleet: this.createFleet(),
       board: this.getEmptyBoard(),
       displayName: '',

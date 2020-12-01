@@ -123,10 +123,10 @@ OK - bug: when player disconnects, and game is empty, still listed
 	- if timer ends, auto deploy ships on board
 	OK - board, 
 	OK - ships or current ship,
-	- add players prop 'deployed'
+	OK - add players prop 'deployed'
 	OK - 'clear board' btn resets board, and ships lists,
-	- 'quit' btn,
-	- 'finished' btn,
+	OK - 'quit' btn,
+	OK - 'finished' btn,
 	- 'auto deploy' btn,
 	OK - game chat,
 	- after both completed, save game state and redirect to the game play

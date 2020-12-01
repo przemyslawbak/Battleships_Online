@@ -115,11 +115,12 @@
           Quit game
         </button>
         <button
+          [disabled]="fleetDeployed.length < 10"
           type="submit"
           class="btn btn-md btn-success"
           (click)="confirm()"
         >
-          Start
+          Deploy ships
         </button>
       </div>
       <div class="board" #board>
