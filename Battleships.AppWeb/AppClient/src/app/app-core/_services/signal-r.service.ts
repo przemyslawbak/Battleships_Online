@@ -70,19 +70,15 @@ export class SignalRService {
   }
 
   public addGameStateListener = (): void => {
-    this.hubConnection.on('ReceiveGameState', (message: GameState) => {
-      if (message.gameId == this.game.gameState.gameId) {
-        this.game.setGame(message);
-      }
+    this.hubConnection.on('ReceiveGameState', (gameState: GameState) => {
+      this.game.setGame(gameState);
     });
   };
 
-  public broadcastGameState = (): void => {
+  public broadcastGameState = (game: GameState): void => {
     this.thenable.then(() => {
-      const name = this.auth.getAuth().displayName;
-      let message = this.game.getGame();
       this.hubConnection
-        .invoke('SendGameState', message)
+        .invoke('SendGameState', game)
         .catch((err) => console.error('game state broadcast error: ' + err));
     });
   };
@@ -92,19 +88,23 @@ export class SignalRService {
   }
 
   public addChatMessageListener = (): void => {
-    this.hubConnection.on('ReceiveChatMessage', (message: ChatMessage) => {
-      console.log(message.displayName + ' is writing: ' + message.message);
-      this.message = message;
+    this.hubConnection.on('ReceiveChatMessage', (chatMessage: ChatMessage) => {
+      console.log(
+        chatMessage.displayName + ' is writing: ' + chatMessage.message
+      );
+      this.message = chatMessage;
       this.messageChange.next(this.message);
     });
   };
 
   public broadcastChatMessage = (message: string): void => {
     this.thenable.then(() => {
-      let playersNames = [
-        this.game.getGame().players[0].userName,
-        this.game.getGame().players[1].userName,
-      ];
+      let playersNames = [];
+      for (let i = 0; i < this.game.getGame().players.length; i++) {
+        if (this.game.getGame().players[i].userName) {
+          playersNames.push(this.game.getGame().players[i].userName);
+        }
+      }
       this.hubConnection
         .invoke('SendChatMessage', message, playersNames)
         .catch((err) => console.error('chat broadcast error: ' + err));
