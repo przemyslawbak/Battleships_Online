@@ -58,7 +58,7 @@ export class SignalRService {
     if (this.game.isGameStarted()) {
       this.modalService.open(
         'info-modal',
-        'You have been disconnected from previous game you played.'
+        'You have been disconnected from game you played.'
       );
       this.router.navigate(['']);
     }
