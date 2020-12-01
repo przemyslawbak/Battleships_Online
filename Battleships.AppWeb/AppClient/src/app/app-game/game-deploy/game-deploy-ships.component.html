@@ -81,29 +81,13 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-6">
-      <div class="droplist">
-        <div *ngFor="let ship of this.fleetDeployed; let i = index">
-          <app-ship
-            id="{{ i }}"
-            [ngClass]="ship.rotation === 90 ? 'rotate' : 'rotateNot'"
-            [style.top.px]="ship.top"
-            [style.left.px]="ship.left"
-            [size]="ship.size"
-          >
-          </app-ship>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
     <div class="droplist col-md-6">
       <div *ngFor="let ship of fleetDeployed; let i = index">
         <app-ship
           id="{{ i }}"
           [ngClass]="ship.rotation === 90 ? 'rotate' : 'rotateNot'"
-          [style.top.px]="ship.top"
-          [style.left.px]="ship.left"
+          [style.top.px]="ship.top - 2"
+          [style.left.px]="ship.left + 14"
           [size]="ship.size"
         >
         </app-ship>
