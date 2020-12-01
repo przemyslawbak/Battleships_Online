@@ -123,11 +123,11 @@ export class GameStartComponent {
       isDeployed: false,
       fleet: this.createFleet(),
       board: this.getEmptyBoard(),
-      displayName: this.auth.getAuth().displayName,
-      userName: this.auth.getAuth().user,
+      displayName: '',
+      userName: '',
     } as Player;
     let player2: Player = {
-      isMyTurn: true,
+      isMyTurn: false,
       isDeployed: false,
       fleet: this.createFleet(),
       board: this.getEmptyBoard(),

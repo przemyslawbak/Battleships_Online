@@ -106,7 +106,7 @@ export class GamePlayComponent implements OnInit {
   private initGame(game: GameState): void {
     this.game.setGame(game);
     this.resetMessageListeners();
-    this.signalRService.broadcastGameState();
+    this.signalRService.broadcastGameState(game);
     if (!game.isStartAllowed) {
       this.router.navigate(['deploy-ships']);
     }
