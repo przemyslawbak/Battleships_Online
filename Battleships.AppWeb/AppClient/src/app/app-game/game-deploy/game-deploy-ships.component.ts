@@ -362,7 +362,7 @@ export class GameDeployComponent implements OnInit {
   }
 
   public autoDeploy(): void {
-    //
+    alert('Not implemented yet, please do it manually.');
   }
 
   public clearBoard(): void {
