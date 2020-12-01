@@ -352,4 +352,20 @@ export class GameDeployComponent implements OnInit {
       { size: 1, top: 0, left: 0, deployed: false, rotation: 0 },
     ];
   }
+
+  public confirm(): void {
+    //
+  }
+
+  public quitGame(): void {
+    //
+  }
+
+  public autoDeploy(): void {
+    //
+  }
+
+  public clearBoard(): void {
+    //
+  }
 }

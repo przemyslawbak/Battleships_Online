@@ -1,3 +1,7 @@
+button {
+  margin: 5px;
+}
+
 .gameStatus,
 .gameChat {
   border: solid 1px;
@@ -74,6 +78,7 @@ table td {
 /*deploying*/
 .board {
   min-height: 300px;
+  margin-top: 20px;
 }
 
 .rotate {

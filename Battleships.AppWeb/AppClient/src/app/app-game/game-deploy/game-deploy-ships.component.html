@@ -86,11 +86,41 @@
         <app-ship
           id="{{ i }}"
           [ngClass]="ship.rotation === 90 ? 'rotate' : 'rotateNot'"
-          [style.top.px]="ship.top - 2"
+          [style.top.px]="ship.top + 67"
           [style.left.px]="ship.left + 14"
           [size]="ship.size"
         >
         </app-ship>
+      </div>
+      <div>
+        <button
+          type="submit"
+          class="btn btn-md btn-secondary"
+          (click)="clearBoard()"
+        >
+          Clear board
+        </button>
+        <button
+          type="submit"
+          class="btn btn-md btn-secondary"
+          (click)="autoDeploy()"
+        >
+          Auto deploy
+        </button>
+        <button
+          type="submit"
+          class="btn btn-md btn-danger"
+          (click)="quitGame()"
+        >
+          Quit game
+        </button>
+        <button
+          type="submit"
+          class="btn btn-md btn-success"
+          (click)="confirm()"
+        >
+          Start
+        </button>
       </div>
       <div class="board" #board>
         <div
@@ -112,6 +142,5 @@
         </div>
       </div>
     </div>
-    <div class="droplist col-md-6">something</div>
   </div>
 </div>
