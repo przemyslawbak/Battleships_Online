@@ -129,7 +129,8 @@ OK - bug: when player disconnects, and game is empty, still listed
 	OK - 'finished' btn,
 	- 'auto deploy' btn,
 	OK - game chat,
-	- after both completed, save game state and redirect to the game play
+	OK - after both completed, save game state and redirect to the game play
+	- if 15s remaining, make it red
 - allow deployment after 2nd player joins the game, or when single player
 - give some time for deployment for each player, if multiplayer (2-3min)
 - when deployment is completed, redirect to the game component

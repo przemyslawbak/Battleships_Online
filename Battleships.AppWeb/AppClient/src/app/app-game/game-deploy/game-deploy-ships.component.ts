@@ -101,7 +101,14 @@ export class GameDeployComponent implements OnInit {
 
   private initGameSubscription() {
     this._subGame = this.game.gameStateChange.subscribe((game) => {
+      let p0Deployed: boolean = game.players[0].isDeployed;
+      let p1Deployed: boolean = game.players[1].isDeployed;
       this.isDeploymentAllowed = game.isDeploymentAllowed;
+
+      if (p0Deployed && p1Deployed) {
+        //todo: start game!
+        alert('start');
+      }
       console.log('hit game');
     });
     this._subMessage = this.signalRService.messageChange.subscribe(
@@ -186,12 +193,14 @@ export class GameDeployComponent implements OnInit {
   }
 
   private updateShipsTopLeft(ship: ShipComponent): ShipComponent {
-    ship.left =
-      this.dragEnd.cellX -
-      this.boardElement.nativeElement.getBoundingClientRect().x;
-    ship.top =
-      this.dragEnd.cellY -
-      this.boardElement.nativeElement.getBoundingClientRect().y;
+    if (ship) {
+      ship.left =
+        this.dragEnd.cellX -
+        this.boardElement.nativeElement.getBoundingClientRect().x;
+      ship.top =
+        this.dragEnd.cellY -
+        this.boardElement.nativeElement.getBoundingClientRect().y;
+    }
     return ship;
   }
 
@@ -208,9 +217,12 @@ export class GameDeployComponent implements OnInit {
   private validateDropPlace(dropPlace: Array<BoardCell>): boolean {
     let result: boolean = true;
 
-    if (dropPlace.length !== this.fleetWaiting[0].size) {
-      result = false;
+    if (this.fleetWaiting.length > 0) {
+      if (dropPlace.length !== this.fleetWaiting[0].size) {
+        result = false;
+      }
     }
+
     if (!this.isShipNotTouchingOther(dropPlace)) {
       result = false;
     }
@@ -306,16 +318,18 @@ export class GameDeployComponent implements OnInit {
 
   private getDropCells(row: number, col: number): Array<BoardCell> {
     let result: Array<BoardCell> = [];
-    for (let i = 0; i < this.fleetWaiting[0].size; i++) {
-      let cellModel: BoardCell = this.getCell(
-        this.fleetWaiting[0].rotation,
-        i,
-        row,
-        col
-      );
+    if (this.fleetWaiting.length > 0) {
+      for (let i = 0; i < this.fleetWaiting[0].size; i++) {
+        let cellModel: BoardCell = this.getCell(
+          this.fleetWaiting[0].rotation,
+          i,
+          row,
+          col
+        );
 
-      if (cellModel.col >= 0 && cellModel.row >= 0 && cellModel.value >= 0) {
-        result.push(cellModel);
+        if (cellModel.col >= 0 && cellModel.row >= 0 && cellModel.value >= 0) {
+          result.push(cellModel);
+        }
       }
     }
 
@@ -362,14 +376,6 @@ export class GameDeployComponent implements OnInit {
       ].isDeployed = true;
 
       this.game.setGame(this.game.getGame());
-
-      if (
-        this.game.getGame().players[0].isDeployed &&
-        this.game.getGame().players[1].isDeployed
-      ) {
-        //todo: start game!
-        alert('start');
-      }
     }
   }
 

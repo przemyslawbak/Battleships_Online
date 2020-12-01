@@ -84,6 +84,7 @@
     <div class="droplist col-md-6">
       <div *ngFor="let ship of fleetDeployed; let i = index">
         <app-ship
+          *ngIf="ship"
           id="{{ i }}"
           [ngClass]="ship.rotation === 90 ? 'rotate' : 'rotateNot'"
           [style.top.px]="ship.top + 67"
