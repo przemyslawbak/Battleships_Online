@@ -85,7 +85,12 @@ export class GameDeployComponent implements OnInit {
     this.countDown = timer(0, 1000).subscribe(() => {
       this.isDeploymentAllowed = true; //todo: remove later on
       if (this.isDeploymentAllowed && !this.isDeployed) {
-        this.count--;
+        if (this.count <= 0) {
+          this.autoDeploy();
+          this.confirm();
+        } else {
+          this.count--;
+        }
       } else {
         this.count = 180;
       }
