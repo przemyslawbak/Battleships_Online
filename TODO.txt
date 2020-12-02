@@ -133,7 +133,7 @@ OK - bug: when player disconnects, and game is empty, still listed
 	OK - message when player deployed ships,
 	OK - if 15s remaining, make it red,
 	OK - after finished deploying reset timer,
-	- after click `deploy ships` inform if waiting for 2nd player,
+	OK - after click `deploy ships` inform if waiting for 2nd player,
 	OK - if already `isDeployed`, skip logic on `confirm()`,
 	OK - if already `isDeployed`, disable `clear` btn,
 - if game-start to ai game? will be allowed?
@@ -173,6 +173,7 @@ OK - what if hubConnection.onclose?
 - on ship deploy just change background color, do not deploy element?
 
 end:
+- keep chat records from various views
 - favicon
 - clean up JS console.log rows
 - protect server controllers

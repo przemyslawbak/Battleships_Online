@@ -3,50 +3,60 @@
     <div class="col-md-6">
       <div class="col-md-8 gameStatus dataRow">
         <div
-          *ngIf="this.isDeploymentAllowed; then thenBlock; else elseBlock"
+          *ngIf="this.isDeploymentAllowed; then deploying; else waiting"
         ></div>
-        <ng-template #thenBlock>
+        <ng-template #deploying>
           <div class="row">
-            <div class="col-sm-6">
-              <div>Deploy ships:</div>
-              <h4 [ngClass]="this.count < 30 ? 'redColor' : 'greenColor'">
-                {{ count }} s.
-              </h4>
-              <div>Remaining ships:</div>
-              <h4>{{ this.fleetWaiting.length }}</h4>
-            </div>
-            <div class="ships col-sm-6">
-              <div>(click to rotate)</div>
-              <div
-                class="droplist col-sm-6"
-                #list
-                (mouseover)="
-                  hoveredElement(
-                    list.getBoundingClientRect(),
-                    'list',
-                    -1,
-                    -1,
-                    list
-                  )
-                "
-              >
-                <div *ngIf="fleetWaiting.length > 0">
-                  <div [style.size]="30 * fleetWaiting[0].size + 'px'">
-                    <app-ship
-                      #nextItem
-                      [ngClass]="
-                        fleetWaiting[0].rotation === 90 ? 'rotate' : 'rotateNot'
-                      "
-                      [size]="fleetWaiting[0].size"
-                      (click)="setRotation(0 + '-fleetWaiting')"
-                    ></app-ship>
+            <div *ngIf="this.isDeployed; then deployed; else notDeployed"></div>
+            <ng-template #notDeployed
+              ><div class="col-sm-6">
+                <div>Deploy ships:</div>
+                <h4 [ngClass]="this.count < 30 ? 'redColor' : 'greenColor'">
+                  {{ count }} s.
+                </h4>
+                <div>Remaining ships:</div>
+                <h4>{{ this.fleetWaiting.length }}</h4>
+              </div>
+              <div class="ships col-sm-6">
+                <div>(click to rotate)</div>
+                <div
+                  class="droplist col-sm-6"
+                  #list
+                  (mouseover)="
+                    hoveredElement(
+                      list.getBoundingClientRect(),
+                      'list',
+                      -1,
+                      -1,
+                      list
+                    )
+                  "
+                >
+                  <div *ngIf="fleetWaiting.length > 0">
+                    <div [style.size]="30 * fleetWaiting[0].size + 'px'">
+                      <app-ship
+                        #nextItem
+                        [ngClass]="
+                          fleetWaiting[0].rotation === 90
+                            ? 'rotate'
+                            : 'rotateNot'
+                        "
+                        [size]="fleetWaiting[0].size"
+                        (click)="setRotation(0 + '-fleetWaiting')"
+                      ></app-ship>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </ng-template>
+            <ng-template #deployed>
+              <div class="col-sm-12">
+                Waiting for second player to finish deploying...
+              </div>
+            </ng-template>
           </div>
         </ng-template>
-        <ng-template #elseBlock>
+        <ng-template #waiting>
           <div class="row">
             <div class="col-sm-12">Waiting for second player to join...</div>
           </div>
