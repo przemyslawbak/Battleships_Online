@@ -129,7 +129,7 @@ OK - bug: when player disconnects, and game is empty, still listed
 	OK - 'finished' btn,
 	- 'auto deploy' btn,
 	OK - game chat,
-	- after both completed, save game state and redirect to the game play,
+	- after both completed, save game state and redirect to the game play, (redirect from game state sub)
 	OK - message when player deployed ships,
 	OK - if 15s remaining, make it red,
 	OK - after finished deploying reset timer,

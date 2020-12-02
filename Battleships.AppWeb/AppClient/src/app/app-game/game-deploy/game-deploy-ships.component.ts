@@ -40,7 +40,6 @@ export class GameDeployComponent implements OnInit {
   ) {
     this.isDeployed = false;
     this.playersBoard = this.getEmptyBoard();
-    console.log(this.playersBoard);
     this.fleetWaiting = this.createFleet();
     this.fleetDeployed = [];
   }
@@ -147,16 +146,30 @@ export class GameDeployComponent implements OnInit {
       this.moveFromList1To2();
       for (let i = 0; i < dropCells.length; i++) {
         this.playersBoard[dropCells[i].col][dropCells[i].row].value = 1;
+        this.playersBoard[dropCells[i].col][dropCells[i].row].color = 'green';
       }
     }
   }
 
-  public resetElement(element: HTMLElement) {
-    element.style.backgroundColor = 'rgba(0, 162, 255, 0.2)';
+  public resetElement(element: HTMLElement, row: number, col: number) {
+    if (this.playersBoard[col][row].value == 1) {
+      element.style.backgroundColor = 'green';
+    } else {
+      element.style.backgroundColor = 'rgba(0, 162, 255, 0.2)';
+    }
     for (let i = 0; i < this.lastDropCells.length; i++) {
-      this.playersBoard[this.lastDropCells[i].col][
-        this.lastDropCells[i].row
-      ].color = 'rgba(0, 162, 255, 0.2)';
+      if (
+        this.playersBoard[this.lastDropCells[i].col][this.lastDropCells[i].row]
+          .value == 1
+      ) {
+        this.playersBoard[this.lastDropCells[i].col][
+          this.lastDropCells[i].row
+        ].color = 'green';
+      } else {
+        this.playersBoard[this.lastDropCells[i].col][
+          this.lastDropCells[i].row
+        ].color = 'rgba(0, 162, 255, 0.2)';
+      }
     }
   }
 
@@ -195,21 +208,8 @@ export class GameDeployComponent implements OnInit {
   }
 
   private moveFromList1To2(): void {
-    const item = this.updateShipsTopLeft(this.fleetWaiting[0]);
-    this.fleetDeployed.push(item);
+    this.fleetDeployed.push(this.fleetWaiting[0]);
     this.fleetWaiting.splice(0, 1);
-  }
-
-  private updateShipsTopLeft(ship: ShipComponent): ShipComponent {
-    if (ship) {
-      ship.left =
-        this.dragEnd.cellX -
-        this.boardElement.nativeElement.getBoundingClientRect().x;
-      ship.top =
-        this.dragEnd.cellY -
-        this.boardElement.nativeElement.getBoundingClientRect().y;
-    }
-    return ship;
   }
 
   private getArrayItem(name: string, id: string): ShipComponent {
@@ -366,16 +366,16 @@ export class GameDeployComponent implements OnInit {
 
   private createFleet(): Array<ShipComponent> {
     return [
-      { size: 4, top: 0, left: 0, deployed: false, rotation: 0 },
-      { size: 3, top: 0, left: 0, deployed: false, rotation: 0 },
-      { size: 3, top: 0, left: 0, deployed: false, rotation: 0 },
-      { size: 2, top: 0, left: 0, deployed: false, rotation: 0 },
-      { size: 2, top: 0, left: 0, deployed: false, rotation: 0 },
-      { size: 2, top: 0, left: 0, deployed: false, rotation: 0 },
-      { size: 1, top: 0, left: 0, deployed: false, rotation: 0 },
-      { size: 1, top: 0, left: 0, deployed: false, rotation: 0 },
-      { size: 1, top: 0, left: 0, deployed: false, rotation: 0 },
-      { size: 1, top: 0, left: 0, deployed: false, rotation: 0 },
+      { size: 4, rotation: 0 },
+      { size: 3, rotation: 0 },
+      { size: 3, rotation: 0 },
+      { size: 2, rotation: 0 },
+      { size: 2, rotation: 0 },
+      { size: 2, rotation: 0 },
+      { size: 1, rotation: 0 },
+      { size: 1, rotation: 0 },
+      { size: 1, rotation: 0 },
+      { size: 1, rotation: 0 },
     ];
   }
 
@@ -386,6 +386,7 @@ export class GameDeployComponent implements OnInit {
       let game: GameState = this.game.getGame();
       game.players[this.player.getPlayerNumber()].isDeployed = true;
       game.players[this.player.getPlayerNumber()].board = this.playersBoard;
+      game.players[this.player.getPlayerNumber()].fleet = this.fleetDeployed;
       this.signalRService.broadcastChatMessage(
         this.game.getGame().players[this.player.getPlayerNumber()].displayName +
           ' finished deploying ships.'
@@ -399,7 +400,13 @@ export class GameDeployComponent implements OnInit {
   }
 
   public autoDeploy(): void {
-    alert('Not implemented yet, please do it manually.');
+    if (this.fleetWaiting.length > 0) {
+      //todo: board = ??
+      //todo: fleet = ??
+      for (let i = 0; i < this.fleetWaiting.length; i++) {
+        this.playersBoard = [];
+      }
+    }
   }
 
   public clearBoard(): void {

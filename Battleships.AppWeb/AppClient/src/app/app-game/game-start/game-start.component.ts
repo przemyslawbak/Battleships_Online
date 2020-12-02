@@ -172,16 +172,16 @@ export class GameStartComponent {
 
   private createFleet(): Array<ShipComponent> {
     return [
-      { size: 4, top: 0, left: 0, deployed: false, rotation: 0 },
-      { size: 3, top: 0, left: 0, deployed: false, rotation: 0 },
-      { size: 3, top: 0, left: 0, deployed: false, rotation: 0 },
-      { size: 2, top: 0, left: 0, deployed: false, rotation: 0 },
-      { size: 2, top: 0, left: 0, deployed: false, rotation: 0 },
-      { size: 2, top: 0, left: 0, deployed: false, rotation: 0 },
-      { size: 1, top: 0, left: 0, deployed: false, rotation: 0 },
-      { size: 1, top: 0, left: 0, deployed: false, rotation: 0 },
-      { size: 1, top: 0, left: 0, deployed: false, rotation: 0 },
-      { size: 1, top: 0, left: 0, deployed: false, rotation: 0 },
+      { size: 4, rotation: 0 },
+      { size: 3, rotation: 0 },
+      { size: 3, rotation: 0 },
+      { size: 2, rotation: 0 },
+      { size: 2, rotation: 0 },
+      { size: 2, rotation: 0 },
+      { size: 1, rotation: 0 },
+      { size: 1, rotation: 0 },
+      { size: 1, rotation: 0 },
+      { size: 1, rotation: 0 },
     ];
   }
 }
