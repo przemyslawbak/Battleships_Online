@@ -138,8 +138,9 @@ OK - bug: when player disconnects, and game is empty, still listed
 	OK - after click `deploy ships` inform if waiting for 2nd player,
 	OK - if already `isDeployed`, skip logic on `confirm()`,
 	OK - if already `isDeployed`, disable `clear` btn,
-	- rearrange deploy view
-	OK - remove prop fleet from players model
+	OK - rearrange deploy view,
+	OK - remove prop fleet from players model,
+	- bug: reset board colors when auto deploy trigerred,
 - if game-start to ai game? will be allowed?
 - allow deployment after 2nd player joins the game, or when single player
 - give some time for deployment for each player, if multiplayer (2-3min)
@@ -175,6 +176,7 @@ OK - what if hubConnection.onclose?
 - after completed facebook login, add spinner too
 - html/body font
 - on ship deploy just change background color, do not deploy element?
+- deploying game board on small screen responsivity
 
 end:
 - keep chat records from various views

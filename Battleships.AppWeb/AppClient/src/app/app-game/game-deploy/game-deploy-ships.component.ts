@@ -42,9 +42,6 @@ export class GameDeployComponent implements OnInit {
     this.fleetDeployed = [];
   }
 
-  @ViewChild('board', { read: ElementRef, static: false }) boardElement: any;
-  @ViewChild('nextItem', { read: ElementRef, static: false }) nextItem: any;
-
   ngOnDestroy() {
     this.countDown = null; //todo: what if goes out the view?
     if (this._subGame && this._subMessage && this._subBoard) {
