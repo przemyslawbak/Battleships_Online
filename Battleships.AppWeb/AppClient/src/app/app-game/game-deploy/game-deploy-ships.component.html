@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-6">
-      <div class="col-md-8 gameStatus dataRow">
+    <div class="col-md-5">
+      <div class="col-sm-12 gameStatus dataRow">
         <div
           *ngIf="this.isDeploymentAllowed; then deploying; else waiting"
         ></div>
@@ -18,7 +18,7 @@
                 <h4>{{ this.fleetWaiting.length }}</h4>
               </div>
               <div class="ships col-sm-6">
-                <div>(click to rotate)</div>
+                <div>(click to rotate ship)</div>
                 <div
                   class="droplist col-sm-6"
                   #list
@@ -54,38 +54,37 @@
           </div>
         </ng-template>
       </div>
-    </div>
-    <div class="col-md-6 gameChat dataRow">
-      <div class="chatDisplay">
-        <div *ngFor="let message of this.chatMessages">
-          <span *ngIf="this.userName == message.userName" class="greenColor"
-            >{{ message.displayName }}:
-          </span>
-          <span *ngIf="this.userName != message.userName" class="redColor"
-            >{{ message.displayName }}:
-          </span>
-          <span>{{ message.message }}</span>
+      <div class="col-sm-12 gameChat">
+        Game chat:
+        <div class="chatDisplay">
+          <div *ngFor="let message of this.chatMessages">
+            <span *ngIf="this.userName == message.userName" class="greenColor"
+              >{{ message.displayName }}:
+            </span>
+            <span *ngIf="this.userName != message.userName" class="redColor"
+              >{{ message.displayName }}:
+            </span>
+            <span>{{ message.message }}</span>
+          </div>
+        </div>
+        <div class="col-md-12 textInputRow">
+          <input
+            class="form-control chatInput"
+            type="text"
+            [(ngModel)]="chatMessage"
+            (keyup.enter)="sendChatMessage()"
+          />
+          <button
+            type="button"
+            class="btn btn-md btn-success"
+            (click)="sendChatMessage()"
+          >
+            Send
+          </button>
         </div>
       </div>
-      <div class="col-md-12 textInputRow">
-        <input
-          class="form-control chatInput"
-          type="text"
-          [(ngModel)]="chatMessage"
-          (keyup.enter)="sendChatMessage()"
-        />
-        <button
-          type="button"
-          class="btn btn-md btn-success"
-          (click)="sendChatMessage()"
-        >
-          Send
-        </button>
-      </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="droplist col-md-6">
+    <div class="droplist col-md-7">
       <div>
         <button
           [disabled]="isDeployed"
@@ -104,8 +103,8 @@
           Auto deploy
         </button>
         <button
-          [disabled]="isDeployed"
           [disabled]="fleetDeployed.length < 10"
+          [disabled]="isDeployed"
           type="submit"
           class="btn btn-md btn-success"
           (click)="confirm()"

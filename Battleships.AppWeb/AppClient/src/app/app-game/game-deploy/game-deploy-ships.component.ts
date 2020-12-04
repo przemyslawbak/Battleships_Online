@@ -25,7 +25,7 @@ export class GameDeployComponent implements OnInit {
   private _subBoard: any;
   public userName: string;
   private countDown: Subscription;
-  public count = 180;
+  public count = 10; //todo: change later
   public fleetWaiting: Array<ShipComponent>;
   public fleetDeployed: Array<ShipComponent>;
   public playersBoard: BoardCell[][];
@@ -104,7 +104,6 @@ export class GameDeployComponent implements OnInit {
       } else {
         this.count = 180;
       }
-      //todo: if count == 0 => auto deploy => ready
       return this.count;
     });
   }
@@ -187,7 +186,7 @@ export class GameDeployComponent implements OnInit {
   }
 
   public confirm(): void {
-    if (this.fleetDeployed.length == 10) {
+    if (this.fleetDeployed.length == 10 && !this.isDeployed) {
       this.isDeployed = true;
       this.count = 0;
       let game: GameState = this.game.getGame();
