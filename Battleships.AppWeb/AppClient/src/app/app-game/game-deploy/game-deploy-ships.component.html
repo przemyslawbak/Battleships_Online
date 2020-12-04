@@ -22,15 +22,7 @@
                 <div
                   class="droplist col-sm-6"
                   #list
-                  (mouseover)="
-                    checkHoveredElement(
-                      list.getBoundingClientRect(),
-                      'list',
-                      -1,
-                      -1,
-                      list
-                    )
-                  "
+                  (mouseover)="checkHoveredElement('list', -1, -1, list)"
                 >
                   <div *ngIf="fleetWaiting.length > 0">
                     <div [style.size]="30 * fleetWaiting[0].size + 'px'">
@@ -139,15 +131,7 @@
               [style.backgroundColor]="box.color"
               #cell
               (mouseleave)="resetBoardElement(cell, j, i)"
-              (mouseover)="
-                checkHoveredElement(
-                  cell.getBoundingClientRect(),
-                  'cell',
-                  j,
-                  i,
-                  cell
-                )
-              "
+              (mouseover)="checkHoveredElement('cell', j, i, cell)"
               (click)="deployShip(j, i)"
             ></div>
           </div>

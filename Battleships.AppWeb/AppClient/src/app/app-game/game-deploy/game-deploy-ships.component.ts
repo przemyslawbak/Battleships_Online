@@ -28,7 +28,6 @@ export class GameDeployComponent implements OnInit {
   public count = 180;
   public fleetWaiting: Array<ShipComponent>;
   public fleetDeployed: Array<ShipComponent>;
-  public dragEnd: DropModel = {} as DropModel;
   public playersBoard: BoardCell[][];
 
   constructor(
@@ -61,7 +60,7 @@ export class GameDeployComponent implements OnInit {
     //todo: do I need to reset them?
     this.resetMessageListeners();
     this.initGameSubscription();
-    this.CreateBoard();
+    this.board.createEmptyBoard();
   }
 
   private initGameSubscription() {
@@ -90,10 +89,6 @@ export class GameDeployComponent implements OnInit {
         console.log('hit board');
       }
     );
-  }
-
-  private CreateBoard(): void {
-    this.board.createEmptyBoard();
   }
 
   private startCounter() {
@@ -137,14 +132,8 @@ export class GameDeployComponent implements OnInit {
 
   public deployShip(row: number, col: number): void {
     if (this.board.isDropAllowed) {
-      let dropCells: Array<BoardCell> = this.board.getDropCells(
-        row,
-        col,
-        this.fleetWaiting
-      );
-      this.dragEnd = this.board.hoverPlace;
-      this.moveFromList1To2();
-      this.board.deployShip(row, col, dropCells);
+      this.moveFromWaitingToDeployed();
+      this.board.deployShip(row, col, this.fleetWaiting[0]);
     }
   }
 
@@ -153,23 +142,21 @@ export class GameDeployComponent implements OnInit {
   }
 
   public checkHoveredElement(
-    position: any,
     elementType: string,
     row: number,
     col: number,
     element: HTMLElement
   ): void {
     this.board.checkHoveredElement(
-      position,
       elementType,
       row,
       col,
       element,
-      this.fleetWaiting
+      this.fleetWaiting[0]
     );
   }
 
-  private moveFromList1To2(): void {
+  private moveFromWaitingToDeployed(): void {
     this.fleetDeployed.push(this.fleetWaiting[0]);
     this.fleetWaiting.splice(0, 1);
   }
@@ -222,19 +209,15 @@ export class GameDeployComponent implements OnInit {
   }
 
   public autoDeploy(): void {
-    if (this.fleetWaiting.length > 0) {
-      for (let i = 0; i < this.fleetWaiting.length; i++) {
-        this.board.playersBoard = this.board.autoDeployShip(
-          this.fleetWaiting[i]
-        );
-        //todo: board = deploy/update board, push/spilce [0] from waiting
-      }
+    while (this.fleetWaiting.length > 0) {
+      this.board.playersBoard = this.board.autoDeployShip(this.fleetWaiting[0]);
+      this.moveFromWaitingToDeployed();
     }
   }
 
   public clearBoard(): void {
     this.fleetWaiting = this.createFleet();
     this.fleetDeployed = [];
-    this.board.playersBoard = this.board.getEmptyBoard();
+    this.board.createEmptyBoard();
   }
 }

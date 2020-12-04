@@ -12,12 +12,12 @@ export class BoardService {
   public lastDropCells: Array<BoardCell> = [];
   public boardChange: Subject<BoardCell[][]> = new Subject<BoardCell[][]>();
 
-  public deployShip(row: number, col: number, dropCells: BoardCell[]): void {
+  public deployShip(row: number, col: number, nextShip: ShipComponent): void {
+    let dropCells: Array<BoardCell> = this.getDropCells(row, col, nextShip);
     for (let i = 0; i < dropCells.length; i++) {
       this.playersBoard[dropCells[i].col][dropCells[i].row].value = 1;
       this.playersBoard[dropCells[i].col][dropCells[i].row].color = 'green';
     }
-    console.log('ttt');
     this.boardChange.next(this.playersBoard);
   }
 
@@ -28,35 +28,68 @@ export class BoardService {
   }
 
   public autoDeployShip(ship: ShipComponent): BoardCell[][] {
-    //todo: deploy ship
+    this.isDropAllowed = false;
+    let randomRotate: boolean = Math.random() < 0.5;
+    let emptyCellArray: BoardCell[] = [];
+    let randomEmptyCell: BoardCell = null;
+
+    if (randomRotate) {
+      ship.rotation = 90;
+    } else {
+      ship.rotation = 0;
+    }
+
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        if (this.playersBoard[i][j].value == 0) {
+          emptyCellArray.push(this.playersBoard[i][j]);
+        }
+      }
+    }
+
+    while (!this.isDropAllowed) {
+      let randomIndex: number = Math.floor(
+        Math.random() * Math.floor(emptyCellArray.length)
+      );
+      randomEmptyCell = emptyCellArray[randomIndex];
+
+      var dummyHtmlElement = document.createElement('DIV');
+
+      this.checkHoveredElement(
+        'cell',
+        randomEmptyCell.row,
+        randomEmptyCell.col,
+        dummyHtmlElement,
+        ship
+      );
+
+      emptyCellArray.splice(randomIndex, 1);
+    }
+
+    console.log('finished while');
+    this.deployShip(randomEmptyCell.row, randomEmptyCell.col, ship);
+
     let updatedBoard = this.playersBoard;
     return updatedBoard;
   }
 
   public checkHoveredElement(
-    position: any,
     elementType: string,
     row: number,
     col: number,
     element: HTMLElement,
-    fleetWaiting: Array<ShipComponent>
+    nextShip: ShipComponent
   ): void {
     let dropPlace = {} as DropModel;
-    dropPlace.cellX = position.x;
-    dropPlace.cellY = position.y;
     dropPlace.type = elementType;
     dropPlace.row = row;
     dropPlace.col = col;
 
-    let dropCells: Array<BoardCell> = this.getDropCells(row, col, fleetWaiting);
+    let dropCells: Array<BoardCell> = this.getDropCells(row, col, nextShip);
     this.lastDropCells = dropCells;
 
     if (elementType == 'cell') {
-      let allow: boolean = this.validateDropPlace(
-        dropCells,
-        fleetWaiting,
-        this.playersBoard
-      );
+      let allow: boolean = this.validateDropPlace(dropCells, nextShip);
 
       if (allow) {
         this.isDropAllowed = true;
@@ -118,13 +151,13 @@ export class BoardService {
   public getDropCells(
     row: number,
     col: number,
-    fleetWaiting: Array<ShipComponent>
+    nextShip: ShipComponent
   ): Array<BoardCell> {
     let result: Array<BoardCell> = [];
-    if (fleetWaiting.length > 0) {
-      for (let i = 0; i < fleetWaiting[0].size; i++) {
+    if (nextShip) {
+      for (let i = 0; i < nextShip.size; i++) {
         let cellModel: BoardCell = this.getCell(
-          fleetWaiting[0].rotation,
+          nextShip.rotation,
           i,
           row,
           col,
@@ -159,20 +192,19 @@ export class BoardService {
 
   public validateDropPlace(
     dropPlace: Array<BoardCell>,
-    fleetWaiting: Array<ShipComponent>,
-    playersBoard: BoardCell[][]
+    nextShip: ShipComponent
   ): boolean {
     let result: boolean = true;
 
-    if (fleetWaiting.length > 0) {
-      if (dropPlace.length !== fleetWaiting[0].size) {
+    if (nextShip) {
+      if (dropPlace.length !== nextShip.size) {
         result = false;
       }
     } else {
       result = false;
     }
 
-    if (!this.isShipNotTouchingOther(dropPlace, playersBoard)) {
+    if (!this.isShipNotTouchingOther(dropPlace, this.playersBoard)) {
       result = false;
     }
 

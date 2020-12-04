@@ -127,8 +127,9 @@ OK - bug: when player disconnects, and game is empty, still listed
 	OK - 'clear board' btn resets board, and ships lists,
 	OK - 'quit' btn,
 	OK - 'finished' btn,
-	- 'auto deploy' btn,
+	OK - 'auto deploy' btn,
 	OK - game chat,
+	- bug: on manual deploy, now skips the first one
 	- after both completed, save game state and redirect to the game play, (redirect from game state sub)
 	OK - message when player deployed ships,
 	OK - if 15s remaining, make it red,
