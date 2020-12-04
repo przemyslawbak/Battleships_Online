@@ -15,6 +15,7 @@ import { AuthService } from '@services/auth.service';
 import { PlayerService } from '@services/player.service';
 import { GameService } from '@services/game.service';
 import { SignalRService } from '@services/signal-r.service';
+import { BoardService } from '@services/board.service';
 
 import { AuthGuard } from './_helpers/auth.guard';
 import { JtwInterceptor } from './_helpers/jtw.interceptor';
@@ -41,6 +42,7 @@ import { ErrorInterceptor } from './_helpers/error.interceptor';
       useClass: ErrorInterceptor,
       multi: true,
     },
+    BoardService,
     PlayerService,
     ModalService,
     SecurityService,

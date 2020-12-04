@@ -1,3 +1,4 @@
+import { BoardService } from '@services/board.service';
 import { ShipComponent } from './../game-ship/ship.component';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
@@ -28,7 +29,8 @@ export class GameStartComponent {
     private http: HttpClient,
     private game: GameService,
     private signalRService: SignalRService,
-    public auth: AuthService
+    public auth: AuthService,
+    private board: BoardService
   ) {
     this.createForm();
   }
@@ -122,7 +124,7 @@ export class GameStartComponent {
       isMyTurn: true,
       isDeployed: false,
       fleet: this.createFleet(),
-      board: this.getEmptyBoard(),
+      board: this.board.getEmptyBoard(),
       displayName: '',
       userName: '',
     } as Player;
@@ -130,7 +132,7 @@ export class GameStartComponent {
       isMyTurn: false,
       isDeployed: false,
       fleet: this.createFleet(),
-      board: this.getEmptyBoard(),
+      board: this.board.getEmptyBoard(),
       displayName: '',
       userName: '',
     } as Player;
@@ -151,23 +153,6 @@ export class GameStartComponent {
     let min = Math.ceil(100000000);
     let max = Math.floor(999999999);
     return Math.floor(Math.random() * (max - min) + min);
-  }
-
-  public getEmptyBoard(): BoardCell[][] {
-    let board: BoardCell[][] = [];
-    for (let i = 0; i < 10; i++) {
-      board[i] = [];
-      for (let j = 0; j < 10; j++) {
-        board[i][j] = {
-          row: j,
-          col: i,
-          value: 0,
-          color: 'rgba(0, 162, 255, 0.2)',
-        } as BoardCell;
-      }
-    }
-
-    return board;
   }
 
   private createFleet(): Array<ShipComponent> {

@@ -23,7 +23,7 @@
                   class="droplist col-sm-6"
                   #list
                   (mouseover)="
-                    hoveredElement(
+                    checkHoveredElement(
                       list.getBoundingClientRect(),
                       'list',
                       -1,
@@ -138,9 +138,15 @@
               class="boardCell"
               [style.backgroundColor]="box.color"
               #cell
-              (mouseleave)="resetElement(cell, j, i)"
+              (mouseleave)="resetBoardElement(cell, j, i)"
               (mouseover)="
-                hoveredElement(cell.getBoundingClientRect(), 'cell', j, i, cell)
+                checkHoveredElement(
+                  cell.getBoundingClientRect(),
+                  'cell',
+                  j,
+                  i,
+                  cell
+                )
               "
               (click)="deployShip(j, i)"
             ></div>
