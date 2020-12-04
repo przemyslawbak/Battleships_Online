@@ -195,7 +195,6 @@ export class GameDeployComponent implements OnInit {
       game.players[
         this.player.getPlayerNumber()
       ].board = this.board.playersBoard;
-      game.players[this.player.getPlayerNumber()].fleet = this.fleetDeployed;
       this.signalRService.broadcastChatMessage(
         this.game.getGame().players[this.player.getPlayerNumber()].displayName +
           ' finished deploying ships.'
