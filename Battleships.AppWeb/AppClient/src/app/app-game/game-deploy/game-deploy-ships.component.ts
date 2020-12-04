@@ -132,8 +132,8 @@ export class GameDeployComponent implements OnInit {
 
   public deployShip(row: number, col: number): void {
     if (this.board.isDropAllowed) {
-      this.moveFromWaitingToDeployed();
       this.board.deployShip(row, col, this.fleetWaiting[0]);
+      this.moveFromWaitingToDeployed();
     }
   }
 
