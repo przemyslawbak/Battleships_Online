@@ -140,7 +140,7 @@ OK - bug: when player disconnects, and game is empty, still listed
 	OK - if already `isDeployed`, disable `clear` btn,
 	OK - rearrange deploy view,
 	OK - remove prop fleet from players model,
-	- bug: reset board colors when auto deploy trigerred,
+	OK - bug: reset board colors when auto deploy trigerred,
 - if game-start to ai game? will be allowed?
 - allow deployment after 2nd player joins the game, or when single player
 - give some time for deployment for each player, if multiplayer (2-3min)

@@ -22,6 +22,7 @@ button {
 .gameChat {
   border: solid 1px;
   position: relative;
+  border-radius: 10px;
 }
 
 .gameChat {

@@ -27,6 +27,18 @@ export class BoardService {
     this.boardChange.next(this.playersBoard);
   }
 
+  public resetEmptyCellsColors(): void {
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        if (this.playersBoard[i][j].value == 0) {
+          this.playersBoard[i][j].color = 'rgba(0, 162, 255, 0.2)';
+        }
+      }
+    }
+
+    this.boardChange.next(this.playersBoard);
+  }
+
   public autoDeployShip(ship: ShipComponent): BoardCell[][] {
     this.isDropAllowed = false;
     let randomRotate: boolean = Math.random() < 0.5;

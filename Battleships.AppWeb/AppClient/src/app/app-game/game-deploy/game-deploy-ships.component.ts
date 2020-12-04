@@ -25,7 +25,7 @@ export class GameDeployComponent implements OnInit {
   private _subBoard: any;
   public userName: string;
   private countDown: Subscription;
-  public count = 10; //todo: change later
+  public count = 30; //todo: change later
   public fleetWaiting: Array<ShipComponent>;
   public fleetDeployed: Array<ShipComponent>;
   public playersBoard: BoardCell[][];
@@ -208,6 +208,7 @@ export class GameDeployComponent implements OnInit {
       this.board.playersBoard = this.board.autoDeployShip(this.fleetWaiting[0]);
       this.moveFromWaitingToDeployed();
     }
+    this.board.resetEmptyCellsColors();
   }
 
   public clearBoard(): void {
