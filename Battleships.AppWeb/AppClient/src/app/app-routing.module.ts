@@ -22,6 +22,7 @@ import { GameBestComponent } from './app-game/game-best/game-best.component';
 import { GameJoinComponent } from './app-game/game-join/game-join.component';
 import { GameStartComponent } from './app-game/game-start/game-start.component';
 import { GamePlayComponent } from './app-game/game-play/game-play.component';
+import { GameConnectComponent } from './app-game/game-connect/game-connect.component';
 import { GameDeployComponent } from './app-game/game-deploy/game-deploy-ships.component';
 
 const routes: Routes = [
@@ -34,8 +35,8 @@ const routes: Routes = [
     component: GameBestComponent,
   },
   {
-    path: 'play-game/:id',
-    component: GamePlayComponent,
+    path: 'connect-game/:id',
+    component: GameConnectComponent,
     canActivate: [AuthGuard],
   },
   {
