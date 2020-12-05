@@ -102,7 +102,6 @@ table td {
 /*deploying*/
 .board {
   min-height: 300px;
-  margin: 0 auto !important;
   margin-top: 20px;
 }
 

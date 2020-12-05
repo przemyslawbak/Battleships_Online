@@ -7,14 +7,13 @@ export class GameService {
   public gameState: GameState;
   public gameStateChange: Subject<GameState> = new Subject<GameState>();
 
-  public setGame(game: GameState | null): boolean {
+  constructor() {}
+
+  public setGame(game: GameState | null): void {
     if (game) {
       this.gameState = game;
       this.gameStateChange.next(this.gameState);
-      return true;
     }
-
-    return false;
   }
 
   public getGame(): GameState | null {

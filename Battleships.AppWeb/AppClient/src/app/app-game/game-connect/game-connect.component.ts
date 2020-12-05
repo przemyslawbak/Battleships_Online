@@ -43,6 +43,7 @@ export class GameConnectComponent implements OnInit {
 
     this.http.getData(url).subscribe((game: GameState) => {
       if (game) {
+        this.signalRService.startConnection();
         let gameUserNames: string[] = this.getUserNames(game.players);
 
         //if game already played by this user
