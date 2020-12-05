@@ -141,6 +141,12 @@ OK - bug: when player disconnects, and game is empty, still listed
 	OK - rearrange deploy view,
 	OK - remove prop fleet from players model,
 	OK - bug: reset board colors when auto deploy trigerred,
+- in connect component:
+	- prepare some view, spinner, anything?
+	- err: ERROR TypeError: this.thenable is undefined
+- bug: when playing game and joining another, on disconnect just redirects to the main view
+- change: please wait, redirecting... to please wait, verifying user...
+- in signal-r service send messages only when connection established
 - if game-start to ai game? will be allowed?
 - allow deployment after 2nd player joins the game, or when single player
 - give some time for deployment for each player, if multiplayer (2-3min)

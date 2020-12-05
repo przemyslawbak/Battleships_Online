@@ -115,7 +115,7 @@ export class GameStartComponent {
     const url = environment.apiUrl + 'api/game/start';
     this.http.post(url, model).subscribe(() => {
       this.spinner.hide();
-      this.router.navigate(['play-game/' + model.gameId]);
+      this.router.navigate(['connect-game/' + model.gameId]);
     });
   }
 
