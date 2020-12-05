@@ -86,10 +86,10 @@ export class GameConnectComponent implements OnInit {
   private initGame(game: GameState): void {
     this.game.setGame(game);
     this.signalRService.broadcastGameState(game);
-    if (!game.isStartAllowed) {
-      this.router.navigate(['deploy-ships']);
-    } else {
+    if (game.players[0].isDeployed && game.players[1].isDeployed) {
       this.router.navigate(['play-game']);
+    } else {
+      this.router.navigate(['deploy-ships']);
     }
   }
 

@@ -1,15 +1,18 @@
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subscription, timer } from 'rxjs';
+
+import { ShipComponent } from './../game-ship/ship.component';
+
 import { BoardService } from '@services/board.service';
-import { GameState } from '@models/game-state.model';
 import { PlayerService } from '@services/player.service';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { BoardCell } from '@models/board-cell.model';
-import { ChatMessage } from '@models/chat-message.model';
 import { AuthService } from '@services/auth.service';
 import { GameService } from '@services/game.service';
 import { SignalRService } from '@services/signal-r.service';
-import { Subscription, timer } from 'rxjs';
-import { DropModel } from '@models/drop-model';
-import { ShipComponent } from './../game-ship/ship.component';
+
+import { GameState } from '@models/game-state.model';
+import { BoardCell } from '@models/board-cell.model';
+import { ChatMessage } from '@models/chat-message.model';
 
 @Component({
   templateUrl: './game-deploy-ships.component.html',
@@ -31,6 +34,7 @@ export class GameDeployComponent implements OnInit {
   public playersBoard: BoardCell[][];
 
   constructor(
+    private router: Router,
     private board: BoardService,
     private auth: AuthService,
     private signalRService: SignalRService,
@@ -67,8 +71,7 @@ export class GameDeployComponent implements OnInit {
       this.isDeploymentAllowed = game.isDeploymentAllowed;
 
       if (p0Deployed && p1Deployed) {
-        //todo: start game!
-        alert('start');
+        this.router.navigate(['play-game']);
       }
       console.log('hit game');
     });
@@ -90,7 +93,7 @@ export class GameDeployComponent implements OnInit {
 
   private startCounter() {
     this.countDown = timer(0, 1000).subscribe(() => {
-      this.isDeploymentAllowed = true; //todo: remove later on
+      //this.isDeploymentAllowed = true; //todo: remove later on
       if (this.isDeploymentAllowed && !this.isDeployed) {
         if (this.count <= 0) {
           this.autoDeploy();

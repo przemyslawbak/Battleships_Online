@@ -115,7 +115,7 @@ OK - update backend
 OK - bug: display 1/1 in game list
 OK - in game-play-> init game - if player joins the game, and his board is not deployed, redirect to deployment component
 OK - bug: when player disconnects, and game is empty, still listed
-- in deploy view and component: 
+OK - in deploy view and component: 
 	OK - 'waiting for 2nd player' info,
 	OK - if 2nd player joined, allow deploying,
 	OK - if 2nd player quits, stop deploying,
@@ -130,7 +130,7 @@ OK - bug: when player disconnects, and game is empty, still listed
 	OK - 'auto deploy' btn,
 	OK - game chat,
 	OK - bug: on manual deploy, now skips the first one
-	- after both completed, save game state and redirect to the game play, (redirect from game state sub)
+	OK - after both completed, save game state and redirect to the game play, (redirect from game state sub)
 	OK - bug: after auto deplying, `deploy ships` btn remains enebled,
 	OK - message when player deployed ships,
 	OK - if 15s remaining, make it red,
@@ -141,9 +141,11 @@ OK - bug: when player disconnects, and game is empty, still listed
 	OK - rearrange deploy view,
 	OK - remove prop fleet from players model,
 	OK - bug: reset board colors when auto deploy trigerred,
-- in connect component:
-	- prepare some view, spinner, anything?
-	- err: ERROR TypeError: this.thenable is undefined
+OK - in connect component:
+	NO - prepare some view, spinner, anything?
+	OK - err: ERROR TypeError: this.thenable is undefined
+- in game-play component:
+	- rearrange view
 - bug: when playing game and joining another, on disconnect just redirects to the main view
 - change: please wait, redirecting... to please wait, verifying user...
 - in signal-r service send messages only when connection established
