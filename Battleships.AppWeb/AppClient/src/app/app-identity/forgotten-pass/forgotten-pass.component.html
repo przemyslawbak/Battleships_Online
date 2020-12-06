@@ -1,27 +1,47 @@
-<div class="container">
-  <div class="row">
-    <div class="login-container col-md-6">
-      <h2 class="login-title">Reset password</h2>
-      <form [formGroup]="form" (ngSubmit)="beforeSubmittingForm()" class="login-form">
-        <div *ngIf="form.errors?.auth" class="error-panel help-block">
-          {{form.errors.forgotten}}
+<div class="row">
+  <div class="login-container col-md-6">
+    <h2 class="login-title">Reset password</h2>
+    <form
+      [formGroup]="form"
+      (ngSubmit)="beforeSubmittingForm()"
+      class="login-form"
+    >
+      <div *ngIf="form.errors?.auth" class="error-panel help-block">
+        {{ form.errors.forgotten }}
+      </div>
+      <div
+        class="form-group"
+        [ngClass]="{ 'has-error has-feedback': hasError('Email') }"
+      >
+        <input
+          type="text"
+          required
+          autofocus
+          formControlName="Email"
+          class="form-control"
+          placeholder="Insert e-mail..."
+        />
+        <span
+          *ngIf="hasError('Email')"
+          class="glyphicon glyphicon-remove form-control-feedback"
+          aria-hidden="true"
+        ></span>
+        <div *ngIf="hasError('Email')" class="help-block">
+          Please insert a valid e-mail address.
         </div>
-        <div class="form-group" [ngClass]="{ 'has-error has-feedback' : hasError('Email') }">
-          <input type="text" required autofocus formControlName="Email" class="form-control" placeholder="Insert e-mail..." />
-          <span *ngIf="hasError('Email')" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
-          <div *ngIf="hasError('Email')" class="help-block">
-            Please insert a valid e-mail address.
-          </div>
-        </div>
-        <div class="text-center">
-          <button type="submit" [disabled]="form.invalid" class="btn btn-md btn-success btn-signin">
-            Reset
-          </button>
-          <button type="submit" (click)="onBack()" class="btn btn-md btn-default">
-            Cancel
-          </button>
-        </div>
-      </form>
-    </div>
+      </div>
+      <div class="text-center">
+        <button
+          type="submit"
+          [disabled]="form.invalid"
+          class="btn btn-md btn-success btn-signin"
+        >
+          Reset
+        </button>
+        <button type="submit" (click)="onBack()" class="btn btn-md btn-default">
+          Cancel
+        </button>
+      </div>
+    </form>
   </div>
 </div>

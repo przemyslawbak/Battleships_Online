@@ -1,84 +1,78 @@
-<div class="container">
-  <div class="row">
-    <div class="login-container col-md-6">
-      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="login-form">
-        <div>
-          <h2 class="login-title">Start new game type</h2>
-          <div class="form-check">
-            <input
-              (change)="setGameAi()"
-              [checked]="form.value.GameAi"
-              type="checkbox"
-              class="form-check-input"
-              formControlName="GameAi"
-              id="checkGameAi"
-            />
-            <label class="form-check-label clabel" for="checkGameAi"
-              >Single player game
-            </label>
-          </div>
-          <div class="form-check">
-            <input
-              (change)="setGameMulti()"
-              [checked]="form.value.GameMulti"
-              type="checkbox"
-              class="form-check-input"
-              formControlName="GameMulti"
-              id="checkGameMulti"
-            />
-            <label class="form-check-label" for="checkGameMulti"
-              >Multiplayer game
-            </label>
-          </div>
+<div class="row">
+  <div class="login-container col-md-6">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="login-form">
+      <div>
+        <h2 class="login-title">Start new game type</h2>
+        <div class="form-check">
+          <input
+            (change)="setGameAi()"
+            [checked]="form.value.GameAi"
+            type="checkbox"
+            class="form-check-input"
+            formControlName="GameAi"
+            id="checkGameAi"
+          />
+          <label class="form-check-label clabel" for="checkGameAi"
+            >Single player game
+          </label>
         </div>
-        <div>
-          <h2 class="login-title">Invite other players with</h2>
-          <div class="form-check">
-            <input
-              (change)="setGameOpen()"
-              [attr.disabled]="disabledChecks ? '' : null"
-              [checked]="form.value.GameOpen"
-              type="checkbox"
-              class="form-check-input"
-              formControlName="GameOpen"
-              id="checkGameOpen"
-            />
-            <label class="form-check-label" for="checkGameOpen"
-              >Game open for other players
-            </label>
-          </div>
-          <div class="form-check">
-            <input
-              (change)="setGameLink()"
-              [attr.disabled]="disabledChecks ? '' : null"
-              [checked]="form.value.GameLink"
-              type="checkbox"
-              class="form-check-input"
-              formControlName="GameLink"
-              id="checkGameLink"
-            />
-            <label class="form-check-label" for="checkGameLink"
-              >Prepare a game join link for the other player
-            </label>
-          </div>
+        <div class="form-check">
+          <input
+            (change)="setGameMulti()"
+            [checked]="form.value.GameMulti"
+            type="checkbox"
+            class="form-check-input"
+            formControlName="GameMulti"
+            id="checkGameMulti"
+          />
+          <label class="form-check-label" for="checkGameMulti"
+            >Multiplayer game
+          </label>
         </div>
-        <div class="text-center">
-          <button
-            type="submit"
-            [disabled]="form.invalid"
-            class="btn btn-md btn-success btn-signin"
-          >
-            Start game
-          </button>
-          <button
-            type="submit"
-            (click)="onBack()"
-            class="btn btn-md btn-default"
-          >
-            Cancel
-          </button>
+      </div>
+      <div>
+        <h2 class="login-title">Invite other players with</h2>
+        <div class="form-check">
+          <input
+            (change)="setGameOpen()"
+            [attr.disabled]="disabledChecks ? '' : null"
+            [checked]="form.value.GameOpen"
+            type="checkbox"
+            class="form-check-input"
+            formControlName="GameOpen"
+            id="checkGameOpen"
+          />
+          <label class="form-check-label" for="checkGameOpen"
+            >Game open for other players
+          </label>
         </div>
-      </form>
-    </div>
+        <div class="form-check">
+          <input
+            (change)="setGameLink()"
+            [attr.disabled]="disabledChecks ? '' : null"
+            [checked]="form.value.GameLink"
+            type="checkbox"
+            class="form-check-input"
+            formControlName="GameLink"
+            id="checkGameLink"
+          />
+          <label class="form-check-label" for="checkGameLink"
+            >Prepare a game join link for the other player
+          </label>
+        </div>
+      </div>
+      <div class="text-center">
+        <button
+          type="submit"
+          [disabled]="form.invalid"
+          class="btn btn-md btn-success btn-signin"
+        >
+          Start game
+        </button>
+        <button type="submit" (click)="onBack()" class="btn btn-md btn-default">
+          Cancel
+        </button>
+      </div>
+    </form>
   </div>
 </div>

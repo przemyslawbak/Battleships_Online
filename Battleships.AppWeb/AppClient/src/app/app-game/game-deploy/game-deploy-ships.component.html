@@ -1,142 +1,134 @@
-<div class="container">
-  <div class="gameHeaderPic col-sm rounded-top"></div>
-  <div class="row">
-    <div class="col-md-5">
-      <div class="col-sm-12 gameStatus dataRow">
-        <h2 class="login-title">Ship deployment</h2>
-        <div
-          *ngIf="this.isDeploymentAllowed; then deploying; else waiting"
-        ></div>
-        <ng-template #deploying>
-          <div class="row">
-            <div *ngIf="this.isDeployed; then deployed; else notDeployed"></div>
+<div class="gameHeaderPic col-sm rounded-top"></div>
+<div class="row">
+  <div class="col-md-5">
+    <div class="col-sm-12 gameStatus dataRow">
+      <h2 class="login-title">Ship deployment</h2>
+      <div *ngIf="this.isDeploymentAllowed; then deploying; else waiting"></div>
+      <ng-template #deploying>
+        <div class="row">
+          <div *ngIf="this.isDeployed; then deployed; else notDeployed"></div>
 
-            <ng-template #notDeployed>
-              <div class="row">
-                <div class="col-sm-6">
-                  <div>Deploy ships:</div>
-                  <h4 [ngClass]="this.count < 30 ? 'redColor' : 'greenColor'">
-                    {{ count }} s.
-                  </h4>
-                  <div>Remaining ships:</div>
-                  <h4>{{ this.fleetWaiting.length }}</h4>
-                </div>
-                <div class="ships col-sm-6">
-                  <div>(click to rotate)</div>
-                  <div class="droplist col-sm-6">
-                    <div *ngIf="fleetWaiting.length > 0">
-                      <div [style.size]="30 * fleetWaiting[0].size + 'px'">
-                        <app-ship
-                          #nextItem
-                          [ngClass]="
-                            fleetWaiting[0].rotation === 90
-                              ? 'rotate'
-                              : 'rotateNot'
-                          "
-                          [size]="fleetWaiting[0].size"
-                          (click)="setRotation(0 + '-fleetWaiting')"
-                        ></app-ship>
-                      </div>
+          <ng-template #notDeployed>
+            <div class="row">
+              <div class="col-sm-6">
+                <div>Deploy ships:</div>
+                <h4 [ngClass]="this.count < 30 ? 'redColor' : 'greenColor'">
+                  {{ count }} s.
+                </h4>
+                <div>Remaining ships:</div>
+                <h4>{{ this.fleetWaiting.length }}</h4>
+              </div>
+              <div class="ships col-sm-6">
+                <div>(click to rotate)</div>
+                <div class="droplist col-sm-6">
+                  <div *ngIf="fleetWaiting.length > 0">
+                    <div [style.size]="30 * fleetWaiting[0].size + 'px'">
+                      <app-ship
+                        #nextItem
+                        [ngClass]="
+                          fleetWaiting[0].rotation === 90
+                            ? 'rotate'
+                            : 'rotateNot'
+                        "
+                        [size]="fleetWaiting[0].size"
+                        (click)="setRotation(0 + '-fleetWaiting')"
+                      ></app-ship>
                     </div>
                   </div>
                 </div>
               </div>
-            </ng-template>
-            <ng-template #deployed>
-              <div class="col-sm-12">
-                Waiting for second player to finish deploying...
-              </div>
-            </ng-template>
-          </div>
-        </ng-template>
-        <ng-template #waiting>
-          <div class="row">
-            <div class="col-sm-12">
-              Waiting for second player to join this game...
             </div>
+          </ng-template>
+          <ng-template #deployed>
+            <div class="col-sm-12">
+              Waiting for second player to finish deploying...
+            </div>
+          </ng-template>
+        </div>
+      </ng-template>
+      <ng-template #waiting>
+        <div class="row">
+          <div class="col-sm-12">
+            Waiting for second player to join this game...
           </div>
-        </ng-template>
+        </div>
+      </ng-template>
+    </div>
+    <div class="col-sm-12 gameChat">
+      Game chat:
+      <div class="chatDisplay">
+        <div *ngFor="let message of this.chatMessages">
+          <span *ngIf="this.userName == message.userName" class="greenColor"
+            >{{ message.displayName }}:
+          </span>
+          <span *ngIf="this.userName != message.userName" class="redColor"
+            >{{ message.displayName }}:
+          </span>
+          <span>{{ message.message }}</span>
+        </div>
       </div>
-      <div class="col-sm-12 gameChat">
-        Game chat:
-        <div class="chatDisplay">
-          <div *ngFor="let message of this.chatMessages">
-            <span *ngIf="this.userName == message.userName" class="greenColor"
-              >{{ message.displayName }}:
-            </span>
-            <span *ngIf="this.userName != message.userName" class="redColor"
-              >{{ message.displayName }}:
-            </span>
-            <span>{{ message.message }}</span>
-          </div>
-        </div>
-        <div class="col-md-12 textInputRow">
-          <input
-            class="form-control chatInput"
-            type="text"
-            [(ngModel)]="chatMessage"
-            (keyup.enter)="sendChatMessage()"
-          />
-          <button
-            type="button"
-            class="btn btn-md btn-success"
-            (click)="sendChatMessage()"
-          >
-            Send
-          </button>
-        </div>
+      <div class="col-md-12 textInputRow">
+        <input
+          class="form-control chatInput"
+          type="text"
+          [(ngModel)]="chatMessage"
+          (keyup.enter)="sendChatMessage()"
+        />
+        <button
+          type="button"
+          class="btn btn-md btn-success"
+          (click)="sendChatMessage()"
+        >
+          Send
+        </button>
       </div>
     </div>
-    <div class="droplist col-md-7">
-      <div>
-        <button
-          [disabled]="isDeployed"
-          type="submit"
-          class="btn btn-md btn-secondary"
-          (click)="clearBoard()"
-        >
-          Clear board
-        </button>
-        <button
-          [disabled]="isDeployed"
-          type="submit"
-          class="btn btn-md btn-secondary"
-          (click)="autoDeploy()"
-        >
-          Auto deploy
-        </button>
-        <button
-          [disabled]="fleetDeployed.length < 10"
-          [disabled]="isDeployed"
-          type="submit"
-          class="btn btn-md btn-success"
-          (click)="confirm()"
-        >
-          Deploy ships
-        </button>
-        <button
-          type="submit"
-          class="btn btn-md btn-danger"
-          (click)="quitGame()"
-        >
-          Quit game
-        </button>
-      </div>
-      <div class="board text-center" #board>
-        <div
-          class="boardRow"
-          *ngFor="let row of this.playersBoard; let i = index"
-        >
-          <div *ngFor="let box of row; let j = index">
-            <div
-              class="boardCell"
-              [style.backgroundColor]="box.color"
-              #cell
-              (mouseleave)="resetBoardElement(cell, j, i)"
-              (mouseover)="checkHoveredElement('cell', j, i, cell)"
-              (click)="deployShip(j, i)"
-            ></div>
-          </div>
+  </div>
+  <div class="droplist col-md-7">
+    <div>
+      <button
+        [disabled]="isDeployed"
+        type="submit"
+        class="btn btn-md btn-secondary"
+        (click)="clearBoard()"
+      >
+        Clear board
+      </button>
+      <button
+        [disabled]="isDeployed"
+        type="submit"
+        class="btn btn-md btn-secondary"
+        (click)="autoDeploy()"
+      >
+        Auto deploy
+      </button>
+      <button
+        [disabled]="fleetDeployed.length < 10"
+        [disabled]="isDeployed"
+        type="submit"
+        class="btn btn-md btn-success"
+        (click)="confirm()"
+      >
+        Deploy ships
+      </button>
+      <button type="submit" class="btn btn-md btn-danger" (click)="quitGame()">
+        Quit game
+      </button>
+    </div>
+    <div class="board text-center" #board>
+      <div
+        class="boardRow"
+        *ngFor="let row of this.playersBoard; let i = index"
+      >
+        <div *ngFor="let box of row; let j = index">
+          <div
+            class="boardCell"
+            [style.backgroundColor]="box.color"
+            #cell
+            (mouseleave)="resetBoardElement(cell, j, i)"
+            (mouseover)="checkHoveredElement('cell', j, i, cell)"
+            (click)="deployShip(j, i)"
+          ></div>
         </div>
       </div>
     </div>
