@@ -44,73 +44,9 @@ export class GamePlayComponent implements OnInit {
     }
   }
 
-  //todo: clean up this crap
   public ngOnInit(): void {
     this.initGameSubscription();
-    this.userName = this.auth.getAuth().user;
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      const url = environment.apiUrl + 'api/game/join?id=' + id;
-      this.http.getData(url).subscribe((game: GameState) => {
-        if (game) {
-          let gameUserNames: string[] = [
-            game.players[0].userName,
-            game.players[1].userName,
-          ];
-          if (gameUserNames.includes(this.auth.getAuth().user)) {
-            //if played already
-            this.initGame(game);
-          } else {
-            if (game.gameMulti) {
-              //if multiplayer
-              if (gameUserNames.includes('')) {
-                //if empty slot
-                if (gameUserNames[0] === '') {
-                  game.players[0].userName = this.auth.getAuth().user;
-                  game.players[0].displayName = this.auth.getAuth().displayName;
-                } else {
-                  game.players[1].userName = this.auth.getAuth().user;
-                  game.players[1].displayName = this.auth.getAuth().displayName;
-                }
-                this.initGame(game);
-                this.signalRService.broadcastChatMessage(
-                  'Connected to the game.'
-                );
-              } else {
-                this.modalService.open(
-                  'info-modal',
-                  'There is no empty player slot available.'
-                );
-                this.router.navigate(['open-game']);
-              }
-            } else {
-              this.modalService.open(
-                'info-modal',
-                'Game is for singe player only.'
-              );
-            }
-          }
-        } else {
-          this.modalService.open('info-modal', 'Could not find game.');
-        }
-      });
-    } else {
-      if (this.game.isGameStarted()) {
-        this.router.navigate(['play-game/' + this.game.getGame().gameId]);
-      } else {
-        this.router.navigate(['start-game']);
-      }
-    }
-  }
-
-  private initGame(game: GameState): void {
-    this.game.setGame(game);
     this.resetMessageListeners();
-    this.signalRService.broadcastGameState(game);
-    if (!game.isStartAllowed) {
-      this.router.navigate(['deploy-ships']);
-    }
-    //todo: else play the game
   }
 
   private resetMessageListeners() {
@@ -137,16 +73,6 @@ export class GamePlayComponent implements OnInit {
         console.log('hit msg');
       }
     );
-  }
-
-  public fireTorpedo(j: number, k: number) {
-    alert('attacked: ' + j + '/' + k);
-    //todo: check for valid hit
-    //todo: check for ship being hit
-  }
-
-  public onBack(): void {
-    this.router.navigate(['']);
   }
 
   public sendChatMessage(): void {

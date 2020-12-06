@@ -141,11 +141,13 @@ OK - in deploy view and component:
 	OK - rearrange deploy view,
 	OK - remove prop fleet from players model,
 	OK - bug: reset board colors when auto deploy trigerred,
+	- when waiting for 2nd player to be connected hide board
 OK - in connect component:
 	NO - prepare some view, spinner, anything?
 	OK - err: ERROR TypeError: this.thenable is undefined
 - in game-play component:
-	- rearrange view
+	- rearrange view,
+	OK - remove refactored code,
 - bug: when playing game and joining another, on disconnect just redirects to the main view
 - change: please wait, redirecting... to please wait, verifying user...
 - in signal-r service send messages only when connection established
