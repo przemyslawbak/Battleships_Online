@@ -101,13 +101,7 @@ OK - chat window (if 2 players at the same game id, and send only to opponent? o
 OK - chat info when player joins game
 - rearrange game-play view: chat on the right side, game status horizontal. And mobile view?
 
-game play:
-OK - create player model, part of game status model:
-	OK - his turn?
-	OK - his fleet / board
-	OK - his display name,
-	OK - his user name
-	OK - his board
+gameplay:
 OK - update game status with:
 	OK - is deployment allowed?
 	OK - can be game started?
@@ -142,33 +136,51 @@ OK - in deploy view and component:
 	OK - remove prop fleet from players model,
 	OK - bug: reset board colors when auto deploy trigerred,
 	- when waiting for 2nd player to be connected hide board
+	- update game state isStartAllowed after deploying?
+	- display game link for a friend?
 OK - in connect component:
 	NO - prepare some view, spinner, anything?
 	OK - err: ERROR TypeError: this.thenable is undefined
 - in game-play component:
+	- if one player disconnects, isStartAllowed = false?
+	- if one player disconnects, other player wins?
+	- if one player disconnects, play with AI?
+	- if one player disconnects, log it?
 	- rearrange view,
+	- status turn number,
+	- status whose turn,
+	- status time remaining for shot (15-30s),
+	- time for both players together?
+	- display players board,
+	- display opponents board,
+	- display game chat,
+	- display header pic,
+	- if your turn / opponents turn, change header, or change styling?
+	- on top of the board display player names,
+	- play buttons: quit game, random shot
 	OK - remove refactored code,
+	- what if you enter game-play url by yourself?
+	- display game link for a friend to join?
+	- water / explosion / splash sprites
+- single player:
+	-???
+- game rules component:
+	-???
+- edit profile component:
+	-???
+
+
 - bug: when playing game and joining another, on disconnect just redirects to the main view
 - change: please wait, redirecting... to please wait, verifying user...
 - in signal-r service send messages only when connection established
 - if game-start to ai game? will be allowed?
-- allow deployment after 2nd player joins the game, or when single player
-- give some time for deployment for each player, if multiplayer (2-3min)
-- when deployment is completed, redirect to the game component
 - in open game list display player names
 - if single player, hide remove chat
-- if not finished deploying on time, deploy randomly rest of the ships
 - move chat to separate component
 - move boards to separate component?
 - time in game chat
 - in open games list - if all slots are occupied, do not show button
-- if player is waiting for another player, allow to start game with AI
-OK - display: BATTLE, you: name, opponent: name/ai,
-- whose turn is? 
-OK - opponent (who is: ai/players name)
 - game start view - btn width same like in join view
-- timer (20-30s)
-- water / explosion / splash sprites
 - add game rules
 - add privacy policy
 - if best players list empty, display in view something about it
@@ -187,13 +199,14 @@ OK - what if hubConnection.onclose?
 - html/body font
 - on ship deploy just change background color, do not deploy element?
 - deploying game board on small screen responsivity
+- keep chat records from various views
+- shere in social media
 
 end:
-- keep chat records from various views
 - favicon
 - clean up JS console.log rows
 - protect server controllers
-- .pipe(delay(5000)) w security service
+- .pipe(delay(5000)) w security service?
 - Hub move to project: Hubs
 
 future:
