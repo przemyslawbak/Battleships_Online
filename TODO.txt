@@ -146,10 +146,10 @@ OK - in connect component:
 	- if one player disconnects, play with AI button displayed
 	- if one player disconnects, log it?
 	- rearrange view,
-	- status turn number,
-	- status whose turn,
-	- status time remaining for shot (15-30s),
-	- time for both players together?
+	OK - status turn number,
+	OK - status whose turn,
+	OK - status time remaining for shot (15-30s),
+	NO - time for both players together?
 	OK - display players board,
 	- display opponents board,
 	OK - display game chat,
@@ -159,7 +159,7 @@ OK - in connect component:
 	OK - play buttons: quit game, random shot, kick player
 	OK - remove refactored code,
 	- what if you enter game-play url by yourself?
-	- display game link for a friend to join?
+	- display game link for a friend to join, also in game-deploy
 	- water / explosion / splash sprites,
 	OK - bug: displaying `Waiting for second player to join this game` after both players deployed ships,
 	OK - bug: in game chat clients msg is marked red,
