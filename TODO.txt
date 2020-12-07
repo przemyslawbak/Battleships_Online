@@ -1,4 +1,4 @@
-identity
+identity and other
 OK - add Google external login providers
 OK - recaptcha v3: forgotten, register
 OK - what to do if StatusCode = 429? (robot)
@@ -137,7 +137,8 @@ OK - in deploy view and component:
 	OK - bug: reset board colors when auto deploy trigerred,
 	- when waiting for 2nd player to be connected hide board
 	- update game state isStartAllowed after deploying?
-	- display game link for a friend, under "Waiting for second player to join this game..."
+	- display game link for a friend, under "Waiting for second player to join this game...",
+	- bug: 'deploy ships' btn is enabled before completed deploying
 OK - in connect component:
 	NO - prepare some view, spinner, anything?
 	OK - err: ERROR TypeError: this.thenable is undefined
@@ -145,13 +146,14 @@ OK - in connect component:
 	- if one player disconnects, isStartAllowed = false
 	- if one player disconnects, play with AI button displayed
 	- if one player disconnects, log it?
-	- rearrange view,
+	OK - rearrange view,
 	OK - status turn number,
 	OK - status whose turn,
 	OK - status time remaining for shot (15-30s),
 	NO - time for both players together?
 	OK - display players board,
-	- display opponents board,
+	- display opponents board, but all hidden,
+	- fiering on opponent,
 	OK - display game chat,
 	- display header pic,
 	- if your turn / opponents turn, change header, or change styling?
@@ -163,9 +165,13 @@ OK - in connect component:
 	- water / explosion / splash sprites,
 	OK - bug: displaying `Waiting for second player to join this game` after both players deployed ships,
 	OK - bug: in game chat clients msg is marked red,
-	- change board styling
-	OK - change board not used events / methods;
-	OK - bug: status Player: missing
+	- change board styling,
+	OK - change board not used events / methods,
+	OK - bug: status Player: missing,
+	OK - bug: boards not colored, why?
+	- reset opponent board colors,
+	- board player names with colors red / green,
+	- some margin between boards,
 - single player:
 	-???
 - game rules component:
@@ -173,7 +179,7 @@ OK - in connect component:
 - edit profile component:
 	-???
 
-
+- all views, if game is not connected with the hub, redirect to the main view
 - bug: when playing game and joining another, on disconnect just redirects to the main view
 - change: please wait, redirecting... to please wait, verifying user...
 - in signal-r service send messages only when connection established
@@ -205,6 +211,7 @@ OK - what if hubConnection.onclose?
 - deploying game board on small screen responsivity
 - keep chat records from various views
 - shere in social media
+- verify opponent board only in backend
 
 end:
 - favicon
