@@ -142,22 +142,21 @@ OK - in connect component:
 	NO - prepare some view, spinner, anything?
 	OK - err: ERROR TypeError: this.thenable is undefined
 - in game-play component:
-	- if one player disconnects, isStartAllowed = false?
-	- if one player disconnects, other player wins?
-	- if one player disconnects, play with AI?
+	- if one player disconnects, isStartAllowed = false
+	- if one player disconnects, play with AI button displayed
 	- if one player disconnects, log it?
 	- rearrange view,
 	- status turn number,
 	- status whose turn,
 	- status time remaining for shot (15-30s),
 	- time for both players together?
-	- display players board,
+	OK - display players board,
 	- display opponents board,
-	- display game chat,
+	OK - display game chat,
 	- display header pic,
 	- if your turn / opponents turn, change header, or change styling?
-	- on top of the board display player names,
-	- play buttons: quit game, random shot, kick player?
+	OK - on top of the board display player names,
+	OK - play buttons: quit game, random shot, kick player
 	OK - remove refactored code,
 	- what if you enter game-play url by yourself?
 	- display game link for a friend to join?

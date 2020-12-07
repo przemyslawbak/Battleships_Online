@@ -1,72 +1,136 @@
+<div class="gameHeaderPic col-sm rounded-top"></div>
 <div class="row">
-  <div class="col-md-6">
-    <div class="col-md-8 gameStatus dataRow">
-      <p>Status: {{ gameStatus }}</p>
-      <p>Turn number: {{ gameTurnNumber }}</p>
-      <p>Turn of: TODO: update it</p>
+  <div class="col-md-5">
+    <!--game status-->
+    <div class="col-sm-12 gameStatus dataRow">
+      <h2 class="login-title">Battle</h2>
+      <div *ngIf="this.isStartAllowed; then playing; else waiting"></div>
+      <ng-template #playing>
+        <div class="row">
+          <div class="col-sm-12">
+            <div>Turn:</div>
+            <div
+              *ngIf="
+                this.clientsPlayerNumber == this.whoseTurnNumber;
+                then shoot;
+                else takeHit
+              "
+            ></div>
+            <ng-template #shoot>
+              <h4 [ngClass]="this.count < 5 ? 'redColor' : 'greenColor'">
+                {{ count }} s.
+              </h4>
+            </ng-template>
+            <ng-template #takeHit>
+              <h4>Opponent is shooting...</h4>
+            </ng-template>
+            <div>Player:</div>
+            <h4>{{ this.whoseTurn }}</h4>
+            <div>Turn number:</div>
+            <h4>{{ this.turnNo }}</h4>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template #waiting>
+        <div class="row">
+          <div class="col-sm-12">
+            Waiting for second player to join this game...
+          </div>
+        </div>
+      </ng-template>
     </div>
-  </div>
-  <div class="col-md-6 gameChat dataRow">
-    <div class="chatDisplay">
-      <div *ngFor="let message of this.chatMessages">
-        <span *ngIf="this.userName == message.userName" class="greenColor">
-          {{ message.displayName }}:
-        </span>
-        <span *ngIf="this.userName != message.userName" class="redColor">
-          {{ message.displayName }}:
-        </span>
-        <span>{{ message.message }}</span>
+    <!--game chat-->
+    <div class="col-sm-12 gameChat">
+      Game chat:
+      <div class="chatDisplay">
+        <div *ngFor="let message of this.chatMessages">
+          <span *ngIf="this.userName == message.userName" class="greenColor"
+            >{{ message.displayName }}:
+          </span>
+          <span *ngIf="this.userName != message.userName" class="redColor"
+            >{{ message.displayName }}:
+          </span>
+          <span>{{ message.message }}</span>
+        </div>
+      </div>
+      <div class="col-md-12 textInputRow">
+        <input
+          class="form-control chatInput"
+          type="text"
+          [(ngModel)]="chatMessage"
+          (keyup.enter)="sendChatMessage()"
+        />
+        <button
+          type="button"
+          class="btn btn-md btn-success"
+          (click)="sendChatMessage()"
+        >
+          Send
+        </button>
       </div>
     </div>
-    <div class="col-md-12 textInputRow">
-      <input
-        class="form-control chatInput"
-        type="text"
-        [(ngModel)]="chatMessage"
-        (keyup.enter)="sendChatMessage()"
-      />
+  </div>
+  <div class="droplist col-md-7">
+    <!--buttons-->
+    <div class="text-center">
       <button
-        type="button"
-        class="btn btn-md btn-success"
-        (click)="sendChatMessage()"
+        type="submit"
+        class="btn btn-md btn-secondary"
+        (click)="kickOpponent()"
       >
-        Send
+        Kick opponent
+      </button>
+      <button
+        type="submit"
+        class="btn btn-md btn-success"
+        (click)="randomShot()"
+      >
+        Random shot
+      </button>
+      <button type="submit" class="btn btn-md btn-danger" (click)="quitGame()">
+        Quit game
       </button>
     </div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-6">
-    <div>Player 1: {{ player2 }}</div>
-    <table>
-      <tr *ngFor="let row of boardP1; let j = index">
-        <td
-          *ngFor="let col of row; let k = index"
-          [style.background-color]="col.used ? '' : 'transparent'"
-          [class.win]="col.status == 'win'"
-          [class.fail]="col.status !== 'win'"
-          class="battleship-tile"
-        >
-          {{ col.value == "X" ? "X" : "💀" }}
-        </td>
-      </tr>
-    </table>
-  </div>
-  <div class="col-md-6">
-    <div>Player 2: {{ player1 }}</div>
-    <table>
-      <tr *ngFor="let row of boardP2; let j = index">
-        <td
-          *ngFor="let col of row; let k = index"
-          (click)="fireTorpedo(j, k)"
-          [style.background-color]="col.used ? '' : 'transparent'"
-          [class.win]="col.status == 'win'"
-          [class.fail]="col.status !== 'win'"
-          class="battleship-tile"
-        >
-          {{ col.value == "X" ? "X" : "💀" }}
-        </td>
-      </tr>
-    </table>
+    <!--board1-->
+    <h4>{{ this.clientsName }}</h4>
+    <div class="board text-center">
+      <div
+        class="boardRow"
+        *ngFor="let row of this.boards[this.clientsPlayerNumber]; let i = index"
+      >
+        <div *ngFor="let box of row; let j = index">
+          <div
+            class="boardCell"
+            [style.backgroundColor]="box.color"
+            #cell
+            (mouseleave)="resetBoardElement(cell, j, i)"
+            (mouseover)="checkHoveredElement('cell', j, i, cell)"
+            (click)="deployShip(j, i)"
+          ></div>
+        </div>
+      </div>
+    </div>
+    <!--board2-->
+    <h4>{{ this.opponentsName }}</h4>
+    <div class="board text-center">
+      <div
+        class="boardRow"
+        *ngFor="
+          let row of this.boards[this.opponentsPlayerNumber];
+          let i = index
+        "
+      >
+        <div *ngFor="let box of row; let j = index">
+          <div
+            class="boardCell"
+            [style.backgroundColor]="box.color"
+            #cell
+            (mouseleave)="resetBoardElement(cell, j, i)"
+            (mouseover)="checkHoveredElement('cell', j, i, cell)"
+            (click)="deployShip(j, i)"
+          ></div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

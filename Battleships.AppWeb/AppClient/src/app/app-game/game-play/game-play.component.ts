@@ -10,22 +10,26 @@ import { HttpService } from '@services/http.service';
 import { environment } from '@environments/environment';
 import { ModalService } from '@services/modal.service';
 import { GameState } from '@models/game-state.model';
-import { Subscription } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
 
 @Component({
   templateUrl: './game-play.component.html',
   styleUrls: ['./game-play.component.css'],
 })
 export class GamePlayComponent implements OnInit {
+  public clientsName: string;
+  public opponentsName: string;
+  public isStartAllowed: boolean;
   public chatMessage: string = '';
   public chatMessages: Array<ChatMessage> = [];
   public turnNo: number;
-  public whoseTurn: string;
+  public whoseTurnName: string;
+  public whoseTurnNumber: number;
   public clientsPlayerNumber: number;
+  public opponentsPlayerNumber: number;
   private countDown: Subscription;
   public count: number = 30;
-  public p0board: BoardCell[][];
-  public p1board: BoardCell[][];
+  private boards: Array<BoardCell[][]>;
   private _subGame: any;
   private _subMessage: any;
 
@@ -48,8 +52,26 @@ export class GamePlayComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.startCounter();
     this.initGameSubscription();
     this.resetMessageListeners();
+  }
+
+  private startCounter() {
+    this.countDown = timer(0, 1000).subscribe(() => {
+      //todo: next
+      if (this.isDeploymentAllowed && !this.isDeployed) {
+        if (this.count <= 0) {
+          this.autoDeploy();
+          this.confirm();
+        } else {
+          this.count--;
+        }
+      } else {
+        this.count = 180;
+      }
+      return this.count;
+    });
   }
 
   private resetMessageListeners() {
@@ -63,10 +85,19 @@ export class GamePlayComponent implements OnInit {
   private initGameSubscription() {
     this._subGame = this.game.gameStateChange.subscribe((game) => {
       this.clientsPlayerNumber = this.player.getPlayerNumber();
-      this.p0board = game.players[0].board;
-      this.p1board = game.players[1].board;
+      if (this.clientsPlayerNumber == 0) {
+        this.opponentsPlayerNumber = 1;
+      } else {
+        this.opponentsPlayerNumber = 0;
+      }
+      this.clientsName = game.players[this.clientsPlayerNumber].displayName;
+      this.opponentsName = game.players[this.opponentsPlayerNumber].displayName;
+      this.boards[0] = game.players[0].board;
+      this.boards[1] = game.players[1].board;
       this.turnNo = game.gameTurnNumber;
-      this.whoseTurn = game.players[game.gameTurnPlayer].displayName;
+      this.whoseTurnNumber = game.gameTurnPlayer;
+      this.whoseTurnName = game.players[this.whoseTurnNumber].displayName;
+      this.isStartAllowed = game.isStartAllowed;
       console.log('hit game');
     });
     this._subMessage = this.signalRService.messageChange.subscribe(
@@ -82,5 +113,20 @@ export class GamePlayComponent implements OnInit {
       this.signalRService.broadcastChatMessage(this.chatMessage);
       this.chatMessage = '';
     }
+  }
+
+  public quitGame(): void {
+    //todo:
+    alert('quit');
+  }
+
+  public randomShot(): void {
+    //todo:
+    alert('random shot');
+  }
+
+  public kickOpponent(): void {
+    //todo:
+    alert('kick opponent');
   }
 }
