@@ -17,19 +17,19 @@ import { Subscription, timer } from 'rxjs';
   styleUrls: ['./game-play.component.css'],
 })
 export class GamePlayComponent implements OnInit {
-  public clientsName: string;
-  public opponentsName: string;
-  public isStartAllowed: boolean;
+  public clientsName: string = '';
+  public opponentsName: string = '';
+  public isStartAllowed: boolean = false;
   public chatMessage: string = '';
   public chatMessages: Array<ChatMessage> = [];
-  public turnNo: number;
-  public whoseTurnName: string;
-  public whoseTurnNumber: number;
-  public clientsPlayerNumber: number;
-  public opponentsPlayerNumber: number;
+  public turnNo: number = -1;
+  public whoseTurnName: string = '';
+  public whoseTurnNumber: number = -1;
+  public clientsPlayerNumber: number = -1;
+  public opponentsPlayerNumber: number = -1;
   private countDown: Subscription;
   public count: number = 30;
-  private boards: Array<BoardCell[][]>;
+  public boards: Array<BoardCell[][]> = [];
   private _subGame: any;
   private _subMessage: any;
 

@@ -137,7 +137,7 @@ OK - in deploy view and component:
 	OK - bug: reset board colors when auto deploy trigerred,
 	- when waiting for 2nd player to be connected hide board
 	- update game state isStartAllowed after deploying?
-	- display game link for a friend?
+	- display game link for a friend, under "Waiting for second player to join this game..."
 OK - in connect component:
 	NO - prepare some view, spinner, anything?
 	OK - err: ERROR TypeError: this.thenable is undefined
@@ -160,7 +160,9 @@ OK - in connect component:
 	OK - remove refactored code,
 	- what if you enter game-play url by yourself?
 	- display game link for a friend to join?
-	- water / explosion / splash sprites
+	- water / explosion / splash sprites,
+	- bug: displaying `Waiting for second player to join this game` after both players deployed ships,
+	- bug: in game chat clients msg is marked red,
 - single player:
 	-???
 - game rules component:
