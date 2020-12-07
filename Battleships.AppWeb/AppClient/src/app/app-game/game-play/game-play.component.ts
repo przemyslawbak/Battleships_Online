@@ -59,19 +59,23 @@ export class GamePlayComponent implements OnInit {
 
   private startCounter() {
     this.countDown = timer(0, 1000).subscribe(() => {
-      //todo: next
-      if (this.isDeploymentAllowed && !this.isDeployed) {
+      if (this.isStartAllowed) {
         if (this.count <= 0) {
-          this.autoDeploy();
-          this.confirm();
+          this.nextRound();
         } else {
-          this.count--;
+          if (this.clientsPlayerNumber == this.whoseTurnNumber) {
+            this.count--;
+          }
         }
       } else {
-        this.count = 180;
+        this.count = 30;
       }
       return this.count;
     });
+  }
+
+  private nextRound(): void {
+    //todo: next player/turn, reset counter
   }
 
   private resetMessageListeners() {
