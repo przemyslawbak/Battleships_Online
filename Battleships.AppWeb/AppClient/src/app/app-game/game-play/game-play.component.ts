@@ -1,3 +1,4 @@
+import { PlayerService } from '@services/player.service';
 import { BoardCell } from '@models/board-cell.model';
 import { ChatMessage } from './../../app-core/_models/chat-message.model';
 import { AuthService } from '@services/auth.service';
@@ -20,6 +21,7 @@ export class GamePlayComponent implements OnInit {
   public chatMessages: Array<ChatMessage> = [];
   public turnNo: number;
   public whoseTurn: string;
+  public clientsPlayerNumber: number;
   private countDown: Subscription;
   public count: number = 30;
   public p0board: BoardCell[][];
@@ -34,7 +36,8 @@ export class GamePlayComponent implements OnInit {
     private game: GameService,
     private route: ActivatedRoute,
     private signalRService: SignalRService,
-    private http: HttpService
+    private http: HttpService,
+    private player: PlayerService
   ) {}
 
   ngOnDestroy() {
@@ -59,6 +62,11 @@ export class GamePlayComponent implements OnInit {
 
   private initGameSubscription() {
     this._subGame = this.game.gameStateChange.subscribe((game) => {
+      this.clientsPlayerNumber = this.player.getPlayerNumber();
+      this.p0board = game.players[0].board;
+      this.p1board = game.players[1].board;
+      this.turnNo = game.gameTurnNumber;
+      this.whoseTurn = game.players[game.gameTurnPlayer].displayName;
       console.log('hit game');
     });
     this._subMessage = this.signalRService.messageChange.subscribe(
