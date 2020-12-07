@@ -17,6 +17,7 @@ import { Subscription, timer } from 'rxjs';
   styleUrls: ['./game-play.component.css'],
 })
 export class GamePlayComponent implements OnInit {
+  public userName: string = '';
   public clientsName: string = '';
   public opponentsName: string = '';
   public isStartAllowed: boolean = false;
@@ -52,7 +53,9 @@ export class GamePlayComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.userName = this.auth.getAuth().user;
     this.startCounter();
+    //todo: do I need to reset them?
     this.initGameSubscription();
     this.resetMessageListeners();
   }

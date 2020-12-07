@@ -161,7 +161,7 @@ OK - in connect component:
 	- what if you enter game-play url by yourself?
 	- display game link for a friend to join?
 	- water / explosion / splash sprites,
-	- bug: displaying `Waiting for second player to join this game` after both players deployed ships,
+	OK - bug: displaying `Waiting for second player to join this game` after both players deployed ships,
 	- bug: in game chat clients msg is marked red,
 - single player:
 	-???
