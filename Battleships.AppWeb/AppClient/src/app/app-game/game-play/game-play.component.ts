@@ -58,6 +58,28 @@ export class GamePlayComponent implements OnInit {
     //todo: do I need to reset them?
     this.initGameSubscription();
     this.resetMessageListeners();
+    this.updateGameValues(this.game.getGame());
+  }
+
+  private updateGameValues(game: GameState): void {
+    if (game) {
+      this.clientsPlayerNumber = this.player.getPlayerNumber();
+      if (this.clientsPlayerNumber == 0) {
+        this.opponentsPlayerNumber = 1;
+      } else {
+        this.opponentsPlayerNumber = 0;
+      }
+      this.clientsName = game.players[this.clientsPlayerNumber].displayName;
+      this.opponentsName = game.players[this.opponentsPlayerNumber].displayName;
+      this.boards[0] = game.players[0].board;
+      this.boards[1] = game.players[1].board;
+      this.turnNo = game.gameTurnNumber;
+      this.whoseTurnNumber = game.gameTurnPlayer;
+      this.whoseTurnName = game.players[this.whoseTurnNumber].displayName;
+      this.isStartAllowed = game.isStartAllowed;
+      console.log('start allowed: ' + this.isStartAllowed);
+      console.log('hit game');
+    }
   }
 
   private startCounter() {
@@ -91,21 +113,7 @@ export class GamePlayComponent implements OnInit {
 
   private initGameSubscription() {
     this._subGame = this.game.gameStateChange.subscribe((game) => {
-      this.clientsPlayerNumber = this.player.getPlayerNumber();
-      if (this.clientsPlayerNumber == 0) {
-        this.opponentsPlayerNumber = 1;
-      } else {
-        this.opponentsPlayerNumber = 0;
-      }
-      this.clientsName = game.players[this.clientsPlayerNumber].displayName;
-      this.opponentsName = game.players[this.opponentsPlayerNumber].displayName;
-      this.boards[0] = game.players[0].board;
-      this.boards[1] = game.players[1].board;
-      this.turnNo = game.gameTurnNumber;
-      this.whoseTurnNumber = game.gameTurnPlayer;
-      this.whoseTurnName = game.players[this.whoseTurnNumber].displayName;
-      this.isStartAllowed = game.isStartAllowed;
-      console.log('hit game');
+      this.updateGameValues(game);
     });
     this._subMessage = this.signalRService.messageChange.subscribe(
       (message: ChatMessage) => {
