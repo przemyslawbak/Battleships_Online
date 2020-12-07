@@ -28,7 +28,7 @@ export class GameDeployComponent implements OnInit {
   private _subBoard: any;
   public userName: string;
   private countDown: Subscription;
-  public count = 30; //todo: change later
+  public count: number = 30; //todo: change later
   public fleetWaiting: Array<ShipComponent>;
   public fleetDeployed: Array<ShipComponent>;
   public playersBoard: BoardCell[][];
