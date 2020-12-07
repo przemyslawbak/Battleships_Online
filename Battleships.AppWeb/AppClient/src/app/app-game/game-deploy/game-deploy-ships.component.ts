@@ -19,19 +19,19 @@ import { ChatMessage } from '@models/chat-message.model';
   styleUrls: ['./game-deploy-ships.component.css'],
 })
 export class GameDeployComponent implements OnInit {
-  public isDeployed: boolean;
-  public isDeploymentAllowed: boolean;
+  public isDeployed: boolean = false;
+  public isDeploymentAllowed: boolean = false;
   public chatMessage: string = '';
   public chatMessages: Array<ChatMessage> = [];
+  public userName: string = '';
+  private countDown: Subscription;
+  public count: number = 30; //todo: change later
+  public fleetWaiting: Array<ShipComponent> = [];
+  public fleetDeployed: Array<ShipComponent> = [];
+  public playersBoard: BoardCell[][];
   private _subGame: any;
   private _subMessage: any;
   private _subBoard: any;
-  public userName: string;
-  private countDown: Subscription;
-  public count: number = 30; //todo: change later
-  public fleetWaiting: Array<ShipComponent>;
-  public fleetDeployed: Array<ShipComponent>;
-  public playersBoard: BoardCell[][];
 
   constructor(
     private router: Router,
