@@ -62,10 +62,11 @@ export class GameDeployComponent implements OnInit {
     this.resetMessageListeners();
     this.initGameSubscription();
     this.board.createEmptyBoard();
+    this.updateGameValues(this.game.getGame());
   }
 
-  private initGameSubscription() {
-    this._subGame = this.game.gameStateChange.subscribe((game) => {
+  private updateGameValues(game: GameState): void {
+    if (game) {
       let p0Deployed: boolean = game.players[0].isDeployed;
       let p1Deployed: boolean = game.players[1].isDeployed;
       this.isDeploymentAllowed = game.isDeploymentAllowed;
@@ -74,6 +75,12 @@ export class GameDeployComponent implements OnInit {
         this.router.navigate(['play-game']);
       }
       console.log('hit game');
+    }
+  }
+
+  private initGameSubscription() {
+    this._subGame = this.game.gameStateChange.subscribe((game) => {
+      this.updateGameValues(game);
     });
 
     this._subMessage = this.signalRService.messageChange.subscribe(

@@ -8,7 +8,7 @@
       <ng-template #playing>
         <div class="row">
           <div class="col-sm-12">
-            <div>Turn:</div>
+            <div>Time remaining:</div>
             <div
               *ngIf="
                 this.clientsPlayerNumber == this.whoseTurnNumber;
@@ -24,7 +24,7 @@
             <ng-template #takeHit>
               <h4>Opponent is shooting...</h4>
             </ng-template>
-            <div>Player:</div>
+            <div>Players turn:</div>
             <h4>{{ this.whoseTurn }}</h4>
             <div>Turn number:</div>
             <h4>{{ this.turnNo }}</h4>

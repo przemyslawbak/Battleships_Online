@@ -162,7 +162,9 @@ OK - in connect component:
 	- display game link for a friend to join?
 	- water / explosion / splash sprites,
 	OK - bug: displaying `Waiting for second player to join this game` after both players deployed ships,
-	- bug: in game chat clients msg is marked red,
+	OK - bug: in game chat clients msg is marked red,
+	- change board styling
+	- bug: status Player: missing
 - single player:
 	-???
 - game rules component:

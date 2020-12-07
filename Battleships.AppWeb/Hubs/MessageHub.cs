@@ -65,6 +65,15 @@ namespace Battleships.AppWeb.Hubs
                 game.IsDeploymentAllowed = true;
             }
 
+            if (game.IsDeploymentAllowed && game.Players[0].IsDeployed && game.Players[1].IsDeployed)
+            {
+                game.IsStartAllowed = true;
+            }
+            else
+            {
+                game.IsStartAllowed = false;
+            }
+
             foreach (Player player in game.Players)
             {
                 if (!string.IsNullOrEmpty(player.UserName))
