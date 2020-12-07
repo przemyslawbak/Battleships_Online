@@ -164,7 +164,7 @@ OK - in connect component:
 	OK - bug: displaying `Waiting for second player to join this game` after both players deployed ships,
 	OK - bug: in game chat clients msg is marked red,
 	- change board styling
-	- change board hover / click props
+	OK - change board not used events / methods;
 	OK - bug: status Player: missing
 - single player:
 	-???
