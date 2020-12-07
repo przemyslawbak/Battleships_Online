@@ -9,21 +9,21 @@ import { HttpService } from '@services/http.service';
 import { environment } from '@environments/environment';
 import { ModalService } from '@services/modal.service';
 import { GameState } from '@models/game-state.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   templateUrl: './game-play.component.html',
   styleUrls: ['./game-play.component.css'],
 })
 export class GamePlayComponent implements OnInit {
-  public userName: string;
   public chatMessage: string = '';
   public chatMessages: Array<ChatMessage> = [];
-  public gameStatus: any;
-  public gameTurnNumber: number;
-  public player1: string;
-  public player2: string;
-  public boardP1: BoardCell[][];
-  public boardP2: BoardCell[][];
+  public turnNo: number;
+  public whoseTurn: string;
+  private countDown: Subscription;
+  public count: number = 30;
+  public p0board: BoardCell[][];
+  public p1board: BoardCell[][];
   private _subGame: any;
   private _subMessage: any;
 
@@ -59,12 +59,6 @@ export class GamePlayComponent implements OnInit {
 
   private initGameSubscription() {
     this._subGame = this.game.gameStateChange.subscribe((game) => {
-      this.gameStatus = game.gameStage;
-      this.gameTurnNumber = game.gameTurnNumber;
-      this.player1 = game.players[0].displayName;
-      this.player2 = game.players[1].displayName;
-      this.boardP1 = game.players[0].board;
-      this.boardP2 = game.players[1].board;
       console.log('hit game');
     });
     this._subMessage = this.signalRService.messageChange.subscribe(

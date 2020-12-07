@@ -157,7 +157,7 @@ OK - in connect component:
 	- display header pic,
 	- if your turn / opponents turn, change header, or change styling?
 	- on top of the board display player names,
-	- play buttons: quit game, random shot
+	- play buttons: quit game, random shot, kick player?
 	OK - remove refactored code,
 	- what if you enter game-play url by yourself?
 	- display game link for a friend to join?
