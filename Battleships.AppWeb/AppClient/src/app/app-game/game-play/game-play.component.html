@@ -2,13 +2,7 @@
 <div class="row">
   <div class="col-md-5">
     <!--game status-->
-    <div
-      [ngClass]="
-        this.clientsPlayerNumber == this.whoseTurnNumber
-          ? 'greenBackground'
-          : 'redBackground'
-      "
-    >
+    <div class="dataRow">
       <h2 class="login-title">Battle</h2>
       <div *ngIf="this.isStartAllowed; then playing; else waiting"></div>
       <ng-template #playing>
@@ -135,7 +129,7 @@
     </ng-template>
     <!--board2-->
     <ng-template #opponent>
-      <h4 class="greenColor">Shoot on the opponent's board ...</h4>
+      <h4 class="greenColor">Shoot on the opponent's board...</h4>
       <div class="board text-center">
         <div
           class="boardRow"
