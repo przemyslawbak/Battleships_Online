@@ -171,7 +171,7 @@ OK - in connect component:
 	- reset opponent board colors,
 	OK - board player names with colors red / green,
 	NO - some margin between boards,
-	- display opponents board, but all hidden,
+	OK - display opponents board, but all hidden,
 	OK - swap boards depending on whose turn,
 	- comments instead of text over the game board?
 - single player:

@@ -11,6 +11,7 @@ import { environment } from '@environments/environment';
 import { ModalService } from '@services/modal.service';
 import { GameState } from '@models/game-state.model';
 import { Subscription, timer } from 'rxjs';
+import { BoardService } from '@services/board.service';
 
 @Component({
   templateUrl: './game-play.component.html',
@@ -35,6 +36,7 @@ export class GamePlayComponent implements OnInit {
   private _subMessage: any;
 
   constructor(
+    private board: BoardService,
     private auth: AuthService,
     private modalService: ModalService,
     private router: Router,
@@ -73,11 +75,14 @@ export class GamePlayComponent implements OnInit {
       this.opponentsName = game.players[this.opponentsPlayerNumber].displayName;
       this.boards[0] = game.players[0].board;
       this.boards[1] = game.players[1].board;
+      this.boards[this.opponentsPlayerNumber] = this.board.eraseOpponentsShips(
+        this.boards[this.opponentsPlayerNumber]
+      );
+      console.log(this.boards[this.opponentsPlayerNumber]);
       this.turnNo = game.gameTurnNumber;
       this.whoseTurnNumber = game.gameTurnPlayer;
       this.whoseTurnName = game.players[this.whoseTurnNumber].displayName;
       this.isStartAllowed = game.isStartAllowed;
-      console.log('start allowed: ' + this.isStartAllowed);
       console.log('hit game');
     }
   }

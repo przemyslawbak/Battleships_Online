@@ -12,6 +12,23 @@ export class BoardService {
   public lastDropCells: Array<BoardCell> = [];
   public boardChange: Subject<BoardCell[][]> = new Subject<BoardCell[][]>();
 
+  public eraseOpponentsShips(board: BoardCell[][]): BoardCell[][] {
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        if (board[i][j].value == 1) {
+          console.log('reset');
+          board[i][j].color = 'rgba(0, 162, 255, 0.2)';
+        }
+
+        if (board[i][j].value == 2) {
+          board[i][j].color = 'red';
+        }
+      }
+    }
+    console.log(board);
+    return board;
+  }
+
   public deployShip(row: number, col: number, nextShip: ShipComponent): void {
     let dropCells: Array<BoardCell> = this.getDropCells(row, col, nextShip);
     for (let i = 0; i < dropCells.length; i++) {
