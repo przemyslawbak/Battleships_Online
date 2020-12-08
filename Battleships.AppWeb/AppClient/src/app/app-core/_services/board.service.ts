@@ -16,7 +16,6 @@ export class BoardService {
     for (let i = 0; i < 10; i++) {
       for (let j = 0; j < 10; j++) {
         if (board[i][j].value == 1) {
-          console.log('reset');
           board[i][j].color = 'rgba(0, 162, 255, 0.2)';
         }
 
@@ -25,7 +24,6 @@ export class BoardService {
         }
       }
     }
-    console.log(board);
     return board;
   }
 

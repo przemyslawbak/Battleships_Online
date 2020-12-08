@@ -74,7 +74,6 @@ export class GameDeployComponent implements OnInit {
       if (p0Deployed && p1Deployed) {
         this.router.navigate(['play-game']);
       }
-      console.log('hit game');
     }
   }
 
@@ -86,14 +85,12 @@ export class GameDeployComponent implements OnInit {
     this._subMessage = this.signalRService.messageChange.subscribe(
       (message: ChatMessage) => {
         this.chatMessages = [message].concat(this.chatMessages);
-        console.log('hit msg');
       }
     );
 
     this._subBoard = this.board.boardChange.subscribe(
       (board: BoardCell[][]) => {
         this.playersBoard = board;
-        console.log('hit board');
       }
     );
   }

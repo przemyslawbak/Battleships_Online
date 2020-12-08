@@ -78,12 +78,10 @@ export class GamePlayComponent implements OnInit {
       this.boards[this.opponentsPlayerNumber] = this.board.eraseOpponentsShips(
         this.boards[this.opponentsPlayerNumber]
       );
-      console.log(this.boards[this.opponentsPlayerNumber]);
       this.turnNo = game.gameTurnNumber;
       this.whoseTurnNumber = game.gameTurnPlayer;
       this.whoseTurnName = game.players[this.whoseTurnNumber].displayName;
       this.isStartAllowed = game.isStartAllowed;
-      console.log('hit game');
     }
   }
 
@@ -123,7 +121,6 @@ export class GamePlayComponent implements OnInit {
     this._subMessage = this.signalRService.messageChange.subscribe(
       (message: ChatMessage) => {
         this.chatMessages = [message].concat(this.chatMessages);
-        console.log('hit msg');
       }
     );
   }
@@ -133,6 +130,52 @@ export class GamePlayComponent implements OnInit {
       this.signalRService.broadcastChatMessage(this.chatMessage);
       this.chatMessage = '';
     }
+  }
+
+  public fire(row: number, col: number): void {
+    let isHit: boolean = this.verifyHit(row, col);
+    let game = this.game.getGame();
+
+    if (isHit) {
+      game = this.markHitOnBoard(row, col, game);
+      game.gameTurnPlayer = this.whoseTurnNumber;
+      game.gameTurnNumber = this.turnNo;
+      //todo: inform that hit
+    } else {
+      game = this.markMissedOnBoard(row, col, game);
+      if (this.whoseTurnNumber == 0) {
+        game.gameTurnPlayer = 1;
+        game.gameTurnNumber = this.turnNo;
+      } else {
+        game.gameTurnPlayer = 0;
+        game.gameTurnNumber++;
+      }
+      //todo: inform that missed
+    }
+
+    this.game.setGame(game);
+  }
+
+  private verifyHit(row: number, col: number): boolean {
+    if (this.boards[this.opponentsPlayerNumber][row][col].value == 1) {
+      return true;
+    }
+    return false;
+  }
+
+  private markHitOnBoard(row: number, col: number, game: GameState) {
+    game.players[this.opponentsPlayerNumber].board[row][col].value = 2;
+    game.players[this.opponentsPlayerNumber].board[row][col].color = 'red';
+
+    return game;
+  }
+
+  private markMissedOnBoard(row: number, col: number, game: GameState) {
+    game.players[this.opponentsPlayerNumber].board[row][col].value = 3;
+    game.players[this.opponentsPlayerNumber].board[row][col].color =
+      'rgb(0, 162, 255)';
+
+    return game;
   }
 
   public quitGame(): void {

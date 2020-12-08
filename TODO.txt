@@ -152,7 +152,8 @@ OK - in connect component:
 	OK - status time remaining for shot (15-30s),
 	NO - time for both players together?
 	OK - display players board,
-	- fiering on opponent,
+	OK - fiering on opponent,
+	- when shooting, change background of hovered cell,
 	OK - display game chat,
 	OK - display header pic,
 	NO - if your turn / opponents turn, change header, or change styling?
@@ -168,10 +169,9 @@ OK - in connect component:
 	OK - change board not used events / methods,
 	OK - bug: status Player: missing,
 	OK - bug: boards not colored, why?
-	- reset opponent board colors,
 	OK - board player names with colors red / green,
 	NO - some margin between boards,
-	OK - display opponents board, but all hidden,
+	OK - display opponents board, but all ships hidden,
 	OK - swap boards depending on whose turn,
 	- comments instead of text over the game board?
 - single player:
