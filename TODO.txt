@@ -154,8 +154,8 @@ OK - in connect component:
 	OK - display players board,
 	- fiering on opponent,
 	OK - display game chat,
-	- display header pic,
-	- if your turn / opponents turn, change header, or change styling?
+	OK - display header pic,
+	OK - if your turn / opponents turn, change header, or change styling?
 	OK - on top of the board display player names,
 	OK - play buttons: quit game, random shot, kick player
 	OK - remove refactored code,
@@ -213,6 +213,7 @@ OK - what if hubConnection.onclose?
 - keep chat records from various views
 - shere in social media
 - verify opponent board only in backend
+- game chat mute opponent
 
 end:
 - favicon

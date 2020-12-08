@@ -8,7 +8,7 @@ button {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-image: url("../../../assets/images/deploy.jpg");
+  background-image: url("../../../assets/images/battle.jpg");
   height: 85px;
 }
 
@@ -60,12 +60,20 @@ button {
   display: inline-block;
 }
 
-.dataRow {
+.redBackground,
+.greenBackground {
   padding: 40px 40px;
-  background-color: #f7f7f7;
   border-radius: 10px;
   border: 1px solid #eee;
   min-height: 300px;
+}
+
+.redBackground {
+  background-color: #f7dede;
+}
+
+.greenBackground {
+  background-color: #def7de;
 }
 
 .row {
