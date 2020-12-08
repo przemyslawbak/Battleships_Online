@@ -22,10 +22,18 @@
               </h4>
             </ng-template>
             <ng-template #takeHit>
-              <h4>Opponent is shooting...</h4>
+              <h4>Opponents turn...</h4>
             </ng-template>
             <div>Players turn:</div>
-            <h4>{{ this.whoseTurnName }}</h4>
+            <h4
+              [ngClass]="
+                this.whoseTurnNumber == this.clientsPlayerNumber
+                  ? 'redColor'
+                  : 'greenColor'
+              "
+            >
+              {{ this.whoseTurnName }}
+            </h4>
             <div>Turn number:</div>
             <h4>{{ this.turnNo }}</h4>
           </div>
@@ -91,40 +99,54 @@
         Quit game
       </button>
     </div>
+    <div
+      *ngIf="
+        this.clientsPlayerNumber == this.whoseTurnNumber;
+        then opponent;
+        else player
+      "
+    ></div>
     <!--board1-->
-    <h4>{{ this.clientsName }}</h4>
-    <div class="board text-center">
-      <div
-        class="boardRow"
-        *ngFor="let row of this.boards[this.clientsPlayerNumber]; let i = index"
-      >
-        <div *ngFor="let box of row; let j = index">
-          <div
-            class="boardCell"
-            [style.backgroundColor]="box.color"
-            #cell
-          ></div>
+    <ng-template #player>
+      <h4 class="redColor">The opponent shoots on your board...</h4>
+      <div class="board text-center">
+        <div
+          class="boardRow"
+          *ngFor="
+            let row of this.boards[this.clientsPlayerNumber];
+            let i = index
+          "
+        >
+          <div *ngFor="let box of row; let j = index">
+            <div
+              class="boardCell"
+              [style.backgroundColor]="box.color"
+              #cell
+            ></div>
+          </div>
         </div>
       </div>
-    </div>
+    </ng-template>
     <!--board2-->
-    <h4>{{ this.opponentsName }}</h4>
-    <div class="board text-center">
-      <div
-        class="boardRow"
-        *ngFor="
-          let row of this.boards[this.opponentsPlayerNumber];
-          let i = index
-        "
-      >
-        <div *ngFor="let box of row; let j = index">
-          <div
-            class="boardCell"
-            [style.backgroundColor]="box.color"
-            #cell
-          ></div>
+    <ng-template #opponent>
+      <h4 class="greenColor">Shoot on the opponent's board ...</h4>
+      <div class="board text-center">
+        <div
+          class="boardRow"
+          *ngFor="
+            let row of this.boards[this.opponentsPlayerNumber];
+            let i = index
+          "
+        >
+          <div *ngFor="let box of row; let j = index">
+            <div
+              class="boardCell"
+              [style.backgroundColor]="box.color"
+              #cell
+            ></div>
+          </div>
         </div>
       </div>
-    </div>
+    </ng-template>
   </div>
 </div>

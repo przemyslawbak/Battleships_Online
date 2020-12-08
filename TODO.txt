@@ -152,7 +152,6 @@ OK - in connect component:
 	OK - status time remaining for shot (15-30s),
 	NO - time for both players together?
 	OK - display players board,
-	- display opponents board, but all hidden,
 	- fiering on opponent,
 	OK - display game chat,
 	- display header pic,
@@ -165,13 +164,15 @@ OK - in connect component:
 	- water / explosion / splash sprites,
 	OK - bug: displaying `Waiting for second player to join this game` after both players deployed ships,
 	OK - bug: in game chat clients msg is marked red,
-	- change board styling,
+	NO - change board styling,
 	OK - change board not used events / methods,
 	OK - bug: status Player: missing,
 	OK - bug: boards not colored, why?
 	- reset opponent board colors,
-	- board player names with colors red / green,
-	- some margin between boards,
+	OK - board player names with colors red / green,
+	NO - some margin between boards,
+	- display opponents board, but all hidden,
+	OK - swap boards depending on whose turn
 - single player:
 	-???
 - game rules component:
