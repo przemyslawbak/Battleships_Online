@@ -102,6 +102,7 @@ export class GamePlayComponent implements OnInit {
       if (this.isStartAllowed) {
         if (this.count <= 0) {
           this.nextRound();
+          this.count = 30;
         } else {
           if (this.clientsPlayerNumber == this.whoseTurnNumber) {
             this.count--;
@@ -115,7 +116,7 @@ export class GamePlayComponent implements OnInit {
   }
 
   private nextRound(): void {
-    //todo: next player/turn, reset counter
+    this.fire(-1, -1);
   }
 
   private resetMessageListeners() {
@@ -152,7 +153,10 @@ export class GamePlayComponent implements OnInit {
       game.gameTurnNumber = this.turnNo;
       //todo: inform that hit
     } else {
-      game = this.markMissedOnBoard(row, col, game);
+      if (col >= 0 && row >= 0) {
+        game = this.markMissedOnBoard(row, col, game);
+        //todo: inform that missed
+      }
       if (this.whoseTurnNumber == 0) {
         game.gameTurnPlayer = 1;
         game.gameTurnNumber = this.turnNo;
@@ -160,16 +164,15 @@ export class GamePlayComponent implements OnInit {
         game.gameTurnPlayer = 0;
         game.gameTurnNumber++;
       }
-      //todo: inform that missed
     }
-
-    console.clear();
-    console.log('set game' + this.userName);
-    console.log(game);
     this.signalRService.broadcastGameState(game);
   }
 
   private verifyHit(col: number, row: number): boolean {
+    if (col < 0 && row < 0) {
+      return false;
+    }
+
     if (this.boards[this.opponentsPlayerNumber][row][col].value == 1) {
       return true;
     }
