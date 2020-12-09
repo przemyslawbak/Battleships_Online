@@ -135,13 +135,16 @@ export class GamePlayComponent implements OnInit {
   public fire(row: number, col: number): void {
     let isHit: boolean = this.verifyHit(row, col);
     let game = this.game.getGame();
-
+    console.log('row: ' + row);
+    console.log('col: ' + col);
     if (isHit) {
+      console.log('marked hit');
       game = this.markHitOnBoard(row, col, game);
       game.gameTurnPlayer = this.whoseTurnNumber;
       game.gameTurnNumber = this.turnNo;
       //todo: inform that hit
     } else {
+      console.log('marked missed');
       game = this.markMissedOnBoard(row, col, game);
       if (this.whoseTurnNumber == 0) {
         game.gameTurnPlayer = 1;
@@ -167,14 +170,16 @@ export class GamePlayComponent implements OnInit {
   private markHitOnBoard(row: number, col: number, game: GameState) {
     game.players[this.opponentsPlayerNumber].board[col][row].value = 2;
     game.players[this.opponentsPlayerNumber].board[col][row].color = 'red';
+    console.log(game.players[this.opponentsPlayerNumber].board[col][row]);
 
     return game;
   }
 
   private markMissedOnBoard(row: number, col: number, game: GameState) {
-    game.players[this.opponentsPlayerNumber].board[row][col].value = 3;
-    game.players[this.opponentsPlayerNumber].board[row][col].color =
+    game.players[this.opponentsPlayerNumber].board[col][row].value = 3;
+    game.players[this.opponentsPlayerNumber].board[col][row].color =
       'rgb(0, 162, 255)';
+    console.log(game.players[this.opponentsPlayerNumber].board[col][row]);
 
     return game;
   }
