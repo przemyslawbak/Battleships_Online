@@ -154,6 +154,9 @@ OK - in connect component:
 	OK - display players board,
 	OK - fiering on opponent,
 	- when shooting, change background of hovered cell,
+	- after shot wait here to display result,
+	- bug: shot does not reach ship, maybe switch col <-> row?
+	- bug: shot is not recorded by opponent,
 	OK - display game chat,
 	OK - display header pic,
 	NO - if your turn / opponents turn, change header, or change styling?
