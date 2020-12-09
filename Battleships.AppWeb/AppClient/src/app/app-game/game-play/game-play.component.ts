@@ -154,9 +154,10 @@ export class GamePlayComponent implements OnInit {
     }
 
     this.game.setGame(game);
+    this.signalRService.broadcastGameState(game);
   }
 
-  private verifyHit(row: number, col: number): boolean {
+  private verifyHit(col: number, row: number): boolean {
     if (this.boards[this.opponentsPlayerNumber][row][col].value == 1) {
       return true;
     }
@@ -164,8 +165,8 @@ export class GamePlayComponent implements OnInit {
   }
 
   private markHitOnBoard(row: number, col: number, game: GameState) {
-    game.players[this.opponentsPlayerNumber].board[row][col].value = 2;
-    game.players[this.opponentsPlayerNumber].board[row][col].color = 'red';
+    game.players[this.opponentsPlayerNumber].board[col][row].value = 2;
+    game.players[this.opponentsPlayerNumber].board[col][row].color = 'red';
 
     return game;
   }
