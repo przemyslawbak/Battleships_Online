@@ -62,7 +62,6 @@ export class GameDeployComponent implements OnInit {
     this.resetMessageListeners();
     this.initGameSubscription();
     this.board.createEmptyBoard();
-    this.updateGameValues(this.game.getGame());
   }
 
   private updateGameValues(game: GameState): void {
@@ -113,7 +112,6 @@ export class GameDeployComponent implements OnInit {
   }
 
   private resetMessageListeners() {
-    this.signalRService.startConnection();
     this.signalRService.removeChatMessageListener();
     this.signalRService.removeGameStateListener();
     this.signalRService.addChatMessageListener();

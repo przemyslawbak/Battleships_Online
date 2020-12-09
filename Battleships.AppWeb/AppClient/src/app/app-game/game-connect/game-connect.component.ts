@@ -31,13 +31,13 @@ export class GameConnectComponent implements OnInit {
     const url: string = environment.apiUrl + 'api/game/join?id=' + id;
 
     if (id) {
-      this.getGamestateAndRedirect(id, url);
+      this.getGamestateAndRedirect(url);
     } else {
       this.findIdAndReconnect();
     }
   }
 
-  private getGamestateAndRedirect(id: string, url: string): void {
+  private getGamestateAndRedirect(url: string): void {
     const userName: string = this.auth.getAuth().user;
     const displayName: string = this.auth.getAuth().displayName;
 
@@ -84,7 +84,7 @@ export class GameConnectComponent implements OnInit {
   }
 
   private initGame(game: GameState): void {
-    this.game.setGame(game);
+    this.game.setGame(game); //set first state
     this.signalRService.broadcastGameState(game);
     if (game.players[0].isDeployed && game.players[1].isDeployed) {
       this.router.navigate(['play-game']);
@@ -124,6 +124,7 @@ export class GameConnectComponent implements OnInit {
   private findIdAndReconnect(): void {
     if (this.game.isGameStarted()) {
       this.router.navigate(['connect-game/' + this.game.getGame().gameId]);
+      console.log('findIdAndReconnect');
     } else {
       this.router.navigate(['start-game']);
     }

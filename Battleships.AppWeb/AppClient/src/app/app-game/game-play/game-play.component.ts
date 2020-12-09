@@ -75,9 +75,16 @@ export class GamePlayComponent implements OnInit {
       this.opponentsName = game.players[this.opponentsPlayerNumber].displayName;
       this.boards[0] = game.players[0].board;
       this.boards[1] = game.players[1].board;
-      this.boards[this.opponentsPlayerNumber] = this.board.eraseOpponentsShips(
-        this.boards[this.opponentsPlayerNumber]
-      );
+      console.log('get game');
+      console.log(game);
+      if (this.whoseTurnNumber == this.clientsPlayerNumber) {
+        console.log('is it?');
+        this.boards[
+          this.opponentsPlayerNumber
+        ] = this.board.eraseOpponentsShips(
+          this.boards[this.opponentsPlayerNumber]
+        );
+      }
       this.turnNo = game.gameTurnNumber;
       this.whoseTurnNumber = game.gameTurnPlayer;
       this.whoseTurnName = game.players[this.whoseTurnNumber].displayName;
@@ -107,7 +114,6 @@ export class GamePlayComponent implements OnInit {
   }
 
   private resetMessageListeners() {
-    this.signalRService.startConnection();
     this.signalRService.removeChatMessageListener();
     this.signalRService.removeGameStateListener();
     this.signalRService.addChatMessageListener();
@@ -135,16 +141,12 @@ export class GamePlayComponent implements OnInit {
   public fire(row: number, col: number): void {
     let isHit: boolean = this.verifyHit(row, col);
     let game = this.game.getGame();
-    console.log('row: ' + row);
-    console.log('col: ' + col);
     if (isHit) {
-      console.log('marked hit');
       game = this.markHitOnBoard(row, col, game);
       game.gameTurnPlayer = this.whoseTurnNumber;
       game.gameTurnNumber = this.turnNo;
       //todo: inform that hit
     } else {
-      console.log('marked missed');
       game = this.markMissedOnBoard(row, col, game);
       if (this.whoseTurnNumber == 0) {
         game.gameTurnPlayer = 1;
@@ -156,7 +158,9 @@ export class GamePlayComponent implements OnInit {
       //todo: inform that missed
     }
 
-    this.game.setGame(game);
+    console.clear();
+    console.log('set game' + this.userName);
+    console.log(game);
     this.signalRService.broadcastGameState(game);
   }
 
@@ -170,7 +174,6 @@ export class GamePlayComponent implements OnInit {
   private markHitOnBoard(row: number, col: number, game: GameState) {
     game.players[this.opponentsPlayerNumber].board[col][row].value = 2;
     game.players[this.opponentsPlayerNumber].board[col][row].color = 'red';
-    console.log(game.players[this.opponentsPlayerNumber].board[col][row]);
 
     return game;
   }
@@ -179,7 +182,6 @@ export class GamePlayComponent implements OnInit {
     game.players[this.opponentsPlayerNumber].board[col][row].value = 3;
     game.players[this.opponentsPlayerNumber].board[col][row].color =
       'rgb(0, 162, 255)';
-    console.log(game.players[this.opponentsPlayerNumber].board[col][row]);
 
     return game;
   }

@@ -76,11 +76,13 @@ export class SignalRService {
   };
 
   public broadcastGameState = (game: GameState): void => {
-    this.thenable.then(() => {
-      this.hubConnection
-        .invoke('SendGameState', game)
-        .catch((err) => console.error('game state broadcast error: ' + err));
-    });
+    if (game) {
+      this.thenable.then(() => {
+        this.hubConnection
+          .invoke('SendGameState', game)
+          .catch((err) => console.error('game state broadcast error: ' + err));
+      });
+    }
   };
 
   public removeChatMessageListener(): void {
@@ -98,16 +100,18 @@ export class SignalRService {
   };
 
   public broadcastChatMessage = (message: string): void => {
-    this.thenable.then(() => {
-      let playersNames = [];
-      for (let i = 0; i < this.game.getGame().players.length; i++) {
-        if (this.game.getGame().players[i].userName) {
-          playersNames.push(this.game.getGame().players[i].userName);
+    if (message) {
+      this.thenable.then(() => {
+        let playersNames = [];
+        for (let i = 0; i < this.game.getGame().players.length; i++) {
+          if (this.game.getGame().players[i].userName) {
+            playersNames.push(this.game.getGame().players[i].userName);
+          }
         }
-      }
-      this.hubConnection
-        .invoke('SendChatMessage', message, playersNames)
-        .catch((err) => console.error('chat broadcast error: ' + err));
-    });
+        this.hubConnection
+          .invoke('SendChatMessage', message, playersNames)
+          .catch((err) => console.error('chat broadcast error: ' + err));
+      });
+    }
   };
 }
