@@ -27,6 +27,21 @@ export class BoardService {
     return board;
   }
 
+  public showOwnShips(board: BoardCell[][]): BoardCell[][] {
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        if (board[i][j].value == 1) {
+          board[i][j].color = 'green';
+        }
+
+        if (board[i][j].value == 2) {
+          board[i][j].color = 'red';
+        }
+      }
+    }
+    return board;
+  }
+
   public deployShip(row: number, col: number, nextShip: ShipComponent): void {
     let dropCells: Array<BoardCell> = this.getDropCells(row, col, nextShip);
     for (let i = 0; i < dropCells.length; i++) {

@@ -73,23 +73,28 @@ export class GamePlayComponent implements OnInit {
       }
       this.clientsName = game.players[this.clientsPlayerNumber].displayName;
       this.opponentsName = game.players[this.opponentsPlayerNumber].displayName;
+      console.clear();
+      console.log(game.players[0].board);
+      console.log(game.players[1].board);
       this.boards[0] = game.players[0].board;
       this.boards[1] = game.players[1].board;
-      console.log('get game');
-      console.log(game);
-      if (this.whoseTurnNumber == this.clientsPlayerNumber) {
-        console.log('is it?');
-        this.boards[
-          this.opponentsPlayerNumber
-        ] = this.board.eraseOpponentsShips(
-          this.boards[this.opponentsPlayerNumber]
-        );
-      }
       this.turnNo = game.gameTurnNumber;
       this.whoseTurnNumber = game.gameTurnPlayer;
       this.whoseTurnName = game.players[this.whoseTurnNumber].displayName;
       this.isStartAllowed = game.isStartAllowed;
+
+      this.resetBoardColors();
     }
+  }
+
+  private resetBoardColors(): void {
+    this.boards[this.opponentsPlayerNumber] = this.board.eraseOpponentsShips(
+      this.boards[this.opponentsPlayerNumber]
+    );
+
+    this.boards[this.clientsPlayerNumber] = this.board.showOwnShips(
+      this.boards[this.clientsPlayerNumber]
+    );
   }
 
   private startCounter() {
