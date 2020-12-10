@@ -165,6 +165,8 @@ export class GamePlayComponent implements OnInit {
         game.gameTurnNumber++;
       }
     }
+
+    this.count = 30;
     this.signalRService.broadcastGameState(game);
   }
 
