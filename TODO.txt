@@ -154,7 +154,10 @@ OK - in connect component:
 	OK - display players board,
 	OK - fiering on opponent,
 	- when shooting, change background of hovered cell,
-	- after shot wait here to display result,
+	OK - if shooting, change cursor to pointer,
+	- after shot wait to display result comment,
+	- comments instead of text over the game board?
+	- random result comments,
 	OK - end round when timer finishes,
 	OK - bug: shot does not reach ship, maybe switch col <-> row?
 	OK - bug: shot is not recorded by opponent,
@@ -167,7 +170,7 @@ OK - in connect component:
 	OK - play buttons: quit game, random shot, kick player
 	OK - remove refactored code,
 	- what if you enter game-play url by yourself?
-	- display game link for a friend to join, also in game-deploy
+	- display game link for a friend to join, also in game-deploy,
 	- water / explosion / splash sprites,
 	OK - bug: displaying `Waiting for second player to join this game` after both players deployed ships,
 	OK - bug: in game chat clients msg is marked red,
@@ -179,7 +182,6 @@ OK - in connect component:
 	NO - some margin between boards,
 	OK - display opponents board, but all ships hidden,
 	OK - swap boards depending on whose turn,
-	- comments instead of text over the game board?
 - single player:
 	-???
 - game rules component:
