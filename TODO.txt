@@ -154,6 +154,7 @@ OK - in connect component:
 	OK - display players board,
 	OK - fiering on opponent,
 	- when shooting, change background of hovered cell,
+	- bug: no pointer over the board,
 	OK - if shooting, change cursor to pointer,
 	- after shot wait to display result comment,
 	- comments instead of text over the game board?
