@@ -1,3 +1,4 @@
+import { environment } from './../../../environments/environment';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription, timer } from 'rxjs';
@@ -19,6 +20,8 @@ import { ChatMessage } from '@models/chat-message.model';
   styleUrls: ['./game-deploy-ships.component.css'],
 })
 export class GameDeployComponent implements OnInit {
+  public gameLink: string =
+    environment.apiUrl + 'connect-game/' + this.game.getGame().gameId;
   public isDeployed: boolean = false;
   public isDeploymentAllowed: boolean = false;
   public chatMessage: string = '';

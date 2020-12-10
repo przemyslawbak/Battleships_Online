@@ -12,6 +12,10 @@ button {
   height: 85px;
 }
 
+.link {
+  margin-top: 20px;
+}
+
 .login-title {
   margin: 15px 0;
   text-align: center;

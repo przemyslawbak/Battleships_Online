@@ -41,8 +41,14 @@
       </ng-template>
       <ng-template #waiting>
         <div class="row">
-          <div class="col-sm-12">
+          <div class="col-sm-12 redColor">
             Waiting for second player to join this game...
+          </div>
+          <div class="col-sm-12 link">
+            Link for your friends to join this game:
+          </div>
+          <div class="col-sm-12">
+            {{ this.gameLink }}
           </div>
         </div>
       </ng-template>

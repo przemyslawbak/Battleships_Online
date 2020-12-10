@@ -171,7 +171,9 @@ OK - in connect component:
 	OK - remove refactored code,
 	OK - what if you enter game-play url by yourself?
 	OK - if you enter game-play without running game, do something
-	- display game link for a friend to join, also in game-deploy,
+	OK - display game link for a friend to join, also in game-deploy,
+	- copy to clipboard link btn,
+	- share link on fb
 	- water / explosion / splash sprites,
 	OK - bug: when missed shot, timer is still running,
 	OK - bug: displaying `Waiting for second player to join this game` after both players deployed ships,
