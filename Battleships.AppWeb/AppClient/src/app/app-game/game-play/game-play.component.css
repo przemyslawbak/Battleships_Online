@@ -4,6 +4,11 @@ button {
   width: 31%;
 }
 
+.gameStatus button {
+  margin-top: 10px;
+  width: 100%;
+}
+
 .gameHeaderPic {
   background-position: center;
   background-repeat: no-repeat;

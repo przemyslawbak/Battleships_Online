@@ -224,4 +224,20 @@ export class GameDeployComponent implements OnInit {
     this.fleetDeployed = [];
     this.board.createEmptyBoard();
   }
+
+  public copyToClipboard(): void {
+    document.addEventListener('copy', (e: ClipboardEvent) => {
+      e.clipboardData.setData('text/plain', this.gameLink);
+      e.preventDefault();
+      document.removeEventListener('copy', null);
+    });
+    document.execCommand('copy');
+  }
+
+  public shareOnFacebook(): void {
+    let url: string =
+      'https://www.facebook.com/sharer/sharer.php?u=' + this.gameLink;
+    var win = window.open(url, '_blank');
+    win.focus();
+  }
 }

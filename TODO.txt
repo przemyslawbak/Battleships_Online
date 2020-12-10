@@ -172,9 +172,9 @@ OK - in connect component:
 	OK - what if you enter game-play url by yourself?
 	OK - if you enter game-play without running game, do something
 	OK - display game link for a friend to join, also in game-deploy,
-	- copy to clipboard link btn,
-	- share link on fb
-	- water / explosion / splash sprites,
+	OK - copy to clipboard link btn,
+	OK - share link on fb
+	OK - water / explosion / splash sprites,
 	OK - bug: when missed shot, timer is still running,
 	OK - bug: displaying `Waiting for second player to join this game` after both players deployed ships,
 	OK - bug: in game chat clients msg is marked red,
@@ -227,6 +227,7 @@ OK - what if hubConnection.onclose?
 - shere in social media
 - verify opponent board only in backend
 - game chat mute opponent
+- DRY copy to clipboard in game-play & game-deploy
 
 end:
 - favicon

@@ -48,15 +48,26 @@
       </ng-template>
       <ng-template #waiting>
         <div class="row">
-          <div class="col-sm-12 redColor">
+          <h4 class="col-sm-12 redColor">
             Waiting for second player to join this game...
-          </div>
+          </h4>
           <div class="col-sm-12 link">
             Link for your friends to join this game:
           </div>
-          <div class="col-sm-12">
-            {{ this.gameLink }}
-          </div>
+          <button
+            type="button"
+            class="btn btn-sm btn-primary linkBtn"
+            (click)="copyToClipboard()"
+          >
+            Copy link to the clipoard
+          </button>
+          <button
+            type="button"
+            class="btn btn-sm btn-primary linkBtn"
+            (click)="shareOnFacebook()"
+          >
+            Share link on facebook
+          </button>
         </div>
       </ng-template>
     </div>
