@@ -55,6 +55,9 @@ export class GamePlayComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    if (!this.game.isGameStarted()) {
+      this.router.navigate(['']);
+    }
     this.userName = this.auth.getAuth().user;
     this.startCounter();
     //todo: do I need to reset them?
