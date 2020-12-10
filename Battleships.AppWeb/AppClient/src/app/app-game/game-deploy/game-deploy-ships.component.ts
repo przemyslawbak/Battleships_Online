@@ -21,7 +21,7 @@ import { ChatMessage } from '@models/chat-message.model';
 })
 export class GameDeployComponent implements OnInit {
   public gameLink: string =
-    environment.apiUrl + 'connect-game/' + this.game.getGame().gameId;
+    environment.clientUrl + 'connect-game/' + this.game.getGame().gameId;
   public isDeployed: boolean = false;
   public isDeploymentAllowed: boolean = false;
   public chatMessage: string = '';

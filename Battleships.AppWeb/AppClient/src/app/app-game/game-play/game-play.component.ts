@@ -19,7 +19,7 @@ import { BoardService } from '@services/board.service';
 })
 export class GamePlayComponent implements OnInit {
   public gameLink: string =
-    environment.apiUrl + 'connect-game/' + this.game.getGame().gameId;
+    environment.clientUrl + 'connect-game/' + this.game.getGame().gameId;
   public userName: string = '';
   public clientsName: string = '';
   public opponentsName: string = '';
