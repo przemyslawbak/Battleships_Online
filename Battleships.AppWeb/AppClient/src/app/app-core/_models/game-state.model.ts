@@ -8,6 +8,8 @@ export interface GameState {
   gameMulti: boolean;
   gameOpen: boolean;
   gameLink: boolean;
+  displayingResults: boolean;
+  fireResult: boolean;
   players: Player[];
   isDeploymentAllowed: boolean;
   isStartAllowed: boolean;

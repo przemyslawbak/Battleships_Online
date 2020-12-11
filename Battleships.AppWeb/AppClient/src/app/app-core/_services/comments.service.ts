@@ -4,34 +4,56 @@ import { CommentModel } from '@models/comment.model';
 @Injectable()
 export class CommentsService {
   private yourTurnComments: string[] = [
-    'Your round, do not waste it.',
-    'Your shot, do your best.',
+    'Your turn, do not waste it.',
+    'Your turn, do your best.',
     'Your turn, good luck.',
-    'Now is your turn.',
   ];
   private anotherShotComments: string[] = [
-    'You have another shot.',
-    'You can try again.',
-    'You have one more shot.',
-    'Keep shooting.',
+    'Shoot again. You have another shot.',
+    'Shoot again. You can try again.',
+    'Shoot again. You have one more shot.',
   ];
   private opponentsTurnComments: string[] = [
-    'Your opponents turn.',
-    'Now opponent is trying.',
-    'Opponent is trying now.',
+    'Opponents turn. Cross your fingers.',
+    'Opponents turn. Now opponent is trying.',
+    'Opponents turn. You can start praying.',
   ];
   private missedComments: string[] = [
-    'What a shame, you missed. Again.',
-    'Maybe next time you have more luck.',
-    'Well, you did your best. I hope.',
+    'You missed. What a shame.',
+    'You missed. Maybe next time you have more luck.',
+    'You missed. Well, you did your best. I hope.',
   ];
   private hitComments: string[] = [
-    'Lucky bastard!',
-    'Nice one!',
-    'Another one bites the dust!.',
+    'You hit. Lucky bastard!',
+    'You hit. Nice one!',
+    'You hit. Another one bites the dust!',
+  ];
+  private lostComments: string[] = [
+    'You are hit. Next time you will have more luck.',
+    'You are hit. Bad luck, sorry.',
+    'You are hit. No luck this time.',
+  ];
+  private notLostComments: string[] = [
+    'Opponent missed. Lucky you.',
+    'Opponent missed. You are lucky this time.',
+    'Opponent missed. Good for you.',
   ];
 
   constructor() {}
+
+  public getNoLostComment(): CommentModel {
+    return {
+      text: this.randomPhrase(this.notLostComments),
+      color: 'red',
+    } as CommentModel;
+  }
+
+  public getLostComment(): CommentModel {
+    return {
+      text: this.randomPhrase(this.lostComments),
+      color: 'red',
+    } as CommentModel;
+  }
 
   public getHitComment(): CommentModel {
     return {

@@ -145,6 +145,8 @@ export class GameStartComponent {
     model.players = [player1, player2];
     model.isDeploymentAllowed = false;
     model.isStartAllowed = false;
+    model.displayingResults = false;
+    model.fireResult = false;
     return model;
   }
 

@@ -9,6 +9,8 @@
         public bool GameMulti { get; set; }
         public bool GameOpen { get; set; }
         public bool GameLink { get; set; }
+        public bool DisplayingResults { get; set; }
+        public bool FireResult { get; set; }
         public Player[] Players { get; set; }
         public bool IsDeploymentAllowed { get; set; }
         public bool IsStartAllowed { get; set; }

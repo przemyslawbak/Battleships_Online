@@ -37,6 +37,7 @@ export class GamePlayComponent implements OnInit {
   private countDown: Subscription;
   public count: number = 30;
   public boards: Array<BoardCell[][]> = [];
+  private isResultBeingDisplayed: boolean = false;
   private _subGame: any;
   private _subMessage: any;
 
@@ -82,17 +83,28 @@ export class GamePlayComponent implements OnInit {
       }
       this.clientsName = game.players[this.clientsPlayerNumber].displayName;
       this.opponentsName = game.players[this.opponentsPlayerNumber].displayName;
-      console.clear();
-      console.log(game.players[0].board);
-      console.log(game.players[1].board);
       this.boards[0] = game.players[0].board;
       this.boards[1] = game.players[1].board;
       this.turnNo = game.gameTurnNumber;
       this.whoseTurnNumber = game.gameTurnPlayer;
       this.whoseTurnName = game.players[this.whoseTurnNumber].displayName;
       this.isStartAllowed = game.isStartAllowed;
-      if (!this.isStartAllowed) {
-        this.gameBoardComment = this.comments.getWaitingComment();
+      this.isResultBeingDisplayed = game.displayingResults;
+      //todo: clean up
+      if (!this.isStartAllowed || this.isResultBeingDisplayed) {
+        if (this.isResultBeingDisplayed) {
+          if (game.fireResult) {
+            this.whoseTurnNumber == this.clientsPlayerNumber
+              ? (this.gameBoardComment = this.comments.getHitComment())
+              : (this.gameBoardComment = this.comments.getLostComment());
+          } else {
+            this.whoseTurnNumber == this.clientsPlayerNumber
+              ? (this.gameBoardComment = this.comments.getMissedComment())
+              : (this.gameBoardComment = this.comments.getNoLostComment());
+          }
+        } else {
+          this.gameBoardComment = this.comments.getWaitingComment();
+        }
       } else {
         if (this.whoseTurnNumber == this.clientsPlayerNumber) {
           this.gameBoardComment = this.comments.getYourTurnComment();
@@ -122,7 +134,10 @@ export class GamePlayComponent implements OnInit {
           this.nextRound();
           this.count = 30;
         } else {
-          if (this.clientsPlayerNumber == this.whoseTurnNumber) {
+          if (
+            this.clientsPlayerNumber == this.whoseTurnNumber &&
+            !this.isResultBeingDisplayed
+          ) {
             this.count--;
           }
         }
@@ -166,17 +181,28 @@ export class GamePlayComponent implements OnInit {
     let isHit: boolean = this.verifyHit(row, col);
     let game = this.game.getGame();
     if (isHit) {
-      this.gameBoardComment = this.comments.getAnotherShotComment();
       game = this.markHitOnBoard(row, col, game);
-      game.gameTurnPlayer = this.whoseTurnNumber;
-      game.gameTurnNumber = this.turnNo;
-      //todo: inform that hit
     } else {
-      this.gameBoardComment = this.comments.getMissedComment();
       if (col >= 0 && row >= 0) {
         game = this.markMissedOnBoard(row, col, game);
-        //todo: inform that missed
       }
+    }
+
+    this.updateOpponentDisplayResult(game);
+    setTimeout(() => this.updateRoundDataAndContinue(game, isHit), 3000);
+  }
+
+  private updateOpponentDisplayResult(game: GameState) {
+    game.displayingResults = true;
+    this.signalRService.broadcastGameState(game);
+  }
+
+  private updateRoundDataAndContinue(game: GameState, isHit: boolean) {
+    game.displayingResults = false;
+    if (isHit) {
+      game.gameTurnPlayer = this.whoseTurnNumber;
+      game.gameTurnNumber = this.turnNo;
+    } else {
       if (this.whoseTurnNumber == 0) {
         game.gameTurnPlayer = 1;
         game.gameTurnNumber = this.turnNo;
