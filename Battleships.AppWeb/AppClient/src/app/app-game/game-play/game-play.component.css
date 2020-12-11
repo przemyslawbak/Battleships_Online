@@ -164,6 +164,10 @@ app-ship {
   cursor: pointer;
 }
 
+.pointer:hover {
+  border: dashed 3px red;
+}
+
 .ship-box {
   height: 30px;
   border: solid 1px #ccc;

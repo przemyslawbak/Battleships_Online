@@ -153,8 +153,8 @@ OK - in connect component:
 	NO - time for both players together?
 	OK - display players board,
 	OK - fiering on opponent,
-	- when shooting, change background of hovered cell,
-	- bug: no pointer over the board,
+	OK - when shooting, change background of hovered cell,
+	OK - bug: no pointer over the board,
 	OK - if shooting, change cursor to pointer,
 	- after shot wait to display result comment,
 	- comments instead of text over the game board?
