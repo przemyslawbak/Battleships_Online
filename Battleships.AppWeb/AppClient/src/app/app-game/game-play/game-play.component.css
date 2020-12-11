@@ -89,6 +89,10 @@ button {
   color: red;
 }
 
+.blackColor {
+  color: black;
+}
+
 table {
   margin: 20px;
 }

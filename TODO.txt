@@ -146,6 +146,7 @@ OK - in connect component:
 	- if one player disconnects, isStartAllowed = false
 	- if one player disconnects, play with AI button displayed
 	- if one player disconnects, log it?
+	- winner: add to stats, display info, navigate to the main page
 	OK - rearrange view,
 	OK - status turn number,
 	OK - status whose turn,
@@ -157,9 +158,9 @@ OK - in connect component:
 	OK - bug: no pointer over the board,
 	OK - if shooting, change cursor to pointer,
 	- after shot wait to display result comment,
-	- comments instead of text over the game board?
-	- random result comments,
-	- bug: in game-play status btns not 100% width, why?
+	OK - comments instead of text over the game board?
+	OK - random result comments,
+	OK - bug: in game-play status btns not 100% width, why?
 	OK - end round when timer finishes,
 	OK - bug: shot does not reach ship, maybe switch col <-> row?
 	OK - bug: shot is not recorded by opponent,

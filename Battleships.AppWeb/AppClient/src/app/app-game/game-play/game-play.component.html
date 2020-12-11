@@ -116,7 +116,13 @@
         Quit game
       </button>
     </div>
-    <h4 [style.color]="'this.gameBoardComment.color'">
+    <h4
+      [ngClass]="{
+        greenColor: this.gameBoardComment.color == 'green',
+        redColor: this.gameBoardComment.color == 'red',
+        blackColor: this.gameBoardComment.color == 'black'
+      }"
+    >
       {{ this.gameBoardComment.text }}
     </h4>
     <div

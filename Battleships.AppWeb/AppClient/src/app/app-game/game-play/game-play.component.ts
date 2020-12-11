@@ -91,6 +91,15 @@ export class GamePlayComponent implements OnInit {
       this.whoseTurnNumber = game.gameTurnPlayer;
       this.whoseTurnName = game.players[this.whoseTurnNumber].displayName;
       this.isStartAllowed = game.isStartAllowed;
+      if (!this.isStartAllowed) {
+        this.gameBoardComment = this.comments.getWaitingComment();
+      } else {
+        if (this.whoseTurnNumber == this.clientsPlayerNumber) {
+          this.gameBoardComment = this.comments.getYourTurnComment();
+        } else {
+          this.gameBoardComment = this.comments.getOpponentsTurnComment();
+        }
+      }
 
       this.resetBoardColors();
     }
@@ -157,11 +166,13 @@ export class GamePlayComponent implements OnInit {
     let isHit: boolean = this.verifyHit(row, col);
     let game = this.game.getGame();
     if (isHit) {
+      this.gameBoardComment = this.comments.getAnotherShotComment();
       game = this.markHitOnBoard(row, col, game);
       game.gameTurnPlayer = this.whoseTurnNumber;
       game.gameTurnNumber = this.turnNo;
       //todo: inform that hit
     } else {
+      this.gameBoardComment = this.comments.getMissedComment();
       if (col >= 0 && row >= 0) {
         game = this.markMissedOnBoard(row, col, game);
         //todo: inform that missed

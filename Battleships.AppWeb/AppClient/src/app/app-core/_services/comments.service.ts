@@ -7,7 +7,7 @@ export class CommentsService {
     'Your round, do not waste it.',
     'Your shot, do your best.',
     'Your turn, good luck.',
-    'Your turn again.',
+    'Now is your turn.',
   ];
   private anotherShotComments: string[] = [
     'You have another shot.',
@@ -70,6 +70,13 @@ export class CommentsService {
 
   public getInitialComment(): CommentModel {
     return { text: 'Please wait...', color: 'black' } as CommentModel;
+  }
+
+  public getWaitingComment(): CommentModel {
+    return {
+      text: 'Waiting for 2nd player...',
+      color: 'black',
+    } as CommentModel;
   }
 
   private randomPhrase(textArray: string[]): string {
