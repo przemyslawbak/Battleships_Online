@@ -191,7 +191,7 @@ OK - in connect component:
 	NO - some margin between boards,
 	OK - display opponents board, but all ships hidden,
 	OK - swap boards depending on whose turn,
-	- I dont like status btns,
+	OK - adjust: I dont like status btns,
 	OK - bug: on hit displaying missed comment,
 	OK - adjust: when displaying hit result, switch off pointer and dashed cell border,
 	OK - adjust: when displaying hit result, do not allow to fire,
