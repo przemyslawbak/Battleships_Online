@@ -183,8 +183,10 @@ export class GamePlayComponent implements OnInit {
       let isHit: boolean = this.verifyHit(row, col);
       let game = this.game.getGame();
       if (isHit) {
+        game.fireResult = true;
         game = this.markHitOnBoard(row, col, game);
       } else {
+        game.fireResult = false;
         if (col >= 0 && row >= 0) {
           game = this.markMissedOnBoard(row, col, game);
         }

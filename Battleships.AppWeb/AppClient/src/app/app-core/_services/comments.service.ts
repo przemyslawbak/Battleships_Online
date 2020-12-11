@@ -44,7 +44,7 @@ export class CommentsService {
   public getNoLostComment(): CommentModel {
     return {
       text: this.randomPhrase(this.notLostComments),
-      color: 'red',
+      color: 'green',
     } as CommentModel;
   }
 

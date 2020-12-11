@@ -191,7 +191,7 @@ OK - in connect component:
 	OK - display opponents board, but all ships hidden,
 	OK - swap boards depending on whose turn,
 	- I dont like status btns,
-	- bug: on hit displaying missed comment,
+	OK - bug: on hit displaying missed comment,
 	- adjust: when displaying hit result, switch off pointer and dashed border,
 	OK - adjust: when displaying hit result, do not allow to fire,
 - single player:
