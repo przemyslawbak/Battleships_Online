@@ -1,3 +1,4 @@
+import { CommentModel } from '@models/comment.model';
 import { PlayerService } from '@services/player.service';
 import { BoardCell } from '@models/board-cell.model';
 import { ChatMessage } from './../../app-core/_models/chat-message.model';
@@ -12,12 +13,14 @@ import { ModalService } from '@services/modal.service';
 import { GameState } from '@models/game-state.model';
 import { Subscription, timer } from 'rxjs';
 import { BoardService } from '@services/board.service';
+import { CommentsService } from '@services/comments.service';
 
 @Component({
   templateUrl: './game-play.component.html',
   styleUrls: ['./game-play.component.css'],
 })
 export class GamePlayComponent implements OnInit {
+  public gameBoardComment: CommentModel = this.comments.getInitialComment();
   public gameLink: string =
     environment.clientUrl + 'connect-game/' + this.game.getGame().gameId;
   public userName: string = '';
@@ -38,6 +41,7 @@ export class GamePlayComponent implements OnInit {
   private _subMessage: any;
 
   constructor(
+    private comments: CommentsService,
     private board: BoardService,
     private auth: AuthService,
     private modalService: ModalService,

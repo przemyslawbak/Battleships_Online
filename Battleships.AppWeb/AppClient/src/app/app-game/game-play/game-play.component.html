@@ -116,6 +116,9 @@
         Quit game
       </button>
     </div>
+    <h4 [style.color]="'this.gameBoardComment.color'">
+      {{ this.gameBoardComment.text }}
+    </h4>
     <div
       *ngIf="
         this.clientsPlayerNumber == this.whoseTurnNumber;
@@ -125,7 +128,6 @@
     ></div>
     <!--board1-->
     <ng-template #player>
-      <h4 class="redColor">The opponent shoots on your board...</h4>
       <div class="board text-center">
         <div
           class="boardRow"
@@ -146,7 +148,6 @@
     </ng-template>
     <!--board2-->
     <ng-template #opponent>
-      <h4 class="greenColor">Shoot on the opponent's board...</h4>
       <div class="board text-center">
         <div
           class="boardRow"

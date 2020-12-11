@@ -99,7 +99,7 @@ OK - when rejoining game, subscribes to messaging again, fix that - initGame() m
 OK - redirect to main on being disconnected, remove redirection from logout (auth service)
 OK - chat window (if 2 players at the same game id, and send only to opponent? or to himslef too, for client game state update?)
 OK - chat info when player joins game
-- rearrange game-play view: chat on the right side, game status horizontal. And mobile view?
+NO - rearrange game-play view: chat on the right side, game status horizontal. And mobile view?
 
 gameplay:
 OK - update game status with:
@@ -137,7 +137,7 @@ OK - in deploy view and component:
 	OK - bug: reset board colors when auto deploy trigerred,
 	- when waiting for 2nd player to be connected hide board
 	- update game state isStartAllowed after deploying?
-	- display game link for a friend, under "Waiting for second player to join this game...",
+	OK - display game link for a friend, under "Waiting for second player to join this game...",
 	- bug: 'deploy ships' btn is enabled before completed deploying
 OK - in connect component:
 	NO - prepare some view, spinner, anything?
@@ -159,6 +159,7 @@ OK - in connect component:
 	- after shot wait to display result comment,
 	- comments instead of text over the game board?
 	- random result comments,
+	- bug: in game-play status btns not 100% width, why?
 	OK - end round when timer finishes,
 	OK - bug: shot does not reach ship, maybe switch col <-> row?
 	OK - bug: shot is not recorded by opponent,
