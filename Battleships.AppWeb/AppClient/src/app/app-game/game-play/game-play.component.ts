@@ -107,6 +107,7 @@ export class GamePlayComponent implements OnInit {
         }
       } else {
         if (this.whoseTurnNumber == this.clientsPlayerNumber) {
+          this.count = 30;
           this.gameBoardComment = this.comments.getYourTurnComment();
         } else {
           this.gameBoardComment = this.comments.getOpponentsTurnComment();
@@ -178,18 +179,20 @@ export class GamePlayComponent implements OnInit {
   }
 
   public fire(row: number, col: number): void {
-    let isHit: boolean = this.verifyHit(row, col);
-    let game = this.game.getGame();
-    if (isHit) {
-      game = this.markHitOnBoard(row, col, game);
-    } else {
-      if (col >= 0 && row >= 0) {
-        game = this.markMissedOnBoard(row, col, game);
+    if (!this.isResultBeingDisplayed) {
+      let isHit: boolean = this.verifyHit(row, col);
+      let game = this.game.getGame();
+      if (isHit) {
+        game = this.markHitOnBoard(row, col, game);
+      } else {
+        if (col >= 0 && row >= 0) {
+          game = this.markMissedOnBoard(row, col, game);
+        }
       }
-    }
 
-    this.updateOpponentDisplayResult(game);
-    setTimeout(() => this.updateRoundDataAndContinue(game, isHit), 3000);
+      this.updateOpponentDisplayResult(game);
+      setTimeout(() => this.updateRoundDataAndContinue(game, isHit), 3000);
+    }
   }
 
   private updateOpponentDisplayResult(game: GameState) {
@@ -212,7 +215,6 @@ export class GamePlayComponent implements OnInit {
       }
     }
 
-    this.count = 30;
     this.signalRService.broadcastGameState(game);
   }
 

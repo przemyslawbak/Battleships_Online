@@ -158,6 +158,7 @@ OK - in connect component:
 	OK - bug: no pointer over the board,
 	OK - if shooting, change cursor to pointer,
 	OK - after shot wait to display result comment,
+	- change comment when skipped round / timed out
 	OK - comments instead of text over the game board?
 	OK - random result comments,
 	OK - bug: in game-play status btns not 100% width, why?
@@ -190,6 +191,9 @@ OK - in connect component:
 	OK - display opponents board, but all ships hidden,
 	OK - swap boards depending on whose turn,
 	- I dont like status btns,
+	- bug: on hit displaying missed comment,
+	- adjust: when displaying hit result, switch off pointer and dashed border,
+	OK - adjust: when displaying hit result, do not allow to fire,
 - single player:
 	-???
 - game rules component:

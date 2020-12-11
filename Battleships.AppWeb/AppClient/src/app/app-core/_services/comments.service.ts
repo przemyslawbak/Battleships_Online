@@ -21,7 +21,7 @@ export class CommentsService {
   private missedComments: string[] = [
     'You missed. What a shame.',
     'You missed. Maybe next time you have more luck.',
-    'You missed. Well, you did your best. I hope.',
+    'You missed. You did your best. I hope.',
   ];
   private hitComments: string[] = [
     'You hit. Lucky bastard!',
