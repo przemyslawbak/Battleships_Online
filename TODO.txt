@@ -136,7 +136,7 @@ OK - in deploy view and component:
 	OK - remove prop fleet from players model,
 	OK - bug: reset board colors when auto deploy trigerred,
 	OK - bug: manual deploying does not work!!!!
-	- when waiting for 2nd player to be connected hide board
+	- when waiting for 2nd player to be connected hide board / unable to deploy
 	- update game state isStartAllowed after deploying?
 	OK - display game link for a friend, under "Waiting for second player to join this game...",
 	- bug: 'deploy ships' btn is enabled before completed deploying
@@ -193,7 +193,7 @@ OK - in connect component:
 	OK - swap boards depending on whose turn,
 	- I dont like status btns,
 	OK - bug: on hit displaying missed comment,
-	- adjust: when displaying hit result, switch off pointer and dashed cell border,
+	OK - adjust: when displaying hit result, switch off pointer and dashed cell border,
 	OK - adjust: when displaying hit result, do not allow to fire,
 - single player:
 	-???

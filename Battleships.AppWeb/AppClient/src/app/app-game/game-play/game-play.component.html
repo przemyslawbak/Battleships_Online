@@ -164,7 +164,10 @@
         >
           <div *ngFor="let box of row; let j = index">
             <div
-              class="boardCell pointer"
+              [ngClass]="{
+                boardCell: true,
+                pointer: !this.isResultBeingDisplayed
+              }"
               [style.backgroundColor]="box.color"
               #cell
               (click)="fire(j, i)"
