@@ -147,9 +147,9 @@ OK - in connect component:
 	OK - if one player disconnects, isStartAllowed = false
 	- if one player disconnects, play with AI button displayed
 	- if one player disconnects, log it?
-	- winner: add to stats
+	OK - winner: add to stats
 	OK - winner: display info
-	- winner: navigate to the main page
+	OK - winner: navigate to the main page
 	OK - rearrange view,
 	OK - status turn number,
 	OK - status whose turn,

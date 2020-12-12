@@ -14,6 +14,7 @@ import { GameState } from '@models/game-state.model';
 import { Subscription, timer } from 'rxjs';
 import { BoardService } from '@services/board.service';
 import { CommentsService } from '@services/comments.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   templateUrl: './game-play.component.html',
@@ -42,6 +43,7 @@ export class GamePlayComponent implements OnInit {
   private _subMessage: any;
 
   constructor(
+    private http: HttpClient,
     private comments: CommentsService,
     private board: BoardService,
     private auth: AuthService,
@@ -142,13 +144,28 @@ export class GamePlayComponent implements OnInit {
 
   private weHaveWinner(winner: number): void {
     let message: string = '';
-    winner == this.clientsPlayerNumber
-      ? 'You won this batle!'
-      : 'You lost this battle';
+    message =
+      winner == this.clientsPlayerNumber
+        ? 'You won this batle!'
+        : 'You lost this battle';
     this.modalService.open('info-modal', message);
-    //todo: display info
-    //todo: add to stats
-    //todo: navigate to ''
+    winner == this.clientsPlayerNumber
+      ? this.addWonGameAndRedirect()
+      : this.redirect();
+  }
+  private redirect(): void {
+    this.router.navigate(['']);
+  }
+
+  private addWonGameAndRedirect(): void {
+    const url = environment.apiUrl + 'api/user/winner';
+    const data = {
+      UserName: this.auth.getAuth().user,
+      Multiplayer: this.game.getGame().gameMulti,
+    };
+    this.http.post<any>(url, data).subscribe(() => {
+      this.redirect();
+    });
   }
 
   private resetBoardColors(): void {

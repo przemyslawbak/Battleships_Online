@@ -60,6 +60,24 @@ namespace Battleships.AppWeb.Controllers
         }
 
         /// <summary>
+        /// GET: api/user/winner
+        /// </summary>
+        /// <returns>Status code.</returns>
+        [HttpPost("winner")]
+        [ValidateModel]
+        public IActionResult PostWinner([FromBody]GameWinner model)
+        {
+            bool result = _userRepo.AddWonGame(model);
+
+            if (!result)
+            {
+                return new ObjectResult("Error when saving winner.") { StatusCode = 409 };
+            }
+
+            return Ok();
+        }
+
+        /// <summary>
         /// POST: api/user/reset
         /// </summary>
         /// <returns>Status code.</returns>
