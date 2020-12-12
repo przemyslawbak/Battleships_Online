@@ -67,7 +67,6 @@ export class GamePlayComponent implements OnInit {
     }
     this.userName = this.auth.getAuth().user;
     this.startCounter();
-    //todo: do I need to reset them?
     this.initGameSubscription();
     this.resetMessageListeners();
     this.updateGameValues(this.game.getGame());
@@ -76,11 +75,9 @@ export class GamePlayComponent implements OnInit {
   private updateGameValues(game: GameState): void {
     if (game) {
       this.clientsPlayerNumber = this.player.getPlayerNumber();
-      if (this.clientsPlayerNumber == 0) {
-        this.opponentsPlayerNumber = 1;
-      } else {
-        this.opponentsPlayerNumber = 0;
-      }
+      this.clientsPlayerNumber == 0
+        ? (this.opponentsPlayerNumber = 1)
+        : (this.opponentsPlayerNumber = 0);
       this.clientsName = game.players[this.clientsPlayerNumber].displayName;
       this.opponentsName = game.players[this.opponentsPlayerNumber].displayName;
       this.boards[0] = game.players[0].board;
@@ -90,32 +87,60 @@ export class GamePlayComponent implements OnInit {
       this.whoseTurnName = game.players[this.whoseTurnNumber].displayName;
       this.isStartAllowed = game.isStartAllowed;
       this.isResultBeingDisplayed = game.displayingResults;
-      //todo: clean up
-      if (!this.isStartAllowed || this.isResultBeingDisplayed) {
-        if (this.isResultBeingDisplayed) {
-          if (game.fireResult) {
-            this.whoseTurnNumber == this.clientsPlayerNumber
-              ? (this.gameBoardComment = this.comments.getHitComment())
-              : (this.gameBoardComment = this.comments.getLostComment());
-          } else {
-            this.whoseTurnNumber == this.clientsPlayerNumber
-              ? (this.gameBoardComment = this.comments.getMissedComment())
-              : (this.gameBoardComment = this.comments.getNoLostComment());
-          }
-        } else {
-          this.gameBoardComment = this.comments.getWaitingComment();
-        }
-      } else {
-        if (this.whoseTurnNumber == this.clientsPlayerNumber) {
-          this.count = 30;
-          this.gameBoardComment = this.comments.getYourTurnComment();
-        } else {
-          this.gameBoardComment = this.comments.getOpponentsTurnComment();
-        }
-      }
-
+      this.setupGameBoardCommentsAndGame(game.fireResult);
       this.resetBoardColors();
     }
+  }
+
+  private setupGameBoardCommentsAndGame(fireResult: boolean): void {
+    !this.isStartAllowed || this.isResultBeingDisplayed
+      ? this.gameIsNotAllowedOrResultsBeingDisplayed(fireResult)
+      : this.setupNextRound();
+  }
+
+  private gameIsNotAllowedOrResultsBeingDisplayed(fireResult: boolean): void {
+    this.isResultBeingDisplayed
+      ? this.resultIsBeingDisplayed(fireResult)
+      : this.gameIsNotAllowed();
+  }
+
+  private resultIsBeingDisplayed(fireResult: boolean): void {
+    this.checkForWinner()
+      ? this.weHaveWinner()
+      : this.AddLastRoundComments(fireResult);
+  }
+
+  private gameIsNotAllowed(): void {
+    this.gameBoardComment = this.comments.getWaitingComment();
+  }
+
+  private setupNextRound(): void {
+    if (this.whoseTurnNumber == this.clientsPlayerNumber) {
+      this.count = 30;
+      this.gameBoardComment = this.comments.getYourTurnComment();
+    } else {
+      this.gameBoardComment = this.comments.getOpponentsTurnComment();
+    }
+  }
+
+  private AddLastRoundComments(fireResult: boolean): void {
+    if (fireResult) {
+      this.whoseTurnNumber == this.clientsPlayerNumber
+        ? (this.gameBoardComment = this.comments.getHitComment())
+        : (this.gameBoardComment = this.comments.getLostComment());
+    } else {
+      this.whoseTurnNumber == this.clientsPlayerNumber
+        ? (this.gameBoardComment = this.comments.getMissedComment())
+        : (this.gameBoardComment = this.comments.getNoLostComment());
+    }
+  }
+
+  private weHaveWinner(): void {
+    throw new Error('Method not implemented.');
+  }
+
+  private checkForWinner(): boolean {
+    throw new Error('Method not implemented.');
   }
 
   private resetBoardColors(): void {
