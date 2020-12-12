@@ -139,7 +139,7 @@ OK - in deploy view and component:
 	OK - adjust: when waiting for 2nd player to be connected hide board / unable to deploy
 	OK - update game state isStartAllowed after deploying?
 	OK - display game link for a friend, under "Waiting for second player to join this game...",
-	- bug: 'deploy ships' btn is enabled before completed deploying
+	OK - bug: 'deploy ships' btn is enabled before completed deploying
 OK - in connect component:
 	NO - prepare some view, spinner, anything?
 	OK - err: ERROR TypeError: this.thenable is undefined
@@ -147,7 +147,9 @@ OK - in connect component:
 	OK - if one player disconnects, isStartAllowed = false
 	- if one player disconnects, play with AI button displayed
 	- if one player disconnects, log it?
-	- winner: add to stats, display info, navigate to the main page
+	- winner: add to stats
+	OK - winner: display info
+	- winner: navigate to the main page
 	OK - rearrange view,
 	OK - status turn number,
 	OK - status whose turn,

@@ -3,6 +3,7 @@ import { ShipComponent } from '../../app-game/game-ship/ship.component';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { DropModel } from '@models/drop-model';
+import { Player } from '@models/player.model';
 
 @Injectable()
 export class BoardService {
@@ -11,6 +12,31 @@ export class BoardService {
   public playersBoard: BoardCell[][];
   public lastDropCells: Array<BoardCell> = [];
   public boardChange: Subject<BoardCell[][]> = new Subject<BoardCell[][]>();
+
+  public isThereAWinner(players: Player[]): number {
+    let result: number = -1;
+     if (this.CheckForWinner(players[0].board)){
+       result = 0;
+     }
+     if (this.CheckForWinner(players[0].board){
+       result = 1;
+     }
+
+      return result;
+  }
+
+  CheckForWinner(board: BoardCell[][]): boolean {
+    let hits: number = 0;
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        if (board[i][j].value == 2) {
+          hits++;
+        }
+      }
+    }
+
+    return hits == 20 ? true : false;
+  }
 
   public eraseOpponentsShips(board: BoardCell[][]): BoardCell[][] {
     for (let i = 0; i < 10; i++) {

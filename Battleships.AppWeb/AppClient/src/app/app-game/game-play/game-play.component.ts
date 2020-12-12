@@ -50,7 +50,6 @@ export class GamePlayComponent implements OnInit {
     private game: GameService,
     private route: ActivatedRoute,
     private signalRService: SignalRService,
-    private http: HttpService,
     private player: PlayerService
   ) {}
 
@@ -105,8 +104,10 @@ export class GamePlayComponent implements OnInit {
   }
 
   private resultIsBeingDisplayed(fireResult: boolean): void {
-    this.checkForWinner()
-      ? this.weHaveWinner()
+    let winner: number = this.checkForWinner();
+
+    winner > -1
+      ? this.weHaveWinner(winner)
       : this.AddLastRoundComments(fireResult);
   }
 
@@ -135,12 +136,19 @@ export class GamePlayComponent implements OnInit {
     }
   }
 
-  private weHaveWinner(): void {
-    throw new Error('Method not implemented.');
+  private checkForWinner(): number {
+    return this.board.isThereAWinner(this.game.getGame().players);
   }
 
-  private checkForWinner(): boolean {
-    throw new Error('Method not implemented.');
+  private weHaveWinner(winner: number): void {
+    let message: string = '';
+    winner == this.clientsPlayerNumber
+      ? 'You won this batle!'
+      : 'You lost this battle';
+    this.modalService.open('info-modal', message);
+    //todo: display info
+    //todo: add to stats
+    //todo: navigate to ''
   }
 
   private resetBoardColors(): void {
