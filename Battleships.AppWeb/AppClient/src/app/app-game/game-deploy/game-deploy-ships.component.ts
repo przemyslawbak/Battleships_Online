@@ -29,7 +29,7 @@ export class GameDeployComponent implements OnInit {
   public chatMessages: Array<ChatMessage> = [];
   public userName: string = '';
   private countDown: Subscription;
-  public count: number = 30; //todo: change later
+  public count: number = 30;
   public fleetWaiting: Array<ShipComponent> = [];
   public fleetDeployed: Array<ShipComponent> = [];
   public playersBoard: BoardCell[][];
@@ -51,7 +51,7 @@ export class GameDeployComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.countDown = null; //todo: what if goes out the view?
+    this.countDown = null;
     if (this._subGame && this._subMessage && this._subBoard) {
       this._subGame.unsubscribe();
       this._subMessage.unsubscribe();
@@ -65,7 +65,6 @@ export class GameDeployComponent implements OnInit {
     }
     this.userName = this.auth.getAuth().user;
     this.startCounter();
-    //todo: do I need to reset them?
     this.resetMessageListeners();
     this.initGameSubscription();
     this.board.createEmptyBoard();
