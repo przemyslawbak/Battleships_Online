@@ -144,12 +144,7 @@ export class GameDeployComponent implements OnInit {
       this.moveFromWaitingToDeployed();
     }
 
-    //todo: dry
-    if (this.fleetDeployed.length < 10) {
-      this.isDeployEnabled = false;
-    } else {
-      this.isDeployEnabled = true;
-    }
+    this.enableDeployBtnIfPossible();
   }
 
   public resetBoardElement(element: HTMLElement, row: number, col: number) {
@@ -233,7 +228,10 @@ export class GameDeployComponent implements OnInit {
       this.board.resetEmptyCellsColors();
     }
 
-    //todo: dry
+    this.enableDeployBtnIfPossible();
+  }
+
+  private enableDeployBtnIfPossible(): void {
     if (this.fleetDeployed.length < 10) {
       this.isDeployEnabled = false;
     } else {
