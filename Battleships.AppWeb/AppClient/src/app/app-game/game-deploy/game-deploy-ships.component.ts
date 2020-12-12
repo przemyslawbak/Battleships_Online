@@ -138,7 +138,7 @@ export class GameDeployComponent implements OnInit {
   }
 
   public deployShip(row: number, col: number): void {
-    if (this.board.isDropAllowed) {
+    if (this.board.isDropAllowed && this.isDeploymentAllowed) {
       this.board.deployShip(row, col, this.fleetWaiting[0]);
       this.moveFromWaitingToDeployed();
     }
@@ -154,13 +154,15 @@ export class GameDeployComponent implements OnInit {
     col: number,
     element: HTMLElement
   ): void {
-    this.board.checkHoveredElement(
-      elementType,
-      row,
-      col,
-      element,
-      this.fleetWaiting[0]
-    );
+    if (this.isDeploymentAllowed) {
+      this.board.checkHoveredElement(
+        elementType,
+        row,
+        col,
+        element,
+        this.fleetWaiting[0]
+      );
+    }
   }
 
   private moveFromWaitingToDeployed(): void {
@@ -212,11 +214,15 @@ export class GameDeployComponent implements OnInit {
   }
 
   public autoDeploy(): void {
-    while (this.fleetWaiting.length > 0) {
-      this.board.playersBoard = this.board.autoDeployShip(this.fleetWaiting[0]);
-      this.moveFromWaitingToDeployed();
+    if (this.isDeploymentAllowed) {
+      while (this.fleetWaiting.length > 0) {
+        this.board.playersBoard = this.board.autoDeployShip(
+          this.fleetWaiting[0]
+        );
+        this.moveFromWaitingToDeployed();
+      }
+      this.board.resetEmptyCellsColors();
     }
-    this.board.resetEmptyCellsColors();
   }
 
   public clearBoard(): void {

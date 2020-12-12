@@ -94,6 +94,10 @@ export class CommentsService {
     return { text: 'Please wait...', color: 'black' } as CommentModel;
   }
 
+  public getTimeoutComment(): CommentModel {
+    return { text: 'Time out.', color: 'black' } as CommentModel;
+  }
+
   public getWaitingComment(): CommentModel {
     return {
       text: 'Waiting for 2nd player...',

@@ -109,6 +109,7 @@
     <div class="text-center">
       <button
         [disabled]="isDeployed"
+        [disabled]="!isDeploymentAllowed"
         type="submit"
         class="btn btn-md btn-secondary"
         (click)="clearBoard()"
@@ -117,6 +118,7 @@
       </button>
       <button
         [disabled]="isDeployed"
+        [disabled]="!isDeploymentAllowed"
         type="submit"
         class="btn btn-md btn-secondary"
         (click)="autoDeploy()"
@@ -126,6 +128,7 @@
       <button
         [disabled]="fleetDeployed.length < 10"
         [disabled]="isDeployed"
+        [disabled]="!isDeploymentAllowed"
         type="submit"
         class="btn btn-md btn-success"
         (click)="confirm()"
@@ -144,7 +147,7 @@
       >
         <div *ngFor="let box of row; let j = index">
           <div
-            class="boardCell pointer"
+            [ngClass]="{ boardCell: true, pointer: this.isDeploymentAllowed }"
             [style.backgroundColor]="box.color"
             #cell
             (mouseleave)="resetBoardElement(cell, j, i)"

@@ -32,6 +32,7 @@ button {
   border: solid 1px;
   position: relative;
   border-radius: 10px;
+  margin-bottom: 10px;
 }
 
 .gameChat {
@@ -154,11 +155,14 @@ app-ship {
   display: inline-block;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 .boardCell {
   width: 50px;
   height: 50px;
   border: solid 1px #ccc;
-  cursor: pointer;
 }
 
 .ship-box {

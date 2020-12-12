@@ -136,15 +136,15 @@ OK - in deploy view and component:
 	OK - remove prop fleet from players model,
 	OK - bug: reset board colors when auto deploy trigerred,
 	OK - bug: manual deploying does not work!!!!
-	- when waiting for 2nd player to be connected hide board / unable to deploy
-	- update game state isStartAllowed after deploying?
+	OK - adjust: when waiting for 2nd player to be connected hide board / unable to deploy
+	OK - update game state isStartAllowed after deploying?
 	OK - display game link for a friend, under "Waiting for second player to join this game...",
 	- bug: 'deploy ships' btn is enabled before completed deploying
 OK - in connect component:
 	NO - prepare some view, spinner, anything?
 	OK - err: ERROR TypeError: this.thenable is undefined
 - in game-play component:
-	- if one player disconnects, isStartAllowed = false
+	OK - if one player disconnects, isStartAllowed = false
 	- if one player disconnects, play with AI button displayed
 	- if one player disconnects, log it?
 	- winner: add to stats, display info, navigate to the main page
@@ -159,7 +159,7 @@ OK - in connect component:
 	OK - bug: no pointer over the board,
 	OK - if shooting, change cursor to pointer,
 	OK - after shot wait to display result comment,
-	- change comment when skipped round / timed out
+	NO - adjust: change comment when skipped round / timed out
 	OK - comments instead of text over the game board?
 	OK - random result comments,
 	OK - bug: in game-play status btns not 100% width, why?
