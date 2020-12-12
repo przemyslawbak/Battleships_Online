@@ -24,6 +24,7 @@ export class GameDeployComponent implements OnInit {
     environment.clientUrl + 'connect-game/' + this.game.getGame().gameId;
   public isDeployed: boolean = false;
   public isDeploymentAllowed: boolean = false;
+  public isDeployEnabled: boolean = false;
   public chatMessage: string = '';
   public chatMessages: Array<ChatMessage> = [];
   public userName: string = '';
@@ -102,7 +103,7 @@ export class GameDeployComponent implements OnInit {
 
   private startCounter() {
     this.countDown = timer(0, 1000).subscribe(() => {
-      //this.isDeploymentAllowed = true; //todo: remove later on
+      console.log(this.isDeployEnabled);
       if (this.isDeploymentAllowed && !this.isDeployed) {
         if (this.count <= 0) {
           this.autoDeploy();
@@ -141,6 +142,13 @@ export class GameDeployComponent implements OnInit {
     if (this.board.isDropAllowed && this.isDeploymentAllowed) {
       this.board.deployShip(row, col, this.fleetWaiting[0]);
       this.moveFromWaitingToDeployed();
+    }
+
+    //todo: dry
+    if (this.fleetDeployed.length < 10) {
+      this.isDeployEnabled = false;
+    } else {
+      this.isDeployEnabled = true;
     }
   }
 
@@ -196,6 +204,7 @@ export class GameDeployComponent implements OnInit {
   }
 
   public confirm(): void {
+    console.log('confirm');
     if (this.fleetDeployed.length == 10 && !this.isDeployed) {
       this.isDeployed = true;
       this.count = 0;
@@ -223,12 +232,20 @@ export class GameDeployComponent implements OnInit {
       }
       this.board.resetEmptyCellsColors();
     }
+
+    //todo: dry
+    if (this.fleetDeployed.length < 10) {
+      this.isDeployEnabled = false;
+    } else {
+      this.isDeployEnabled = true;
+    }
   }
 
   public clearBoard(): void {
     this.fleetWaiting = this.createFleet();
     this.fleetDeployed = [];
     this.board.createEmptyBoard();
+    this.isDeployEnabled = false;
   }
 
   public copyToClipboard(): void {

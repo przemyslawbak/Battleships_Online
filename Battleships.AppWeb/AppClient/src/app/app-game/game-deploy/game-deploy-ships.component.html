@@ -126,9 +126,7 @@
         Auto deploy
       </button>
       <button
-        [disabled]="fleetDeployed.length < 10"
-        [disabled]="isDeployed"
-        [disabled]="!isDeploymentAllowed"
+        [disabled]="!isDeployEnabled || isDeployed || !isDeploymentAllowed"
         type="submit"
         class="btn btn-md btn-success"
         (click)="confirm()"
