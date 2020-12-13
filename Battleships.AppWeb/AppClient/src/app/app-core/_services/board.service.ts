@@ -15,14 +15,14 @@ export class BoardService {
 
   public isThereAWinner(players: Player[]): number {
     let result: number = -1;
-     if (this.CheckForWinner(players[0].board)){
-       result = 0;
-     }
-     if (this.CheckForWinner(players[0].board){
-       result = 1;
-     }
+    if (this.CheckForWinner(players[0].board)) {
+      result = 1;
+    }
+    if (this.CheckForWinner(players[1].board)) {
+      result = 0;
+    }
 
-      return result;
+    return result;
   }
 
   CheckForWinner(board: BoardCell[][]): boolean {

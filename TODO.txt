@@ -150,6 +150,7 @@ OK - in connect component:
 	OK - winner: add to stats
 	OK - winner: display info
 	OK - winner: navigate to the main page
+	OK - bug: wins the wrong player,
 	OK - rearrange view,
 	OK - status turn number,
 	OK - status whose turn,
