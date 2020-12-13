@@ -168,7 +168,7 @@
             <div
               [ngClass]="{
                 boardCell: true,
-                pointer: !this.isResultBeingDisplayed
+                pointer: !this.isResultBeingDisplayed && !this.gameEnded
               }"
               [style.backgroundColor]="box.color"
               #cell

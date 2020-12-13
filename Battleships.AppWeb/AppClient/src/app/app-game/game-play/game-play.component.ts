@@ -7,7 +7,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GameService } from '@services/game.service';
 import { SignalRService } from '@services/signal-r.service';
-import { HttpService } from '@services/http.service';
 import { environment } from '@environments/environment';
 import { ModalService } from '@services/modal.service';
 import { GameState } from '@models/game-state.model';
@@ -21,6 +20,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./game-play.component.css'],
 })
 export class GamePlayComponent implements OnInit {
+  public gameEnded: boolean = false;
   public gameBoardComment: CommentModel = this.comments.getInitialComment();
   public gameLink: string =
     environment.clientUrl + 'connect-game/' + this.game.getGame().gameId;
@@ -147,7 +147,13 @@ export class GamePlayComponent implements OnInit {
     message =
       winner == this.clientsPlayerNumber
         ? 'You won this batle!'
-        : 'You lost this battle';
+        : 'You lost this battle.';
+    this.gameBoardComment = {
+      text:
+        this.game.getGame().players[winner].displayName +
+        ' won! Congratulations.',
+      color: 'black',
+    };
     this.addWonGame(message);
   }
 
@@ -159,6 +165,7 @@ export class GamePlayComponent implements OnInit {
     };
     this.http.post<any>(url, data).subscribe(() => {
       this.modalService.open('info-modal', message);
+      this.gameEnded = true;
     });
   }
 
@@ -174,7 +181,7 @@ export class GamePlayComponent implements OnInit {
 
   private startCounter() {
     this.countDown = timer(0, 1000).subscribe(() => {
-      if (this.isStartAllowed) {
+      if (this.isStartAllowed && !this.gameEnded) {
         if (this.count <= 0) {
           this.nextRound();
           this.count = 30;
@@ -223,7 +230,7 @@ export class GamePlayComponent implements OnInit {
   }
 
   public fire(row: number, col: number): void {
-    if (!this.isResultBeingDisplayed) {
+    if (!this.isResultBeingDisplayed && !this.gameEnded) {
       let isHit: boolean = this.verifyHit(row, col);
       let game = this.game.getGame();
       if (isHit) {

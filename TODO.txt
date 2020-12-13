@@ -145,6 +145,7 @@ OK - in connect component:
 	OK - err: ERROR TypeError: this.thenable is undefined
 - in game-play component:
 	OK - if one player disconnects, isStartAllowed = false
+	- change game board comment afetr game ends,
 	- if one player disconnects, play with AI button displayed
 	- if one player disconnects, log it?
 	OK - winner: add to stats
