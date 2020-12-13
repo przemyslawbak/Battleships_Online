@@ -145,9 +145,8 @@ OK - in connect component:
 	OK - err: ERROR TypeError: this.thenable is undefined
 - in game-play component:
 	OK - if one player disconnects, isStartAllowed = false
-	- change game board comment afetr game ends,
-	- if one player disconnects, play with AI button displayed
-	- if one player disconnects, log it?
+	NO - change game board comment afetr game ends,
+	OK - if one player disconnects, play with AI button displayed
 	OK - winner: add to stats
 	OK - winner: display info
 	NO - winner: navigate to the main page
@@ -241,6 +240,7 @@ OK - what if hubConnection.onclose?
 - verify opponent board only in backend
 - game chat mute opponent
 - DRY copy to clipboard in game-play & game-deploy
+- if player disconnects in the middle of game, minus score,
 
 end:
 - favicon

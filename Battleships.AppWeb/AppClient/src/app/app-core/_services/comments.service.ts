@@ -100,7 +100,7 @@ export class CommentsService {
 
   public getWaitingComment(): CommentModel {
     return {
-      text: 'Waiting for 2nd player...',
+      text: 'Waiting for 2nd player to join...',
       color: 'black',
     } as CommentModel;
   }

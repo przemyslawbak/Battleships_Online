@@ -212,10 +212,6 @@ export class GameDeployComponent implements OnInit {
     }
   }
 
-  public quitGame(): void {
-    this.signalRService.stopConnection();
-  }
-
   public autoDeploy(): void {
     if (this.isDeploymentAllowed) {
       while (this.fleetWaiting.length > 0) {

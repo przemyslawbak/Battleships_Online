@@ -148,12 +148,6 @@ export class GamePlayComponent implements OnInit {
       winner == this.clientsPlayerNumber
         ? 'You won this batle!'
         : 'You lost this battle.';
-    this.gameBoardComment = {
-      text:
-        this.game.getGame().players[winner].displayName +
-        ' won! Congratulations.',
-      color: 'black',
-    };
     this.addWonGame(message);
   }
 
@@ -313,17 +307,7 @@ export class GamePlayComponent implements OnInit {
     win.focus();
   }
 
-  public quitGame(): void {
-    //todo:
-    alert('quit');
-  }
-
-  public randomShot(): void {
-    //todo:
-    alert('random shot');
-  }
-
-  public kickOpponent(): void {
+  public playWithAi(): void {
     //todo:
     alert('kick opponent');
   }

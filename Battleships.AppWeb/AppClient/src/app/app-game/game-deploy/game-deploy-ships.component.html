@@ -51,10 +51,18 @@
           <h4 class="col-sm-12 redColor">
             Waiting for second player to join this game...
           </h4>
-          <div class="col-sm-12 link">
-            Link for your friends to join this game:
-          </div>
           <div class="text-center">
+            <button
+              [disabled]="this.isStartAllowed"
+              type="submit"
+              class="btn btn-md btn-secondary"
+              (click)="playWithAi()"
+            >
+              Play vs AI
+            </button>
+            <div class="col-sm-12 link">
+              Link for your friends to join this game:
+            </div>
             <button
               type="button"
               class="btn btn-md btn-primary linkBtn"
@@ -132,9 +140,6 @@
         (click)="confirm()"
       >
         Deploy ships
-      </button>
-      <button type="submit" class="btn btn-md btn-danger" (click)="quitGame()">
-        Quit game
       </button>
     </div>
     <!--board1-->
