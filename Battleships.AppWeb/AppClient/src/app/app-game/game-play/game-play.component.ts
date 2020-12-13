@@ -148,23 +148,17 @@ export class GamePlayComponent implements OnInit {
       winner == this.clientsPlayerNumber
         ? 'You won this batle!'
         : 'You lost this battle';
-    this.modalService.open('info-modal', message);
-    winner == this.clientsPlayerNumber
-      ? this.addWonGameAndRedirect()
-      : this.redirect();
-  }
-  private redirect(): void {
-    this.router.navigate(['']);
+    this.addWonGame(message);
   }
 
-  private addWonGameAndRedirect(): void {
+  private addWonGame(message: string): void {
     const url = environment.apiUrl + 'api/user/winner';
     const data = {
       UserName: this.auth.getAuth().user,
       Multiplayer: this.game.getGame().gameMulti,
     };
     this.http.post<any>(url, data).subscribe(() => {
-      this.redirect();
+      this.modalService.open('info-modal', message);
     });
   }
 

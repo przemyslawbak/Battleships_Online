@@ -149,7 +149,7 @@ OK - in connect component:
 	- if one player disconnects, log it?
 	OK - winner: add to stats
 	OK - winner: display info
-	OK - winner: navigate to the main page
+	NO - winner: navigate to the main page
 	OK - bug: wins the wrong player,
 	OK - rearrange view,
 	OK - status turn number,
