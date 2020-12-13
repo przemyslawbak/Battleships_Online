@@ -266,6 +266,7 @@ export class GameDeployComponent implements OnInit {
         this.board.resetEmptyCellsColors();
       } else {
         //todo: remove later
+        console.log('computers board:');
         console.log(board);
       }
     }
