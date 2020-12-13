@@ -14,12 +14,14 @@ import { SignalRService } from '@services/signal-r.service';
 import { GameState } from '@models/game-state.model';
 import { BoardCell } from '@models/board-cell.model';
 import { ChatMessage } from '@models/chat-message.model';
+import { Player } from '@models/player.model';
 
 @Component({
   templateUrl: './game-deploy-ships.component.html',
   styleUrls: ['./game-deploy-ships.component.css'],
 })
 export class GameDeployComponent implements OnInit {
+  private aiPlayerNumber: number = -1;
   public gameLink: string =
     environment.clientUrl + 'connect-game/' + this.game.getGame().gameId;
   public isDeployed: boolean = false;
@@ -79,6 +81,28 @@ export class GameDeployComponent implements OnInit {
       if (p0Deployed && p1Deployed) {
         this.router.navigate(['play-game']);
       }
+
+      if (!game.gameMulti && game.gameAi) {
+        this.aiPlayerNumber = this.findAiPlayerNumber(game.players);
+        this.isDeploymentAllowed = true;
+        game.players[this.aiPlayerNumber].board = this.autoDeploy(
+          this.board.getEmptyBoard(),
+          this.createFleet(),
+          true
+        );
+        game.players[this.aiPlayerNumber].isDeployed = true;
+
+        this.game.setGame(game);
+        this.signalRService.broadcastGameState(game);
+      }
+    }
+  }
+
+  private findAiPlayerNumber(players: Player[]): number {
+    for (let i = 0; i < players.length; i++) {
+      if (players[i].userName == 'COMPUTER') {
+        return i;
+      }
     }
   }
 
@@ -105,7 +129,11 @@ export class GameDeployComponent implements OnInit {
       console.log(this.isDeployEnabled);
       if (this.isDeploymentAllowed && !this.isDeployed) {
         if (this.count <= 0) {
-          this.autoDeploy();
+          this.playersBoard = this.autoDeploy(
+            this.playersBoard,
+            this.fleetWaiting,
+            false
+          );
           this.confirm();
         } else {
           this.count--;
@@ -212,18 +240,39 @@ export class GameDeployComponent implements OnInit {
     }
   }
 
-  public autoDeploy(): void {
+  public autoDeploying(): void {
+    this.playersBoard = this.autoDeploy(
+      this.playersBoard,
+      this.fleetWaiting,
+      false
+    );
+  }
+
+  public autoDeploy(
+    board: BoardCell[][],
+    fleet: Array<ShipComponent>,
+    computer: boolean
+  ): BoardCell[][] {
     if (this.isDeploymentAllowed) {
-      while (this.fleetWaiting.length > 0) {
-        this.board.playersBoard = this.board.autoDeployShip(
-          this.fleetWaiting[0]
-        );
-        this.moveFromWaitingToDeployed();
+      while (fleet.length > 0) {
+        board = this.board.autoDeployShip(fleet[0]);
+        if (computer) {
+          fleet.splice(0, 1);
+        } else {
+          this.moveFromWaitingToDeployed();
+        }
       }
-      this.board.resetEmptyCellsColors();
+      if (!computer) {
+        this.board.resetEmptyCellsColors();
+      } else {
+        //todo: remove later
+        console.log(board);
+      }
     }
 
     this.enableDeployBtnIfPossible();
+
+    return board;
   }
 
   private enableDeployBtnIfPossible(): void {
@@ -255,5 +304,26 @@ export class GameDeployComponent implements OnInit {
       'https://www.facebook.com/sharer/sharer.php?u=' + this.gameLink;
     var win = window.open(url, '_blank');
     win.focus();
+  }
+
+  public playWithAi(): void {
+    let game = this.game.getGame();
+    game.gameMulti = false;
+    game.gameAi = true;
+    game.players = this.setComputerOpponent(game.players);
+
+    this.game.setGame(game);
+    this.signalRService.broadcastGameState(game);
+  }
+
+  private setComputerOpponent(players: Player[]): Player[] {
+    for (let i = 0; i < players.length; i++) {
+      if (players[i].userName == '') {
+        players[i].userName = 'COMPUTER';
+        players[i].displayName = 'COMPUTER';
+
+        return players;
+      }
+    }
   }
 }

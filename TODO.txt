@@ -204,6 +204,7 @@ OK - in game-play component:
 	- game chat off when single player game,
 	- do not wait for 2nd player when single player,
 	- bug: when hosting single player game it is written: this game is single player only,
+	- DRY `setComputerOpponent` move to service;
 - game rules component:
 	-???
 - edit profile component:

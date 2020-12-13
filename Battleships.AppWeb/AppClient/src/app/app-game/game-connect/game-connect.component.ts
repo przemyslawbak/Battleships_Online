@@ -50,8 +50,11 @@ export class GameConnectComponent implements OnInit {
         if (gameUserNames.includes(userName)) {
           this.initGame(game);
         } else {
-          //if game is multiplayer
-          if (game.gameMulti) {
+          //if game is multiplayer or no players assigned
+          if (
+            game.gameMulti ||
+            !this.checkForAnyPlayerConnected(game.players)
+          ) {
             //if hame has empty slot
             this.checkForEmptySlots(game, userName, displayName);
           } else {
@@ -65,6 +68,12 @@ export class GameConnectComponent implements OnInit {
         this.modalService.open('info-modal', 'Could not find game.');
       }
     });
+  }
+
+  private checkForAnyPlayerConnected(players: Player[]): boolean {
+    return players[0].userName == '' || players[1].userName == ''
+      ? false
+      : true;
   }
 
   private checkForEmptySlots(
@@ -84,12 +93,26 @@ export class GameConnectComponent implements OnInit {
   }
 
   private initGame(game: GameState): void {
+    if (game.gameAi && !game.gameMulti) {
+      game.players = this.setComputerOpponent(game.players);
+    }
     this.game.setGame(game); //set first state
     this.signalRService.broadcastGameState(game);
     if (game.players[0].isDeployed && game.players[1].isDeployed) {
       this.router.navigate(['play-game']);
     } else {
       this.router.navigate(['deploy-ships']);
+    }
+  }
+
+  private setComputerOpponent(players: Player[]): Player[] {
+    for (let i = 0; i < players.length; i++) {
+      if (players[i].userName == '') {
+        players[i].userName = 'COMPUTER';
+        players[i].displayName = 'COMPUTER';
+
+        return players;
+      }
     }
   }
 
