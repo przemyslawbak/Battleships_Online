@@ -143,7 +143,7 @@ OK - in deploy view and component:
 OK - in connect component:
 	NO - prepare some view, spinner, anything?
 	OK - err: ERROR TypeError: this.thenable is undefined
-- in game-play component:
+OK - in game-play component:
 	OK - if one player disconnects, isStartAllowed = false
 	NO - change game board comment afetr game ends,
 	OK - if one player disconnects, play with AI button displayed
@@ -199,7 +199,11 @@ OK - in connect component:
 	OK - adjust: when displaying hit result, switch off pointer and dashed cell border,
 	OK - adjust: when displaying hit result, do not allow to fire,
 - single player:
-	-???
+	- create AI,
+	- swap from multi -> single player when waiting for 2nd player,
+	- game chat off when single player game,
+	- do not wait for 2nd player when single player,
+	- bug: when hosting single player game it is written: this game is single player only,
 - game rules component:
 	-???
 - edit profile component:
