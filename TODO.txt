@@ -139,7 +139,8 @@ OK - in deploy view and component:
 	OK - adjust: when waiting for 2nd player to be connected hide board / unable to deploy
 	OK - update game state isStartAllowed after deploying?
 	OK - display game link for a friend, under "Waiting for second player to join this game...",
-	OK - bug: 'deploy ships' btn is enabled before completed deploying
+	OK - bug: 'deploy ships' btn is enabled before completed deploying,
+	OK - bug: deployed ships are not visible,
 OK - in connect component:
 	NO - prepare some view, spinner, anything?
 	OK - err: ERROR TypeError: this.thenable is undefined
@@ -200,6 +201,7 @@ OK - in game-play component:
 	OK - adjust: when displaying hit result, do not allow to fire,
 	- what if shooting cell already shot?
 - single player:
+	- bug: now computer does not shot,
 	OK - deploying ships for AI,
 	OK - bug: auto deploying players board on init,
 	OK - bug: ERROR TypeError: randomEmptyCell is undefined,
@@ -214,6 +216,7 @@ OK - in game-play component:
 	OK - game chat off when single player game,
 	OK - do not wait for 2nd player when single player,
 	OK - bug: when hosting single player game it is written: this game is single player only,
+	- what about display single player game in the list?
 - game rules component:
 	-???
 - edit profile component:

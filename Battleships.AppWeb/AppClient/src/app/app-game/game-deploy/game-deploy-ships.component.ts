@@ -163,7 +163,8 @@ export class GameDeployComponent implements OnInit {
     item.rotation = item.rotation === 0 ? 90 : 0;
   }
 
-  public deployShip(coord: Coordinates): void {
+  public deployShip(row: number, col: number): void {
+    let coord: Coordinates = { row: row, col: col } as Coordinates;
     if (this.board.isDropAllowed && this.isDeploymentAllowed) {
       this.playersBoard = this.board.deployShip(
         this.playersBoard,
@@ -176,7 +177,8 @@ export class GameDeployComponent implements OnInit {
     this.enableDeployBtnIfPossible();
   }
 
-  public resetBoardElement(element: HTMLElement, coord: Coordinates) {
+  public resetBoardElement(element: HTMLElement, row: number, col: number) {
+    let coord: Coordinates = { row: row, col: col } as Coordinates;
     this.playersBoard = this.board.resetBoardElement(
       this.playersBoard,
       element,
@@ -186,9 +188,11 @@ export class GameDeployComponent implements OnInit {
 
   public checkHoveredElement(
     elementType: string,
-    coord: Coordinates,
+    row: number,
+    col: number,
     element: HTMLElement
   ): void {
+    let coord: Coordinates = { row: row, col: col } as Coordinates;
     if (this.isDeploymentAllowed) {
       this.playersBoard = this.board.checkHoveredElement(
         this.playersBoard,

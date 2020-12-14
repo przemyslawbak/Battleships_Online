@@ -102,8 +102,8 @@ export class BoardService {
     let randomEmptyCell: BoardCell = null;
 
     let coord: Coordinates = {
-      row: randomEmptyCell.row,
-      col: randomEmptyCell.col,
+      row: 0,
+      col: 0,
     } as Coordinates;
 
     if (randomRotate) {
@@ -127,6 +127,9 @@ export class BoardService {
       randomEmptyCell = emptyCellArray[randomIndex];
 
       var dummyHtmlElement = document.createElement('DIV');
+
+      coord.row = randomEmptyCell.row;
+      coord.col = randomEmptyCell.col;
 
       this.checkHoveredElement(board, 'cell', coord, dummyHtmlElement, ship);
 
