@@ -214,7 +214,6 @@ OK - in game-play component:
 	OK - game chat off when single player game,
 	OK - do not wait for 2nd player when single player,
 	OK - bug: when hosting single player game it is written: this game is single player only,
-	- DRY `setComputerOpponent` move to service;
 - game rules component:
 	-???
 - edit profile component:
@@ -256,6 +255,7 @@ OK - what if hubConnection.onclose?
 - game chat mute opponent
 - DRY copy to clipboard in game-play & game-deploy
 - if player disconnects in the middle of game, minus score,
+- DRY `setComputerOpponent` move to service;
 
 end:
 - move logic to the services

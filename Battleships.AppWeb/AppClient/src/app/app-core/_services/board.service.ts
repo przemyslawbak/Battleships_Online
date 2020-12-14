@@ -1,7 +1,7 @@
+import { Coordinates } from '@models/coordinates.model';
 import { BoardCell } from '@models/board-cell.model';
 import { ShipComponent } from '../../app-game/game-ship/ship.component';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
 import { DropModel } from '@models/drop-model';
 import { Player } from '@models/player.model';
 
@@ -68,16 +68,10 @@ export class BoardService {
 
   public deployShip(
     board: BoardCell[][],
-    row: number,
-    col: number,
+    coord: Coordinates,
     nextShip: ShipComponent
   ): BoardCell[][] {
-    let dropCells: Array<BoardCell> = this.getDropCells(
-      board,
-      row,
-      col,
-      nextShip
-    );
+    let dropCells: Array<BoardCell> = this.getDropCells(board, coord, nextShip);
     for (let i = 0; i < dropCells.length; i++) {
       board[dropCells[i].col][dropCells[i].row].value = 1;
       board[dropCells[i].col][dropCells[i].row].color = 'green';
@@ -107,6 +101,11 @@ export class BoardService {
     let emptyCellArray: BoardCell[] = [];
     let randomEmptyCell: BoardCell = null;
 
+    let coord: Coordinates = {
+      row: randomEmptyCell.row,
+      col: randomEmptyCell.col,
+    } as Coordinates;
+
     if (randomRotate) {
       ship.rotation = 90;
     } else {
@@ -129,24 +128,12 @@ export class BoardService {
 
       var dummyHtmlElement = document.createElement('DIV');
 
-      this.checkHoveredElement(
-        board,
-        'cell',
-        randomEmptyCell.row,
-        randomEmptyCell.col,
-        dummyHtmlElement,
-        ship
-      );
+      this.checkHoveredElement(board, 'cell', coord, dummyHtmlElement, ship);
 
       emptyCellArray.splice(randomIndex, 1);
     }
 
-    board = this.deployShip(
-      board,
-      randomEmptyCell.row,
-      randomEmptyCell.col,
-      ship
-    );
+    board = this.deployShip(board, coord, ship);
 
     let updatedBoard = board;
     return updatedBoard;
@@ -155,22 +142,16 @@ export class BoardService {
   public checkHoveredElement(
     board: BoardCell[][],
     elementType: string,
-    row: number,
-    col: number,
+    coord: Coordinates,
     element: HTMLElement,
     nextShip: ShipComponent
   ): BoardCell[][] {
     let dropPlace = {} as DropModel;
     dropPlace.type = elementType;
-    dropPlace.row = row;
-    dropPlace.col = col;
+    dropPlace.row = coord.row;
+    dropPlace.col = coord.col;
 
-    let dropCells: Array<BoardCell> = this.getDropCells(
-      board,
-      row,
-      col,
-      nextShip
-    );
+    let dropCells: Array<BoardCell> = this.getDropCells(board, coord, nextShip);
     this.lastDropCells = dropCells;
 
     if (elementType == 'cell') {
@@ -194,10 +175,9 @@ export class BoardService {
   public resetBoardElement(
     board: BoardCell[][],
     element: HTMLElement,
-    row: number,
-    col: number
+    coord: Coordinates
   ): BoardCell[][] {
-    if (board[col][row].value == 1) {
+    if (board[coord.col][coord.row].value == 1) {
       element.style.backgroundColor = 'green';
     } else {
       element.style.backgroundColor = 'rgba(0, 162, 255, 0.2)';
@@ -220,14 +200,13 @@ export class BoardService {
   public getCell(
     rotation: number,
     i: number,
-    row: number,
-    col: number,
+    coord: Coordinates,
     board: BoardCell[][]
   ): BoardCell {
     let item: BoardCell =
       rotation == 0
-        ? ({ row: row, col: col + i, value: 0 } as BoardCell)
-        : ({ row: row + i, col: col, value: 0 } as BoardCell);
+        ? ({ row: coord.row, col: coord.col + i, value: 0 } as BoardCell)
+        : ({ row: coord.row + i, col: coord.col, value: 0 } as BoardCell);
 
     let exists: boolean = board.some((b) =>
       b.some((c) => c.row == item.row && c.col == item.col)
@@ -238,8 +217,7 @@ export class BoardService {
 
   public getDropCells(
     board: BoardCell[][],
-    row: number,
-    col: number,
+    coord: Coordinates,
     nextShip: ShipComponent
   ): Array<BoardCell> {
     let result: Array<BoardCell> = [];
@@ -248,8 +226,7 @@ export class BoardService {
         let cellModel: BoardCell = this.getCell(
           nextShip.rotation,
           i,
-          row,
-          col,
+          coord,
           board
         );
 

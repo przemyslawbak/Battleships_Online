@@ -4,7 +4,7 @@ import { BoardCell } from '@models/board-cell.model';
 import { ChatMessage } from './../../app-core/_models/chat-message.model';
 import { AuthService } from '@services/auth.service';
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { GameService } from '@services/game.service';
 import { SignalRService } from '@services/signal-r.service';
 import { environment } from '@environments/environment';
@@ -15,6 +15,8 @@ import { BoardService } from '@services/board.service';
 import { CommentsService } from '@services/comments.service';
 import { HttpClient } from '@angular/common/http';
 import { Player } from '@models/player.model';
+import { AiService } from '@services/ai.service';
+import { Coordinates } from '@models/coordinates.model';
 
 @Component({
   templateUrl: './game-play.component.html',
@@ -46,6 +48,7 @@ export class GamePlayComponent implements OnInit {
   private _subMessage: any;
 
   constructor(
+    private ai: AiService,
     private http: HttpClient,
     private comments: CommentsService,
     private board: BoardService,
@@ -53,7 +56,6 @@ export class GamePlayComponent implements OnInit {
     private modalService: ModalService,
     private router: Router,
     private game: GameService,
-    private route: ActivatedRoute,
     private signalRService: SignalRService,
     private player: PlayerService
   ) {}
@@ -97,8 +99,11 @@ export class GamePlayComponent implements OnInit {
       if (!game.gameMulti && !this.isResultBeingDisplayed) {
         this.aiPlayerNumber = this.findAiPlayerNumber(game.players); //todo: only once
         if (this.whoseTurnNumber == this.aiPlayerNumber) {
-          //todo: get coordiates from ai service and call fire(x,y)
-          this.fire(0, 0);
+          let coord: Coordinates = this.ai.getFireCoordCoordinates(
+            this.boards[this.clientsPlayerNumber]
+          );
+
+          this.fire(coord.row, coord.col);
         }
       }
     }
@@ -245,33 +250,28 @@ export class GamePlayComponent implements OnInit {
   public fire(row: number, col: number): void {
     if (!this.isResultBeingDisplayed && !this.gameEnded) {
       let game = this.game.getGame();
-      let isHit: boolean = this.verifyHit(game.gameMulti, row, col);
+      let coord: Coordinates = { row: row, col: col } as Coordinates;
+      let isHit: boolean = this.verifyHit(game.gameMulti, coord);
       if (isHit) {
         game.fireResult = true;
 
         if (game.gameAi) {
           this.aiPlayerNumber == this.whoseTurnNumber
-            ? this.markHitOnBoard(this.clientsPlayerNumber, row, col, game)
-            : this.markHitOnBoard(this.aiPlayerNumber, row, col, game);
+            ? this.markHitOnBoard(this.clientsPlayerNumber, coord, game)
+            : this.markHitOnBoard(this.aiPlayerNumber, coord, game);
         } else {
-          game = this.markHitOnBoard(
-            this.opponentsPlayerNumber,
-            row,
-            col,
-            game
-          );
+          game = this.markHitOnBoard(this.opponentsPlayerNumber, coord, game);
         }
       } else {
         game.fireResult = false;
         if (game.gameAi) {
           this.aiPlayerNumber == this.whoseTurnNumber
-            ? this.markMissedOnBoard(this.clientsPlayerNumber, row, col, game)
-            : this.markMissedOnBoard(this.aiPlayerNumber, row, col, game);
+            ? this.markMissedOnBoard(this.clientsPlayerNumber, coord, game)
+            : this.markMissedOnBoard(this.aiPlayerNumber, coord, game);
         } else {
           game = this.markMissedOnBoard(
             this.opponentsPlayerNumber,
-            row,
-            col,
+            coord,
             game
           );
         }
@@ -305,14 +305,14 @@ export class GamePlayComponent implements OnInit {
     this.signalRService.broadcastGameState(game);
   }
 
-  private verifyHit(gameMulti: boolean, col: number, row: number): boolean {
-    if (col < 0 && row < 0) {
+  private verifyHit(gameMulti: boolean, coord: Coordinates): boolean {
+    if (coord.col < 0 && coord.row < 0) {
       return false;
     }
 
     let board: BoardCell[][] = this.getCorrectBoard(gameMulti);
 
-    if (board[row][col].value == 1) {
+    if (board[coord.row][coord.col].value == 1) {
       return true;
     }
     return false;
@@ -326,13 +326,12 @@ export class GamePlayComponent implements OnInit {
 
   private markHitOnBoard(
     playerNumber: number,
-    row: number,
-    col: number,
+    coord: Coordinates,
     game: GameState
   ) {
-    if (col >= 0 && row >= 0) {
-      game.players[playerNumber].board[col][row].value = 2;
-      game.players[playerNumber].board[col][row].color = 'red';
+    if (coord.col >= 0 && coord.row >= 0) {
+      game.players[playerNumber].board[coord.col][coord.row].value = 2;
+      game.players[playerNumber].board[coord.col][coord.row].color = 'red';
     }
 
     return game;
@@ -340,13 +339,13 @@ export class GamePlayComponent implements OnInit {
 
   private markMissedOnBoard(
     playerNumber: number,
-    row: number,
-    col: number,
+    coord: Coordinates,
     game: GameState
   ) {
-    if (col >= 0 && row >= 0) {
-      game.players[playerNumber].board[col][row].value = 3;
-      game.players[playerNumber].board[col][row].color = 'rgb(0, 162, 255)';
+    if (coord.col >= 0 && coord.row >= 0) {
+      game.players[playerNumber].board[coord.col][coord.row].value = 3;
+      game.players[playerNumber].board[coord.col][coord.row].color =
+        'rgb(0, 162, 255)';
     }
 
     return game;

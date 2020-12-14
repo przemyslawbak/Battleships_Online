@@ -11,6 +11,7 @@ import { AuthService } from '@services/auth.service';
 import { GameService } from '@services/game.service';
 import { SignalRService } from '@services/signal-r.service';
 
+import { Coordinates } from '@models/coordinates.model';
 import { GameState } from '@models/game-state.model';
 import { BoardCell } from '@models/board-cell.model';
 import { ChatMessage } from '@models/chat-message.model';
@@ -162,12 +163,11 @@ export class GameDeployComponent implements OnInit {
     item.rotation = item.rotation === 0 ? 90 : 0;
   }
 
-  public deployShip(row: number, col: number): void {
+  public deployShip(coord: Coordinates): void {
     if (this.board.isDropAllowed && this.isDeploymentAllowed) {
       this.playersBoard = this.board.deployShip(
         this.playersBoard,
-        row,
-        col,
+        coord,
         this.fleetWaiting[0]
       );
       this.moveFromWaitingToDeployed();
@@ -176,27 +176,24 @@ export class GameDeployComponent implements OnInit {
     this.enableDeployBtnIfPossible();
   }
 
-  public resetBoardElement(element: HTMLElement, row: number, col: number) {
+  public resetBoardElement(element: HTMLElement, coord: Coordinates) {
     this.playersBoard = this.board.resetBoardElement(
       this.playersBoard,
       element,
-      row,
-      col
+      coord
     );
   }
 
   public checkHoveredElement(
     elementType: string,
-    row: number,
-    col: number,
+    coord: Coordinates,
     element: HTMLElement
   ): void {
     if (this.isDeploymentAllowed) {
       this.playersBoard = this.board.checkHoveredElement(
         this.playersBoard,
         elementType,
-        row,
-        col,
+        coord,
         element,
         this.fleetWaiting[0]
       );
