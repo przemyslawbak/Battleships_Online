@@ -317,9 +317,17 @@ export class BoardService {
     return true;
   }
 
-  private getForbiddenCells(dropPlace: BoardCell[]): BoardCell[] {
+  public getForbiddenCells(dropPlace: BoardCell[]): BoardCell[] {
     let list: BoardCell[] = [];
 
+    list.concat(this.getSideCells(dropPlace));
+    list.concat(this.getCornerCells(dropPlace));
+
+    return list;
+  }
+
+  public getSideCells(dropPlace: BoardCell[]): BoardCell[] {
+    let list: BoardCell[] = [];
     for (let i = 0; i < dropPlace.length; i++) {
       list.push({
         row: dropPlace[i].row,
@@ -331,11 +339,7 @@ export class BoardService {
         col: dropPlace[i].col + 1,
         value: 0,
       } as BoardCell);
-      list.push({
-        row: dropPlace[i].row + 1,
-        col: dropPlace[i].col + 1,
-        value: 0,
-      } as BoardCell);
+
       list.push({
         row: dropPlace[i].row + 1,
         col: dropPlace[i].col,
@@ -346,14 +350,28 @@ export class BoardService {
         col: dropPlace[i].col - 1,
         value: 0,
       } as BoardCell);
+
       list.push({
         row: dropPlace[i].row - 1,
-        col: dropPlace[i].col - 1,
+        col: dropPlace[i].col,
+        value: 0,
+      } as BoardCell);
+    }
+
+    return list;
+  }
+
+  public getCornerCells(dropPlace: BoardCell[]): BoardCell[] {
+    let list: BoardCell[] = [];
+    for (let i = 0; i < dropPlace.length; i++) {
+      list.push({
+        row: dropPlace[i].row + 1,
+        col: dropPlace[i].col + 1,
         value: 0,
       } as BoardCell);
       list.push({
         row: dropPlace[i].row - 1,
-        col: dropPlace[i].col,
+        col: dropPlace[i].col - 1,
         value: 0,
       } as BoardCell);
       list.push({
@@ -366,6 +384,55 @@ export class BoardService {
         col: dropPlace[i].col - 1,
         value: 0,
       } as BoardCell);
+    }
+
+    return list;
+  }
+
+  public getCurrentHits(board: BoardCell[][]): BoardCell[] {
+    let list: BoardCell[] = [];
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        if (board[i][j].value == 2) {
+          list.push(board[i][j]);
+        }
+      }
+    }
+
+    return list;
+  }
+
+  public getCurrentMissed(board: BoardCell[][]): BoardCell[] {
+    let list: BoardCell[] = [];
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        if (board[i][j].value == 3) {
+          list.push(board[i][j]);
+        }
+      }
+    }
+
+    return list;
+  }
+
+  public getPotentialTargets(
+    forbidden: BoardCell[],
+    hits: BoardCell[]
+  ): BoardCell[] {
+    let list: BoardCell[] = [];
+    let sideLineCells: BoardCell[] = this.getSideCells(hits);
+
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        if (
+          sideLineCells[i].col == forbidden[j].col &&
+          sideLineCells[i].row == forbidden[j].row
+        ) {
+          continue;
+        } else {
+          list.push(sideLineCells[i]);
+        }
+      }
     }
 
     return list;

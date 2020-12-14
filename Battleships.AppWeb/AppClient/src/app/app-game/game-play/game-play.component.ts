@@ -99,7 +99,7 @@ export class GamePlayComponent implements OnInit {
       if (!game.gameMulti && !this.isResultBeingDisplayed) {
         this.aiPlayerNumber = this.findAiPlayerNumber(game.players); //todo: only once
         if (this.whoseTurnNumber == this.aiPlayerNumber) {
-          let coord: Coordinates = this.ai.getFireCoordCoordinates(
+          let coord: Coordinates = this.ai.getFireCoordinates(
             this.boards[this.clientsPlayerNumber]
           );
 
