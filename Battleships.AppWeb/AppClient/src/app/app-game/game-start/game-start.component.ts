@@ -11,7 +11,7 @@ import { SignalRService } from '@services/signal-r.service';
 import { GameService } from '@services/game.service';
 import { AuthService } from '@services/auth.service';
 import { Player } from '@models/player.model';
-import { BoardCell } from '@models/board-cell.model';
+import { FleetService } from '@services/fleet.service';
 
 @Component({
   templateUrl: './game-start.component.html',
@@ -29,7 +29,8 @@ export class GameStartComponent {
     private game: GameService,
     private signalRService: SignalRService,
     public auth: AuthService,
-    private board: BoardService
+    private board: BoardService,
+    private fleet: FleetService
   ) {
     this.createForm();
   }
@@ -121,7 +122,7 @@ export class GameStartComponent {
     let player1: Player = {
       isMyTurn: true,
       isDeployed: false,
-      fleet: this.createFleet(),
+      fleet: this.fleet.createFleet(),
       board: this.board.getEmptyBoard(),
       displayName: '',
       userName: '',
@@ -129,7 +130,7 @@ export class GameStartComponent {
     let player2: Player = {
       isMyTurn: false,
       isDeployed: false,
-      fleet: this.createFleet(),
+      fleet: this.fleet.createFleet(),
       board: this.board.getEmptyBoard(),
       displayName: '',
       userName: '',
@@ -154,20 +155,5 @@ export class GameStartComponent {
     let min = Math.ceil(100000000);
     let max = Math.floor(999999999);
     return Math.floor(Math.random() * (max - min) + min);
-  }
-
-  private createFleet(): Array<ShipComponent> {
-    return [
-      { size: 4, rotation: 0 },
-      { size: 3, rotation: 0 },
-      { size: 3, rotation: 0 },
-      { size: 2, rotation: 0 },
-      { size: 2, rotation: 0 },
-      { size: 2, rotation: 0 },
-      { size: 1, rotation: 0 },
-      { size: 1, rotation: 0 },
-      { size: 1, rotation: 0 },
-      { size: 1, rotation: 0 },
-    ];
   }
 }

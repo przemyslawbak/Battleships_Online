@@ -18,6 +18,7 @@ import { SignalRService } from '@services/signal-r.service';
 import { BoardService } from '@services/board.service';
 import { CommentsService } from '@services/comments.service';
 import { AiService } from '@services/ai.service';
+import { FleetService } from '@services/fleet.service';
 
 import { AuthGuard } from './_helpers/auth.guard';
 import { JtwInterceptor } from './_helpers/jtw.interceptor';
@@ -44,6 +45,7 @@ import { ErrorInterceptor } from './_helpers/error.interceptor';
       useClass: ErrorInterceptor,
       multi: true,
     },
+    FleetService,
     AiService,
     CommentsService,
     BoardService,

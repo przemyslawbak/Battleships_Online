@@ -16,6 +16,7 @@ import { GameState } from '@models/game-state.model';
 import { BoardCell } from '@models/board-cell.model';
 import { ChatMessage } from '@models/chat-message.model';
 import { Player } from '@models/player.model';
+import { FleetService } from '@services/fleet.service';
 
 @Component({
   templateUrl: './game-deploy-ships.component.html',
@@ -47,10 +48,11 @@ export class GameDeployComponent implements OnInit {
     private auth: AuthService,
     private signalRService: SignalRService,
     private game: GameService,
-    private player: PlayerService
+    private player: PlayerService,
+    private fleet: FleetService
   ) {
     this.isDeployed = false;
-    this.fleetWaiting = this.createFleet();
+    this.fleetWaiting = this.fleet.createFleet();
     this.fleetDeployed = [];
   }
 
@@ -91,7 +93,7 @@ export class GameDeployComponent implements OnInit {
           this.isDeploymentAllowed = true;
           game.players[this.aiPlayerNumber].board = this.autoDeploy(
             this.board.getEmptyBoard(),
-            this.createFleet(),
+            this.fleet.createFleet(),
             true
           );
           game.players[this.aiPlayerNumber].isDeployed = true;
@@ -219,21 +221,6 @@ export class GameDeployComponent implements OnInit {
     return name.split('-')[0];
   }
 
-  private createFleet(): Array<ShipComponent> {
-    return [
-      { size: 4, rotation: 0 },
-      { size: 3, rotation: 0 },
-      { size: 3, rotation: 0 },
-      { size: 2, rotation: 0 },
-      { size: 2, rotation: 0 },
-      { size: 2, rotation: 0 },
-      { size: 1, rotation: 0 },
-      { size: 1, rotation: 0 },
-      { size: 1, rotation: 0 },
-      { size: 1, rotation: 0 },
-    ];
-  }
-
   public confirm(): void {
     console.log('confirm');
     if (this.fleetDeployed.length == 10 && !this.isDeployed) {
@@ -292,7 +279,7 @@ export class GameDeployComponent implements OnInit {
   }
 
   public clearBoard(): void {
-    this.fleetWaiting = this.createFleet();
+    this.fleetWaiting = this.fleet.createFleet();
     this.fleetDeployed = [];
     this.playersBoard = this.board.getEmptyBoard();
     this.isDeployEnabled = false;
