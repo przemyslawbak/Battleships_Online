@@ -133,7 +133,9 @@ namespace Battleships.AppWeb.Hubs
 
                 await SendChatMessageToUsersInGame("Left the game.", playerNames);
 
-                if (playerNames[0] == string.Empty && playerNames[1] == string.Empty)
+                if ((playerNames[0] == string.Empty && playerNames[1] == string.Empty) || 
+                    (playerNames[0] == "COMPUTER" && playerNames[1] == string.Empty) || 
+                    (playerNames[0] == string.Empty && playerNames[1] == "COMPUTER"))
                 {
                     RemoveGameFromCacheGameList(game.GameId);
                 }
