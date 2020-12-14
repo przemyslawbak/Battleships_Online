@@ -367,7 +367,23 @@ export class GamePlayComponent implements OnInit {
   }
 
   public playWithAi(): void {
-    //todo:
-    alert('kick opponent');
+    let game = this.game.getGame();
+    game.gameMulti = false;
+    game.gameAi = true;
+    game.players = this.setComputerOpponent(game.players);
+
+    this.game.setGame(game);
+    this.signalRService.broadcastGameState(game);
+  }
+
+  private setComputerOpponent(players: Player[]): Player[] {
+    for (let i = 0; i < players.length; i++) {
+      if (players[i].userName == '') {
+        players[i].userName = 'COMPUTER';
+        players[i].displayName = 'COMPUTER';
+
+        return players;
+      }
+    }
   }
 }

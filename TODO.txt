@@ -210,7 +210,7 @@ OK - in game-play component:
 	OK - bug: after timeout does not change player to computer,
 	OK - bug: after leafing single player game, game still exists,
 	- create AI,
-	- swap from multi -> single player when waiting for 2nd player,
+	OK - swap from multi -> single player when waiting for 2nd player,
 	- game chat off when single player game,
 	- do not wait for 2nd player when single player,
 	OK - bug: when hosting single player game it is written: this game is single player only,
