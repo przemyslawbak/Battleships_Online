@@ -33,16 +33,19 @@ namespace Battleships.AppWeb.Hubs
             {
                 if (!string.IsNullOrEmpty(user))
                 {
-                    string id = GetConnectionId(user);
-                    string displayName = await GetUserDisplay(Context.User.Identity.Name);
-                    string userName = await GetUserName(Context.User.Identity.Name);
-                    ChatMessageViewModel msg = new ChatMessageViewModel()
+                    if (user != "COMPUTER")
                     {
-                        DisplayName = displayName,
-                        Message = message,
-                        UserName = userName
-                    };
-                    await Clients.Client(id).SendAsync("ReceiveChatMessage", msg);
+                        string id = GetConnectionId(user);
+                        string displayName = await GetUserDisplay(Context.User.Identity.Name);
+                        string userName = await GetUserName(Context.User.Identity.Name);
+                        ChatMessageViewModel msg = new ChatMessageViewModel()
+                        {
+                            DisplayName = displayName,
+                            Message = message,
+                            UserName = userName
+                        };
+                        await Clients.Client(id).SendAsync("ReceiveChatMessage", msg);
+                    }
                 }
             }
         }
@@ -78,8 +81,12 @@ namespace Battleships.AppWeb.Hubs
             {
                 if (!string.IsNullOrEmpty(player.UserName))
                 {
-                    string id = GetConnectionId(player.UserName);
-                    await Clients.Client(id).SendAsync("ReceiveGameState", game);
+                    if (player.UserName != "COMPUTER")
+                    {
+                        string id = GetConnectionId(player.UserName);
+                        await Clients.Client(id).SendAsync("ReceiveGameState", game);
+                    }
+                    
                 }
             }
         }

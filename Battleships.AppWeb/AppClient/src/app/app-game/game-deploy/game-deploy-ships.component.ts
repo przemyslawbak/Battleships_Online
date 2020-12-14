@@ -84,16 +84,18 @@ export class GameDeployComponent implements OnInit {
 
       if (!game.gameMulti && game.gameAi) {
         this.aiPlayerNumber = this.findAiPlayerNumber(game.players);
-        this.isDeploymentAllowed = true;
-        game.players[this.aiPlayerNumber].board = this.autoDeploy(
-          this.board.getEmptyBoard(),
-          this.createFleet(),
-          true
-        );
-        game.players[this.aiPlayerNumber].isDeployed = true;
+        if (!game.players[this.aiPlayerNumber].isDeployed) {
+          this.isDeploymentAllowed = true;
+          game.players[this.aiPlayerNumber].board = this.autoDeploy(
+            this.board.getEmptyBoard(),
+            this.createFleet(),
+            true
+          );
+          game.players[this.aiPlayerNumber].isDeployed = true;
 
-        this.game.setGame(game);
-        this.signalRService.broadcastGameState(game);
+          this.game.setGame(game);
+          this.signalRService.broadcastGameState(game);
+        }
       }
     }
   }
@@ -120,7 +122,6 @@ export class GameDeployComponent implements OnInit {
 
   private startCounter() {
     this.countDown = timer(0, 1000).subscribe(() => {
-      console.log(this.isDeployEnabled);
       if (this.isDeploymentAllowed && !this.isDeployed) {
         if (this.count <= 0) {
           this.playersBoard = this.autoDeploy(
