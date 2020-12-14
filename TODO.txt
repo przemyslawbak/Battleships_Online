@@ -198,17 +198,20 @@ OK - in game-play component:
 	OK - bug: on hit displaying missed comment,
 	OK - adjust: when displaying hit result, switch off pointer and dashed cell border,
 	OK - adjust: when displaying hit result, do not allow to fire,
+	- what if shooting cell already shot?
 - single player:
 	OK - deploying ships for AI,
 	OK - bug: auto deploying players board on init,
 	OK - bug: ERROR TypeError: randomEmptyCell is undefined,
 	OK - bug: chat broadcast error: Error: An unexpected error occurred invoking 'SendChatMessage' on the server.
 	OK - bug: game state broadcast error: Error: An unexpected error occurred invoking 'SendGameState' on the server.
+	OK - bug: computer hits wrong board,
+	- bug: after computers hit wrong board comment is displayed,
 	- create AI,
 	- swap from multi -> single player when waiting for 2nd player,
 	- game chat off when single player game,
 	- do not wait for 2nd player when single player,
-	- bug: when hosting single player game it is written: this game is single player only,
+	OK - bug: when hosting single player game it is written: this game is single player only,
 	- DRY `setComputerOpponent` move to service;
 - game rules component:
 	-???

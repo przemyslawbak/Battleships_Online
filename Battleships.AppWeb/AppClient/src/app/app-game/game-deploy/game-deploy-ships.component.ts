@@ -83,7 +83,7 @@ export class GameDeployComponent implements OnInit {
       }
 
       if (!game.gameMulti && game.gameAi) {
-        this.aiPlayerNumber = this.findAiPlayerNumber(game.players);
+        this.aiPlayerNumber = this.findAiPlayerNumber(game.players); //todo: only once
         if (!game.players[this.aiPlayerNumber].isDeployed) {
           this.isDeploymentAllowed = true;
           game.players[this.aiPlayerNumber].board = this.autoDeploy(

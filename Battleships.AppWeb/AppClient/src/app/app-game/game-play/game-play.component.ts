@@ -14,12 +14,14 @@ import { Subscription, timer } from 'rxjs';
 import { BoardService } from '@services/board.service';
 import { CommentsService } from '@services/comments.service';
 import { HttpClient } from '@angular/common/http';
+import { Player } from '@models/player.model';
 
 @Component({
   templateUrl: './game-play.component.html',
   styleUrls: ['./game-play.component.css'],
 })
 export class GamePlayComponent implements OnInit {
+  private aiPlayerNumber: number = -1;
   public gameEnded: boolean = false;
   public gameBoardComment: CommentModel = this.comments.getInitialComment();
   public gameLink: string =
@@ -90,6 +92,22 @@ export class GamePlayComponent implements OnInit {
       this.isResultBeingDisplayed = game.displayingResults;
       this.setupGameBoardCommentsAndGame(game.fireResult);
       this.resetBoardColors();
+      if (!game.gameMulti && game.gameAi && !this.isResultBeingDisplayed) {
+        this.aiPlayerNumber = this.findAiPlayerNumber(game.players); //todo: only once
+        if (this.whoseTurnNumber == this.aiPlayerNumber) {
+          //todo: get coordiates from ai service and call fire(x,y)
+          alert('COMPUTER FIRE!');
+          this.fire(0, 0);
+        }
+      }
+    }
+  }
+
+  private findAiPlayerNumber(players: Player[]): number {
+    for (let i = 0; i < players.length; i++) {
+      if (players[i].userName == 'COMPUTER') {
+        return i;
+      }
     }
   }
 
@@ -225,15 +243,35 @@ export class GamePlayComponent implements OnInit {
 
   public fire(row: number, col: number): void {
     if (!this.isResultBeingDisplayed && !this.gameEnded) {
-      let isHit: boolean = this.verifyHit(row, col);
       let game = this.game.getGame();
+      let isHit: boolean = this.verifyHit(game.gameMulti, row, col);
       if (isHit) {
         game.fireResult = true;
-        game = this.markHitOnBoard(row, col, game);
+
+        if (this.aiPlayerNumber >= 0) {
+          this.aiPlayerNumber == this.whoseTurnNumber
+            ? this.markHitOnBoard(this.clientsPlayerNumber, row, col, game)
+            : this.markHitOnBoard(this.aiPlayerNumber, row, col, game);
+        } else {
+          game = this.markHitOnBoard(
+            this.opponentsPlayerNumber,
+            row,
+            col,
+            game
+          );
+        }
       } else {
-        game.fireResult = false;
-        if (col >= 0 && row >= 0) {
-          game = this.markMissedOnBoard(row, col, game);
+        if (this.aiPlayerNumber >= 0) {
+          this.aiPlayerNumber == this.whoseTurnNumber
+            ? this.markMissedOnBoard(this.clientsPlayerNumber, row, col, game)
+            : this.markMissedOnBoard(this.aiPlayerNumber, row, col, game);
+        } else {
+          game = this.markMissedOnBoard(
+            this.opponentsPlayerNumber,
+            row,
+            col,
+            game
+          );
         }
       }
 
@@ -265,28 +303,45 @@ export class GamePlayComponent implements OnInit {
     this.signalRService.broadcastGameState(game);
   }
 
-  private verifyHit(col: number, row: number): boolean {
+  private verifyHit(gameMulti: boolean, col: number, row: number): boolean {
     if (col < 0 && row < 0) {
       return false;
     }
 
-    if (this.boards[this.opponentsPlayerNumber][row][col].value == 1) {
+    let board: BoardCell[][] = this.getCorrectBoard(gameMulti);
+
+    if (board[row][col].value == 1) {
       return true;
     }
     return false;
   }
 
-  private markHitOnBoard(row: number, col: number, game: GameState) {
-    game.players[this.opponentsPlayerNumber].board[col][row].value = 2;
-    game.players[this.opponentsPlayerNumber].board[col][row].color = 'red';
+  private getCorrectBoard(gameMulti: boolean): BoardCell[][] {
+    return this.aiPlayerNumber >= 0 && !gameMulti
+      ? this.boards[this.aiPlayerNumber]
+      : this.boards[this.opponentsPlayerNumber];
+  }
+
+  private markHitOnBoard(
+    playerNumber: number,
+    row: number,
+    col: number,
+    game: GameState
+  ) {
+    game.players[playerNumber].board[col][row].value = 2;
+    game.players[playerNumber].board[col][row].color = 'red';
 
     return game;
   }
 
-  private markMissedOnBoard(row: number, col: number, game: GameState) {
-    game.players[this.opponentsPlayerNumber].board[col][row].value = 3;
-    game.players[this.opponentsPlayerNumber].board[col][row].color =
-      'rgb(0, 162, 255)';
+  private markMissedOnBoard(
+    playerNumber: number,
+    row: number,
+    col: number,
+    game: GameState
+  ) {
+    game.players[playerNumber].board[col][row].value = 3;
+    game.players[playerNumber].board[col][row].color = 'rgb(0, 162, 255)';
 
     return game;
   }
