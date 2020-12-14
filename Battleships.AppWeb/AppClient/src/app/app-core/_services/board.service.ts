@@ -23,7 +23,7 @@ export class BoardService {
     return result;
   }
 
-  CheckForWinner(board: BoardCell[][]): boolean {
+  public CheckForWinner(board: BoardCell[][]): boolean {
     let hits: number = 0;
     for (let i = 0; i < 10; i++) {
       for (let j = 0; j < 10; j++) {
@@ -286,7 +286,7 @@ export class BoardService {
     playersBoard: BoardCell[][]
   ): boolean {
     let result: boolean = true;
-    let forbiddenCells: Array<BoardCell> = this.GetForbiddenCells(dropPlace);
+    let forbiddenCells: Array<BoardCell> = this.getForbiddenCells(dropPlace);
 
     if (!this.compareBoardWithForbiddenCells(forbiddenCells, playersBoard)) {
       result = false;
@@ -317,7 +317,7 @@ export class BoardService {
     return true;
   }
 
-  private GetForbiddenCells(dropPlace: BoardCell[]): BoardCell[] {
+  private getForbiddenCells(dropPlace: BoardCell[]): BoardCell[] {
     let list: BoardCell[] = [];
 
     for (let i = 0; i < dropPlace.length; i++) {
