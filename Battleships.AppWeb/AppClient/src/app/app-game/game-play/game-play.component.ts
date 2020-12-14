@@ -247,7 +247,7 @@ export class GamePlayComponent implements OnInit {
       if (isHit) {
         game.fireResult = true;
 
-        if (this.aiPlayerNumber >= 0) {
+        if (game.gameAi) {
           this.aiPlayerNumber == this.whoseTurnNumber
             ? this.markHitOnBoard(this.clientsPlayerNumber, row, col, game)
             : this.markHitOnBoard(this.aiPlayerNumber, row, col, game);
@@ -261,7 +261,7 @@ export class GamePlayComponent implements OnInit {
         }
       } else {
         game.fireResult = false;
-        if (this.aiPlayerNumber >= 0) {
+        if (game.gameAi) {
           this.aiPlayerNumber == this.whoseTurnNumber
             ? this.markMissedOnBoard(this.clientsPlayerNumber, row, col, game)
             : this.markMissedOnBoard(this.aiPlayerNumber, row, col, game);
@@ -276,7 +276,7 @@ export class GamePlayComponent implements OnInit {
       }
 
       this.updateOpponentDisplayResult(game);
-      setTimeout(() => this.updateRoundDataAndContinue(game, isHit), 3000);
+      setTimeout(() => this.updateTurnDataAndContinue(game, isHit), 3000);
     }
   }
 
@@ -285,7 +285,7 @@ export class GamePlayComponent implements OnInit {
     this.signalRService.broadcastGameState(game);
   }
 
-  private updateRoundDataAndContinue(game: GameState, isHit: boolean) {
+  private updateTurnDataAndContinue(game: GameState, isHit: boolean) {
     game.displayingResults = false;
     if (isHit) {
       game.gameTurnPlayer = this.whoseTurnNumber;
@@ -328,8 +328,10 @@ export class GamePlayComponent implements OnInit {
     col: number,
     game: GameState
   ) {
-    game.players[playerNumber].board[col][row].value = 2;
-    game.players[playerNumber].board[col][row].color = 'red';
+    if (col >= 0 && row >= 0) {
+      game.players[playerNumber].board[col][row].value = 2;
+      game.players[playerNumber].board[col][row].color = 'red';
+    }
 
     return game;
   }
@@ -340,8 +342,10 @@ export class GamePlayComponent implements OnInit {
     col: number,
     game: GameState
   ) {
-    game.players[playerNumber].board[col][row].value = 3;
-    game.players[playerNumber].board[col][row].color = 'rgb(0, 162, 255)';
+    if (col >= 0 && row >= 0) {
+      game.players[playerNumber].board[col][row].value = 3;
+      game.players[playerNumber].board[col][row].color = 'rgb(0, 162, 255)';
+    }
 
     return game;
   }
