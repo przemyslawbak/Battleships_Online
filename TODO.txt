@@ -206,7 +206,8 @@ OK - in game-play component:
 	OK - bug: chat broadcast error: Error: An unexpected error occurred invoking 'SendChatMessage' on the server.
 	OK - bug: game state broadcast error: Error: An unexpected error occurred invoking 'SendGameState' on the server.
 	OK - bug: computer hits wrong board,
-	- bug: after computers hit wrong board comment is displayed,
+	OK - bug: after computers hit wrong board comment is displayed,
+	- bug: after timeout does not change player to computer,
 	- create AI,
 	- swap from multi -> single player when waiting for 2nd player,
 	- game chat off when single player game,

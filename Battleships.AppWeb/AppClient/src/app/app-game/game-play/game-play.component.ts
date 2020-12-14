@@ -96,7 +96,6 @@ export class GamePlayComponent implements OnInit {
         this.aiPlayerNumber = this.findAiPlayerNumber(game.players); //todo: only once
         if (this.whoseTurnNumber == this.aiPlayerNumber) {
           //todo: get coordiates from ai service and call fire(x,y)
-          alert('COMPUTER FIRE!');
           this.fire(0, 0);
         }
       }
@@ -261,6 +260,7 @@ export class GamePlayComponent implements OnInit {
           );
         }
       } else {
+        game.fireResult = false;
         if (this.aiPlayerNumber >= 0) {
           this.aiPlayerNumber == this.whoseTurnNumber
             ? this.markMissedOnBoard(this.clientsPlayerNumber, row, col, game)
