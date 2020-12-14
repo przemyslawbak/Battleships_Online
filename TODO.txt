@@ -200,6 +200,7 @@ OK - in game-play component:
 	OK - adjust: when displaying hit result, do not allow to fire,
 - single player:
 	OK - deploying ships for AI,
+	- bug: auto deploying players board on init,
 	- bug: ERROR TypeError: randomEmptyCell is undefined,
 	- bug: chat broadcast error: Error: An unexpected error occurred invoking 'SendChatMessage' on the server.
 	- bug: game state broadcast error: Error: An unexpected error occurred invoking 'SendGameState' on the server.
