@@ -21,6 +21,7 @@ import { Player } from '@models/player.model';
   styleUrls: ['./game-play.component.css'],
 })
 export class GamePlayComponent implements OnInit {
+  public multiplayer: boolean = false;
   private aiPlayerNumber: number = -1;
   public gameEnded: boolean = false;
   public gameBoardComment: CommentModel = this.comments.getInitialComment();
@@ -77,6 +78,7 @@ export class GamePlayComponent implements OnInit {
 
   private updateGameValues(game: GameState): void {
     if (game) {
+      this.multiplayer = game.gameMulti;
       this.clientsPlayerNumber = this.player.getPlayerNumber();
       this.clientsPlayerNumber == 0
         ? (this.opponentsPlayerNumber = 1)
@@ -92,7 +94,7 @@ export class GamePlayComponent implements OnInit {
       this.isResultBeingDisplayed = game.displayingResults;
       this.setupGameBoardCommentsAndGame(game.fireResult);
       this.resetBoardColors();
-      if (!game.gameMulti && game.gameAi && !this.isResultBeingDisplayed) {
+      if (!game.gameMulti && !this.isResultBeingDisplayed) {
         this.aiPlayerNumber = this.findAiPlayerNumber(game.players); //todo: only once
         if (this.whoseTurnNumber == this.aiPlayerNumber) {
           //todo: get coordiates from ai service and call fire(x,y)

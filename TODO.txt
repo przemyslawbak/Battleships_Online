@@ -211,8 +211,8 @@ OK - in game-play component:
 	OK - bug: after leafing single player game, game still exists,
 	- create AI,
 	OK - swap from multi -> single player when waiting for 2nd player,
-	- game chat off when single player game,
-	- do not wait for 2nd player when single player,
+	OK - game chat off when single player game,
+	OK - do not wait for 2nd player when single player,
 	OK - bug: when hosting single player game it is written: this game is single player only,
 	- DRY `setComputerOpponent` move to service;
 - game rules component:
@@ -258,6 +258,7 @@ OK - what if hubConnection.onclose?
 - if player disconnects in the middle of game, minus score,
 
 end:
+- move logic to the services
 - favicon
 - clean up JS console.log rows
 - protect server controllers

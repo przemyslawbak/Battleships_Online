@@ -21,6 +21,7 @@ import { Player } from '@models/player.model';
   styleUrls: ['./game-deploy-ships.component.css'],
 })
 export class GameDeployComponent implements OnInit {
+  public multiplayer: boolean = false;
   private aiPlayerNumber: number = -1;
   public gameLink: string =
     environment.clientUrl + 'connect-game/' + this.game.getGame().gameId;
@@ -76,13 +77,14 @@ export class GameDeployComponent implements OnInit {
     if (game) {
       let p0Deployed: boolean = game.players[0].isDeployed;
       let p1Deployed: boolean = game.players[1].isDeployed;
+      this.multiplayer = game.gameMulti;
       this.isDeploymentAllowed = game.isDeploymentAllowed;
 
       if (p0Deployed && p1Deployed) {
         this.router.navigate(['play-game']);
       }
 
-      if (!game.gameMulti && game.gameAi) {
+      if (!game.gameMulti) {
         this.aiPlayerNumber = this.findAiPlayerNumber(game.players); //todo: only once
         if (!game.players[this.aiPlayerNumber].isDeployed) {
           this.isDeploymentAllowed = true;

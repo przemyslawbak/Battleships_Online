@@ -82,7 +82,10 @@
       </ng-template>
     </div>
     <!--game chat-->
-    <div class="col-sm-12 gameChat">
+    <div
+      class="col-sm-12 gameChat"
+      [style.display]="this.multiplayer ? 'block' : 'none'"
+    >
       Game chat:
       <div class="chatDisplay">
         <div *ngFor="let message of this.chatMessages">

@@ -93,7 +93,7 @@ export class GameConnectComponent implements OnInit {
   }
 
   private initGame(game: GameState): void {
-    if (game.gameAi && !game.gameMulti) {
+    if (!game.gameMulti) {
       game.players = this.setComputerOpponent(game.players);
     }
     this.game.setGame(game); //set first state
