@@ -210,22 +210,27 @@ OK - in game-play component:
 	OK - bug: game state broadcast error: Error: An unexpected error occurred invoking 'SendGameState' on the server.
 	OK - bug: computer hits wrong board,
 	OK - bug: after computers hit wrong board comment is displayed,
-	OK - bug: after timeout does not change player to computer,
+	- bug: after timeout does not change player to computer, again,
 	OK - bug: after leafing single player game, game still exists,
 	OK - create AI,
-	- bug: when computer hits target, does not continue shooting,
+	OK - bug: when computer hits target, does not continue shooting,
+	OK - bug: ai checks not allowed with players board?
+	OK - bug: if ai didnt hit yet anything, has no forbidde list,
+	OK - bug: AI picked up hit cell,
+	OK - bug: when AI turn, after hit changes ship cell to empty,
+	OK - adjust: check if ai target coordinates are within board,
 	OK - swap from multi -> single player when waiting for 2nd player,
 	OK - game chat off when single player game,
 	OK - do not wait for 2nd player when single player,
 	OK - bug: when hosting single player game it is written: this game is single player only,
 	- what about display single player game in the list?
+- sprites:
+	- missed sprite,
+	- hit sprite,
 - game rules component:
 	-???
 - edit profile component:
 	-???
-- sprites:
-	- missed sprite,
-	- hit sprite,
 
 - all views, if game is not connected with the hub, redirect to the main view
 - bug: when playing game and joining another, on disconnect just redirects to the main view

@@ -248,7 +248,6 @@ export class GamePlayComponent implements OnInit {
   }
 
   public fire(row: number, col: number): void {
-    console.clear();
     console.log('fire:');
     console.log('row: ' + row);
     console.log('col: ' + col);
@@ -264,23 +263,41 @@ export class GamePlayComponent implements OnInit {
         game.fireResult = true;
 
         if (!game.gameMulti) {
-          this.aiPlayerNumber == this.whoseTurnNumber
-            ? this.markHitOnBoard(this.clientsPlayerNumber, coord, game)
-            : this.markHitOnBoard(this.aiPlayerNumber, coord, game);
+          game.players =
+            this.aiPlayerNumber == this.whoseTurnNumber
+              ? this.markHitOnBoard(
+                  this.clientsPlayerNumber,
+                  coord,
+                  game.players
+                )
+              : this.markHitOnBoard(this.aiPlayerNumber, coord, game.players);
         } else {
-          game = this.markHitOnBoard(this.opponentsPlayerNumber, coord, game);
+          game.players = this.markHitOnBoard(
+            this.opponentsPlayerNumber,
+            coord,
+            game.players
+          );
         }
       } else {
         game.fireResult = false;
         if (!game.gameMulti) {
-          this.aiPlayerNumber == this.whoseTurnNumber
-            ? this.markMissedOnBoard(this.clientsPlayerNumber, coord, game)
-            : this.markMissedOnBoard(this.aiPlayerNumber, coord, game);
+          game.players =
+            this.aiPlayerNumber == this.whoseTurnNumber
+              ? this.markMissedOnBoard(
+                  this.clientsPlayerNumber,
+                  coord,
+                  game.players
+                )
+              : this.markMissedOnBoard(
+                  this.aiPlayerNumber,
+                  coord,
+                  game.players
+                );
         } else {
-          game = this.markMissedOnBoard(
+          game.players = this.markMissedOnBoard(
             this.opponentsPlayerNumber,
             coord,
-            game
+            game.players
           );
         }
       }
@@ -292,11 +309,11 @@ export class GamePlayComponent implements OnInit {
 
   private isCellAlreadyShot(coord: Coordinates): boolean {
     let board: BoardCell[][] = [];
-    if (this.game.getGame().gameMulti) {
+    if (!this.game.getGame().gameMulti) {
       board =
         this.aiPlayerNumber == this.whoseTurnNumber
-          ? this.boards[this.aiPlayerNumber]
-          : this.boards[this.clientsPlayerNumber];
+          ? this.boards[this.clientsPlayerNumber]
+          : this.boards[this.aiPlayerNumber];
     } else {
       board = this.boards[this.opponentsPlayerNumber];
     }
@@ -343,43 +360,47 @@ export class GamePlayComponent implements OnInit {
 
     let board: BoardCell[][] = this.getCorrectBoard(gameMulti);
 
-    if (board[coord.row][coord.col].value == 1) {
+    if (board[coord.col][coord.row].value == 1) {
       return true;
     }
     return false;
   }
 
   private getCorrectBoard(gameMulti: boolean): BoardCell[][] {
-    return this.aiPlayerNumber >= 0 && !gameMulti
-      ? this.boards[this.aiPlayerNumber]
-      : this.boards[this.opponentsPlayerNumber];
+    if (!gameMulti) {
+      return this.aiPlayerNumber == this.whoseTurnNumber
+        ? this.boards[this.clientsPlayerNumber]
+        : this.boards[this.aiPlayerNumber];
+    } else {
+      return this.boards[this.opponentsPlayerNumber];
+    }
   }
 
   private markHitOnBoard(
     playerNumber: number,
     coord: Coordinates,
-    game: GameState
-  ) {
+    players: Player[]
+  ): Player[] {
     if (coord.col >= 0 && coord.row >= 0) {
-      game.players[playerNumber].board[coord.col][coord.row].value = 2;
-      game.players[playerNumber].board[coord.col][coord.row].color = 'red';
+      players[playerNumber].board[coord.col][coord.row].value = 2;
+      players[playerNumber].board[coord.col][coord.row].color = 'red';
     }
 
-    return game;
+    return players;
   }
 
   private markMissedOnBoard(
     playerNumber: number,
     coord: Coordinates,
-    game: GameState
-  ) {
+    players: Player[]
+  ): Player[] {
     if (coord.col >= 0 && coord.row >= 0) {
-      game.players[playerNumber].board[coord.col][coord.row].value = 3;
-      game.players[playerNumber].board[coord.col][coord.row].color =
+      players[playerNumber].board[coord.col][coord.row].value = 3;
+      players[playerNumber].board[coord.col][coord.row].color =
         'rgb(0, 162, 255)';
     }
 
-    return game;
+    return players;
   }
 
   public copyToClipboard(): void {

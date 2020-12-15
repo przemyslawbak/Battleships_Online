@@ -13,6 +13,7 @@ export class AiService {
     let missed: BoardCell[] = this.board.getCurrentMissed(board);
     let forbidden: BoardCell[] = [];
     let targets: BoardCell[] = [];
+    let isRandomCoordinateForbidden: boolean = true;
     let randomCoordinates: Coordinates = {
       row: -1,
       col: -1,
@@ -20,35 +21,33 @@ export class AiService {
     forbidden.push.apply(forbidden, this.board.getCornerCells(hits));
     forbidden.push.apply(forbidden, missed);
     forbidden.push.apply(forbidden, hits);
+    targets = this.board.getPotentialTargets(forbidden, hits);
     console.clear();
     console.log('forbidden cells:');
     console.log(forbidden);
-    if (hits.length == 0) {
-      let isRandomCoordinateForbidden: boolean = true;
+    console.log('target cells:');
+    console.log(targets);
+    //todo: check if hits are in line
+    if (targets.length > 0) {
+      while (isRandomCoordinateForbidden) {
+        randomCoordinates = targets[Math.floor(Math.random() * targets.length)];
+        if (!this.checkIfRandomIsForbidden(forbidden, randomCoordinates)) {
+          isRandomCoordinateForbidden = false;
+        }
+      }
+      return {
+        row: randomCoordinates.row,
+        col: randomCoordinates.col,
+      } as Coordinates;
+    } else {
       while (isRandomCoordinateForbidden) {
         randomCoordinates = this.getRandomCoordinates();
         if (!this.checkIfRandomIsForbidden(forbidden, randomCoordinates)) {
           isRandomCoordinateForbidden = false;
         }
       }
-      return this.getRandomCoordinates();
-    } else {
-      targets = this.board.getPotentialTargets(forbidden, hits);
-      if (targets.length > 0) {
-        let random: BoardCell =
-          targets[Math.floor(Math.random() * targets.length)];
-        return { row: random.row, col: random.col } as Coordinates;
-      } else {
-        let isRandomCoordinateForbidden: boolean = true;
-        while (isRandomCoordinateForbidden) {
-          randomCoordinates = this.getRandomCoordinates();
-          if (!this.checkIfRandomIsForbidden(forbidden, randomCoordinates)) {
-            isRandomCoordinateForbidden = false;
-          }
-        }
 
-        return randomCoordinates;
-      }
+      return randomCoordinates;
     }
   }
 

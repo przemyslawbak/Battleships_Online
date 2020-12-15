@@ -322,11 +322,11 @@ export class BoardService {
 
     list.push.apply(list, this.getCornerCells(dropPlace));
     list.push.apply(list, this.getSideCells(dropPlace));
+    list.push.apply(list, this.getShipCells(dropPlace));
 
     return list;
   }
-
-  public getSideCells(dropPlace: BoardCell[]): BoardCell[] {
+  getShipCells(dropPlace: BoardCell[]): any {
     let list: BoardCell[] = [];
     for (let i = 0; i < dropPlace.length; i++) {
       list.push({
@@ -334,6 +334,14 @@ export class BoardService {
         col: dropPlace[i].col,
         value: 0,
       } as BoardCell);
+    }
+
+    return list;
+  }
+
+  public getSideCells(dropPlace: BoardCell[]): BoardCell[] {
+    let list: BoardCell[] = [];
+    for (let i = 0; i < dropPlace.length; i++) {
       list.push({
         row: dropPlace[i].row,
         col: dropPlace[i].col + 1,
@@ -423,22 +431,23 @@ export class BoardService {
     let sideLineCells: BoardCell[] = this.getSideCells(hits);
 
     for (let i = 0; i < sideLineCells.length; i++) {
+      let isWrong: boolean = false;
       for (let j = 0; j < forbidden.length; j++) {
         if (
           sideLineCells[i].col == forbidden[j].col &&
           sideLineCells[i].row == forbidden[j].row
         ) {
-          continue;
-        } else {
-          if (
-            sideLineCells[i].col >= 0 &&
-            sideLineCells[i].col <= 9 &&
-            sideLineCells[i].row >= 0 &&
-            sideLineCells[i].row <= 9
-          ) {
-            list.push(sideLineCells[i]);
-          }
+          isWrong = true;
         }
+      }
+      if (
+        !isWrong &&
+        sideLineCells[i].col >= 0 &&
+        sideLineCells[i].col <= 9 &&
+        sideLineCells[i].row >= 0 &&
+        sideLineCells[i].row <= 9
+      ) {
+        list.push(sideLineCells[i]);
       }
     }
 
