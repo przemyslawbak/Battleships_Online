@@ -38,8 +38,20 @@ export class CommentsService {
     'Opponent missed. You are lucky this time.',
     'Opponent missed. Good for you.',
   ];
+  private shootTwiceComments: string[] = [
+    'Not allowed. Are you kidding me?',
+    'Not allowed. You can not shoot twice here.',
+    'Not allowed. Please find another cell.',
+  ];
 
   constructor() {}
+
+  public getShootTwiceComment(): CommentModel {
+    return {
+      text: this.randomPhrase(this.shootTwiceComments),
+      color: 'black',
+    } as CommentModel;
+  }
 
   public getNoLostComment(): CommentModel {
     return {

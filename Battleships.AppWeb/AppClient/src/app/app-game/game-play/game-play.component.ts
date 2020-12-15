@@ -248,14 +248,18 @@ export class GamePlayComponent implements OnInit {
   }
 
   public fire(row: number, col: number): void {
-    if (!this.isResultBeingDisplayed && !this.gameEnded) {
+    let coord: Coordinates = { row: row, col: col } as Coordinates;
+    if (
+      !this.isResultBeingDisplayed &&
+      !this.gameEnded &&
+      !this.isCellAlreadyShot(coord)
+    ) {
       let game = this.game.getGame();
-      let coord: Coordinates = { row: row, col: col } as Coordinates;
       let isHit: boolean = this.verifyHit(game.gameMulti, coord);
       if (isHit) {
         game.fireResult = true;
 
-        if (game.gameAi) {
+        if (!game.gameMulti) {
           this.aiPlayerNumber == this.whoseTurnNumber
             ? this.markHitOnBoard(this.clientsPlayerNumber, coord, game)
             : this.markHitOnBoard(this.aiPlayerNumber, coord, game);
@@ -264,7 +268,7 @@ export class GamePlayComponent implements OnInit {
         }
       } else {
         game.fireResult = false;
-        if (game.gameAi) {
+        if (!game.gameMulti) {
           this.aiPlayerNumber == this.whoseTurnNumber
             ? this.markMissedOnBoard(this.clientsPlayerNumber, coord, game)
             : this.markMissedOnBoard(this.aiPlayerNumber, coord, game);
@@ -280,6 +284,26 @@ export class GamePlayComponent implements OnInit {
       this.updateOpponentDisplayResult(game);
       setTimeout(() => this.updateTurnDataAndContinue(game, isHit), 3000);
     }
+  }
+
+  private isCellAlreadyShot(coord: Coordinates): boolean {
+    let board: BoardCell[][] = [];
+    if (this.game.getGame().gameMulti) {
+      board =
+        this.aiPlayerNumber == this.whoseTurnNumber
+          ? this.boards[this.aiPlayerNumber]
+          : this.boards[this.clientsPlayerNumber];
+    } else {
+      board = this.boards[this.opponentsPlayerNumber];
+    }
+
+    let result: boolean = this.board.isCellAlreadyShot(coord, board);
+
+    if (result) {
+      this.gameBoardComment = this.comments.getShootTwiceComment();
+    }
+
+    return result;
   }
 
   private updateOpponentDisplayResult(game: GameState) {

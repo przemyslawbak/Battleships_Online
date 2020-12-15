@@ -200,7 +200,7 @@ OK - in game-play component:
 	OK - bug: on hit displaying missed comment,
 	OK - adjust: when displaying hit result, switch off pointer and dashed cell border,
 	OK - adjust: when displaying hit result, do not allow to fire,
-	- what if shooting cell already shot?
+	OK - adjust: what if shooting cell already shot?
 - single player:
 	NO - bug: now computer does not shot (create AI first),
 	OK - deploying ships for AI,

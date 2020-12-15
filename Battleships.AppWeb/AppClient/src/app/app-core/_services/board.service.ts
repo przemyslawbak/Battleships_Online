@@ -437,4 +437,11 @@ export class BoardService {
 
     return list;
   }
+
+  public isCellAlreadyShot(coord: Coordinates, board: BoardCell[][]): boolean {
+    return board[coord.row][coord.col].value == 2 ||
+      board[coord.row][coord.col].value == 3
+      ? true
+      : false;
+  }
 }
