@@ -422,8 +422,8 @@ export class BoardService {
     let list: BoardCell[] = [];
     let sideLineCells: BoardCell[] = this.getSideCells(hits);
 
-    for (let i = 0; i < 10; i++) {
-      for (let j = 0; j < 10; j++) {
+    for (let i = 0; i < sideLineCells.length; i++) {
+      for (let j = 0; j < forbidden.length; j++) {
         if (
           sideLineCells[i].col == forbidden[j].col &&
           sideLineCells[i].row == forbidden[j].row
@@ -439,8 +439,8 @@ export class BoardService {
   }
 
   public isCellAlreadyShot(coord: Coordinates, board: BoardCell[][]): boolean {
-    return board[coord.row][coord.col].value == 2 ||
-      board[coord.row][coord.col].value == 3
+    return board[coord.col][coord.row].value == 2 ||
+      board[coord.col][coord.row].value == 3
       ? true
       : false;
   }

@@ -13,22 +13,32 @@ export class AiService {
     let missed: BoardCell[] = this.board.getCurrentMissed(board);
     let forbidden: BoardCell[] = [];
     let targets: BoardCell[] = [];
+    let randomCoordinates: Coordinates = {
+      row: -1,
+      col: -1,
+    } as Coordinates;
+    forbidden.push.apply(forbidden, this.board.getCornerCells(hits));
+    forbidden.push.apply(forbidden, missed);
+    forbidden.push.apply(forbidden, hits);
+    console.clear();
+    console.log('forbidden cells:');
+    console.log(forbidden);
     if (hits.length == 0) {
+      let isRandomCoordinateForbidden: boolean = true;
+      while (isRandomCoordinateForbidden) {
+        randomCoordinates = this.getRandomCoordinates();
+        if (!this.checkIfRandomIsForbidden(forbidden, randomCoordinates)) {
+          isRandomCoordinateForbidden = false;
+        }
+      }
       return this.getRandomCoordinates();
     } else {
-      forbidden.push.apply(forbidden, this.board.getCornerCells(hits));
-      forbidden.push.apply(forbidden, missed);
-      forbidden.push.apply(forbidden, hits);
       targets = this.board.getPotentialTargets(forbidden, hits);
       if (targets.length > 0) {
         let random: BoardCell =
           targets[Math.floor(Math.random() * targets.length)];
         return { row: random.row, col: random.col } as Coordinates;
       } else {
-        let randomCoordinates: Coordinates = {
-          row: -1,
-          col: -1,
-        } as Coordinates;
         let isRandomCoordinateForbidden: boolean = true;
         while (isRandomCoordinateForbidden) {
           randomCoordinates = this.getRandomCoordinates();
