@@ -103,7 +103,7 @@ export class GamePlayComponent implements OnInit {
             this.boards[this.clientsPlayerNumber]
           );
 
-          this.fire(coord.row, coord.col);
+          setTimeout(() => this.fire(coord.row, coord.col), 1000);
         }
       }
     }
@@ -317,7 +317,10 @@ export class GamePlayComponent implements OnInit {
     } else {
       board = this.boards[this.opponentsPlayerNumber];
     }
-    let result: boolean = this.board.isCellAlreadyShot(coord, board);
+    let result: boolean =
+      coord.col == -1 && coord.col == -1
+        ? false
+        : this.board.isCellAlreadyShot(coord, board);
 
     if (result) {
       console.log('not allowed value:');

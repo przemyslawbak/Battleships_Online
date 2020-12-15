@@ -210,7 +210,8 @@ OK - in game-play component:
 	OK - bug: game state broadcast error: Error: An unexpected error occurred invoking 'SendGameState' on the server.
 	OK - bug: computer hits wrong board,
 	OK - bug: after computers hit wrong board comment is displayed,
-	- bug: after timeout does not change player to computer, again,
+	OK - bug: after timeout does not change player to computer, again,
+	- adjust: delay 1s before ai fires,
 	OK - bug: after leafing single player game, game still exists,
 	OK - create AI,
 	OK - bug: when computer hits target, does not continue shooting,
@@ -224,6 +225,8 @@ OK - in game-play component:
 	OK - do not wait for 2nd player when single player,
 	OK - bug: when hosting single player game it is written: this game is single player only,
 	- what about display single player game in the list?
+	- what if computer wins the game?
+	- what if player wins the game?
 - sprites:
 	- missed sprite,
 	- hit sprite,
