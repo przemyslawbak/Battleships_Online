@@ -212,7 +212,8 @@ OK - in game-play component:
 	OK - bug: after computers hit wrong board comment is displayed,
 	OK - bug: after timeout does not change player to computer,
 	OK - bug: after leafing single player game, game still exists,
-	- create AI,
+	OK - create AI,
+	- bug: when computer hits target, does not continue shooting,
 	OK - swap from multi -> single player when waiting for 2nd player,
 	OK - game chat off when single player game,
 	OK - do not wait for 2nd player when single player,
@@ -222,6 +223,9 @@ OK - in game-play component:
 	-???
 - edit profile component:
 	-???
+- sprites:
+	- missed sprite,
+	- hit sprite,
 
 - all views, if game is not connected with the hub, redirect to the main view
 - bug: when playing game and joining another, on disconnect just redirects to the main view

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BoardCell } from '@models/board-cell.model';
 import { Coordinates } from '@models/coordinates.model';
 import { BoardService } from '@services/board.service';
+import { randomBytes } from 'crypto';
 
 @Injectable()
 export class AiService {
@@ -13,19 +14,51 @@ export class AiService {
     let forbidden: BoardCell[] = [];
     let targets: BoardCell[] = [];
     if (hits.length == 0) {
-      return {
-        row: Math.floor(Math.random() * 10),
-        col: Math.floor(Math.random() * 10),
-      } as Coordinates;
+      return this.getRandomCoordinates();
     } else {
-      forbidden.concat(this.board.getCornerCells(hits));
-      forbidden.concat(missed);
-      forbidden.concat(hits);
-      //todo: get / count sanked fleet and add forbidden for side cells
+      forbidden.push.apply(forbidden, this.board.getCornerCells(hits));
+      forbidden.push.apply(forbidden, missed);
+      forbidden.push.apply(forbidden, hits);
       targets = this.board.getPotentialTargets(forbidden, hits);
-      let random: BoardCell =
-        targets[Math.floor(Math.random() * targets.length)];
-      return { row: random.row, col: random.col } as Coordinates;
+      if (targets.length > 0) {
+        let random: BoardCell =
+          targets[Math.floor(Math.random() * targets.length)];
+        return { row: random.row, col: random.col } as Coordinates;
+      } else {
+        let randomCoordinates: Coordinates = {
+          row: -1,
+          col: -1,
+        } as Coordinates;
+        let isRandomCoordinateForbidden: boolean = true;
+        while (isRandomCoordinateForbidden) {
+          randomCoordinates = this.getRandomCoordinates();
+          if (!this.checkIfRandomIsForbidden(forbidden, randomCoordinates)) {
+            isRandomCoordinateForbidden = false;
+          }
+        }
+
+        return randomCoordinates;
+      }
     }
+  }
+
+  private checkIfRandomIsForbidden(
+    cells: BoardCell[],
+    coord: Coordinates
+  ): boolean {
+    for (let i = 0; i < cells.length; i++) {
+      if (cells[i].row == coord.row && cells[i].col == coord.col) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  private getRandomCoordinates(): Coordinates {
+    return {
+      row: Math.floor(Math.random() * 10),
+      col: Math.floor(Math.random() * 10),
+    } as Coordinates;
   }
 }

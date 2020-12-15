@@ -320,8 +320,8 @@ export class BoardService {
   public getForbiddenCells(dropPlace: BoardCell[]): BoardCell[] {
     let list: BoardCell[] = [];
 
-    list.concat(this.getSideCells(dropPlace));
-    list.concat(this.getCornerCells(dropPlace));
+    list.push.apply(list, this.getCornerCells(dropPlace));
+    list.push.apply(list, this.getSideCells(dropPlace));
 
     return list;
   }
