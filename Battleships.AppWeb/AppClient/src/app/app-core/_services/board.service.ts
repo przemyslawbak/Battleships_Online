@@ -430,7 +430,14 @@ export class BoardService {
         ) {
           continue;
         } else {
-          list.push(sideLineCells[i]);
+          if (
+            sideLineCells[i].col >= 0 &&
+            sideLineCells[i].col <= 9 &&
+            sideLineCells[i].row >= 0 &&
+            sideLineCells[i].row <= 9
+          ) {
+            list.push(sideLineCells[i]);
+          }
         }
       }
     }
