@@ -211,7 +211,7 @@ OK - in game-play component:
 	OK - bug: computer hits wrong board,
 	OK - bug: after computers hit wrong board comment is displayed,
 	OK - bug: after timeout does not change player to computer, again,
-	- adjust: delay 1s before ai fires,
+	OK - adjust: delay 1s before ai fires,
 	OK - bug: after leafing single player game, game still exists,
 	OK - create AI,
 	OK - bug: when computer hits target, does not continue shooting,
@@ -228,8 +228,8 @@ OK - in game-play component:
 	- what if computer wins the game?
 	- what if player wins the game?
 - sprites:
-	- missed sprite,
-	- hit sprite,
+	- missed sprite - water splash,
+	- hit sprite, explosion,
 - game rules component:
 	-???
 - edit profile component:
