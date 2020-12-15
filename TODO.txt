@@ -201,7 +201,7 @@ OK - in game-play component:
 	OK - adjust: when displaying hit result, switch off pointer and dashed cell border,
 	OK - adjust: when displaying hit result, do not allow to fire,
 	OK - adjust: what if shooting cell already shot?
-- single player:
+OK - single player:
 	NO - bug: now computer does not shot (create AI first),
 	OK - deploying ships for AI,
 	OK - bug: auto deploying players board on init,
@@ -226,8 +226,8 @@ OK - in game-play component:
 	OK - bug: when hosting single player game it is written: this game is single player only,
 	NO - what about display single player game in the list?
 	OK - what if computer wins the game? Log it,
-	OK - what if player wins the game?
-	- what if game started as a multi, but changed to be a single player?
+	OK - what if player wins the game? Log it,
+	OK - what if game started as a multi, but changed to be a single player? now removing from the list all single player games
 - sprites:
 	- missed sprite - water splash,
 	- hit sprite, explosion,

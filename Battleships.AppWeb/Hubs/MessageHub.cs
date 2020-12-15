@@ -59,6 +59,11 @@ namespace Battleships.AppWeb.Hubs
 
         private async Task SendGameStateToUsersInGame(GameStateModel game)
         {
+            if (!game.GameMulti)
+            {
+                RemoveGameFromCacheGameList(game.GameId);
+            }
+
             if (string.IsNullOrEmpty(game.Players[0].UserName) || string.IsNullOrEmpty(game.Players[1].UserName))
             {
                 game.IsDeploymentAllowed = false;
@@ -150,8 +155,11 @@ namespace Battleships.AppWeb.Hubs
         {
             List<GameStateModel> games = _memoryAccess.GetGameList();
             GameStateModel game = _memoryAccess.GetGameList().Where(g => g.GameId == gameId).FirstOrDefault();
-            games.Remove(game);
-            _memoryAccess.SetGameList(games);
+            if (game != null)
+            {
+                games.Remove(game);
+                _memoryAccess.SetGameList(games);
+            }
         }
 
         private void UpdateExistingGame(GameStateModel game)
