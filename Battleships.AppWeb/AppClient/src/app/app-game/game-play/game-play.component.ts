@@ -96,7 +96,7 @@ export class GamePlayComponent implements OnInit {
       this.isResultBeingDisplayed = game.displayingResults;
       this.setupGameBoardCommentsAndGame(game.fireResult);
       this.resetBoardColors();
-      if (!game.gameMulti && !this.isResultBeingDisplayed) {
+      if (!game.gameMulti && !this.isResultBeingDisplayed && !this.gameEnded) {
         this.aiPlayerNumber = this.findAiPlayerNumber(game.players); //todo: only once
         if (this.whoseTurnNumber == this.aiPlayerNumber) {
           let coord: Coordinates = this.ai.getFireCoordinates(
@@ -130,10 +130,10 @@ export class GamePlayComponent implements OnInit {
   }
 
   private resultIsBeingDisplayed(fireResult: boolean): void {
-    let winner: number = this.checkForWinner();
+    let winnerNumber: number = this.checkForWinner();
 
-    winner > -1
-      ? this.weHaveWinner(winner)
+    winnerNumber > -1
+      ? this.weHaveWinner(winnerNumber)
       : this.AddLastRoundComments(fireResult);
   }
 
@@ -166,19 +166,19 @@ export class GamePlayComponent implements OnInit {
     return this.board.isThereAWinner(this.game.getGame().players);
   }
 
-  private weHaveWinner(winner: number): void {
+  private weHaveWinner(winnerNumber: number): void {
     let message: string = '';
     message =
-      winner == this.clientsPlayerNumber
+      winnerNumber == this.clientsPlayerNumber
         ? 'You won this batle!'
         : 'You lost this battle.';
-    this.addWonGame(message);
+    this.addWonGame(message, winnerNumber);
   }
 
-  private addWonGame(message: string): void {
+  private addWonGame(message: string, winnerNumber: number): void {
     const url = environment.apiUrl + 'api/user/winner';
     const data = {
-      UserName: this.auth.getAuth().user,
+      UserName: this.game.getGame().players[winnerNumber].displayName,
       Multiplayer: this.game.getGame().gameMulti,
     };
     this.http.post<any>(url, data).subscribe(() => {

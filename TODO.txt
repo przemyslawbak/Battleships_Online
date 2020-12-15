@@ -224,9 +224,10 @@ OK - in game-play component:
 	OK - game chat off when single player game,
 	OK - do not wait for 2nd player when single player,
 	OK - bug: when hosting single player game it is written: this game is single player only,
-	- what about display single player game in the list?
-	- what if computer wins the game?
-	- what if player wins the game?
+	NO - what about display single player game in the list?
+	OK - what if computer wins the game? Log it,
+	OK - what if player wins the game?
+	- what if game started as a multi, but changed to be a single player?
 - sprites:
 	- missed sprite - water splash,
 	- hit sprite, explosion,
