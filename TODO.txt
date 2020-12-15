@@ -141,7 +141,7 @@ OK - in deploy view and component:
 	OK - display game link for a friend, under "Waiting for second player to join this game...",
 	OK - bug: 'deploy ships' btn is enabled before completed deploying,
 	OK - bug: deployed ships are not visible,
-	- bug: status data display is shifted, why?
+	OK - bug: status data display is shifted, why?
 OK - in connect component:
 	NO - prepare some view, spinner, anything?
 	OK - err: ERROR TypeError: this.thenable is undefined

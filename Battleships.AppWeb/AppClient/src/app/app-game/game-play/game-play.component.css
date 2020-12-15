@@ -9,6 +9,10 @@ button {
   width: 66%;
 }
 
+.gameStatus .row {
+  padding-left: 20px;
+}
+
 .gameHeaderPic {
   background-position: center;
   background-repeat: no-repeat;
