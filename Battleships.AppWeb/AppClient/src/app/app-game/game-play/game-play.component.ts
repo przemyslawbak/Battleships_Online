@@ -248,6 +248,10 @@ export class GamePlayComponent implements OnInit {
   }
 
   public fire(row: number, col: number): void {
+    console.clear();
+    console.log('fire:');
+    console.log('row: ' + row);
+    console.log('col: ' + col);
     let coord: Coordinates = { row: row, col: col } as Coordinates;
     if (
       !this.isResultBeingDisplayed &&
@@ -296,10 +300,13 @@ export class GamePlayComponent implements OnInit {
     } else {
       board = this.boards[this.opponentsPlayerNumber];
     }
-
     let result: boolean = this.board.isCellAlreadyShot(coord, board);
 
     if (result) {
+      console.log('not allowed value:');
+      console.log(
+        this.boards[this.clientsPlayerNumber][coord.row][coord.col].value
+      );
       this.gameBoardComment = this.comments.getShootTwiceComment();
     }
 
