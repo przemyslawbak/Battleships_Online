@@ -9,10 +9,10 @@ export class AiService {
   constructor(private board: BoardService) {}
 
   public getFireCoordinates(board: BoardCell[][]): Coordinates {
-    let hits: BoardCell[] = this.board.getCurrentHits(board);
-    let missed: BoardCell[] = this.board.getCurrentMissed(board);
-    let forbidden: BoardCell[] = [];
-    let targets: BoardCell[] = [];
+    let hits: BoardCell[] = this.board.getCurrentHits(board); // hit cells
+    let missed: BoardCell[] = this.board.getCurrentMissed(board); //missed cells
+    let forbidden: BoardCell[] = []; //can not shoot there
+    let targets: BoardCell[] = []; //potential targets
     let isRandomCoordinateForbidden: boolean = true;
     let randomCoordinates: Coordinates = {
       row: -1,
@@ -22,13 +22,9 @@ export class AiService {
     forbidden.push.apply(forbidden, missed);
     forbidden.push.apply(forbidden, hits);
     targets = this.board.getPotentialTargets(forbidden, hits);
-    console.clear();
-    console.log('forbidden cells:');
-    console.log(forbidden);
-    console.log('target cells:');
-    console.log(targets);
-    //todo: check if hits are in line
+    //todo: count hits in line and remove ships from list
     if (targets.length > 0) {
+      //todo: DRY
       while (isRandomCoordinateForbidden) {
         randomCoordinates = targets[Math.floor(Math.random() * targets.length)];
         if (!this.checkIfRandomIsForbidden(forbidden, randomCoordinates)) {
@@ -40,6 +36,7 @@ export class AiService {
         col: randomCoordinates.col,
       } as Coordinates;
     } else {
+      //todo: DRY
       while (isRandomCoordinateForbidden) {
         randomCoordinates = this.getRandomCoordinates();
         if (!this.checkIfRandomIsForbidden(forbidden, randomCoordinates)) {
