@@ -229,6 +229,7 @@ OK - single player:
 	OK - what if player wins the game? Log it,
 	OK - what if game started as a multi, but changed to be a single player? now removing from the list all single player games
 - sprites:
+	OK - create game sprite component,
 	- missed sprite - water splash,
 	- hit sprite, explosion,
 - game rules component:
