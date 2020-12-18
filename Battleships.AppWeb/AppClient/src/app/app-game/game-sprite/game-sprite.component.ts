@@ -10,8 +10,8 @@ import {
 
 @Component({
   selector: 'app-animated-sprite',
-  templateUrl: './animated-sprite.component.html',
-  styleUrls: ['./animated-sprite.component.css'],
+  templateUrl: './game-sprite.component.html',
+  styleUrls: ['./game-sprite.component.css'],
 })
 export class GameSpriteComponent implements OnInit {
   @ViewChild('animationRef', { static: true }) animationRef: ElementRef;
@@ -83,8 +83,6 @@ export class GameSpriteComponent implements OnInit {
       this.directionX -= 1;
       this.positionX = this.directionX * this.width;
     }
-    console.log('posX: ' + this.positionX);
-    console.log('posY: ' + this.positionY);
     this.animationRef.nativeElement.style['background-position-x'] =
       this.positionX + 'px';
     this.animationRef.nativeElement.style['background-position-y'] =
@@ -124,10 +122,6 @@ export class GameSpriteComponent implements OnInit {
       };
       this.width = this.size.width / this.totalcols;
       this.height = this.size.height / this.totalRows;
-      console.log('w: ' + this.width);
-      console.log('h: ' + this.height);
-      console.log('sw: ' + this.size.width);
-      console.log('sh: ' + this.size.height);
       this.startAnimating();
     };
   }

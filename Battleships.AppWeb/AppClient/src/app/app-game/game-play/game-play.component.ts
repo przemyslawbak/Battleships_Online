@@ -26,7 +26,7 @@ export class GamePlayComponent implements OnInit {
   public displaySprite: boolean = false;
   public spriteX: number = 0;
   public spriteY: number = 0;
-  public spriteComponent: any = null;
+  public spriteComponent: any = this.getspriteCOmponent();
   public spriteUrl = 'https://i.ibb.co/H4f84Wn/explode.png';
   public multiplayer: boolean = false;
   private aiPlayerNumber: number = -1;
@@ -266,6 +266,7 @@ export class GamePlayComponent implements OnInit {
       let isHit: boolean = this.verifyHit(game.gameMulti, coord);
       if (isHit) {
         game.fireResult = true;
+        this.animateSprite('explode');
 
         if (!game.gameMulti) {
           game.players =
@@ -448,16 +449,24 @@ export class GamePlayComponent implements OnInit {
     }
   }
 
-  private animateSprite(): void {
-    this.spriteComponent = {
-      frameRate: 17,
-    };
+  private animateSprite(type: string): void {
+    this.spriteX = 0;
+    this.spriteY = 0;
+    this.spriteUrl =
+      type == 'splash'
+        ? 'https://i.ibb.co/c3WLWN1/splash.png'
+        : 'https://i.ibb.co/H4f84Wn/explode.png';
   }
 
   public getNotification(evt: boolean): void {
     if (evt) {
       this.displaySprite = !this.displaySprite;
-      this.spriteComponent = null;
     }
+  }
+
+  public getspriteCOmponent(): any {
+    return {
+      frameRate: 17,
+    };
   }
 }

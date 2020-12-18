@@ -274,6 +274,7 @@ OK - what if hubConnection.onclose?
 - DRY copy to clipboard in game-play & game-deploy
 - if player disconnects in the middle of game, minus score,
 - DRY `setComputerOpponent` move to service;
+- big screen: change width of modal message window
 
 end:
 - move logic to the services
