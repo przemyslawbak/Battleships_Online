@@ -17,9 +17,8 @@ export class GameSpriteComponent implements OnInit {
   @ViewChild('animationRef', { static: true }) animationRef: ElementRef;
   constructor() {}
   //@required method must
-  @Input() public id: number = 0;
   @Input() public url: string;
-  @Input() public frameRate: number = 12;
+  @Input() public frameRate: number = 17;
   @Input() public totalRows: number = 8;
   @Input() public totalcols: number = 8;
   @Input() public totalFrames: number = 12;

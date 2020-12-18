@@ -23,6 +23,11 @@ import { Coordinates } from '@models/coordinates.model';
   styleUrls: ['./game-play.component.css'],
 })
 export class GamePlayComponent implements OnInit {
+  public displaySprite: boolean = false;
+  public spriteX: number = 0;
+  public spriteY: number = 0;
+  public spriteComponent: any = null;
+  public spriteUrl = 'https://i.ibb.co/H4f84Wn/explode.png';
   public multiplayer: boolean = false;
   private aiPlayerNumber: number = -1;
   public gameEnded: boolean = false;
@@ -440,6 +445,19 @@ export class GamePlayComponent implements OnInit {
 
         return players;
       }
+    }
+  }
+
+  private animateSprite(): void {
+    this.spriteComponent = {
+      frameRate: 17,
+    };
+  }
+
+  public getNotification(evt: boolean): void {
+    if (evt) {
+      this.displaySprite = !this.displaySprite;
+      this.spriteComponent = null;
     }
   }
 }

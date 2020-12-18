@@ -127,6 +127,10 @@ table td {
   margin-top: 20px;
 }
 
+.sprite {
+  position: absolute;
+}
+
 .rotate {
   transform-origin: top left;
   transform: translateX(30px) rotate(90deg);

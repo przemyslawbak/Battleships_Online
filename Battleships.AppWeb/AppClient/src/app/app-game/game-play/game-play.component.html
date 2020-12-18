@@ -109,6 +109,22 @@
     </div>
   </div>
   <div class="droplist col-md-7">
+    <app-animated-sprite
+      class="sprite"
+      (animationFinish)="getNotification($event)"
+      *ngFor="let ani of animationArray"
+      [url]="newurl"
+      [id]="ani.id"
+      [frameRate]="ani.frameRate"
+      [totalRows]="4.0"
+      [totalcols]="4"
+      [totalFrames]="15"
+      [isLoop]="false"
+      [style.top.px]="[posY]"
+      [style.left.px]="[posX]"
+      #aniDiv2
+    >
+    </app-animated-sprite>
     <h4
       [ngClass]="{
         greenColor: this.gameBoardComment.color == 'green',
