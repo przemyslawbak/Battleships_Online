@@ -257,9 +257,6 @@ export class GamePlayComponent implements OnInit {
   }
 
   public fire(row: number, col: number, ref: HTMLElement): void {
-    console.log('fire:');
-    console.log('row: ' + row);
-    console.log('col: ' + col);
     let coord: Coordinates = { row: row, col: col } as Coordinates;
     if (
       !this.isResultBeingDisplayed &&
@@ -268,9 +265,12 @@ export class GamePlayComponent implements OnInit {
     ) {
       let game = this.game.getGame();
       let isHit: boolean = this.verifyHit(game.gameMulti, coord);
+      let bounds = ref.getBoundingClientRect();
+      console.log('x: ' + bounds.left);
+      console.log('y: ' + bounds.top);
       if (isHit) {
         game.fireResult = true;
-        this.animateSprite('explode', ref);
+        this.animateSprite(isHit, ref);
 
         if (!game.gameMulti) {
           game.players =
@@ -282,6 +282,7 @@ export class GamePlayComponent implements OnInit {
                 )
               : this.markHitOnBoard(this.aiPlayerNumber, coord, game.players);
         } else {
+          this.animateSprite(isHit, ref);
           game.players = this.markHitOnBoard(
             this.opponentsPlayerNumber,
             coord,
@@ -453,17 +454,14 @@ export class GamePlayComponent implements OnInit {
     }
   }
 
-  private animateSprite(type: string, ref: HTMLElement): void {
+  private animateSprite(isHit: boolean, ref: HTMLElement): void {
     let bounds = ref.getBoundingClientRect();
     this.displaySprite = true;
     this.spriteX = bounds.left;
     this.spriteY = bounds.top;
-    console.log('x: ' + this.spriteX);
-    console.log('y: ' + this.spriteY);
-    this.spriteUrl =
-      type == 'splash'
-        ? 'https://i.ibb.co/c3WLWN1/splash.png'
-        : 'https://i.ibb.co/H4f84Wn/explode.png';
+    this.spriteUrl = isHit
+      ? 'https://i.ibb.co/H4f84Wn/explode.png'
+      : 'https://i.ibb.co/c3WLWN1/splash.png';
   }
 
   public getNotification(evt: boolean): void {

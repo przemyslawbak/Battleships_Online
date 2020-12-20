@@ -231,9 +231,10 @@ OK - single player:
 - sprites:
 	OK - create game sprite component,
 	OK - bug: explosio is not revealed, in inspector check "ng-reflect-ng-if"
-	- bug: explosion is in a wrong place
-	- missed sprite - water splash,
-	- hit sprite, explosion,
+	- bug: explosion is in a wrong place,
+	- adjust: sprite sizes,
+	OK - missed sprite - water splash,
+	OK - hit sprite, explosion,
 - game rules component:
 	-???
 - edit profile component:
