@@ -126,7 +126,7 @@ export class BoardService {
       );
       randomEmptyCell = emptyCellArray[randomIndex];
 
-      var dummyHtmlElement = document.createElement('DIV');
+      var dummyHtmlElement: HTMLElement = document.createElement('DIV');
 
       coord.row = randomEmptyCell.row;
       coord.col = randomEmptyCell.col;

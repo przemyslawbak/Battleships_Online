@@ -230,7 +230,8 @@ OK - single player:
 	OK - what if game started as a multi, but changed to be a single player? now removing from the list all single player games
 - sprites:
 	OK - create game sprite component,
-	- bug: explosio is not revealed, in inspector check "ng-reflect-ng-if"
+	OK - bug: explosio is not revealed, in inspector check "ng-reflect-ng-if"
+	- bug: explosion is in a wrong place
 	- missed sprite - water splash,
 	- hit sprite, explosion,
 - game rules component:

@@ -110,22 +110,24 @@
   </div>
   <div class="droplist col-md-7">
     <!--sprite-->
-    <app-animated-sprite
-      *ngIf="displaySprite"
-      class="sprite"
-      (animationFinish)="getNotification($event)"
-      [url]="spriteUrl"
-      [id]="spriteComponent.id"
-      [frameRate]="spriteComponent.frameRate"
-      [totalRows]="4.0"
-      [totalcols]="4"
-      [totalFrames]="15"
-      [isLoop]="false"
-      [style.top.px]="[spriteY]"
-      [style.left.px]="[spriteX]"
-      #aniDiv2
-    >
-    </app-animated-sprite>
+    <div *ngIf="displaySprite">
+      <app-animated-sprite
+        class="sprite"
+        (animationFinish)="getNotification($event)"
+        [url]="spriteUrl"
+        [id]="spriteComponent.id"
+        [frameRate]="spriteComponent.frameRate"
+        [totalRows]="4.0"
+        [totalcols]="4"
+        [totalFrames]="15"
+        [isLoop]="false"
+        [style.top.px]="[spriteY]"
+        [style.left.px]="[spriteX]"
+        #aniDiv2
+      >
+      </app-animated-sprite>
+    </div>
+
     <h4
       [ngClass]="{
         greenColor: this.gameBoardComment.color == 'green',
@@ -180,7 +182,7 @@
               }"
               [style.backgroundColor]="box.color"
               #cell
-              (click)="fire(j, i)"
+              (click)="fire(j, i, cell)"
             ></div>
           </div>
         </div>

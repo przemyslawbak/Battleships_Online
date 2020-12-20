@@ -3,7 +3,7 @@ import { PlayerService } from '@services/player.service';
 import { BoardCell } from '@models/board-cell.model';
 import { ChatMessage } from './../../app-core/_models/chat-message.model';
 import { AuthService } from '@services/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { GameService } from '@services/game.service';
 import { SignalRService } from '@services/signal-r.service';
@@ -23,10 +23,11 @@ import { Coordinates } from '@models/coordinates.model';
   styleUrls: ['./game-play.component.css'],
 })
 export class GamePlayComponent implements OnInit {
+  private dummyHtmlElement: HTMLElement = document.createElement('DIV');
   public displaySprite: boolean = false;
   public spriteX: number = 0;
   public spriteY: number = 0;
-  public spriteComponent: any = this.getspriteComponent();
+  public spriteComponent: any = this.getSpriteComponent();
   public spriteUrl = 'https://i.ibb.co/H4f84Wn/explode.png';
   public multiplayer: boolean = false;
   private aiPlayerNumber: number = -1;
@@ -108,7 +109,10 @@ export class GamePlayComponent implements OnInit {
             this.boards[this.clientsPlayerNumber]
           );
 
-          setTimeout(() => this.fire(coord.row, coord.col), 1000);
+          setTimeout(
+            () => this.fire(coord.row, coord.col, this.dummyHtmlElement),
+            1000
+          );
         }
       }
     }
@@ -224,7 +228,7 @@ export class GamePlayComponent implements OnInit {
   }
 
   private nextRound(): void {
-    this.fire(-1, -1);
+    this.fire(-1, -1, this.dummyHtmlElement);
   }
 
   private resetMessageListeners() {
@@ -252,7 +256,7 @@ export class GamePlayComponent implements OnInit {
     }
   }
 
-  public fire(row: number, col: number): void {
+  public fire(row: number, col: number, ref: HTMLElement): void {
     console.log('fire:');
     console.log('row: ' + row);
     console.log('col: ' + col);
@@ -266,7 +270,7 @@ export class GamePlayComponent implements OnInit {
       let isHit: boolean = this.verifyHit(game.gameMulti, coord);
       if (isHit) {
         game.fireResult = true;
-        this.animateSprite('explode');
+        this.animateSprite('explode', ref);
 
         if (!game.gameMulti) {
           game.players =
@@ -449,9 +453,13 @@ export class GamePlayComponent implements OnInit {
     }
   }
 
-  private animateSprite(type: string): void {
-    this.spriteX = 0;
-    this.spriteY = 0;
+  private animateSprite(type: string, ref: HTMLElement): void {
+    let bounds = ref.getBoundingClientRect();
+    this.displaySprite = true;
+    this.spriteX = bounds.left;
+    this.spriteY = bounds.top;
+    console.log('x: ' + this.spriteX);
+    console.log('y: ' + this.spriteY);
     this.spriteUrl =
       type == 'splash'
         ? 'https://i.ibb.co/c3WLWN1/splash.png'
@@ -460,11 +468,11 @@ export class GamePlayComponent implements OnInit {
 
   public getNotification(evt: boolean): void {
     if (evt) {
-      this.displaySprite = !this.displaySprite;
+      this.displaySprite = false;
     }
   }
 
-  public getspriteComponent(): any {
+  public getSpriteComponent(): any {
     return {
       frameRate: 17,
     };
