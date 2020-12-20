@@ -26,7 +26,7 @@ export class GamePlayComponent implements OnInit {
   public displaySprite: boolean = false;
   public spriteX: number = 0;
   public spriteY: number = 0;
-  public spriteComponent: any = this.getspriteCOmponent();
+  public spriteComponent: any = this.getspriteComponent();
   public spriteUrl = 'https://i.ibb.co/H4f84Wn/explode.png';
   public multiplayer: boolean = false;
   private aiPlayerNumber: number = -1;
@@ -464,7 +464,7 @@ export class GamePlayComponent implements OnInit {
     }
   }
 
-  public getspriteCOmponent(): any {
+  public getspriteComponent(): any {
     return {
       frameRate: 17,
     };
