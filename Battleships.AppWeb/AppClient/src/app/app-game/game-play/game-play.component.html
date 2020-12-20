@@ -111,6 +111,7 @@
   <div class="droplist col-md-7">
     <!--sprite-->
     <app-animated-sprite
+      *ngIf="displaySprite"
       class="sprite"
       (animationFinish)="getNotification($event)"
       [url]="spriteUrl"
