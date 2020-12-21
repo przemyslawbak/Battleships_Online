@@ -265,12 +265,9 @@ export class GamePlayComponent implements OnInit {
     ) {
       let game = this.game.getGame();
       let isHit: boolean = this.verifyHit(game.gameMulti, coord);
-      let bounds = ref.getBoundingClientRect();
-      console.log('x: ' + bounds.left);
-      console.log('y: ' + bounds.top);
+      this.animateSprite(isHit, ref);
       if (isHit) {
         game.fireResult = true;
-        this.animateSprite(isHit, ref);
 
         if (!game.gameMulti) {
           game.players =
@@ -282,7 +279,6 @@ export class GamePlayComponent implements OnInit {
                 )
               : this.markHitOnBoard(this.aiPlayerNumber, coord, game.players);
         } else {
-          this.animateSprite(isHit, ref);
           game.players = this.markHitOnBoard(
             this.opponentsPlayerNumber,
             coord,
@@ -455,10 +451,9 @@ export class GamePlayComponent implements OnInit {
   }
 
   private animateSprite(isHit: boolean, ref: HTMLElement): void {
-    let bounds = ref.getBoundingClientRect();
     this.displaySprite = true;
-    this.spriteX = bounds.left;
-    this.spriteY = bounds.top;
+    this.spriteX = ref.offsetLeft - 50;
+    this.spriteY = ref.offsetTop - 50;
     this.spriteUrl = isHit
       ? 'https://i.ibb.co/H4f84Wn/explode.png'
       : 'https://i.ibb.co/c3WLWN1/splash.png';
