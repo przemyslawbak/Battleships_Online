@@ -265,7 +265,9 @@ export class GamePlayComponent implements OnInit {
     ) {
       let game = this.game.getGame();
       let isHit: boolean = this.verifyHit(game.gameMulti, coord);
-      this.animateSprite(isHit, ref);
+      if (row >= 0 && col >= 0) {
+        this.animateSprite(isHit, ref);
+      }
       if (isHit) {
         game.fireResult = true;
 
@@ -435,7 +437,6 @@ export class GamePlayComponent implements OnInit {
     game.gameAi = true;
     game.players = this.setComputerOpponent(game.players);
 
-    this.game.setGame(game);
     this.signalRService.broadcastGameState(game);
   }
 
