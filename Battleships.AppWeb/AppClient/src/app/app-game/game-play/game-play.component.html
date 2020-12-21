@@ -169,12 +169,9 @@
       <div class="board text-center">
         <div
           class="boardRow"
-          *ngFor="
-            let row of this.boards[this.opponentsPlayerNumber];
-            let i = index
-          "
+          *ngFor="let row of this.boards[this.opponentsPlayerNumber]"
         >
-          <div *ngFor="let box of row; let j = index">
+          <div *ngFor="let box of row">
             <div
               [ngClass]="{
                 boardCell: true,
