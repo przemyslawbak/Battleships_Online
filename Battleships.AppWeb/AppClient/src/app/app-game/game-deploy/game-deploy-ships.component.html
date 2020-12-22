@@ -147,11 +147,8 @@
     </div>
     <!--board1-->
     <div class="board text-center" #board>
-      <div
-        class="boardRow"
-        *ngFor="let row of this.playersBoard; let i = index"
-      >
-        <div *ngFor="let box of row; let j = index">
+      <div class="boardRow" *ngFor="let row of this.playersBoard">
+        <div *ngFor="let box of row">
           <div
             [ngClass]="{ boardCell: true, pointer: this.isDeploymentAllowed }"
             [style.backgroundColor]="box.color"
@@ -159,9 +156,7 @@
             (mouseleave)="resetBoardElement(cell, j, i)"
             (mouseover)="checkHoveredElement('cell', j, i, cell)"
             (click)="deployShip(j, i)"
-          >
-            {{ assignCellXY(j, i, cell) }}
-          </div>
+          ></div>
         </div>
       </div>
     </div>
