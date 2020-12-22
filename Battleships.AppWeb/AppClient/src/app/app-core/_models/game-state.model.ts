@@ -10,6 +10,8 @@ export interface GameState {
   gameLink: boolean;
   displayingResults: boolean;
   fireResult: boolean;
+  fireRow: number;
+  fireCol: number;
   players: Player[];
   isDeploymentAllowed: boolean;
   isStartAllowed: boolean;

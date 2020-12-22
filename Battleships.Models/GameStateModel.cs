@@ -5,6 +5,8 @@
         public int GameId { get; set; }
         public int GameTurnNumber { get; set; }
         public int GameTurnPlayer { get; set; }
+        public int FireRow { get; set; }
+        public int FireCol { get; set; }
         public bool GameAi { get; set; }
         public bool GameMulti { get; set; }
         public bool GameOpen { get; set; }

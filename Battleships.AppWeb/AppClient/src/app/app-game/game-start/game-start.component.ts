@@ -136,6 +136,8 @@ export class GameStartComponent {
       userName: '',
     } as Player;
     let model = {} as GameState;
+    model.fireCol = -1;
+    model.fireRow = -1;
     model.gameId = this.getUniqueId();
     model.gameTurnNumber = 1;
     model.gameTurnPlayer = 0;
