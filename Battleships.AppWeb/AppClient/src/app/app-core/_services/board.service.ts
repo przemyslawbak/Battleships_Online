@@ -252,6 +252,8 @@ export class BoardService {
           col: i,
           value: 0,
           color: 'rgba(0, 162, 255, 0.2)',
+          elX: -1,
+          elY: -1,
         } as BoardCell;
       }
     }
