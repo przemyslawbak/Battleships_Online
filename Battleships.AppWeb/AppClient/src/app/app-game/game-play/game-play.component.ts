@@ -102,6 +102,13 @@ export class GamePlayComponent implements OnInit {
       this.isResultBeingDisplayed = game.displayingResults;
       this.setupGameBoardCommentsAndGame(game.fireResult);
       this.resetBoardColors();
+      if (this.whoseTurnNumber == this.opponentsPlayerNumber) {
+        let shootingCoordinates: Coordinates = {
+          row: game.fireRow,
+          col: game.fireCol,
+        } as Coordinates;
+        //todo: animate sprite sheet in the xy element coordinates
+      }
       if (!game.gameMulti && !this.isResultBeingDisplayed && !this.gameEnded) {
         this.aiPlayerNumber = this.findAiPlayerNumber(game.players); //todo: only once
         if (this.whoseTurnNumber == this.aiPlayerNumber) {
@@ -263,9 +270,18 @@ export class GamePlayComponent implements OnInit {
       !this.gameEnded &&
       !this.isCellAlreadyShot(coord)
     ) {
+      console.log('col: ' + col);
+      console.log('row: ' + row);
       let game = this.game.getGame();
+      game.fireCol = col;
+      game.fireRow = row;
       let isHit: boolean = this.verifyHit(game.gameMulti, coord);
-      if (row >= 0 && col >= 0) {
+      //todo: move calling animateSprite to the updateGameValues method
+      if (
+        row >= 0 &&
+        col >= 0 &&
+        this.whoseTurnNumber == this.clientsPlayerNumber
+      ) {
         this.animateSprite(isHit, ref);
       }
       if (isHit) {
@@ -332,10 +348,6 @@ export class GamePlayComponent implements OnInit {
         : this.board.isCellAlreadyShot(coord, board);
 
     if (result) {
-      console.log('not allowed value:');
-      console.log(
-        this.boards[this.clientsPlayerNumber][coord.row][coord.col].value
-      );
       this.gameBoardComment = this.comments.getShootTwiceComment();
     }
 
@@ -455,6 +467,8 @@ export class GamePlayComponent implements OnInit {
     this.displaySprite = true;
     this.spriteX = ref.offsetLeft - 50;
     this.spriteY = ref.offsetTop - 50;
+    console.log('x: ' + this.spriteX);
+    console.log('y: ' + this.spriteY);
     this.spriteUrl = isHit
       ? 'https://i.ibb.co/H4f84Wn/explode.png'
       : 'https://i.ibb.co/c3WLWN1/splash.png';
