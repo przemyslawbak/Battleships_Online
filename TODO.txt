@@ -202,6 +202,7 @@ OK - in game-play component:
 	OK - adjust: when displaying hit result, do not allow to fire,
 	OK - adjust: what if shooting cell already shot?
 OK - single player:
+	- ai counts ships, use targets list...
 	NO - bug: now computer does not shot (create AI first),
 	OK - deploying ships for AI,
 	OK - bug: auto deploying players board on init,
@@ -243,7 +244,7 @@ OK - game rules component:
 	OK - set a reference to wiki,
 	OK - nicely format rules view,
 - edit profile component:
-	- create folder with files,
+	OK - create folder with files,
 
 - all views, if game is not connected with the hub, redirect to the main view,
 - bug: when playing game and joining another, on disconnect just redirects to the main view,
@@ -286,7 +287,8 @@ OK - what if hubConnection.onclose?
 - footer,
 - place everywhere 'go back' btn,
 - BS logo,
-
+- AI levels - add some ai features each level,
+- sounds for hit effects,
 end:
 - move logic to the services
 - favicon
