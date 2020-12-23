@@ -13,6 +13,7 @@ import { GameConnectComponent } from './game-connect/game-connect.component';
 import { ShipComponent } from './game-ship/ship.component';
 import { GameDeployComponent } from './game-deploy/game-deploy-ships.component';
 import { GameSpriteComponent } from './game-sprite/game-sprite.component';
+import { GameRulesComponent } from './game-rules/game-rules.component';
 
 @NgModule({
   imports: [AppRoutingModule, BrowserModule, FormsModule, ReactiveFormsModule],
@@ -27,6 +28,7 @@ import { GameSpriteComponent } from './game-sprite/game-sprite.component';
     GamePlayComponent,
     GameConnectComponent,
     GameSpriteComponent,
+    GameRulesComponent,
   ],
   exports: [GameMenuComponent, GameMainComponent],
   providers: [],

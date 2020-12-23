@@ -228,7 +228,7 @@ OK - single player:
 	OK - what if computer wins the game? Log it,
 	OK - what if player wins the game? Log it,
 	OK - what if game started as a multi, but changed to be a single player? now removing from the list all single player games
-- sprites:
+OK - sprites:
 	OK - create game sprite component,
 	OK - bug: explosio is not revealed, in inspector check "ng-reflect-ng-if"
 	OK - bug: explosion is in a wrong place,
@@ -238,7 +238,10 @@ OK - single player:
 	OK - missed sprite - water splash,
 	OK - hit sprite, explosion,
 - game rules component:
-	-???
+	OK - create folder with files,
+	- paste game rules from wiki,
+	- set a reference to wiki,
+	- nicely format rules view,
 - edit profile component:
 	-???
 
