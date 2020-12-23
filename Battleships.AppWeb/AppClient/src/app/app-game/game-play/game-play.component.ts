@@ -102,13 +102,23 @@ export class GamePlayComponent implements OnInit {
       this.isResultBeingDisplayed = game.displayingResults;
       this.setupGameBoardCommentsAndGame(game.fireResult);
       this.resetBoardColors();
-      if (this.whoseTurnNumber == this.opponentsPlayerNumber) {
-        let shootingCoordinates: Coordinates = {
-          row: game.fireRow,
-          col: game.fireCol,
-        } as Coordinates;
-        //todo: animate sprite sheet in the xy element coordinates
+      //if opponents turn and result displayed
+      if (
+        this.whoseTurnNumber == this.opponentsPlayerNumber &&
+        this.isResultBeingDisplayed
+      ) {
+        let offsetL: number = this.boards[this.clientsPlayerNumber][
+          game.fireCol
+        ][game.fireRow].elX;
+        let offsetR: number = this.boards[this.clientsPlayerNumber][
+          game.fireCol
+        ][game.fireRow].elY;
+        console.log('x: ' + offsetL);
+        console.log('y: ' + offsetR);
+
+        this.animateSprite(game.fireResult, offsetL, offsetR);
       }
+      //if single player, not ended, not result displayed
       if (!game.gameMulti && !this.isResultBeingDisplayed && !this.gameEnded) {
         this.aiPlayerNumber = this.findAiPlayerNumber(game.players); //todo: only once
         if (this.whoseTurnNumber == this.aiPlayerNumber) {
@@ -264,6 +274,8 @@ export class GamePlayComponent implements OnInit {
   }
 
   public fire(row: number, col: number, ref: HTMLElement): void {
+    console.log(row);
+    console.log(col);
     let coord: Coordinates = { row: row, col: col } as Coordinates;
     if (
       !this.isResultBeingDisplayed &&
@@ -282,7 +294,7 @@ export class GamePlayComponent implements OnInit {
         col >= 0 &&
         this.whoseTurnNumber == this.clientsPlayerNumber
       ) {
-        this.animateSprite(isHit, ref);
+        this.animateSprite(isHit, ref.offsetLeft, ref.offsetTop);
       }
       if (isHit) {
         game.fireResult = true;
@@ -463,12 +475,14 @@ export class GamePlayComponent implements OnInit {
     }
   }
 
-  private animateSprite(isHit: boolean, ref: HTMLElement): void {
+  private animateSprite(
+    isHit: boolean,
+    offsetL: number,
+    offsetT: number
+  ): void {
     this.displaySprite = true;
-    this.spriteX = ref.offsetLeft - 50;
-    this.spriteY = ref.offsetTop - 50;
-    console.log('x: ' + this.spriteX);
-    console.log('y: ' + this.spriteY);
+    this.spriteX = offsetL - 50;
+    this.spriteY = offsetT - 50;
     this.spriteUrl = isHit
       ? 'https://i.ibb.co/H4f84Wn/explode.png'
       : 'https://i.ibb.co/c3WLWN1/splash.png';

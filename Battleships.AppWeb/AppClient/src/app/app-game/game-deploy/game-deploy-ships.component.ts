@@ -76,6 +76,10 @@ export class GameDeployComponent implements OnInit {
     this.resetMessageListeners();
     this.initGameSubscription();
     this.playersBoard = this.board.getEmptyBoard();
+    this.clearedBoard = false;
+  }
+
+  public ngAfterViewInit(): void {
     this.clearedBoard = true;
   }
 
@@ -336,8 +340,18 @@ export class GameDeployComponent implements OnInit {
     }
 
     if (this.updateCellsXY && !this.clearedBoard) {
-      //todo: update board cell with xy of the element
-      console.log('xy');
+      this.playersBoard[col][row].elX = ref.offsetLeft;
+      this.playersBoard[col][row].elY = ref.offsetTop - 15;
+      console.log(
+        'col: ' +
+          col +
+          '; row: ' +
+          row +
+          '; x: ' +
+          this.playersBoard[col][row].elX +
+          '; y: ' +
+          this.playersBoard[col][row].elY
+      );
     }
 
     if (row == 9 && col == 9) {

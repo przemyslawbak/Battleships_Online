@@ -233,8 +233,8 @@ OK - single player:
 	OK - bug: explosio is not revealed, in inspector check "ng-reflect-ng-if"
 	OK - bug: explosion is in a wrong place,
 	OK - adjust: sprite sizes,
-	- bug: ai shots in pos. 0,
-	- bug: opponent shots not in pos.,
+	OK - bug: ai shots in pos. 0,
+	OK - bug: opponent shots not in pos.,
 	OK - missed sprite - water splash,
 	OK - hit sprite, explosion,
 - game rules component:
