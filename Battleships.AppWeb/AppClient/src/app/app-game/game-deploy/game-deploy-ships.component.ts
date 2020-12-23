@@ -23,8 +23,6 @@ import { FleetService } from '@services/fleet.service';
   styleUrls: ['./game-deploy-ships.component.css'],
 })
 export class GameDeployComponent implements OnInit {
-  private updateCellsXY: boolean = false;
-  private clearedBoard: boolean = true;
   public multiplayer: boolean = false;
   private aiPlayerNumber: number = -1;
   public gameLink: string =
@@ -76,7 +74,6 @@ export class GameDeployComponent implements OnInit {
     this.resetMessageListeners();
     this.initGameSubscription();
     this.playersBoard = this.board.getEmptyBoard();
-    this.clearedBoard = true;
   }
 
   private updateGameValues(game: GameState): void {
@@ -288,7 +285,6 @@ export class GameDeployComponent implements OnInit {
     this.fleetWaiting = this.fleet.createFleet();
     this.fleetDeployed = [];
     this.playersBoard = this.board.getEmptyBoard();
-    this.clearedBoard = true;
     this.isDeployEnabled = false;
   }
 
@@ -326,22 +322,6 @@ export class GameDeployComponent implements OnInit {
 
         return players;
       }
-    }
-  }
-
-  public assignCellXY(row: number, col: number, ref: HTMLElement): void {
-    if (this.clearedBoard && row == 0 && col == 0) {
-      this.updateCellsXY = true;
-      this.clearedBoard = false;
-    }
-
-    if (this.updateCellsXY && !this.clearedBoard) {
-      //todo: update board cell with xy of the element
-      console.log('xy');
-    }
-
-    if (row == 9 && col == 9) {
-      this.updateCellsXY = false;
     }
   }
 }
