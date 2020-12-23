@@ -11,8 +11,8 @@ import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { PassForgottenModel } from '@models/password-forgotten.model';
 
 @Component({
-  templateUrl: './forgotten-pass.component.html',
-  styleUrls: ['./forgotten-pass.component.css'],
+  templateUrl: './reset-pass.component.html',
+  styleUrls: ['./reset-pass.component.css'],
 })
 export class ForgottenComponent {
   public form: FormGroup;

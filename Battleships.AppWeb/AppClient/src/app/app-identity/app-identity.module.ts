@@ -9,7 +9,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { JoinComponent } from './user-join/user-join.component';
 import { LoginExternalProvidersComponent } from './external-login-providers/external-login-providers.component';
 import { RegisterComponent } from './user-register/user-register.component';
-import { ForgottenComponent } from './forgotten-pass/forgotten-pass.component';
+import { ForgottenComponent } from './reset-pass/reset-pass.component';
 import { PassResetComponent } from './pass-reset/pass-reset.component';
 import { CloseComponent } from './close-external-login/close-external-login.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';

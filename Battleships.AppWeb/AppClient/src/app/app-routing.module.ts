@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 //auth
 import { JoinComponent } from './app-identity/user-join/user-join.component';
 import { RegisterComponent } from './app-identity/user-register/user-register.component';
-import { ForgottenComponent } from './app-identity/forgotten-pass/forgotten-pass.component';
+import { ForgottenComponent } from './app-identity/reset-pass/reset-pass.component';
 import { PassResetComponent } from './app-identity/pass-reset/pass-reset.component';
 import { CloseComponent } from './app-identity/close-external-login/close-external-login.component';
 import { EditProfileComponent } from './app-identity/edit-profile/edit-profile.component';
@@ -73,7 +73,7 @@ const routes: Routes = [
     component: RegisterComponent,
   },
   {
-    path: 'forgotten-pass',
+    path: 'reset-pass',
     component: ForgottenComponent,
   },
   {
