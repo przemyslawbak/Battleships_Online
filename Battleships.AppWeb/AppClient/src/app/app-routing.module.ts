@@ -24,8 +24,13 @@ import { GameStartComponent } from './app-game/game-start/game-start.component';
 import { GamePlayComponent } from './app-game/game-play/game-play.component';
 import { GameConnectComponent } from './app-game/game-connect/game-connect.component';
 import { GameDeployComponent } from './app-game/game-deploy/game-deploy-ships.component';
+import { GameRulesComponent } from './app-game/game-rules/game-rules.component';
 
 const routes: Routes = [
+  {
+    path: 'game-rules',
+    component: GameRulesComponent,
+  },
   {
     path: 'deploy-ships',
     component: GameDeployComponent,

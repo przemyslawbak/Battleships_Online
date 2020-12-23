@@ -237,11 +237,11 @@ OK - sprites:
 	OK - bug: opponent shots not in pos.,
 	OK - missed sprite - water splash,
 	OK - hit sprite, explosion,
-- game rules component:
+OK - game rules component:
 	OK - create folder with files,
-	- paste game rules from wiki,
-	- set a reference to wiki,
-	- nicely format rules view,
+	OK - paste game rules from wiki,
+	OK - set a reference to wiki,
+	OK - nicely format rules view,
 - edit profile component:
 	-???
 
