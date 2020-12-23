@@ -7,6 +7,7 @@ import { RegisterComponent } from './app-identity/user-register/user-register.co
 import { ForgottenComponent } from './app-identity/forgotten-pass/forgotten-pass.component';
 import { PassResetComponent } from './app-identity/pass-reset/pass-reset.component';
 import { CloseComponent } from './app-identity/close-external-login/close-external-login.component';
+import { EditProfileComponent } from './app-identity/edit-profile/edit-profile.component';
 
 //misc
 import { AuthGuard } from './app-core/_helpers/auth.guard';
@@ -27,6 +28,10 @@ import { GameDeployComponent } from './app-game/game-deploy/game-deploy-ships.co
 import { GameRulesComponent } from './app-game/game-rules/game-rules.component';
 
 const routes: Routes = [
+  {
+    path: 'edit-profile',
+    component: EditProfileComponent,
+  },
   {
     path: 'game-rules',
     component: GameRulesComponent,

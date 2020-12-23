@@ -1,33 +1,35 @@
-<nav
-  class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
->
+<nav class="navbar navbar-expand-md navbar-light">
   <a class="navbar-brand" [routerLink]="['/']">Battleships Online</a>
-  <div class="navbar-nav ml-auto">
-    <ul class="navbar-nav flex-grow">
-      <li
-        class="nav-item"
-        [routerLinkActive]="['link-active']"
-        [routerLinkActiveOptions]="{ exact: true }"
+  <ul class="navbar-nav ml-auto">
+    <li
+      class="nav-item"
+      [routerLinkActive]="['link-active']"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <a class="nav-link text-dark" [routerLink]="['play-game']">Game</a>
+    </li>
+    <li class="nav-item" *ngIf="!this.auth.isLoggedIn()">
+      <a class="nav-link text-dark" [routerLink]="['join-site']">Join site</a>
+    </li>
+    <li class="nav-item" *ngIf="this.auth.isLoggedIn()">
+      <a class="nav-link text-dark" [routerLink]="['edit-profile']"
+        >Edit profile</a
       >
-        <a class="nav-link text-dark" [routerLink]="['play-game']">Game</a>
-      </li>
-      <li *ngIf="!this.auth.isLoggedIn()">
-        <a class="nav-link text-dark" [routerLink]="['join-site']">Join site</a>
-      </li>
-      <li *ngIf="this.auth.isLoggedIn()">
-        <a (click)="logout()">
-          <span class="nav-link text-dark"
-            >Logout {{ this.getUserDisplayName() }}</span
-          >
-        </a>
-        <a class="nav-link text-dark" [routerLink]="['test']">Test</a>
-        <a
-          *ngIf="this.auth.isAdmin()"
-          class="nav-link text-dark"
-          [routerLink]="['admin']"
-          >Admin</a
+    </li>
+    <li class="nav-item" *ngIf="this.auth.isLoggedIn()">
+      <a (click)="logout()">
+        <span class="nav-link text-dark"
+          >Logout {{ this.getUserDisplayName() }}</span
         >
-      </li>
-    </ul>
-  </div>
+      </a>
+    </li>
+    <li class="nav-item" *ngIf="this.auth.isLoggedIn()">
+      <a
+        *ngIf="this.auth.isAdmin()"
+        class="nav-link text-dark"
+        [routerLink]="['admin']"
+        >Admin</a
+      >
+    </li>
+  </ul>
 </nav>

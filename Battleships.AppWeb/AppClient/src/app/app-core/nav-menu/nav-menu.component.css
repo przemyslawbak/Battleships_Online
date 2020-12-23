@@ -17,3 +17,7 @@ a.navbar-brand {
 .nav-link {
   cursor: pointer;
 }
+
+li {
+  display: inline-block;
+}

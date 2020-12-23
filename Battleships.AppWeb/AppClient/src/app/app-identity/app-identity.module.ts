@@ -12,6 +12,7 @@ import { RegisterComponent } from './user-register/user-register.component';
 import { ForgottenComponent } from './forgotten-pass/forgotten-pass.component';
 import { PassResetComponent } from './pass-reset/pass-reset.component';
 import { CloseComponent } from './close-external-login/close-external-login.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 
 @NgModule({
@@ -32,6 +33,7 @@ import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
     ForgottenComponent,
     PassResetComponent,
     CloseComponent,
+    EditProfileComponent,
   ],
   exports: [],
   providers: [

@@ -243,47 +243,49 @@ OK - game rules component:
 	OK - set a reference to wiki,
 	OK - nicely format rules view,
 - edit profile component:
-	-???
+	- create folder with files,
 
-- all views, if game is not connected with the hub, redirect to the main view
-- bug: when playing game and joining another, on disconnect just redirects to the main view
+- all views, if game is not connected with the hub, redirect to the main view,
+- bug: when playing game and joining another, on disconnect just redirects to the main view,
 - change: please wait, redirecting... to please wait, verifying user...
-- in signal-r service send messages only when connection established
+- in signal-r service send messages only when connection established,
 - if game-start to ai game? will be allowed?
-- in open game list display player names
-- if single player, hide remove chat
-- move chat to separate component
+- in open game list display player names,
+- if single player, hide remove chat,
+- move chat to separate component,
 - move boards to separate component?
-- time in game chat
-- in open games list - if all slots are occupied, do not show button
-- game start view - btn width same like in join view
-- add game rules
-- add privacy policy
-- if best players list empty, display in view something about it
-- if open games list empty, display in view something about it
-- edit profile view
-- greater font size for small screens
+- time in game chat,
+- in open games list - if all slots are occupied, do not show button,
+- game start view - btn width same like in join view,
+- add game rules,
+- add privacy policy,
+- if best players list empty, display in view something about it,
+- if open games list empty, display in view something about it,
+- edit profile view,
+- greater font size for small screens,
 - how to store user token? https://4programmers.net/Forum/JavaScript/345867-stan_programu_angular_dla_wielu_uzytkownikow?p=1722208#id1722208
 - in main component is constructor needed?
 OK - what if hubConnection.onclose?
-- read agout API return types
-- all http to the service
+- read agout API return types,
+- all http to the service,
 - if one user logged in, do not allow it second time
 - in game service replace getGame() with gameState property reference
-- leave game btn
+- leave game btn,
 - after completed facebook login, add spinner too
-- html/body font
+- html/body font,
 - on ship deploy just change background color, do not deploy element?
-- deploying game board on small screen responsivity
-- keep chat records from various views
-- shere in social media
-- verify opponent board only in backend
-- game chat mute opponent
+- deploying game board on small screen responsivity,
+- keep chat records from various views,
+- shere in social media,
+- verify opponent board only in backend,
+- game chat mute opponent,
 - DRY copy to clipboard in game-play & game-deploy
 - if player disconnects in the middle of game, minus score,
 - DRY `setComputerOpponent` move to service;
-- big screen: change width of modal message window
-- footer
+- big screen: change width of modal message window,
+- footer,
+- place everywhere 'go back' btn,
+- BS logo,
 
 end:
 - move logic to the services
