@@ -263,8 +263,8 @@ OK - privacy component:
 	NO - cookies popup/modal,
 	OK - link in nav menu
 OK - all views, if game is not connected with the hub, redirect to the main view,
-- change: please wait, redirecting... to please wait, verifying user...
-- in signal-r service send messages only when connection established,
+NO - change: please wait, redirecting... to please wait, verifying user...
+OK - in signal-r service send messages only when connection established,
 - if game-start to ai game? will be allowed?
 - in open game list display player names,
 - if single player, hide remove chat,

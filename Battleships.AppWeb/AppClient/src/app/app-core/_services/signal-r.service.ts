@@ -81,7 +81,7 @@ export class SignalRService {
   };
 
   public broadcastGameState = (game: GameState): void => {
-    if (game) {
+    if (game && this.hubConnection) {
       this.thenable.then(() => {
         this.hubConnection
           .invoke('SendGameState', game)
@@ -105,7 +105,7 @@ export class SignalRService {
   };
 
   public broadcastChatMessage = (message: string): void => {
-    if (message) {
+    if (message && this.hubConnection) {
       this.thenable.then(() => {
         let playersNames = [];
         for (let i = 0; i < this.game.getGame().players.length; i++) {
