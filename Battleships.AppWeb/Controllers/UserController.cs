@@ -167,7 +167,19 @@ namespace Battleships.AppWeb.Controllers
         /// POST: api/user/edit
         /// </summary>
         /// <returns>Status code.</returns>
+        [HttpPost("edit")]
+        [ValidateModel]
+        public async Task<IActionResult> EditUser([FromBody] EditUserViewModel model)
+        {
+            bool result = await _userService.UpdateUser(model);
 
+            if (!result)
+            {
+                return new ObjectResult("Error when creating new user.") { StatusCode = 500 };
+            }
+
+            return Ok();
+        }
 
     }
 }
