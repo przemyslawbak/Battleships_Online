@@ -248,8 +248,13 @@ OK - game rules component:
 	OK - load current data: display name, email, change pass btn,
 	OK - textboxes to change data,
 	OK - view similar to Register user,
-	- for pass change use routing `reset-pass`,
-	- on submit - updates DB
+	OK - for pass change use routing `reset-pass`,
+	OK - on submit - updates DB,
+	OK - update auth after changes,
+	OK - create api backend,
+	OK - redirect after changes,
+	OK - redirect after logout,
+	- for social media login can not change email address?
 - privacy component:
 	- privacy policy,
 	- cookies policy,

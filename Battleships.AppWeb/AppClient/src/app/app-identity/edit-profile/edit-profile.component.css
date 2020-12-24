@@ -1,9 +1,18 @@
+button {
+  width: 100%;
+  margin: 5px;
+}
+
 .login-container {
   max-width: 600px;
   padding: 10px;
   background-color: #f7f7f7;
   border-radius: 10px;
   border: 1px solid #eee;
+}
+
+.resetBtn {
+  height: 50px;
 }
 
 .login-container .login-img {
@@ -43,9 +52,4 @@
 
 .help-block {
   color: red;
-}
-
-button {
-  width: 100%;
-  margin: 5px;
 }

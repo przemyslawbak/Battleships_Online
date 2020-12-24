@@ -6,6 +6,7 @@ import { AuthService } from '@services/auth.service';
 import { environment } from '@environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ModalService } from '@services/modal.service';
 
 @Component({
   selector: 'edit-profile',
@@ -15,6 +16,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 export class EditProfileComponent {
   public form: FormGroup;
   constructor(
+    private modalService: ModalService,
     private router: Router,
     private formBuilder: FormBuilder,
     private auth: AuthService,
@@ -49,11 +51,17 @@ export class EditProfileComponent {
   public onSubmit() {
     this.spinner.show();
     const model = {} as EditUser;
+    model.userName = this.auth.getAuth().user;
     model.displayName = this.form.value.DisplayName;
     model.email = this.form.value.Email;
     const url = environment.apiUrl + 'api/user/edit';
     this.http.post(url, model).subscribe(() => {
       this.spinner.hide();
+      this.auth.logout();
+      this.modalService.open(
+        'info-modal',
+        'Now you can login with new credentials.'
+      );
     });
   }
 
