@@ -7,6 +7,7 @@ import { AppRoutingModule } from '../app-routing.module';
 
 import { ModalComponent } from './modal-views/modal-views.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
+import { PolicyComponent } from './policy/policy.component';
 
 import { HttpService } from '@services/http.service';
 import { ModalService } from '@services/modal.service';
@@ -32,7 +33,7 @@ import { ErrorInterceptor } from './_helpers/error.interceptor';
     HttpClientModule,
     BrowserModule,
   ],
-  declarations: [ModalComponent, NavMenuComponent],
+  declarations: [ModalComponent, NavMenuComponent, PolicyComponent],
   exports: [ModalComponent, NavMenuComponent],
   providers: [
     {
