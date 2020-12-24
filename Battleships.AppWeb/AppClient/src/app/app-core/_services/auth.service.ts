@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 
-import { SecurityService } from '@services/security.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 import { LoginResponse } from '@models/login-response.model';
@@ -16,6 +15,7 @@ export class AuthService {
   authKey = 'auth';
 
   constructor(
+    private router: Router,
     private http: HttpClient,
     @Inject(PLATFORM_ID) private platformId: any,
     private spinner: NgxSpinnerService
@@ -66,6 +66,7 @@ export class AuthService {
       this.spinner.hide();
     });
     this.setAuth(null);
+    this.router.navigate(['']);
     return true;
   }
 
