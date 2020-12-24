@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class SignalRService {
+  private redirectToHome: boolean = true;
   private hubConnection: signalR.HubConnection;
   private url = environment.apiUrl + 'messageHub';
   private thenable: Promise<void>;
@@ -47,20 +48,24 @@ export class SignalRService {
       );
   }
 
-  public stopConnection = (): void => {
+  public stopConnection(redirectToHome: boolean): void {
+    this.redirectToHome = redirectToHome;
     if (this.hubConnection) {
-      this.game.setGame(null);
       this.hubConnection.stop();
     }
-  };
+  }
 
   private connectionHubClosed(): void {
+    this.game.setGame(null);
     if (this.game.isGameStarted()) {
       this.modalService.open(
         'info-modal',
         'You have been disconnected from game you played.'
       );
-      this.router.navigate(['']);
+
+      if (this.redirectToHome) {
+        this.router.navigate(['']);
+      }
     }
     this.hubConnection = null;
   }

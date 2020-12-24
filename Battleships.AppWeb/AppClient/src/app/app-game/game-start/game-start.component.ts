@@ -108,7 +108,7 @@ export class GameStartComponent {
 
   public onSubmit() {
     this.spinner.show();
-    this.signalRService.stopConnection();
+    this.signalRService.stopConnection(false);
     this.game.setGame(null);
     let model = this.initGameStartState();
     const url = environment.apiUrl + 'api/game/start';

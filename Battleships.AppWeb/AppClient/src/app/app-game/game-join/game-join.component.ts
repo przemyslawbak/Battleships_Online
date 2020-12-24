@@ -36,7 +36,7 @@ export class GameJoinComponent implements OnInit {
 
   public redirect(gameId: number): void {
     if (this.currentGame != gameId) {
-      this.signalRService.stopConnection();
+      this.signalRService.stopConnection(false);
     }
 
     this.router.navigate(['connect-game/' + gameId]);

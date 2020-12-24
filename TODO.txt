@@ -145,6 +145,7 @@ OK - in deploy view and component:
 OK - in connect component:
 	NO - prepare some view, spinner, anything?
 	OK - err: ERROR TypeError: this.thenable is undefined
+	OK - bug: when playing game and joining another, on disconnect just redirects to the main view,
 OK - in game-play component:
 	OK - if one player disconnects, isStartAllowed = false
 	NO - change game board comment afetr game ends,
@@ -243,7 +244,7 @@ OK - game rules component:
 	OK - paste game rules from wiki,
 	OK - set a reference to wiki,
 	OK - nicely format rules view,
-- edit profile component:
+OK - edit profile component:
 	OK - create folder with files,
 	OK - load current data: display name, email, change pass btn,
 	OK - textboxes to change data,
@@ -255,14 +256,13 @@ OK - game rules component:
 	OK - redirect after changes,
 	OK - redirect after logout,
 	NO - for social media login can not change email address?
-- privacy component:
+OK - privacy component:
 	OK - create folder with files,
 	OK - privacy policy,
 	OK - cookies policy,
 	NO - cookies popup/modal,
 	OK - link in nav menu
-- all views, if game is not connected with the hub, redirect to the main view,
-- bug: when playing game and joining another, on disconnect just redirects to the main view,
+OK - all views, if game is not connected with the hub, redirect to the main view,
 - change: please wait, redirecting... to please wait, verifying user...
 - in signal-r service send messages only when connection established,
 - if game-start to ai game? will be allowed?
