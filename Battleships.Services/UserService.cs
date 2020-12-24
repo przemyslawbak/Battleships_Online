@@ -238,5 +238,26 @@ namespace Battleships.Services
             AppUser user = await _userManager.FindByIdAsync(id);
             return user.DisplayName;
         }
+
+        //todo: unit test
+        public async Task<bool> UpdateUser(EditUserViewModel model)
+        {
+            AppUser user = await _userManager.FindByNameAsync(model.UserName);
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            user.DisplayName = model.DisplayName;
+            user.Email = model.Email;
+
+            if (!await UpdateDbWithNewUser(user))
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

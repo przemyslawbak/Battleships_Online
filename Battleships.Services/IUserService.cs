@@ -23,5 +23,6 @@ namespace Battleships.Services
         string GetIpAddress(HttpContext httpContext);
         Task<string> GetUserRoleAsync(AppUser user);
         Task<string> GetUserDisplayById(string id);
+        Task<bool> UpdateUser(EditUserViewModel model);
     }
 }
