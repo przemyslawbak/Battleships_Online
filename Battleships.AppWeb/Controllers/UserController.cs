@@ -163,6 +163,11 @@ namespace Battleships.AppWeb.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// POST: api/user/edit
+        /// </summary>
+        /// <returns>Status code.</returns>
+
 
     }
 }

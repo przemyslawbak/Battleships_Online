@@ -245,10 +245,11 @@ OK - game rules component:
 	OK - nicely format rules view,
 - edit profile component:
 	OK - create folder with files,
-	- load current data: display name, email, change pass btn,
-	- textboxes to change data,
-	- view similar to Register user,
+	OK - load current data: display name, email, change pass btn,
+	OK - textboxes to change data,
+	OK - view similar to Register user,
 	- for pass change use routing `reset-pass`,
+	- on submit - updates DB
 - privacy component:
 	- privacy policy,
 	- cookies policy,

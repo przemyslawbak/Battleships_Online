@@ -1,1 +1,72 @@
-edit profile here
+<div class="row">
+  <div class="login-container col-md-6">
+    <h2 class="login-title">Edit profile</h2>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="login-form">
+      <div *ngIf="form.errors?.auth" class="error-panel help-block">
+        {{ form.errors.register }}
+      </div>
+      <div
+        class="form-group"
+        [ngClass]="{ 'has-error has-feedback': hasError('DisplayName') }"
+      >
+        <input
+          type="text"
+          required
+          autofocus
+          formControlName="DisplayName"
+          class="form-control"
+          placeholder="Choose a display name..."
+        />
+        <span
+          *ngIf="hasError('DisplayName')"
+          class="glyphicon glyphicon-remove form-control-feedback"
+          aria-hidden="true"
+        ></span>
+        <div *ngIf="hasError('DisplayName')" class="help-block">
+          Please insert a valid display name.
+        </div>
+      </div>
+      <div
+        class="form-group"
+        [ngClass]="{ 'has-error has-feedback': hasError('Email') }"
+      >
+        <input
+          type="text"
+          required
+          autofocus
+          formControlName="Email"
+          class="form-control"
+          placeholder="Insert e-mail..."
+        />
+        <span
+          *ngIf="hasError('Email')"
+          class="glyphicon glyphicon-remove form-control-feedback"
+          aria-hidden="true"
+        ></span>
+        <div *ngIf="hasError('Email')" class="help-block">
+          Please insert a valid e-mail address.
+        </div>
+      </div>
+      <button
+        type="submit"
+        (click)="onResetPass()"
+        class="btn btn-md btn-primary"
+      >
+        Change password
+      </button>
+      <br /><br />
+      <div class="text-center">
+        <button
+          type="submit"
+          [disabled]="form.invalid"
+          class="btn btn-md btn-success btn-signin"
+        >
+          Confirm changes
+        </button>
+        <button type="submit" (click)="onBack()" class="btn btn-md btn-default">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
