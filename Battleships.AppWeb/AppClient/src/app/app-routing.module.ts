@@ -26,8 +26,13 @@ import { GamePlayComponent } from './app-game/game-play/game-play.component';
 import { GameConnectComponent } from './app-game/game-connect/game-connect.component';
 import { GameDeployComponent } from './app-game/game-deploy/game-deploy-ships.component';
 import { GameRulesComponent } from './app-game/game-rules/game-rules.component';
+import { PolicyComponent } from './app-core/policy/policy.component';
 
 const routes: Routes = [
+  {
+    path: 'policies',
+    component: PolicyComponent,
+  },
   {
     path: 'edit-profile',
     component: EditProfileComponent,

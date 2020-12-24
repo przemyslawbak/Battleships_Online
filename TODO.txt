@@ -254,10 +254,11 @@ OK - game rules component:
 	OK - create api backend,
 	OK - redirect after changes,
 	OK - redirect after logout,
-	- for social media login can not change email address?
+	NO - for social media login can not change email address?
 - privacy component:
-	- privacy policy,
-	- cookies policy,
+	OK - create folder with files,
+	OK - privacy policy,
+	OK - cookies policy,
 	- cookies popup/modal,
 - all views, if game is not connected with the hub, redirect to the main view,
 - bug: when playing game and joining another, on disconnect just redirects to the main view,

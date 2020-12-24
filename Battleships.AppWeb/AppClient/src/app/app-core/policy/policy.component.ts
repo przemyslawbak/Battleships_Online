@@ -5,6 +5,4 @@ import { Component } from '@angular/core';
   templateUrl: './policy.component.html',
   styleUrls: ['./policy.component.css'],
 })
-export class PolicyComponent {
-  constructor() {}
-}
+export class PolicyComponent {}
