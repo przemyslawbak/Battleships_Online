@@ -259,7 +259,8 @@ OK - game rules component:
 	OK - create folder with files,
 	OK - privacy policy,
 	OK - cookies policy,
-	- cookies popup/modal,
+	NO - cookies popup/modal,
+	OK - link in nav menu
 - all views, if game is not connected with the hub, redirect to the main view,
 - bug: when playing game and joining another, on disconnect just redirects to the main view,
 - change: please wait, redirecting... to please wait, verifying user...
