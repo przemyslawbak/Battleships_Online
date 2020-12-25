@@ -1,115 +1,100 @@
-identity and other
-OK - add Google external login providers
-OK - recaptcha v3: forgotten, register
-OK - what to do if StatusCode = 429? (robot)
-OK - delay before register, reset pass again
-OK - auth roles? admin
-OK - recaptcha v3 middleware / attribute / dry
-OK - http.post subscribe / unsucsribe? no need https://stackoverflow.com/a/35043309/12603542
-OK - front-end model naming
-OK - errors interceptor
-OK - destructors? 
-OK - Decorating ngOnDestroy with HostListener: https://wesleygrimes.com/angular/2019/03/29/making-upgrades-to-angular-ngondestroy.html
-OK - @HostListener('window:beforeunload', ['$event']) for external provider login? verify
-OK - private/public in components - https://stackoverflow.com/a/37506946
-OK - check return values in service methods
-OK - injecting services?
-OK - base url, example: https://jasonwatmore.com/post/2020/09/09/angular-10-role-based-authorization-tutorial-with-example
-OK - Angular app structure and coding style guide: https://angular.io/guide/styleguide
-OK - test case: add if (model == null) return 500?????
-OK - refactorize TokenController
-OK - back-end unit testing
-OK - unit testing model == null
-OK - action flter to verify model == null: https://stackoverflow.com/a/25829843/12603542
-OK - unit test action filters
-OK - error handling if RecaptchaVerificationResponseModel result not Success, checked
-OK - mock UserManager
-OK - use path TS aliases: https://github.com/labs42io/clean-code-typescript
-OK - ESLint + Prettier: https://angular.io/cli/lint
-OK - TS method comments - remove them, update method/variable names
-OK - register new user
-OK - after login display user name
-OK - login after registering
-OK - join with facebook
-OK - login user
-OK - test creating refresh token
-OK - refresh token interceptor: https://stackoverflow.com/a/57638101
-OK - new request after token refreshing
-OK - multiple interceptors: https://stackoverflow.com/a/45722740/12603542
-OK - refresh token
-OK - logout revokes refresh token
-OK - logout revokes access token
-OK - login remember me? - remove
-OK - forgot pass
-OK - receive token + email from the link in PassResetComponent
-OK - register cancel btn
-OK - protecting routes
-OK - user token expire: https://stackoverflow.com/questions/55847727/jwt-token-expiration-in-angular-6/55847892#55847892
-OK - popups for: sent forgotten pass
-OK - controllers authorisation
-OK - local storage for tokens? nope
-OK - spinners for requests
-OK - external (FB) login tokens, callback, all ok? - https://stackoverflow.com/a/2224451/12603542
-OK - verify issuer, audience
-OK - register display name - get rid of
-OK - pass reset token changes `/` sections https://stackoverflow.com/a/50408905/12603542
-OK - model camel case front, pascal case back
-OK - login after register
-OK - bug, if not registered yet with FB, hits `return Content("registered");`
-OK - bug, if no email in DB for `forgotten pass`, freezes
-OK - all constructor endpoint errors make to ObjectResult
-OK - move modal service to `services` directory
-OK - bug 2x hits RefreshToken
-OK - error handling in client app
-
-starting game:
-OK - menu: (start new game -> auth ?? start : login) (join open game) (share) (results)
-OK - game header pic
-NO - menu btns na bootstrap
-OK - do something with return URL from AuthGuard
-OK - checkboxes, validate
-OK - game creator: vs player/vs computer, invite friend with link, wait for someone to connect
-OK - when waiting for external login, some view in opened window: ExternalLoginAsync-> ExternalLoginCallback -> 
-OK - endpoint for game creator
-OK - redirect somewhere from `Game` btn-> if game != null -> game, else -> start game
-OK - should on logout erase game service data? no
-OK - add auth verification to the signalR
-OK - find active game id when entering URL
-OK - add game (url) verification to the signalR
-OK - ship element / component
-OK - list of ships for each player
-OK - display: DEPLOY SHIPS
-OK - game boards (for 2 players): canvas drawings
-OK - delete game from cached list if no more players
-OK - join open game view + component
-OK - what if joining open game I wnat to join game that I started?
-OK - what with played games if player creates new game? - disconnect signalr first, show message, clear gamestate
-OK - what with played games if player joins other game? - disconnect signalr first, show message, clear gamestate
-OK - clear client game state on lost connection
-OK - updating displayed names array
-OK - update game-play component on game.service state change: https://stackoverflow.com/a/43161506
-OK - can not join played game
-OK - sending hu messages only to users from game
-OK - chat info when player disconnects SiganlR
-OK - chat messages
-OK - push to chatMessages on received message
-OK - chat msg on enter
-OK - chat user colors: me green, enemy: red
-OK - when rejoining game, subscribes to messaging again, fix that - initGame() method issue, or maybe HUB?
-OK - redirect to main on being disconnected, remove redirection from logout (auth service)
-OK - chat window (if 2 players at the same game id, and send only to opponent? or to himslef too, for client game state update?)
-OK - chat info when player joins game
-NO - rearrange game-play view: chat on the right side, game status horizontal. And mobile view?
-
-gameplay:
+OK - identity:
+	NO - ext.login change: please wait, redirecting... to please wait, verifying user...
+	OK - add Google external login providers
+	OK - recaptcha v3: forgotten, register
+	OK - what to do if StatusCode = 429? (robot)
+	OK - delay before register, reset pass again
+	OK - auth roles? admin
+	OK - recaptcha v3 middleware / attribute / dry
+	OK - http.post subscribe / unsucsribe? no need https://stackoverflow.com/a/35043309/12603542
+	OK - refactorize TokenController
+	OK - register new user
+	OK - after login display user name
+	OK - login after registering
+	OK - join with facebook
+	OK - login user
+	OK - test creating refresh token
+	OK - refresh token interceptor: https://stackoverflow.com/a/57638101
+	OK - new request after token refreshing
+	OK - refresh token
+	OK - logout revokes refresh token
+	OK - logout revokes access token
+	NO - login remember me? - remove
+	OK - forgot pass
+	OK - receive token + email from the link in PassResetComponent
+	OK - register cancel btn
+	OK - user token expire: https://stackoverflow.com/questions/55847727/jwt-token-expiration-in-angular-6/55847892#55847892
+	OK - popups for: sent forgotten pass
+	OK - controllers authorisation
+	NO - local storage for tokens? nope
+	OK - external (FB) login tokens, callback, all ok? - https://stackoverflow.com/a/2224451/12603542
+	OK - verify issuer, audience
+	OK - register display name - get rid of
+	OK - pass reset token changes `/` sections https://stackoverflow.com/a/50408905/12603542
+	OK - model camel case front, pascal case back
+	OK - login after register
+	OK - bug: if not registered yet with FB, hits `return Content("registered");`
+	OK - bug: if no email in DB for `forgotten pass`, freezes
+	OK - bug 2x hits RefreshToken
+OK - misc:
+	OK - in signal-r service send messages only when connection established,
+	OK - all views, if game is not connected with the hub, redirect to the main view,
+	OK - error handling in client app
+	OK - all constructor endpoint errors make to ObjectResult
+	OK - move modal service to `services` directory
+	OK - spinners for requests
+	OK - protecting routes
+	OK - multiple interceptors: https://stackoverflow.com/a/45722740/12603542
+	OK - action flter to verify model == null: https://stackoverflow.com/a/25829843/12603542
+	OK - unit test action filters
+	OK - error handling if RecaptchaVerificationResponseModel result not Success, checked
+	OK - mock UserManager
+	OK - use path TS aliases: https://github.com/labs42io/clean-code-typescript
+	OK - ESLint + Prettier: https://angular.io/cli/lint
+	OK - TS method comments - remove them, update method/variable names
+	OK - check: unit testing model == null
+	OK - back-end unit testing
+	OK - Decorating ngOnDestroy with HostListener: https://wesleygrimes.com/angular/2019/03/29/making-upgrades-to-angular-ngondestroy.html
+	OK - @HostListener('window:beforeunload', ['$event']) for external provider login? verify
+	OK - private/public in components - https://stackoverflow.com/a/37506946
+	OK - check return values in service methods
+	OK - injecting services?
+	OK - base url, example: https://jasonwatmore.com/post/2020/09/09/angular-10-role-based-authorization-tutorial-with-example
+	OK - Angular app structure and coding style guide: https://angular.io/guide/styleguide
+	OK - test case: add if (model == null) return 500?????
+	OK - destructors?
+	OK - errors interceptor,
+	OK - front-end model naming,
+	OK - when waiting for external login, some view in opened window: ExternalLoginAsync-> ExternalLoginCallback ->
+	OK - add auth verification to the signalR,
+	OK - add game (url) verification to the signalR,
+	OK - delete game from cached list if no more players,
+	OK - clear client game state on lost connection,
+	OK - updating displayed names array,
+	OK - bug: when player disconnects, and game is empty, still listed,
+	OK - redirect to main on being disconnected, remove redirection from logout (auth service),
+OK - navbar:
+	OK - change navbar styling - inline
+	NO - should on logout erase game service data?
+OK - game start component:
+	OK - checkboxes, validate,
+	OK - game creator: vs player/vs computer, invite friend with link, wait for someone to connect,
+	OK - redirect somewhere from `Game` btn-> if game != null -> game, else -> start game
+OK - game menu:
+	OK - menu: (start new game -> auth ?? start : login) (join open game) (share) (results),
+	OK - game header pic,
+	NO - menu btns na bootstrap,
+	OK - do something with return URL from AuthGuard,
 OK - update game status with:
 	OK - is deployment allowed?
 	OK - can be game started?
-OK - update backend
-OK - bug: display 1/1 in game list
-OK - in game-play-> init game - if player joins the game, and his board is not deployed, redirect to deployment component
-OK - bug: when player disconnects, and game is empty, still listed
-OK - in deploy view and component: 
+	OK - update backend
+OK - in deploy view and component:
+	NO - game boards (for 2 players): canvas drawings,
+	OK - display: DEPLOY SHIPS
+	OK - list of ships for each player,
+	OK - ship element / component,
+	OK - endpoint for game creator,
 	OK - 'waiting for 2nd player' info,
 	OK - if 2nd player joined, allow deploying,
 	OK - if 2nd player quits, stop deploying,
@@ -143,10 +128,18 @@ OK - in deploy view and component:
 	OK - bug: deployed ships are not visible,
 	OK - bug: status data display is shifted, why?
 OK - in connect component:
+	OK - bug: can not join played game,
+	OK - what with played games if player joins other game? - disconnect signalr first, show message, clear gamestate,
+	OK - what with played games if player creates new game? - disconnect signalr first, show message, clear gamestate,
+	OK - what if joining open game I wnat to join game that I started?
+	OK - join open game view + component,
+	OK - find active game id when entering URL,
 	NO - prepare some view, spinner, anything?
 	OK - err: ERROR TypeError: this.thenable is undefined
 	OK - bug: when playing game and joining another, on disconnect just redirects to the main view,
 OK - in game-play component:
+	OK - in game-play-> init game - if player joins the game, and his board is not deployed, redirect to deployment component,
+	OK - update game-play component on game.service state change: https://stackoverflow.com/a/43161506,
 	OK - if one player disconnects, isStartAllowed = false
 	NO - change game board comment afetr game ends,
 	OK - if one player disconnects, play with AI button displayed
@@ -203,6 +196,7 @@ OK - in game-play component:
 	OK - adjust: when displaying hit result, do not allow to fire,
 	OK - adjust: what if shooting cell already shot?
 OK - single player:
+	OK - if game-start to ai game? will be allowed?
 	- ai counts ships, use targets list...
 	NO - bug: now computer does not shot (create AI first),
 	OK - deploying ships for AI,
@@ -264,13 +258,20 @@ OK - privacy component:
 	OK - link in nav menu
 OK - open games component:
 	OK - in open game list display player names,
+	OK - bug: display 1/1 in game list
+OK - game chat:
+	- time in game chat,
+	OK - sending hub messages only to users from game,	
+	OK - chat info when player disconnects SiganlR,
+	OK - chat messages,
+	OK - push to chatMessages on received message,
+	OK - chat msg on enter,
+	OK - chat user colors: me green, enemy: red,
+	OK - when rejoining game, subscribes to messaging again, fix that - initGame() method issue, or maybe HUB?
+	OK - chat window (if 2 players at the same game id, and send only to opponent? or to himslef too, for client game state update?)
+	OK - chat info when player joins game
+	NO - rearrange game-play view: chat on the right side, game status horizontal. And mobile view?
 
-OK - all views, if game is not connected with the hub, redirect to the main view,
-NO - change: please wait, redirecting... to please wait, verifying user...
-OK - in signal-r service send messages only when connection established,
-OK - if game-start to ai game? will be allowed?
-- in open game list display player names,
-- time in game chat,
 - move chat to separate component,
 - move boards to separate component?
 - in open games list - if all slots are occupied, do not show button,
