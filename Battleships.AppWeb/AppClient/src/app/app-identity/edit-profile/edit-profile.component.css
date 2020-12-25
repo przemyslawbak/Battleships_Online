@@ -3,6 +3,10 @@ button {
   margin: 5px;
 }
 
+form {
+  margin: 5px;
+}
+
 .login-container {
   max-width: 600px;
   padding: 10px;

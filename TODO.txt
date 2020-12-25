@@ -76,6 +76,7 @@ OK - misc:
 OK - navbar:
 	OK - change navbar styling - inline
 	NO - should on logout erase game service data?
+	OK - bug: on `game` click TypeError: this.game.getGame() is null,
 OK - game start component:
 	OK - checkboxes, validate,
 	OK - game creator: vs player/vs computer, invite friend with link, wait for someone to connect,
