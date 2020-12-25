@@ -89,6 +89,7 @@
       Game chat:
       <div class="chatDisplay">
         <div *ngFor="let message of this.chatMessages">
+          <span class="blackColor">{{ message.time }} - </span>
           <span *ngIf="this.userName == message.userName" class="greenColor"
             >{{ message.displayName }}:
           </span>

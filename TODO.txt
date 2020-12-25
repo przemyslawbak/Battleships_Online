@@ -260,7 +260,7 @@ OK - open games component:
 	OK - in open game list display player names,
 	OK - bug: display 1/1 in game list
 OK - game chat:
-	- time in game chat,
+	OK - time in game chat,
 	OK - sending hub messages only to users from game,	
 	OK - chat info when player disconnects SiganlR,
 	OK - chat messages,

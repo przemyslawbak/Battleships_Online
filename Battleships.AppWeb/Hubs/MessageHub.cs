@@ -42,7 +42,8 @@ namespace Battleships.AppWeb.Hubs
                         {
                             DisplayName = displayName,
                             Message = message,
-                            UserName = userName
+                            UserName = userName,
+                            Time = DateTime.Now.ToShortTimeString()
                         };
                         await Clients.Client(id).SendAsync("ReceiveChatMessage", msg);
                     }
