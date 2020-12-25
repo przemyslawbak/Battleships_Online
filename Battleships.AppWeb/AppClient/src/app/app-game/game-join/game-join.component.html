@@ -28,7 +28,11 @@
         </span>
       </td>
       <td>
-        <a (click)="redirect(game.gameId)" class="btn btn-md btn-success">
+        <a
+          *ngIf="game.playing != game.totalPlayers"
+          (click)="redirect(game.gameId)"
+          class="btn btn-md btn-success"
+        >
           Play
         </a>
       </td>

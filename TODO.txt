@@ -37,6 +37,7 @@ OK - identity:
 	OK - bug: if no email in DB for `forgotten pass`, freezes
 	OK - bug 2x hits RefreshToken
 OK - misc:
+	OK - what if hubConnection.on close?
 	OK - in signal-r service send messages only when connection established,
 	OK - all views, if game is not connected with the hub, redirect to the main view,
 	OK - error handling in client app
@@ -257,9 +258,10 @@ OK - privacy component:
 	OK - cookies policy,
 	NO - cookies popup/modal,
 	OK - link in nav menu
-OK - open games component:
+OK - open games list component:
 	OK - in open game list display player names,
-	OK - bug: display 1/1 in game list
+	OK - bug: display 1/1 in game list,
+	OK - in open games list - if all slots are occupied, do not show `Play` button,
 OK - game chat:
 	OK - time in game chat,
 	OK - sending hub messages only to users from game,	
@@ -275,26 +277,20 @@ OK - game chat:
 
 - move chat to separate component,
 - move boards to separate component?
-- in open games list - if all slots are occupied, do not show button,
 - game start view, reset-pass, register-user - btn width same like in join view,
 - if best players list empty, display in view something about it,
 - if open games list empty, display in view something about it,
-- edit profile view,
 - greater font size for small screens,
 - how to store user token? https://4programmers.net/Forum/JavaScript/345867-stan_programu_angular_dla_wielu_uzytkownikow?p=1722208#id1722208
 - in main component is constructor needed?
-OK - what if hubConnection.onclose?
 - read agout API return types,
 - all http to the service,
-- if one user logged in, do not allow it second time
-- in game service replace getGame() with gameState property reference
-- leave game btn,
-- after completed facebook login, add spinner too
+- if one user logged in, do not allow it second time,
+- in game service replace getGame() with gameState property reference,
+- after completed facebook login, add spinner too,
 - html/body font,
-- on ship deploy just change background color, do not deploy element?
 - deploying game board on small screen responsivity,
-- keep chat records from various views,
-- shere in social media,
+- keep chat records from various views?
 - verify opponent board only in backend,
 - game chat mute opponent,
 - DRY copy to clipboard in game-play & game-deploy
