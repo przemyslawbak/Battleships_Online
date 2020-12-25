@@ -37,6 +37,7 @@ OK - identity:
 	OK - bug: if no email in DB for `forgotten pass`, freezes
 	OK - bug 2x hits RefreshToken
 OK - misc:
+	OK - game start view, reset-pass, register-user - btn width same like in join view,
 	OK - what if hubConnection.on close?
 	OK - in signal-r service send messages only when connection established,
 	OK - all views, if game is not connected with the hub, redirect to the main view,
@@ -277,7 +278,6 @@ OK - game chat:
 
 - move chat to separate component,
 - move boards to separate component?
-- game start view, reset-pass, register-user - btn width same like in join view,
 - if best players list empty, display in view something about it,
 - if open games list empty, display in view something about it,
 - greater font size for small screens,
