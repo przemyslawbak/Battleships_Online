@@ -44,8 +44,10 @@ export class GameJoinComponent implements OnInit {
 
   private getOpenGames(): void {
     const url = environment.apiUrl + 'api/game/open';
-    this.http.getData(url).subscribe((val) => {
+    this.http.getData(url).subscribe((val: OpenGames[]) => {
       this.gameList = val;
+      console.log('players[0]:');
+      console.log(val[0].players[0]);
     });
   }
 }

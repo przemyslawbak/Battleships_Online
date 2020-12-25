@@ -262,15 +262,17 @@ OK - privacy component:
 	OK - cookies policy,
 	NO - cookies popup/modal,
 	OK - link in nav menu
+OK - open games component:
+	OK - in open game list display player names,
+
 OK - all views, if game is not connected with the hub, redirect to the main view,
 NO - change: please wait, redirecting... to please wait, verifying user...
 OK - in signal-r service send messages only when connection established,
-- if game-start to ai game? will be allowed?
+OK - if game-start to ai game? will be allowed?
 - in open game list display player names,
-- if single player, hide remove chat,
+- time in game chat,
 - move chat to separate component,
 - move boards to separate component?
-- time in game chat,
 - in open games list - if all slots are occupied, do not show button,
 - game start view, reset-pass, register-user - btn width same like in join view,
 - if best players list empty, display in view something about it,

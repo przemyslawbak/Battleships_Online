@@ -5,6 +5,7 @@
       <th scope="col">#</th>
       <th scope="col">Turn</th>
       <th scope="col">Players</th>
+      <th scope="col">Names</th>
       <th scope="col">Info</th>
       <th scope="col"></th>
     </tr>
@@ -15,7 +16,14 @@
       <td>{{ game.gameTurnNumber }}</td>
       <td>{{ game.playing }} / {{ game.totalPlayers }}</td>
       <td>
-        <span class="text-danger" *ngIf="this.currentGame === game.gameId">
+        <div *ngFor="let player of game.players; let i = index">
+          {{ i + 1 }})
+          <span *ngIf="player != ''; else empty">{{ player }};</span>
+          <ng-template #empty>empty; </ng-template>
+        </div>
+      </td>
+      <td>
+        <span class="text-danger" *ngIf="this.currentGame == game.gameId">
           Playing now
         </span>
       </td>
