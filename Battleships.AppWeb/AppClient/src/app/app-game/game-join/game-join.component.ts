@@ -7,7 +7,7 @@ import { HttpService } from '@services/http.service';
 import { GameService } from '@services/game.service';
 import { SignalRService } from '@services/signal-r.service';
 
-import { OpenGames } from '@models/open-games';
+import { OpenGames } from '@models/open-games.model';
 
 @Component({
   templateUrl: './game-join.component.html',

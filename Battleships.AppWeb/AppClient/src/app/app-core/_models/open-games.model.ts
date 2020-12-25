@@ -3,4 +3,5 @@ export interface OpenGames {
   gameTurnNumber: number;
   playing: number;
   totalPlayers: number;
+  players: string[];
 }
