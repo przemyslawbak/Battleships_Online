@@ -260,6 +260,7 @@ OK - privacy component:
 	NO - cookies popup/modal,
 	OK - link in nav menu
 OK - open games list component:
+	OK - if open games list empty, display in view something about it,
 	OK - in open game list display player names,
 	OK - bug: display 1/1 in game list,
 	OK - in open games list - if all slots are occupied, do not show `Play` button,
@@ -280,7 +281,6 @@ OK - game chat:
 - move chat to separate component,
 - move boards to separate component?
 - if best players list empty, display in view something about it, - 0
-- if open games list empty, display in view something about it, - 0
 - greater font size for small screens,
 - how to store user token? https://4programmers.net/Forum/JavaScript/345867-stan_programu_angular_dla_wielu_uzytkownikow?p=1722208#id1722208
 - in main component is constructor needed?
@@ -310,6 +310,7 @@ end:
 - protect server controllers
 - .pipe(delay(5000)) w security service?
 - Hub move to project: Hubs
+- sanitize inputs in front end
 
 future:
 - testy integracyjne backend - Database, Request-response pipeline

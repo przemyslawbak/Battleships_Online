@@ -1,41 +1,49 @@
 <div class="gameHeaderPic col-sm rounded-top"></div>
-<table class="table table-bordered table-striped">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Turn</th>
-      <th scope="col">Players</th>
-      <th scope="col">Names</th>
-      <th scope="col">Info</th>
-      <th scope="col"></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let game of this.gameList; let i = index">
-      <th scope="row">{{ i + 1 }}</th>
-      <td>{{ game.gameTurnNumber }}</td>
-      <td>{{ game.playing }} / {{ game.totalPlayers }}</td>
-      <td>
-        <div *ngFor="let player of game.players; let i = index">
-          {{ i + 1 }})
-          <span *ngIf="player != ''; else empty">{{ player }};</span>
-          <ng-template #empty>empty; </ng-template>
-        </div>
-      </td>
-      <td>
-        <span class="text-danger" *ngIf="this.currentGame == game.gameId">
-          Playing now
-        </span>
-      </td>
-      <td>
-        <a
-          *ngIf="game.playing != game.totalPlayers"
-          (click)="redirect(game.gameId)"
-          class="btn btn-md btn-success"
-        >
-          Play
-        </a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<div
+  class="text-center"
+  *ngIf="this.gameList.length == 0 || !this.gameList; else table"
+>
+  <h4 class="noteDisplay">{{ this.note }}</h4>
+</div>
+<ng-template #table>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Turn</th>
+        <th scope="col">Players</th>
+        <th scope="col">Names</th>
+        <th scope="col">Info</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let game of this.gameList; let i = index">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ game.gameTurnNumber }}</td>
+        <td>{{ game.playing }} / {{ game.totalPlayers }}</td>
+        <td>
+          <div *ngFor="let player of game.players; let i = index">
+            {{ i + 1 }})
+            <span *ngIf="player != ''; else empty">{{ player }};</span>
+            <ng-template #empty>empty; </ng-template>
+          </div>
+        </td>
+        <td>
+          <span class="text-danger" *ngIf="this.currentGame == game.gameId">
+            Playing now
+          </span>
+        </td>
+        <td>
+          <a
+            *ngIf="game.playing != game.totalPlayers"
+            (click)="redirect(game.gameId)"
+            class="btn btn-md btn-success"
+          >
+            Play
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>

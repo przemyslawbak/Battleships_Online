@@ -14,8 +14,9 @@ import { OpenGames } from '@models/open-games.model';
   styleUrls: ['./game-join.component.css'],
 })
 export class GameJoinComponent implements OnInit {
-  public gameList: Array<OpenGames>;
+  public gameList: Array<OpenGames> = [];
   public currentGame: number;
+  public note: string = 'Loading list...';
 
   constructor(
     private router: Router,
@@ -26,6 +27,7 @@ export class GameJoinComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
+    console.log('note: ' + this.note);
     if (this.game.isGameStarted()) {
       this.currentGame = this.game.getGame().gameId;
     } else {
@@ -46,8 +48,9 @@ export class GameJoinComponent implements OnInit {
     const url = environment.apiUrl + 'api/game/open';
     this.http.getData(url).subscribe((val: OpenGames[]) => {
       this.gameList = val;
-      console.log('players[0]:');
-      console.log(val[0].players[0]);
+      if (this.gameList.length == 0 || !this.gameList) {
+        this.note = 'No games found!';
+      }
     });
   }
 }
