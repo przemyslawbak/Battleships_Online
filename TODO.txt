@@ -264,6 +264,7 @@ OK - open games list component:
 	OK - bug: display 1/1 in game list,
 	OK - in open games list - if all slots are occupied, do not show `Play` button,
 OK - game chat:
+	OK - chat time full UTC,
 	OK - time in game chat,
 	OK - sending hub messages only to users from game,	
 	OK - chat info when player disconnects SiganlR,
@@ -278,8 +279,8 @@ OK - game chat:
 
 - move chat to separate component,
 - move boards to separate component?
-- if best players list empty, display in view something about it,
-- if open games list empty, display in view something about it,
+- if best players list empty, display in view something about it, - 0
+- if open games list empty, display in view something about it, - 0
 - greater font size for small screens,
 - how to store user token? https://4programmers.net/Forum/JavaScript/345867-stan_programu_angular_dla_wielu_uzytkownikow?p=1722208#id1722208
 - in main component is constructor needed?
