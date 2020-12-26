@@ -9,6 +9,11 @@ th {
   font-size: 18px;
   border-bottom-width: 1px !important;
 }
+
+h4 {
+  margin-top: 30px;
+}
+
 .gameHeaderPic {
   background-position: center;
   background-repeat: no-repeat;

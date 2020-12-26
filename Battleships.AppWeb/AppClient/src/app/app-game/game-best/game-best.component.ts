@@ -11,7 +11,8 @@ import { BestPlayer } from '@models/best-players';
   styleUrls: ['./game-best.component.css'],
 })
 export class GameBestComponent implements OnInit {
-  public playersList: Array<BestPlayer>;
+  public playersList: Array<BestPlayer> = [];
+  public note: string = 'Loading list...';
 
   constructor(private http: HttpService, public auth: AuthService) {}
 
@@ -23,6 +24,9 @@ export class GameBestComponent implements OnInit {
     const url = environment.apiUrl + 'api/user/best';
     this.http.getData(url).subscribe((val) => {
       this.playersList = val;
+      if (this.playersList.length == 0 || !this.playersList) {
+        this.note = 'No players found!';
+      }
     });
   }
 }

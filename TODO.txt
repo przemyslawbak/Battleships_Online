@@ -277,10 +277,11 @@ OK - game chat:
 	OK - chat window (if 2 players at the same game id, and send only to opponent? or to himslef too, for client game state update?)
 	OK - chat info when player joins game
 	NO - rearrange game-play view: chat on the right side, game status horizontal. And mobile view?
+OK - best players component:
+	OK - if best players list empty, display in view something about it,
 
 - move chat to separate component,
 - move boards to separate component?
-- if best players list empty, display in view something about it, - 0
 - greater font size for small screens,
 - how to store user token? https://4programmers.net/Forum/JavaScript/345867-stan_programu_angular_dla_wielu_uzytkownikow?p=1722208#id1722208
 - in main component is constructor needed?

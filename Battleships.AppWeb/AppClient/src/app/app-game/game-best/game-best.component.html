@@ -1,19 +1,27 @@
 <div class="gameHeaderPic col-sm rounded-top"></div>
-<table class="table table-bordered table-striped">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Name</th>
-      <th scope="col">Multiplayer wins</th>
-      <th scope="col">AI wins</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let player of this.playersList; let i = index">
-      <th scope="row">{{ i + 1 }}</th>
-      <td>{{ player.displayName }}</td>
-      <td>{{ player.wonMultiplayerGames }}</td>
-      <td>{{ player.wonAiGames }}</td>
-    </tr>
-  </tbody>
-</table>
+<div
+  class="text-center"
+  *ngIf="this.playersList.length == 0 || !this.playersList; else table"
+>
+  <h4 class="noteDisplay">{{ this.note }}</h4>
+</div>
+<ng-template #table>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Multiplayer wins</th>
+        <th scope="col">AI wins</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let player of this.playersList; let i = index">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ player.displayName }}</td>
+        <td>{{ player.wonMultiplayerGames }}</td>
+        <td>{{ player.wonAiGames }}</td>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>
