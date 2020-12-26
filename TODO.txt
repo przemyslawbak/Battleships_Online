@@ -37,6 +37,8 @@ OK - identity:
 	OK - bug: if no email in DB for `forgotten pass`, freezes
 	OK - bug 2x hits RefreshToken
 OK - misc:
+	OK - after completed external login, add info to opened window,
+	OK - if one user logged in, do not allow it second time,
 	NO - in main component is constructor needed?
 	OK - game start view, reset-pass, register-user - btn width same like in join view,
 	OK - what if hubConnection.on close?
@@ -81,6 +83,7 @@ OK - navbar:
 	NO - should on logout erase game service data?
 	OK - bug: on `game` click TypeError: this.game.getGame() is null,
 OK - game start component:
+	NO - in game service replace getGame() with gameState property reference,
 	OK - checkboxes, validate,
 	OK - game creator: vs player/vs computer, invite friend with link, wait for someone to connect,
 	OK - redirect somewhere from `Game` btn-> if game != null -> game, else -> start game
@@ -285,13 +288,10 @@ OK - best players component:
 - move boards to separate component?
 - greater font size for small screens,
 - how to store user token? https://4programmers.net/Forum/JavaScript/345867-stan_programu_angular_dla_wielu_uzytkownikow?p=1722208#id1722208
-
 - read agout API return types,
 - all http to the service,
-- if one user logged in, do not allow it second time,
-- in game service replace getGame() with gameState property reference,
-- after completed facebook login, add spinner too,
-- html/body font,
+- on api error display message, example: use same accounts in 2 browsers, maybe logout?
+- move some common styles to app.component.css,
 - deploying game board on small screen responsivity,
 - keep chat records from various views?
 - verify opponent board only in backend,

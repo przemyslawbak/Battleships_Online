@@ -120,7 +120,9 @@ export class LoginExternalProvidersComponent implements OnInit {
 <body>\
     <div class="loader"></div>\
     <div class="wait"/>\
-        Please wait, redirecting...\
+        Please wait, redirecting to ' +
+      providerName +
+      '...\
     </div>\
 </body>\
 </html>';

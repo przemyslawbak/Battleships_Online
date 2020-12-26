@@ -2,11 +2,18 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <style>
+        .pleaseWait {
+            padding: 70px 0;
+            text-align: center;
+        }
+    </style>
     <meta charset="utf-8">
     <title>External Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 <body>
+    <h2 class="pleaseWait">Please wait...</h2>
     <script>
         window.location.replace('http://localhost:4200/close/@Html.Raw(Model.Email)/@Html.Raw(Model.User)/@Html.Raw(Model.Token)/@Html.Raw(Model.RefreshToken)/@Html.Raw(Model.DisplayName)');
     </script>
