@@ -37,6 +37,7 @@ OK - identity:
 	OK - bug: if no email in DB for `forgotten pass`, freezes
 	OK - bug 2x hits RefreshToken
 OK - misc:
+	NO - in main component is constructor needed?
 	OK - game start view, reset-pass, register-user - btn width same like in join view,
 	OK - what if hubConnection.on close?
 	OK - in signal-r service send messages only when connection established,
@@ -284,7 +285,7 @@ OK - best players component:
 - move boards to separate component?
 - greater font size for small screens,
 - how to store user token? https://4programmers.net/Forum/JavaScript/345867-stan_programu_angular_dla_wielu_uzytkownikow?p=1722208#id1722208
-- in main component is constructor needed?
+
 - read agout API return types,
 - all http to the service,
 - if one user logged in, do not allow it second time,

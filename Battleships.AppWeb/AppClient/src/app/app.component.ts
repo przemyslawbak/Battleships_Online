@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ReCaptchaV3Service } from 'ng-recaptcha';
 
 @Component({
   selector: 'app-root',
@@ -8,5 +7,5 @@ import { ReCaptchaV3Service } from 'ng-recaptcha';
 })
 export class AppComponent {
   title = 'Battleships';
-  constructor(private recaptchaV3Service: ReCaptchaV3Service) {}
+  constructor() {}
 }
