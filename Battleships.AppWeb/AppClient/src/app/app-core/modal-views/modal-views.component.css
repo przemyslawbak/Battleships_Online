@@ -5,12 +5,16 @@ jw-modal {
   display: none;
 }
 
+.jw-modal {
+  width: 500px;
+}
+
 jw-modal .jw-modal {
   /* modal container fixed across whole screen */
   position: fixed;
   top: 25%;
-left: 50%;
-transform: translate(-50%, -25%);
+  left: 50%;
+  transform: translate(-50%, -25%);
   /* z-index must be higher than .jw-modal-background */
   z-index: 1000;
   /* enables scrolling for tall modals */
@@ -44,5 +48,5 @@ body.jw-modal-open {
 }
 
 .msg {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }

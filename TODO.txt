@@ -283,6 +283,8 @@ OK - game chat:
 	NO - rearrange game-play view: chat on the right side, game status horizontal. And mobile view?
 OK - best players component:
 	OK - if best players list empty, display in view something about it,
+OK - modal info:
+	OK - big screen: change width of modal message window,
 
 - move chat to separate component,
 - move boards to separate component?
@@ -299,7 +301,6 @@ OK - best players component:
 - DRY copy to clipboard in game-play & game-deploy
 - if player disconnects in the middle of game, minus score,
 - DRY `setComputerOpponent` move to service;
-- big screen: change width of modal message window,
 - footer,
 - place everywhere 'go back' btn,
 - BS logo,
