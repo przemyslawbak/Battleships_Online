@@ -53,4 +53,8 @@ export class GameJoinComponent implements OnInit {
       }
     });
   }
+
+  public onBack() {
+    this.router.navigate(['']);
+  }
 }

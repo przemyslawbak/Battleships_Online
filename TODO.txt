@@ -37,6 +37,8 @@ OK - identity:
 	OK - bug: if no email in DB for `forgotten pass`, freezes
 	OK - bug 2x hits RefreshToken
 OK - misc:
+	OK - place everywhere 'go back' btn,
+	OK - change every btn-default and btn-secondary to btn-light,
 	OK - after completed external login, add info to opened window,
 	OK - if one user logged in, do not allow it second time,
 	NO - in main component is constructor needed?
@@ -232,6 +234,7 @@ OK - single player:
 	OK - what if player wins the game? Log it,
 	OK - what if game started as a multi, but changed to be a single player? now removing from the list all single player games
 OK - sprites:
+	NO - sounds for hit effects,
 	OK - create game sprite component,
 	OK - bug: explosio is not revealed, in inspector check "ng-reflect-ng-if"
 	OK - bug: explosion is in a wrong place,
@@ -302,10 +305,10 @@ OK - modal info:
 - if player disconnects in the middle of game, minus score,
 - DRY `setComputerOpponent` move to service;
 - footer,
-- place everywhere 'go back' btn,
 - BS logo,
 - AI levels - add some ai features each level,
-- sounds for hit effects,
+- navbar btns - width + style,
+
 end:
 - move logic to the services
 - favicon

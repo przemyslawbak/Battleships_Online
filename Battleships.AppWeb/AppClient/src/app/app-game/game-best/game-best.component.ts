@@ -5,6 +5,7 @@ import { AuthService } from '@services/auth.service';
 import { HttpService } from '@services/http.service';
 
 import { BestPlayer } from '@models/best-players';
+import { Router } from '@angular/router';
 
 @Component({
   templateUrl: './game-best.component.html',
@@ -14,7 +15,11 @@ export class GameBestComponent implements OnInit {
   public playersList: Array<BestPlayer> = [];
   public note: string = 'Loading list...';
 
-  constructor(private http: HttpService, public auth: AuthService) {}
+  constructor(
+    private http: HttpService,
+    public auth: AuthService,
+    private router: Router
+  ) {}
 
   public ngOnInit(): void {
     this.executeCall();
@@ -28,5 +33,9 @@ export class GameBestComponent implements OnInit {
         this.note = 'No players found!';
       }
     });
+  }
+
+  public onBack() {
+    this.router.navigate(['']);
   }
 }

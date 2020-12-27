@@ -61,4 +61,8 @@ export class JoinComponent implements OnInit {
       Password: ['', Validators.required],
     });
   }
+
+  public onBack() {
+    this.router.navigate(['']);
+  }
 }

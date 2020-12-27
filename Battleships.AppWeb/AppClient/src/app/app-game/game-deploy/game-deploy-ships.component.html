@@ -55,7 +55,7 @@
             <button
               [disabled]="this.isStartAllowed"
               type="submit"
-              class="btn btn-md btn-secondary"
+              class="btn btn-md btn-success"
               (click)="playWithAi()"
             >
               Play vs AI
@@ -123,7 +123,7 @@
         [disabled]="isDeployed"
         [disabled]="!isDeploymentAllowed"
         type="submit"
-        class="btn btn-md btn-secondary"
+        class="btn btn-md btn-light"
         (click)="clearBoard()"
       >
         Clear board
@@ -132,7 +132,7 @@
         [disabled]="isDeployed"
         [disabled]="!isDeploymentAllowed"
         type="submit"
-        class="btn btn-md btn-secondary"
+        class="btn btn-md btn-light"
         (click)="autoDeploying()"
       >
         Auto deploy
