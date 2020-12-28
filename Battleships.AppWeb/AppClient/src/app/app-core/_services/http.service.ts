@@ -15,16 +15,6 @@ export class HttpService {
     return this.result;
   }
 
-  public postData(url: string, data: any): Observable<any> {
-    this.result = this.postResult(url, data);
-    this.spinner.hide();
-    return this.result;
-  }
-
-  private postResult(url: string, data: any): Observable<any> {
-    return this.http.post<any>(url, data);
-  }
-
   private getResult(url: string): Observable<any> {
     return this.http.get<any>(url);
   }

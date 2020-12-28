@@ -1,14 +1,14 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpRequest } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 
 import { NgxSpinnerService } from 'ngx-spinner';
 
 import { LoginResponse } from '@models/login-response.model';
-import { HttpService } from './http.service';
 
 @Injectable()
 export class AuthService {
@@ -16,9 +16,9 @@ export class AuthService {
 
   constructor(
     private router: Router,
+    private http: HttpClient,
     @Inject(PLATFORM_ID) private platformId: any,
-    private spinner: NgxSpinnerService,
-    private http: HttpService
+    private spinner: NgxSpinnerService
   ) {}
 
   public login(email: string, password: string): Observable<boolean> {
@@ -62,7 +62,7 @@ export class AuthService {
       RefreshToken: this.getAuth().refreshToken,
       Token: this.getAuth().token,
     };
-    this.http.postData(url, data).subscribe(() => {
+    this.http.post<any>(url, data).subscribe(() => {
       this.spinner.hide();
     });
     this.setAuth(null);
@@ -120,19 +120,19 @@ export class AuthService {
     }
   }
 
-  private getTokenResponse(url: string, data: any): Observable<boolean> {
+  private getTokenResponse(url: string, data): Observable<boolean> {
     this.spinner.show();
-    let subject = new Subject<boolean>();
-    this.http.postData(url, data).subscribe((res) => {
-      const token = res && res.token;
-      if (token) {
-        this.setAuth(res);
-        return subject.next(true);
-      }
-
-      subject.next(false);
-    });
-
-    return subject.asObservable();
+    return this.http.post<LoginResponse>(url, data).pipe(
+      map((res: LoginResponse) => {
+        const token = res && res.token;
+        if (token) {
+          this.setAuth(res);
+          this.spinner.hide();
+          return true;
+        }
+        this.spinner.hide();
+        return false;
+      })
+    );
   }
 }

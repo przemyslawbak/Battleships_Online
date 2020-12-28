@@ -20,7 +20,7 @@ namespace Battleships.AppWeb.Controllers
         }
 
         /// <summary>
-        /// GET: api/game/start
+        /// POST: api/game/start
         /// </summary>
         /// <returns>Status code.</returns>
         [HttpPost("start")]

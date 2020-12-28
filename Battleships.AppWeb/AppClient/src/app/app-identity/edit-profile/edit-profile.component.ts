@@ -4,9 +4,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '@services/auth.service';
 import { environment } from '@environments/environment';
+import { HttpClient } from '@angular/common/http';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ModalService } from '@services/modal.service';
-import { HttpService } from '@services/http.service';
 
 @Component({
   selector: 'edit-profile',
@@ -20,7 +20,7 @@ export class EditProfileComponent {
     private router: Router,
     private formBuilder: FormBuilder,
     private auth: AuthService,
-    private http: HttpService,
+    private http: HttpClient,
     private spinner: NgxSpinnerService
   ) {
     // initialize the form
@@ -55,7 +55,7 @@ export class EditProfileComponent {
     model.displayName = this.form.value.DisplayName;
     model.email = this.form.value.Email;
     const url = environment.apiUrl + 'api/user/edit';
-    this.http.postData(url, model).subscribe(() => {
+    this.http.post(url, model).subscribe(() => {
       this.spinner.hide();
       this.auth.logout();
       this.modalService.open(

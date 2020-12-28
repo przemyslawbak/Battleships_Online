@@ -37,7 +37,6 @@ OK - identity:
 	OK - bug: if no email in DB for `forgotten pass`, freezes
 	OK - bug 2x hits RefreshToken
 OK - misc:
-	OK - all http to the service,
 	OK - move some common styles from components to styles.css,
 	OK - place everywhere 'go back' btn,
 	OK - change every btn-default and btn-secondary to btn-light,
@@ -294,9 +293,8 @@ OK - best players component:
 OK - modal info:
 	OK - big screen: change width of modal message window,
 
-- how to store user token? https://4programmers.net/Forum/JavaScript/345867-stan_programu_angular_dla_wielu_uzytkownikow?p=1722208#id1722208
+
 - read agout API return types,
-- bug: no spinner shown on http post,
 - on api error display message, example: use same accounts in 2 browsers, maybe logout?
 - greater font size for small screens,
 - deploying game board on small screen responsivity,
@@ -317,6 +315,8 @@ OK - modal info:
 	- open games and best pplayers table bug,
 
 end:
+- front-end unit testing: https://angular.io/guide/testing + Freeman
+- back-end unit testing
 - move logic to the services
 - favicon
 - clean up JS console.log rows
@@ -325,6 +325,7 @@ end:
 - Hub move to project: Hubs
 - sanitize inputs in front end
 
-future:
+future / next project:
+- all http post calls to the service,
+- how to store user token? https://4programmers.net/Forum/JavaScript/345867-stan_programu_angular_dla_wielu_uzytkownikow?p=1722208#id1722208
 - testy integracyjne backend - Database, Request-response pipeline
-- front-end unit testing: https://angular.io/guide/testing + Freeman

@@ -12,10 +12,10 @@ import { GameState } from '@models/game-state.model';
 import { Subscription, timer } from 'rxjs';
 import { BoardService } from '@services/board.service';
 import { CommentsService } from '@services/comments.service';
+import { HttpClient } from '@angular/common/http';
 import { Player } from '@models/player.model';
 import { AiService } from '@services/ai.service';
 import { Coordinates } from '@models/coordinates.model';
-import { HttpService } from '@services/http.service';
 
 @Component({
   templateUrl: './game-play.component.html',
@@ -51,7 +51,7 @@ export class GamePlayComponent implements OnInit {
 
   constructor(
     private ai: AiService,
-    private http: HttpService,
+    private http: HttpClient,
     private comments: CommentsService,
     private board: BoardService,
     private auth: AuthService,
@@ -202,7 +202,7 @@ export class GamePlayComponent implements OnInit {
       UserName: this.game.getGame().players[winnerNumber].displayName,
       Multiplayer: this.game.getGame().gameMulti,
     };
-    this.http.postData(url, data).subscribe(() => {
+    this.http.post<any>(url, data).subscribe(() => {
       this.modalService.open('info-modal', info);
       this.gameEnded = true;
     });

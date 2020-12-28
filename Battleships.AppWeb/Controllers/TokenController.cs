@@ -82,14 +82,12 @@ namespace Battleships.AppWeb.Controllers
         [ValidateModel]
         public IActionResult RevokeToken([FromBody]RevokeTokenRequestViewModel model)
         {
-            if (_tokenService.RevokeTokens(model))
-            {
-                return Ok();
-            }
-            else
+            if (!_tokenService.RevokeTokens(model))
             {
                 return new ObjectResult("There was a problem logging the user out correctly.") { StatusCode = 500 };
             }
+
+            return Ok();
         }
 
         /// <summary>
