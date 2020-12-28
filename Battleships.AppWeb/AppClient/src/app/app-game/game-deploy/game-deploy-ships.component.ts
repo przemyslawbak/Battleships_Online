@@ -14,7 +14,6 @@ import { SignalRService } from '@services/signal-r.service';
 import { Coordinates } from '@models/coordinates.model';
 import { GameState } from '@models/game-state.model';
 import { BoardCell } from '@models/board-cell.model';
-import { ChatMessage } from '@models/chat-message.model';
 import { Player } from '@models/player.model';
 import { FleetService } from '@services/fleet.service';
 
@@ -32,8 +31,6 @@ export class GameDeployComponent implements OnInit {
   public isDeployed: boolean = false;
   public isDeploymentAllowed: boolean = false;
   public isDeployEnabled: boolean = false;
-  public chatMessage: string = '';
-  public chatMessages: Array<ChatMessage> = [];
   public userName: string = '';
   private countDown: Subscription;
   public count: number = 30;
@@ -41,7 +38,6 @@ export class GameDeployComponent implements OnInit {
   public fleetDeployed: Array<ShipComponent> = [];
   public playersBoard: BoardCell[][];
   private _subGame: any;
-  private _subMessage: any;
   private _subBoard: any;
 
   constructor(
@@ -60,9 +56,8 @@ export class GameDeployComponent implements OnInit {
 
   ngOnDestroy() {
     this.countDown = null;
-    if (this._subGame && this._subMessage && this._subBoard) {
+    if (this._subGame && this._subBoard) {
       this._subGame.unsubscribe();
-      this._subMessage.unsubscribe();
       this._subBoard.unsubscribe();
     }
   }
@@ -124,12 +119,6 @@ export class GameDeployComponent implements OnInit {
     this._subGame = this.game.gameStateChange.subscribe((game) => {
       this.updateGameValues(game);
     });
-
-    this._subMessage = this.signalRService.messageChange.subscribe(
-      (message: ChatMessage) => {
-        this.chatMessages = [message].concat(this.chatMessages);
-      }
-    );
   }
 
   private startCounter() {
@@ -153,17 +142,8 @@ export class GameDeployComponent implements OnInit {
   }
 
   private resetMessageListeners() {
-    this.signalRService.removeChatMessageListener();
     this.signalRService.removeGameStateListener();
-    this.signalRService.addChatMessageListener();
     this.signalRService.addGameStateListener();
-  }
-
-  public sendChatMessage(): void {
-    if (this.chatMessage != '') {
-      this.signalRService.broadcastChatMessage(this.chatMessage);
-      this.chatMessage = '';
-    }
   }
 
   public setRotation(name: string): void {

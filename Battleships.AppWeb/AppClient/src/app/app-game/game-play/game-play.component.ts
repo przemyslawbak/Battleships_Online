@@ -1,7 +1,6 @@
 import { CommentModel } from '@models/comment.model';
 import { PlayerService } from '@services/player.service';
 import { BoardCell } from '@models/board-cell.model';
-import { ChatMessage } from './../../app-core/_models/chat-message.model';
 import { AuthService } from '@services/auth.service';
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -39,8 +38,6 @@ export class GamePlayComponent implements OnInit {
   public clientsName: string = '';
   public opponentsName: string = '';
   public isStartAllowed: boolean = false;
-  public chatMessage: string = '';
-  public chatMessages: Array<ChatMessage> = [];
   public turnNo: number = -1;
   public whoseTurnName: string = '';
   public whoseTurnNumber: number = -1;
@@ -51,7 +48,6 @@ export class GamePlayComponent implements OnInit {
   public boards: Array<BoardCell[][]> = [];
   private isResultBeingDisplayed: boolean = false;
   private _subGame: any;
-  private _subMessage: any;
 
   constructor(
     private ai: AiService,
@@ -67,9 +63,8 @@ export class GamePlayComponent implements OnInit {
   ) {}
 
   ngOnDestroy() {
-    if (this._subGame && this._subMessage) {
+    if (this._subGame) {
       this._subGame.unsubscribe();
-      this._subMessage.unsubscribe();
     }
   }
 
@@ -193,22 +188,22 @@ export class GamePlayComponent implements OnInit {
   }
 
   private weHaveWinner(winnerNumber: number): void {
-    let message: string = '';
-    message =
+    let info: string = '';
+    info =
       winnerNumber == this.clientsPlayerNumber
         ? 'You won this batle!'
         : 'You lost this battle.';
-    this.addWonGame(message, winnerNumber);
+    this.addWonGame(info, winnerNumber);
   }
 
-  private addWonGame(message: string, winnerNumber: number): void {
+  private addWonGame(info: string, winnerNumber: number): void {
     const url = environment.apiUrl + 'api/user/winner';
     const data = {
       UserName: this.game.getGame().players[winnerNumber].displayName,
       Multiplayer: this.game.getGame().gameMulti,
     };
     this.http.post<any>(url, data).subscribe(() => {
-      this.modalService.open('info-modal', message);
+      this.modalService.open('info-modal', info);
       this.gameEnded = true;
     });
   }
@@ -249,9 +244,7 @@ export class GamePlayComponent implements OnInit {
   }
 
   private resetMessageListeners() {
-    this.signalRService.removeChatMessageListener();
     this.signalRService.removeGameStateListener();
-    this.signalRService.addChatMessageListener();
     this.signalRService.addGameStateListener();
   }
 
@@ -259,23 +252,9 @@ export class GamePlayComponent implements OnInit {
     this._subGame = this.game.gameStateChange.subscribe((game) => {
       this.updateGameValues(game);
     });
-    this._subMessage = this.signalRService.messageChange.subscribe(
-      (message: ChatMessage) => {
-        this.chatMessages = [message].concat(this.chatMessages);
-      }
-    );
-  }
-
-  public sendChatMessage(): void {
-    if (this.chatMessage != '') {
-      this.signalRService.broadcastChatMessage(this.chatMessage);
-      this.chatMessage = '';
-    }
   }
 
   public fire(row: number, col: number, ref: HTMLElement): void {
-    console.log(row);
-    console.log(col);
     let coord: Coordinates = { row: row, col: col } as Coordinates;
     if (
       !this.isResultBeingDisplayed &&

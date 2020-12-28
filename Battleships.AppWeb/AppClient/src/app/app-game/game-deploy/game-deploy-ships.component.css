@@ -32,48 +32,6 @@ button {
   color: #444;
 }
 
-.gameChat {
-  border: solid 1px;
-  position: relative;
-  border-radius: 10px;
-  margin-bottom: 10px;
-}
-
-.gameChat {
-  height: 250px;
-  margin-top: 10px;
-}
-
-.chatDisplay {
-  height: 65%;
-  overflow-x: hidden;
-  overflow-y: hidden;
-}
-
-.textInputRow {
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  height: 40px;
-}
-
-.textInputRow input {
-  width: 75%;
-  height: 80%;
-  margin: 5px;
-  margin-bottom: 10px;
-  margin-left: -5px;
-  display: inline-block;
-}
-
-.textInputRow button {
-  width: 20%;
-  height: 80%;
-  margin: 5px;
-  margin-bottom: 10px;
-  display: inline-block;
-}
-
 .text-center {
   margin: auto;
 }

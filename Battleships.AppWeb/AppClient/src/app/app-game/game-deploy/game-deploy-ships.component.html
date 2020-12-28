@@ -82,39 +82,10 @@
       </ng-template>
     </div>
     <!--game chat-->
-    <div
-      class="col-sm-12 gameChat"
-      [style.display]="this.multiplayer ? 'block' : 'none'"
-    >
-      Game chat (UTC):
-      <div class="chatDisplay">
-        <div *ngFor="let message of this.chatMessages">
-          <span class="blackColor">{{ message.time }} - </span>
-          <span *ngIf="this.userName == message.userName" class="greenColor"
-            >{{ message.displayName }}:
-          </span>
-          <span *ngIf="this.userName != message.userName" class="redColor"
-            >{{ message.displayName }}:
-          </span>
-          <span>{{ message.message }}</span>
-        </div>
-      </div>
-      <div class="col-md-12 textInputRow">
-        <input
-          class="form-control chatInput"
-          type="text"
-          [(ngModel)]="chatMessage"
-          (keyup.enter)="sendChatMessage()"
-        />
-        <button
-          type="button"
-          class="btn btn-md btn-success"
-          (click)="sendChatMessage()"
-        >
-          Send
-        </button>
-      </div>
-    </div>
+    <game-chat
+      [userName]="this.userName"
+      [multiplayer]="this.multiplayer"
+    ></game-chat>
   </div>
   <div class="droplist col-md-7">
     <!--buttons-->
