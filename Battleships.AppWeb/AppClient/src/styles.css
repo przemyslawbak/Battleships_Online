@@ -2,6 +2,10 @@
   opacity: 0.6 !important;
 }
 
+button {
+  margin: 5px;
+}
+
 thead {
   border: 1px solid #90ee90;
 }

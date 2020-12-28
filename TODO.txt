@@ -302,13 +302,8 @@ OK - best players component:
 OK - modal info:
 	OK - big screen: change width of modal message window,
 
-- game chat mute opponent,
-- keep chat records from various views?
-- DRY `setComputerOpponent` move to service;
 - AI levels - add some ai features each level, pipes?
 - navbar btns - width + style,
-- `go to main` btn in policies,
-- `go to main` btn in edit profile,
 - correct several css problems after refactoring styles:
 	- game status btns,
 	- open games and best pplayers table bug,
