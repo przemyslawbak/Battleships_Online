@@ -302,12 +302,8 @@ OK - best players component:
 OK - modal info:
 	OK - big screen: change width of modal message window,
 
-
-
-- style: greater font size for small screens,
-- bug: small size screen long board messages moves board down in relation to animated sprites,
-- keep chat records from various views?
 - game chat mute opponent,
+- keep chat records from various views?
 - DRY `setComputerOpponent` move to service;
 - AI levels - add some ai features each level, pipes?
 - navbar btns - width + style,
@@ -316,6 +312,7 @@ OK - modal info:
 - correct several css problems after refactoring styles:
 	- game status btns,
 	- open games and best pplayers table bug,
+- bug: small size screen long board messages moves board down in relation to animated sprites,
 
 end:
 - front-end unit testing: https://angular.io/guide/testing + Freeman
@@ -330,6 +327,7 @@ end:
 - remove all console.log();
 
 future / next project:
+- style: greater font size for small screens,
 - verify opponent board only in backend,
 - all http post calls to the service,
 - how to store user token? https://4programmers.net/Forum/JavaScript/345867-stan_programu_angular_dla_wielu_uzytkownikow?p=1722208#id1722208

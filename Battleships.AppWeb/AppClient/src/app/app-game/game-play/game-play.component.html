@@ -100,15 +100,15 @@
       </app-animated-sprite>
     </div>
 
-    <h4
+    <div
       [ngClass]="{
         greenColor: this.gameBoardComment.color == 'green',
         redColor: this.gameBoardComment.color == 'red',
         blackColor: this.gameBoardComment.color == 'black'
       }"
     >
-      {{ this.gameBoardComment.text }}
-    </h4>
+      <span class="boardComment">{{ this.gameBoardComment.text }}</span>
+    </div>
     <div
       *ngIf="
         this.clientsPlayerNumber == this.whoseTurnNumber;

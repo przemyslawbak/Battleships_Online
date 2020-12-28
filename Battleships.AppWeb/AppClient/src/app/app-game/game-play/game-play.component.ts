@@ -108,8 +108,6 @@ export class GamePlayComponent implements OnInit {
         let offsetR: number = this.boards[this.clientsPlayerNumber][
           game.fireCol
         ][game.fireRow].elY;
-        console.log('x: ' + offsetL);
-        console.log('y: ' + offsetR);
 
         this.animateSprite(game.fireResult, offsetL, offsetR);
       }
