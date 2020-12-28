@@ -37,6 +37,8 @@ OK - identity:
 	OK - bug: if no email in DB for `forgotten pass`, freezes
 	OK - bug 2x hits RefreshToken
 OK - misc:
+	NO - on api error display message, example: use same accounts in 2 browsers, maybe logout?
+	OK - read about API return types: https://docs.microsoft.com/en-us/aspnet/core/web-api/action-return-types?view=aspnetcore-5.0
 	OK - move some common styles from components to styles.css,
 	OK - place everywhere 'go back' btn,
 	OK - change every btn-default and btn-secondary to btn-light,
@@ -293,20 +295,12 @@ OK - best players component:
 OK - modal info:
 	OK - big screen: change width of modal message window,
 
-
-- read agout API return types,
-- on api error display message, example: use same accounts in 2 browsers, maybe logout?
 - greater font size for small screens,
 - deploying game board on small screen responsivity,
 - keep chat records from various views?
-- verify opponent board only in backend,
 - game chat mute opponent,
-- DRY copy to clipboard in game-play & game-deploy - to service
-- if player disconnects in the middle of game, minus score?
 - DRY `setComputerOpponent` move to service;
-- footer,
-- BS logo?
-- AI levels - add some ai features each level,
+- AI levels - add some ai features each level, pipes?
 - navbar btns - width + style,
 - `go to main` btn in policies,
 - `go to main` btn in edit profile,
@@ -326,6 +320,7 @@ end:
 - sanitize inputs in front end
 
 future / next project:
+- verify opponent board only in backend,
 - all http post calls to the service,
 - how to store user token? https://4programmers.net/Forum/JavaScript/345867-stan_programu_angular_dla_wielu_uzytkownikow?p=1722208#id1722208
 - testy integracyjne backend - Database, Request-response pipeline
