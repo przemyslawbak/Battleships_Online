@@ -1,4 +1,5 @@
 OK - identity:
+	OK - bug: can not refresh token,
 	NO - ext.login change: please wait, redirecting... to please wait, verifying user...
 	OK - add Google external login providers
 	OK - recaptcha v3: forgotten, register
@@ -151,6 +152,7 @@ OK - in connect component:
 	OK - err: ERROR TypeError: this.thenable is undefined
 	OK - bug: when playing game and joining another, on disconnect just redirects to the main view,
 OK - in game-play component:
+	OK - style: game status, content close to the edge,
 	OK - deploying game board on small screen responsivity,
 	NO - move boards to separate component?
 	OK - in game-play-> init game - if player joins the game, and his board is not deployed, redirect to deployment component,
@@ -211,6 +213,7 @@ OK - in game-play component:
 	OK - adjust: when displaying hit result, do not allow to fire,
 	OK - adjust: what if shooting cell already shot?
 OK - single player:
+	OK - style: game status, content close to the edge,
 	OK - if game-start to ai game? will be allowed?
 	- ai counts ships, use targets list...
 	NO - bug: now computer does not shot (create AI first),
@@ -297,8 +300,11 @@ OK - best players component:
 OK - modal info:
 	OK - big screen: change width of modal message window,
 
-- greater font size for small screens,
-- bug: game status, content close to the edge,
+
+- style: No games found! a bit lower,
+- style: greater font size for small screens,
+
+- bug: small size screen long board messages moves board down in relation to animated sprites,
 - keep chat records from various views?
 - game chat mute opponent,
 - DRY `setComputerOpponent` move to service;

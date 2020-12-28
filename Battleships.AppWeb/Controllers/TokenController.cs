@@ -31,7 +31,7 @@ namespace Battleships.AppWeb.Controllers
         /// <returns>Json result with response viewmodel.</returns>
         [HttpPost("auth")]
         [ValidateModel]
-        public async Task<IActionResult> JsonWebToken([FromBody]TokenRequestViewModel model)
+        public async Task<IActionResult> JsonWebToken([FromBody] TokenRequestViewModel model)
         {
             TempData["requestIp"] = _userService.GetIpAddress(HttpContext);
 
@@ -53,7 +53,7 @@ namespace Battleships.AppWeb.Controllers
         /// <returns>Json result with response viewmodel.</returns>
         [HttpPost("refresh-token")]
         [ValidateModel]
-        public async Task<IActionResult> RefreshToken([FromBody]RefreshTokenRequestViewModel model)
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequestViewModel model)
         {
             TempData["requestIp"] = _userService.GetIpAddress(HttpContext);
 
@@ -80,7 +80,7 @@ namespace Battleships.AppWeb.Controllers
         /// <returns>Returns 200 status code if successfull removes tokens for user logout.</returns>
         [HttpPost("revoke-token")]
         [ValidateModel]
-        public IActionResult RevokeToken([FromBody]RevokeTokenRequestViewModel model)
+        public IActionResult RevokeToken([FromBody] RevokeTokenRequestViewModel model)
         {
             if (!_tokenService.RevokeTokens(model))
             {
