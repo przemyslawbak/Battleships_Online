@@ -20,3 +20,7 @@ app-ship {
   position: absolute;
   cursor: pointer;
 }
+
+.droplist button {
+  margin-right: 5px;
+}

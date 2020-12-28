@@ -1,3 +1,7 @@
+- AI levels - add some ai features each level, pipes?
+- bug: small size screen long board messages moves board down in relation to animated sprites,
+- on game end display `go to main` btn,
+
 OK - identity:
 	OK - bug: can not refresh token,
 	NO - ext.login change: please wait, redirecting... to please wait, verifying user...
@@ -305,8 +309,6 @@ OK - best players component:
 OK - modal info:
 	OK - big screen: change width of modal message window,
 
-- AI levels - add some ai features each level, pipes?
-- bug: small size screen long board messages moves board down in relation to animated sprites,
 
 end:
 - front-end unit testing: https://angular.io/guide/testing + Freeman
