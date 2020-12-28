@@ -176,3 +176,11 @@ form {
     width: 100%;
   }
 }
+
+@media (max-width: 1100px) {
+  .boardCell {
+    width: 30px;
+    height: 30px;
+    border: solid 1px #ccc;
+  }
+}

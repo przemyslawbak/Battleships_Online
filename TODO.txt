@@ -102,6 +102,7 @@ OK - update game status with:
 	OK - can be game started?
 	OK - update backend
 OK - in deploy view and component:
+	OK - deploying game board on small screen responsivity,
 	NO - game boards (for 2 players): canvas drawings,
 	OK - display: DEPLOY SHIPS
 	OK - list of ships for each player,
@@ -150,6 +151,7 @@ OK - in connect component:
 	OK - err: ERROR TypeError: this.thenable is undefined
 	OK - bug: when playing game and joining another, on disconnect just redirects to the main view,
 OK - in game-play component:
+	OK - deploying game board on small screen responsivity,
 	NO - move boards to separate component?
 	OK - in game-play-> init game - if player joins the game, and his board is not deployed, redirect to deployment component,
 	OK - update game-play component on game.service state change: https://stackoverflow.com/a/43161506,
@@ -296,7 +298,7 @@ OK - modal info:
 	OK - big screen: change width of modal message window,
 
 - greater font size for small screens,
-- deploying game board on small screen responsivity,
+- bug: game status, content close to the edge,
 - keep chat records from various views?
 - game chat mute opponent,
 - DRY `setComputerOpponent` move to service;
@@ -318,6 +320,7 @@ end:
 - .pipe(delay(5000)) w security service?
 - Hub move to project: Hubs
 - sanitize inputs in front end
+- remove all console.log();
 
 future / next project:
 - verify opponent board only in backend,
