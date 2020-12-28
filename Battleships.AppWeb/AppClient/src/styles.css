@@ -163,6 +163,10 @@ form {
   text-align: center;
 }
 
+.noteDisplay {
+  margin: 30px;
+}
+
 @media (max-width: 750px) {
   table td {
     width: 9vw;

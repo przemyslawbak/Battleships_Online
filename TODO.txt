@@ -276,6 +276,7 @@ OK - privacy component:
 	NO - cookies popup/modal,
 	OK - link in nav menu
 OK - open games list component:
+	OK - style: No games found! a bit lower,
 	OK - if open games list empty, display in view something about it,
 	OK - in open game list display player names,
 	OK - bug: display 1/1 in game list,
@@ -296,14 +297,14 @@ OK - game chat:
 	OK - chat info when player joins game
 	NO - rearrange game-play view: chat on the right side, game status horizontal. And mobile view?
 OK - best players component:
+	OK - style: No games found! a bit lower,
 	OK - if best players list empty, display in view something about it,
 OK - modal info:
 	OK - big screen: change width of modal message window,
 
 
-- style: No games found! a bit lower,
-- style: greater font size for small screens,
 
+- style: greater font size for small screens,
 - bug: small size screen long board messages moves board down in relation to animated sprites,
 - keep chat records from various views?
 - game chat mute opponent,
