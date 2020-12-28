@@ -306,9 +306,6 @@ OK - modal info:
 	OK - big screen: change width of modal message window,
 
 - AI levels - add some ai features each level, pipes?
-- correct several css problems after refactoring styles:
-	- game status btns,
-	- open games and best pplayers table bug,
 - bug: small size screen long board messages moves board down in relation to animated sprites,
 
 end:

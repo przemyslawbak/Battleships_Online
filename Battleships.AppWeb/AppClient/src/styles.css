@@ -22,6 +22,7 @@ table td {
 }
 
 th {
+  width: 0;
   background-color: #4caf50;
   color: white;
   font-weight: normal;
