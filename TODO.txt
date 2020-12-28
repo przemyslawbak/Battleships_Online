@@ -272,6 +272,7 @@ OK - open games list component:
 	OK - bug: display 1/1 in game list,
 	OK - in open games list - if all slots are occupied, do not show `Play` button,
 OK - game chat:
+	OK - create separate folder and component files,
 	OK - chat time full UTC,
 	OK - time in game chat,
 	OK - sending hub messages only to users from game,	
@@ -301,11 +302,11 @@ OK - modal info:
 - keep chat records from various views?
 - verify opponent board only in backend,
 - game chat mute opponent,
-- DRY copy to clipboard in game-play & game-deploy
-- if player disconnects in the middle of game, minus score,
+- DRY copy to clipboard in game-play & game-deploy - to service
+- if player disconnects in the middle of game, minus score?
 - DRY `setComputerOpponent` move to service;
 - footer,
-- BS logo,
+- BS logo?
 - AI levels - add some ai features each level,
 - navbar btns - width + style,
 
