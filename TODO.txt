@@ -37,6 +37,7 @@ OK - identity:
 	OK - bug: if no email in DB for `forgotten pass`, freezes
 	OK - bug 2x hits RefreshToken
 OK - misc:
+	OK - all http to the service,
 	OK - move some common styles from components to styles.css,
 	OK - place everywhere 'go back' btn,
 	OK - change every btn-default and btn-secondary to btn-light,
@@ -295,7 +296,7 @@ OK - modal info:
 
 - how to store user token? https://4programmers.net/Forum/JavaScript/345867-stan_programu_angular_dla_wielu_uzytkownikow?p=1722208#id1722208
 - read agout API return types,
-- all http to the service,
+- bug: no spinner shown on http post,
 - on api error display message, example: use same accounts in 2 browsers, maybe logout?
 - greater font size for small screens,
 - deploying game board on small screen responsivity,
@@ -309,6 +310,11 @@ OK - modal info:
 - BS logo?
 - AI levels - add some ai features each level,
 - navbar btns - width + style,
+- `go to main` btn in policies,
+- `go to main` btn in edit profile,
+- correct several css problems after refactoring styles:
+	- game status btns,
+	- open games and best pplayers table bug,
 
 end:
 - move logic to the services

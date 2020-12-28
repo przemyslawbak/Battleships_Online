@@ -6,13 +6,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { environment } from '@environments/environment';
 
 import { ModalService } from '@services/modal.service';
 
 import { PassResetModel } from '@models/password-reset.model';
+import { HttpService } from '@services/http.service';
 
 @Component({
   templateUrl: './pass-reset.component.html',
@@ -24,7 +24,7 @@ export class PassResetComponent implements OnInit {
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
-    private http: HttpClient,
+    private http: HttpService,
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService,
     private modalService: ModalService
@@ -40,7 +40,7 @@ export class PassResetComponent implements OnInit {
     this.spinner.show();
     this.passModel.password = this.form.value.Password;
     const url = environment.apiUrl + 'api/user/new-password';
-    this.http.post(url, this.passModel).subscribe(() => {
+    this.http.postData(url, this.passModel).subscribe(() => {
       this.modalService.open(
         'info-modal',
         'Now you can log in with your password.'

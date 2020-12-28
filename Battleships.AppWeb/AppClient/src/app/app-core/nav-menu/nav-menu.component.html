@@ -35,7 +35,7 @@
       </li>
       <li class="nav-item" *ngIf="this.auth.isLoggedIn()">
         <a (click)="logout()">
-          <span class="nav-link text-dark"
+          <span class="nav-link text-dark pointer"
             >Logout {{ this.getUserDisplayName() }}</span
           >
         </a>

@@ -6,7 +6,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
 
 import { ReCaptchaV3Service } from 'ng-recaptcha';
@@ -15,6 +14,7 @@ import { SecurityService } from '@services/security.service';
 
 import { NewUser } from '@models/new-user.model';
 import { AuthService } from '@services/auth.service';
+import { HttpService } from '@services/http.service';
 
 @Component({
   templateUrl: './user-register.component.html',
@@ -25,7 +25,7 @@ export class RegisterComponent {
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
-    private http: HttpClient,
+    private http: HttpService,
     private auth: AuthService,
     private spinner: NgxSpinnerService,
     private recaptchaV3Service: ReCaptchaV3Service,
@@ -107,9 +107,8 @@ export class RegisterComponent {
     model.captchaToken = token;
     const url = environment.apiUrl + 'api/user/register';
     this.securityService.delayForBruteForce(5);
-    this.http.post(url, model).subscribe(() => {
+    this.http.postData(url, model).subscribe(() => {
       this.onRegisteredLogin(model);
-      this.spinner.hide();
     });
   }
 }
