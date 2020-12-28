@@ -4,81 +4,12 @@ button {
   width: 23%;
 }
 
-.gameStatus button {
-  margin-top: 10px;
-  width: 66%;
-}
-
-.gameStatus .row {
-  padding-left: 20px;
-}
-
 .gameHeaderPic {
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
   background-image: url("../../../assets/images/deploy.jpg");
-  height: 85px;
-}
-
-.link {
-  margin-top: 20px;
-}
-
-.login-title {
-  margin: 15px 0;
-  text-align: center;
-  font-size: 1.5em;
-  color: #444;
-}
-
-.text-center {
-  margin: auto;
-}
-
-.dataRow {
-  padding: 10px;
-  background-color: #f7f7f7;
-  border-radius: 10px;
-  border: 1px solid #eee;
-  min-height: 300px;
 }
 
 .row {
   margin-top: 10px;
-}
-
-.greenColor {
-  color: green;
-}
-
-.redColor {
-  color: red;
-}
-
-table {
-  margin: 20px;
-}
-
-table td {
-  border: solid 1px;
-  width: 3vw;
-  height: 3vw;
-  text-align: center;
-}
-
-@media (max-width: 750px) {
-  table td {
-    width: 9vw;
-    height: 9vw;
-    font-size: 30px;
-  }
-}
-
-/*deploying*/
-.board {
-  min-height: 300px;
-  margin-top: 20px;
 }
 
 .rotate {
@@ -90,59 +21,7 @@ table td {
   transform: rotate(0deg);
 }
 
-.droplist {
-  position: relative;
-  height: 100%;
-  margin: 0;
-}
-
-.ships {
-  height: 150px;
-}
-
-.cdk-drag-placeholder {
-  display: none;
-}
-
 app-ship {
   position: absolute;
   cursor: pointer;
-}
-
-.item-list {
-  position: relative;
-}
-
-.item-box {
-  cursor: pointer;
-}
-
-.boardRow {
-  display: inline-block;
-}
-
-.pointer {
-  cursor: pointer;
-}
-
-.boardCell {
-  width: 50px;
-  height: 50px;
-  border: solid 1px #ccc;
-}
-
-.ship-box {
-  height: 30px;
-  border: solid 1px #ccc;
-  color: rgba(0, 0, 0, 0.87);
-  cursor: move;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  background: #fff;
-  border-radius: 4px;
-  position: relative;
-  transition: box-shadow 200ms cubic-bezier(0, 0, 0.2, 1);
-  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
-    0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }

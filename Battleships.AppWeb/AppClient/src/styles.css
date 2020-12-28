@@ -1,3 +1,178 @@
 .grecaptcha-badge {
   opacity: 0.6 !important;
 }
+
+thead {
+  border: 1px solid #90ee90;
+}
+
+table {
+  margin: 20px;
+}
+
+table td {
+  border: solid 1px;
+  width: 3vw;
+  height: 3vw;
+  text-align: center;
+}
+
+th {
+  background-color: #4caf50;
+  color: white;
+  font-weight: normal;
+  font-size: 18px;
+  border-bottom-width: 1px !important;
+}
+
+.gameHeaderPic {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 85px;
+}
+
+h4 {
+  margin-top: 30px;
+}
+
+.blackColor {
+  color: black;
+}
+
+.greenColor {
+  color: green;
+}
+
+.redColor {
+  color: red;
+}
+
+.gameStatus button {
+  margin-top: 10px;
+  width: 66%;
+}
+
+.gameStatus {
+  padding-left: 20px;
+}
+
+.link {
+  margin-top: 20px;
+}
+
+.form-container .form-title {
+  margin: 15px 0;
+  text-align: center;
+  font-size: 1.5em;
+  color: #444;
+}
+
+.text-center {
+  margin: auto;
+}
+
+.dataRow {
+  padding: 10px;
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  border: 1px solid #eee;
+  min-height: 300px;
+}
+
+.board {
+  min-height: 300px;
+  margin-top: 20px;
+}
+
+.droplist {
+  position: relative;
+  height: 100%;
+  margin: 0;
+}
+
+.boardRow {
+  display: inline-block;
+}
+
+.boardCell {
+  width: 50px;
+  height: 50px;
+  border: solid 1px #ccc;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.textContainer {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #f7f7f7;
+  border-radius: 10px;
+}
+
+form {
+  margin: 5px;
+}
+
+.help-block {
+  color: red;
+}
+
+.form-container {
+  max-width: 600px;
+  padding: 10px;
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  border: 1px solid #eee;
+}
+
+.form-container .login-img {
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 10px;
+  display: block;
+  border-radius: 50%;
+}
+
+.form-container .login-forgot-password {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.form-container .login-form .form-group {
+  margin-bottom: 8px;
+}
+
+.form-container .login-form .error-panel {
+  color: #e74c3c;
+  text-align: center;
+}
+
+.login-subtitle {
+  margin: 15px 0;
+  text-align: center;
+  font-size: 1.2em;
+  color: #444;
+}
+
+.login-link {
+  margin-top: 10px;
+  text-align: center;
+}
+
+@media (max-width: 750px) {
+  table td {
+    width: 9vw;
+    height: 9vw;
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 767px) {
+  .form-container {
+    width: 100%;
+  }
+}

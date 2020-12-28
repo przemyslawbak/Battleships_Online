@@ -70,47 +70,7 @@ button {
   border: 2px dotted blue;
 }
 
-.text-center {
-  margin: auto;
-}
-
-.login-container {
-  max-width: 600px;
-  padding: 10px;
-  background-color: #f7f7f7;
-  border-radius: 10px;
-  border: 1px solid #eee;
-}
-
-.login-img {
-  width: 96px;
-  height: 96px;
-  margin: 0 auto 10px;
-  display: block;
-  border-radius: 50%;
-}
-
-.login-link {
-  margin-top: 10px;
-  text-align: center;
-}
-
-.login-form {
-  margin-bottom: 8px;
-}
 .form-check {
   margin-bottom: 20px;
   font-size: 18px;
-}
-.login-title {
-  margin: 15px 0;
-  text-align: center;
-  font-size: 1.5em;
-  color: #444;
-}
-
-@media (max-width: 767px) {
-  .login-container {
-    width: 100%;
-  }
 }

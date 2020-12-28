@@ -13,26 +13,14 @@
   overflow-y: hidden;
 }
 
-.blackColor {
-  color: black;
-}
-
-.greenColor {
-  color: green;
-}
-
-.redColor {
-  color: red;
-}
-
-.textInputRow {
+.chatInputRow {
   width: 100%;
   position: absolute;
   bottom: 0;
   height: 40px;
 }
 
-.textInputRow input {
+.chatInputRow input {
   width: 75%;
   height: 80%;
   margin: 5px;
@@ -41,7 +29,7 @@
   display: inline-block;
 }
 
-.textInputRow button {
+.chatInputRow button {
   width: 20%;
   height: 80%;
   margin: 5px;
