@@ -85,6 +85,7 @@ OK - misc:
 	OK - bug: when player disconnects, and game is empty, still listed,
 	OK - redirect to main on being disconnected, remove redirection from logout (auth service),
 OK - navbar:
+	OK - navbar btns - width + style,
 	OK - change navbar styling - inline
 	NO - should on logout erase game service data?
 	OK - bug: on `game` click TypeError: this.game.getGame() is null,
@@ -253,11 +254,13 @@ OK - sprites:
 	OK - missed sprite - water splash,
 	OK - hit sprite, explosion,
 OK - game rules component:
+	OK - `back to main` btn,
 	OK - create folder with files,
 	OK - paste game rules from wiki,
 	OK - set a reference to wiki,
 	OK - nicely format rules view,
 OK - edit profile component:
+	OK - `back to main` btn,
 	OK - create folder with files,
 	OK - load current data: display name, email, change pass btn,
 	OK - textboxes to change data,
@@ -303,7 +306,6 @@ OK - modal info:
 	OK - big screen: change width of modal message window,
 
 - AI levels - add some ai features each level, pipes?
-- navbar btns - width + style,
 - correct several css problems after refactoring styles:
 	- game status btns,
 	- open games and best pplayers table bug,
