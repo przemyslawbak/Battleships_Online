@@ -1,8 +1,5 @@
 - AI levels - add some ai features each level, pipes?
 - bug: small size screen long board messages moves board down in relation to animated sprites,
-- display info when server disconnected,
-
-
 
 OK - identity:
 	OK - bug: can not refresh token,
@@ -44,6 +41,7 @@ OK - identity:
 	OK - bug: if no email in DB for `forgotten pass`, freezes
 	OK - bug 2x hits RefreshToken
 OK - misc:
+	OK - display info when back-end server disconnected,
 	OK - all form btns in text-center, form btns width 100%,
 	NO - on api error display message, example: use same accounts in 2 browsers, maybe logout?
 	OK - read about API return types: https://docs.microsoft.com/en-us/aspnet/core/web-api/action-return-types?view=aspnetcore-5.0

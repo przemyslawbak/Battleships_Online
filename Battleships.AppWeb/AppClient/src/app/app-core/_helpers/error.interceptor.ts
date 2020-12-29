@@ -47,7 +47,10 @@ export class ErrorInterceptor implements HttpInterceptor {
       return next.handle(request);
     }
 
-    if (error.status === 401 || error.status === 403) {
+    if (error.status === 0) {
+      error.error = 'Back-end server problems.';
+      this.genericErrorHandler(error);
+    } else if (error.status === 401 || error.status === 403) {
       if (this.auth.isLoggedIn()) {
         const accessExpired = this.auth.isTokenExpired();
         if (accessExpired) {
