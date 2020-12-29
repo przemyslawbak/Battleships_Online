@@ -462,8 +462,8 @@ export class GamePlayComponent implements OnInit {
     offsetT: number
   ): void {
     this.displaySprite = true;
-    this.spriteX = offsetL - 50;
-    this.spriteY = offsetT - 50;
+    this.spriteX = offsetL - 55;
+    this.spriteY = offsetT - 55;
     this.spriteUrl = isHit
       ? 'https://i.ibb.co/H4f84Wn/explode.png'
       : 'https://i.ibb.co/c3WLWN1/splash.png';

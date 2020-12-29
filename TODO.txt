@@ -1,5 +1,5 @@
 - AI levels - add some ai features each level, pipes?
-- bug: small size screen long board messages moves board down in relation to animated sprites,
+
 
 OK - identity:
 	OK - bug: can not refresh token,
@@ -158,6 +158,9 @@ OK - in connect component:
 	OK - err: ERROR TypeError: this.thenable is undefined
 	OK - bug: when playing game and joining another, on disconnect just redirects to the main view,
 OK - in game-play component:
+	OK - bug: small size screen long board messages moves board down in relation to animated sprites,
+	OK - small screen board responsivity,
+	OK - small screen wrong sprite sheet animations,
 	OK - bug: not saving winner on multiplayer,
 	OK - style: game status, content close to the edge,
 	OK - deploying game board on small screen responsivity,
