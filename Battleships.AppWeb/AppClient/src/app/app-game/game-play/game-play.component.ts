@@ -191,18 +191,22 @@ export class GamePlayComponent implements OnInit {
       winnerNumber == this.clientsPlayerNumber
         ? 'You won this batle!'
         : 'You lost this battle.';
-    this.addWonGame(info, winnerNumber);
+    this.gameEnded = true;
+    this.isStartAllowed = false;
+
+    if (winnerNumber == this.clientsPlayerNumber) {
+      this.addWonGame(info, winnerNumber);
+    }
   }
 
   private addWonGame(info: string, winnerNumber: number): void {
     const url = environment.apiUrl + 'api/user/winner';
     const data = {
-      UserName: this.game.getGame().players[winnerNumber].displayName,
+      UserName: this.game.getGame().players[winnerNumber].userName,
       Multiplayer: this.game.getGame().gameMulti,
     };
     this.http.post<any>(url, data).subscribe(() => {
       this.modalService.open('info-modal', info);
-      this.gameEnded = true;
     });
   }
 
@@ -475,5 +479,17 @@ export class GamePlayComponent implements OnInit {
     return {
       frameRate: 17,
     };
+  }
+
+  public onBack() {
+    this.router.navigate(['']);
+  }
+
+  public isDisabled(): boolean {
+    if (this.isStartAllowed || this.gameEnded) {
+      return true;
+    }
+
+    return false;
   }
 }
