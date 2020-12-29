@@ -27,8 +27,6 @@ export class AiService {
     forbidden.push.apply(forbidden, hits);
     forbidden.push.apply(forbidden, this.avoid);
     targets = this.board.getPotentialTargets(forbidden, hits);
-    console.log('targets');
-    console.log(targets.length);
     if (this.hit) {
       this.mastCounter++;
     } else if (!this.hit && targets.length == 0) {
@@ -38,8 +36,6 @@ export class AiService {
         this.mastCounter = 0;
       }
     }
-    console.log('masts');
-    console.log(this.mastCounter);
 
     let haveMoreMasts: boolean = this.isPossibleMoreMasts();
     if (!haveMoreMasts && targets.length > 0) {
@@ -80,8 +76,6 @@ export class AiService {
   }
 
   private isPossibleMoreMasts(): boolean {
-    console.log('remaining');
-    console.log(this.opponentsFleet);
     let res: boolean = false;
     if (this.mastCounter > 0) {
       for (let i = 1; i < 4; i++) {
@@ -95,8 +89,6 @@ export class AiService {
       this.mastCounter = 0;
     }
 
-    console.log('possible more masts');
-    console.log(res);
     return res;
   }
 

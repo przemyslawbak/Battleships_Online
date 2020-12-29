@@ -1,6 +1,5 @@
 - AI levels - add some ai features each level, pipes?
 - speed modes,
-- empty game slot - green,
 - bug: on player disconnects can not see buttons,
 - on game list load check for empty games,
 
@@ -291,6 +290,7 @@ OK - privacy component:
 	NO - cookies popup/modal,
 	OK - link in nav menu
 OK - open games list component:
+	OK - empty game slot - green,
 	OK - in chrome table first column has still wrong size,
 	OK - style: No games found! a bit lower,
 	OK - if open games list empty, display in view something about it,

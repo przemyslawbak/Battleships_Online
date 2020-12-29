@@ -26,7 +26,9 @@
           <div *ngFor="let player of game.players; let i = index">
             {{ i + 1 }})
             <span *ngIf="player != ''; else empty">{{ player }};</span>
-            <ng-template #empty>empty; </ng-template>
+            <ng-template #empty>
+              <span class="greenColor">empty; </span>
+            </ng-template>
           </div>
         </td>
         <td>
