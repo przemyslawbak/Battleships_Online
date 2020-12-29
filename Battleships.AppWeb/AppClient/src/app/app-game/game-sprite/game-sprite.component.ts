@@ -90,7 +90,6 @@ export class GameSpriteComponent implements OnInit {
   }
 
   startAnimating() {
-    console.log('starting animation');
     this.frameInterval = 1000 / this.frameRate;
     this.then = Date.now();
     this.startTime = this.then;
@@ -126,13 +125,9 @@ export class GameSpriteComponent implements OnInit {
     };
   }
 
-  ngOnInit() {
-    console.log('animation created');
-  }
+  ngOnInit() {}
 
-  ngOnDestroy() {
-    console.log('animation destroyed');
-  }
+  ngOnDestroy() {}
 
   getCssStyle() {
     const defaultStyle = 'ani_style';

@@ -1,5 +1,8 @@
 - AI levels - add some ai features each level, pipes?
-- on new connect clear ai service (singleton) values,
+- speed modes,
+- empty game slot - green,
+- bug: on player disconnects can not see buttons,
+- on game list load check for empty games,
 
 OK - identity:
 	OK - bug: can not refresh token,
@@ -225,7 +228,7 @@ OK - in game-play component:
 OK - single player:
 	OK - style: game status, content close to the edge,
 	OK - if game-start to ai game? will be allowed?
-	- ai counts ships, use targets list...
+	OK - ai counts ships, use targets list...
 	NO - bug: now computer does not shot (create AI first),
 	OK - deploying ships for AI,
 	OK - bug: auto deploying players board on init,

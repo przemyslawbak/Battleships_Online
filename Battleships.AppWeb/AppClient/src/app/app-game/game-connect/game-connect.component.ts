@@ -147,7 +147,6 @@ export class GameConnectComponent implements OnInit {
   private findIdAndReconnect(): void {
     if (this.game.isGameStarted()) {
       this.router.navigate(['connect-game/' + this.game.getGame().gameId]);
-      console.log('findIdAndReconnect');
     } else {
       this.router.navigate(['start-game']);
     }

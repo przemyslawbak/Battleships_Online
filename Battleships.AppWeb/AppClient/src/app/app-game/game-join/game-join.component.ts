@@ -27,7 +27,6 @@ export class GameJoinComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
-    console.log('note: ' + this.note);
     if (this.game.isGameStarted()) {
       this.currentGame = this.game.getGame().gameId;
     } else {

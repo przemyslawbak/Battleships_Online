@@ -270,8 +270,6 @@ export class GamePlayComponent implements OnInit {
       !this.gameEnded &&
       !this.isCellAlreadyShot(coord)
     ) {
-      console.log('col: ' + col);
-      console.log('row: ' + row);
       let game = this.game.getGame();
       game.fireCol = col;
       game.fireRow = row;
@@ -328,7 +326,7 @@ export class GamePlayComponent implements OnInit {
       }
 
       this.updateOpponentDisplayResult(game);
-      setTimeout(() => this.updateTurnDataAndContinue(game, isHit), 3000);
+      setTimeout(() => this.updateTurnDataAndContinue(game, isHit), 500); //todo: 3000
     }
   }
 

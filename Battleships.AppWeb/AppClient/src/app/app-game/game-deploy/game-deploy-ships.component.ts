@@ -167,9 +167,6 @@ export class GameDeployComponent implements OnInit {
   }
 
   public resetBoardElement(element: HTMLElement, row: number, col: number) {
-    console.log('col: ' + col);
-    console.log('row: ' + row);
-    console.log('el: ' + element);
     let coord: Coordinates = { row: row, col: col } as Coordinates;
     this.playersBoard = this.board.resetBoardElement(
       this.playersBoard,
@@ -212,7 +209,6 @@ export class GameDeployComponent implements OnInit {
   }
 
   public confirm(): void {
-    console.log('confirm');
     if (this.fleetDeployed.length == 10 && !this.isDeployed) {
       this.isDeployed = true;
       this.count = 0;
@@ -248,10 +244,6 @@ export class GameDeployComponent implements OnInit {
       }
       if (!computer) {
         board = this.board.resetEmptyCellsColors(board);
-      } else {
-        //todo: remove later
-        console.log('computers board:');
-        console.log(board);
       }
     }
 
@@ -322,16 +314,6 @@ export class GameDeployComponent implements OnInit {
     if (this.updateCellsXY && !this.clearedBoard) {
       this.playersBoard[col][row].elX = ref.offsetLeft;
       this.playersBoard[col][row].elY = ref.offsetTop - 15;
-      console.log(
-        'col: ' +
-          col +
-          '; row: ' +
-          row +
-          '; x: ' +
-          this.playersBoard[col][row].elX +
-          '; y: ' +
-          this.playersBoard[col][row].elY
-      );
     }
 
     if (row == 9 && col == 9) {

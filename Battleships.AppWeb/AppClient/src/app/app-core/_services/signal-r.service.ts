@@ -96,9 +96,6 @@ export class SignalRService {
 
   public addChatMessageListener = (): void => {
     this.hubConnection.on('ReceiveChatMessage', (chatMessage: ChatMessage) => {
-      console.log(
-        chatMessage.displayName + ' is writing: ' + chatMessage.message
-      );
       this.message = chatMessage;
       this.messageChange.next(this.message);
     });
