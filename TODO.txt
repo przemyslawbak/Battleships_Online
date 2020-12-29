@@ -1,8 +1,7 @@
 - AI levels - add some ai features each level, pipes?
 - bug: small size screen long board messages moves board down in relation to animated sprites,
-- all form btns in text-center,
 - display info when server disconnected,
-- in chrome table first column has still wrong size,
+
 
 
 OK - identity:
@@ -45,6 +44,7 @@ OK - identity:
 	OK - bug: if no email in DB for `forgotten pass`, freezes
 	OK - bug 2x hits RefreshToken
 OK - misc:
+	OK - all form btns in text-center, form btns width 100%,
 	NO - on api error display message, example: use same accounts in 2 browsers, maybe logout?
 	OK - read about API return types: https://docs.microsoft.com/en-us/aspnet/core/web-api/action-return-types?view=aspnetcore-5.0
 	OK - move some common styles from components to styles.css,
@@ -287,6 +287,7 @@ OK - privacy component:
 	NO - cookies popup/modal,
 	OK - link in nav menu
 OK - open games list component:
+	OK - in chrome table first column has still wrong size,
 	OK - style: No games found! a bit lower,
 	OK - if open games list empty, display in view something about it,
 	OK - in open game list display player names,
@@ -308,6 +309,7 @@ OK - game chat:
 	OK - chat info when player joins game
 	NO - rearrange game-play view: chat on the right side, game status horizontal. And mobile view?
 OK - best players component:
+	OK - in chrome table first column has still wrong size,
 	OK - style: No games found! a bit lower,
 	OK - if best players list empty, display in view something about it,
 OK - modal info:

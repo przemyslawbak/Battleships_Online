@@ -9,7 +9,7 @@
   <table class="table table-bordered table-striped">
     <thead>
       <tr>
-        <th scope="col">#</th>
+        <th scope="col max">#</th>
         <th scope="col">Turn</th>
         <th scope="col">Players</th>
         <th scope="col">Names</th>
@@ -19,7 +19,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let game of this.gameList; let i = index">
-        <th scope="row">{{ i + 1 }}</th>
+        <td class="max">{{ i + 1 }}</td>
         <td>{{ game.gameTurnNumber }}</td>
         <td>{{ game.playing }} / {{ game.totalPlayers }}</td>
         <td>

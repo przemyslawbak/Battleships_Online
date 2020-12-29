@@ -16,13 +16,11 @@ table {
 
 table td {
   border: solid 1px;
-  width: 3vw;
   height: 3vw;
   text-align: center;
 }
 
 th {
-  width: 0;
   background-color: #4caf50;
   color: white;
   font-weight: normal;
