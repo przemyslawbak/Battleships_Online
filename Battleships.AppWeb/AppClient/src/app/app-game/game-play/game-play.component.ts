@@ -124,6 +124,13 @@ export class GamePlayComponent implements OnInit {
             1000
           );
         }
+        //if single player and displaying hit result
+      } else if (!game.gameMulti && this.isResultBeingDisplayed) {
+        if (game.fireResult) {
+          this.ai.hit = true;
+        } else {
+          this.ai.hit = false;
+        }
       }
     }
   }

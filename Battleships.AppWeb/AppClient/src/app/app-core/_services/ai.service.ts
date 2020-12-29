@@ -3,15 +3,20 @@ import { BoardCell } from '@models/board-cell.model';
 import { Coordinates } from '@models/coordinates.model';
 import { BoardService } from '@services/board.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class AiService {
+  public hit: boolean = false;
+  private opponentsFleet: number[] = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
+  private mastCounter: number = 0;
   constructor(private board: BoardService) {}
 
   public getFireCoordinates(board: BoardCell[][]): Coordinates {
     let hits: BoardCell[] = this.board.getCurrentHits(board); // hit cells
     let missed: BoardCell[] = this.board.getCurrentMissed(board); //missed cells
     let forbidden: BoardCell[] = []; //can not shoot there
-    let targets: BoardCell[] = []; //potential targets
+    let targets: BoardCell[] = []; //potential targets after hit
     let isRandomCoordinateForbidden: boolean = true;
     let randomCoordinates: Coordinates = {
       row: -1,
@@ -21,8 +26,22 @@ export class AiService {
     forbidden.push.apply(forbidden, missed);
     forbidden.push.apply(forbidden, hits);
     targets = this.board.getPotentialTargets(forbidden, hits);
-    //todo: count hits in line and remove ships from list
-    if (targets.length > 0) {
+    if (this.hit) {
+      this.mastCounter++;
+    } else if (!this.hit && targets.length == 0) {
+      if (this.mastCounter > 0) {
+        //remove ship from array
+        const index = this.opponentsFleet.indexOf(this.mastCounter);
+        if (index > -1) {
+          this.opponentsFleet.splice(index, 1);
+        }
+        this.mastCounter = 0;
+      }
+    }
+
+    //todo: check if more masts is remaining
+    //todo: if not, forbidden = forbidden + targets;
+    if (targets.length > 0 && this.mastCounter > 0) {
       //todo: DRY
       while (isRandomCoordinateForbidden) {
         randomCoordinates = targets[Math.floor(Math.random() * targets.length)];

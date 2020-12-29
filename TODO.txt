@@ -1,5 +1,5 @@
 - AI levels - add some ai features each level, pipes?
-
+- on new connect clear ai service (singleton) values,
 
 OK - identity:
 	OK - bug: can not refresh token,
