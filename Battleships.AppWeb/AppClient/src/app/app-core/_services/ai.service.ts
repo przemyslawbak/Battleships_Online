@@ -3,16 +3,16 @@ import { BoardCell } from '@models/board-cell.model';
 import { Coordinates } from '@models/coordinates.model';
 import { BoardService } from '@services/board.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class AiService {
   public hit: boolean = false;
   private opponentsFleet: number[] = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
   private mastCounter: number = 0;
+  private avoid: BoardCell[] = [];
   constructor(private board: BoardService) {}
 
   public getFireCoordinates(board: BoardCell[][]): Coordinates {
+    console.clear();
     let hits: BoardCell[] = this.board.getCurrentHits(board); // hit cells
     let missed: BoardCell[] = this.board.getCurrentMissed(board); //missed cells
     let forbidden: BoardCell[] = []; //can not shoot there
@@ -25,23 +25,29 @@ export class AiService {
     forbidden.push.apply(forbidden, this.board.getCornerCells(hits));
     forbidden.push.apply(forbidden, missed);
     forbidden.push.apply(forbidden, hits);
+    forbidden.push.apply(forbidden, this.avoid);
     targets = this.board.getPotentialTargets(forbidden, hits);
+    console.log('targets');
+    console.log(targets.length);
     if (this.hit) {
       this.mastCounter++;
     } else if (!this.hit && targets.length == 0) {
       if (this.mastCounter > 0) {
         //remove ship from array
-        const index = this.opponentsFleet.indexOf(this.mastCounter);
-        if (index > -1) {
-          this.opponentsFleet.splice(index, 1);
-        }
+        this.removeShipFromArray(this.mastCounter);
         this.mastCounter = 0;
       }
     }
+    console.log('masts');
+    console.log(this.mastCounter);
 
-    //todo: check if more masts is remaining
-    //todo: if not, forbidden = forbidden + targets;
-    if (targets.length > 0 && this.mastCounter > 0) {
+    let haveMoreMasts: boolean = this.isPossibleMoreMasts();
+    if (!haveMoreMasts && targets.length > 0) {
+      this.avoid.push.apply(this.avoid, targets);
+    }
+
+    //if there are targets, shooting ship, possible more masts
+    if (targets.length > 0 && this.mastCounter > 0 && haveMoreMasts) {
       //todo: DRY
       while (isRandomCoordinateForbidden) {
         randomCoordinates = targets[Math.floor(Math.random() * targets.length)];
@@ -64,6 +70,34 @@ export class AiService {
 
       return randomCoordinates;
     }
+  }
+
+  private removeShipFromArray(mastCounter: number) {
+    const index = this.opponentsFleet.indexOf(mastCounter);
+    if (index > -1) {
+      this.opponentsFleet.splice(index, 1);
+    }
+  }
+
+  private isPossibleMoreMasts(): boolean {
+    console.log('remaining');
+    console.log(this.opponentsFleet);
+    let res: boolean = false;
+    if (this.mastCounter > 0) {
+      for (let i = 1; i < 4; i++) {
+        if (this.opponentsFleet.indexOf(this.mastCounter + i) > -1) {
+          res = true;
+        }
+      }
+    }
+    if (!res) {
+      this.removeShipFromArray(this.mastCounter);
+      this.mastCounter = 0;
+    }
+
+    console.log('possible more masts');
+    console.log(res);
+    return res;
   }
 
   private checkIfRandomIsForbidden(
