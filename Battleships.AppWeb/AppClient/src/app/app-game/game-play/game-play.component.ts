@@ -480,16 +480,4 @@ export class GamePlayComponent implements OnInit {
       frameRate: 17,
     };
   }
-
-  public onBack() {
-    this.router.navigate(['']);
-  }
-
-  public isDisabled(): boolean {
-    if (this.isStartAllowed || this.gameEnded) {
-      return true;
-    }
-
-    return false;
-  }
 }
