@@ -1,7 +1,6 @@
 - AI levels - add some ai features each level, pipes?
 - speed modes,
-- bug: on player disconnects can not see buttons,
-- on game list load check for empty games,
+
 
 OK - identity:
 	OK - bug: can not refresh token,
@@ -160,6 +159,7 @@ OK - in connect component:
 	OK - err: ERROR TypeError: this.thenable is undefined
 	OK - bug: when playing game and joining another, on disconnect just redirects to the main view,
 OK - in game-play component:
+	OK - bug: on opponent disconnects can not see buttons,
 	OK - bug: small size screen long board messages moves board down in relation to animated sprites,
 	OK - small screen board responsivity,
 	OK - small screen wrong sprite sheet animations,
@@ -290,6 +290,7 @@ OK - privacy component:
 	NO - cookies popup/modal,
 	OK - link in nav menu
 OK - open games list component:
+	OK - on game list load check for empty games and remove them,
 	OK - empty game slot - green,
 	OK - in chrome table first column has still wrong size,
 	OK - style: No games found! a bit lower,

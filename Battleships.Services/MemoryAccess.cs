@@ -45,6 +45,13 @@ namespace Battleships.Services
             _cache.Set(CacheKeys.GameList, list);
         }
 
+        public void RemoveGameFromMemory(int gameId)
+        {
+            List<GameStateModel> games = GetGameList();
+            games.RemoveAll(game => game.GameId == gameId);
+            SetGameList(games);
+        }
+
         public static class CacheKeys
         {
             public static string GameList { get { return "_GameList"; } }

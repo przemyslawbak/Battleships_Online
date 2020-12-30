@@ -13,10 +13,12 @@ namespace Battleships.AppWeb.Controllers
     public class GameController : Controller
     {
         private readonly IMemoryAccess _memoryAccess;
+        private readonly IGameService _gameService;
 
-        public GameController(IMemoryAccess memory)
+        public GameController(IMemoryAccess memory, IGameService gameService)
         {
             _memoryAccess = memory;
+            _gameService = gameService;
         }
 
         /// <summary>
@@ -71,6 +73,8 @@ namespace Battleships.AppWeb.Controllers
                            TotalPlayers = game.Players.Count(),
                            Players = new string[] { game.Players[0].DisplayName, game.Players[1].DisplayName }
                        }).ToList();
+
+            list = _gameService.RemoveEmptyGames(list);
 
             return new OkObjectResult(list);
         }
