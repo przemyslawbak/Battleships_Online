@@ -43,6 +43,10 @@ export class GameStartComponent {
     this.createForm();
   }
 
+  get f() {
+    return this.form.controls;
+  }
+
   private createForm() {
     this.disabledChecks = true;
     this.form = this.formBuilder.group({

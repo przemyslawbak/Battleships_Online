@@ -287,7 +287,6 @@ export class GameDeployComponent implements OnInit {
   public playWithAi(): void {
     let game = this.game.getGame();
     game.gameMulti = false;
-    game.gameAi = true;
     game.players = this.setComputerOpponent(game.players);
 
     this.game.setGame(game);
