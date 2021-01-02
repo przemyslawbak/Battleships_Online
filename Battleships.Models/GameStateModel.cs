@@ -7,10 +7,10 @@
         public int GameTurnPlayer { get; set; }
         public int FireRow { get; set; }
         public int FireCol { get; set; }
-        public bool GameAi { get; set; }
         public bool GameMulti { get; set; }
         public bool GameOpen { get; set; }
-        public bool GameLink { get; set; }
+        public int GameSpeed { get; set; }
+        public string GameDifficulty { get; set; }
         public bool DisplayingResults { get; set; }
         public bool FireResult { get; set; }
         public Player[] Players { get; set; }

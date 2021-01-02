@@ -4,10 +4,10 @@ export interface GameState {
   gameId: number;
   gameTurnNumber: number;
   gameTurnPlayer: number;
-  gameAi: boolean;
+  gameSpeed: number;
+  gameDifficulty: string;
   gameMulti: boolean;
   gameOpen: boolean;
-  gameLink: boolean;
   displayingResults: boolean;
   fireResult: boolean;
   fireRow: number;
