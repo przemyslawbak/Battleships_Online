@@ -1,9 +1,9 @@
 - in game-play display info about game settings: difficulty, speed, multi/single, open/link,
 
-- footer:
+OK - footer:
 	OK - add simple footer: https://mdbootstrap.com/support/angular/how-can-i-locate-a-footer-at-the-bottom-of-the-page/
-	- footer styles,
-	- fill up footer with data,
+	OK - footer styles,
+	OK - fill up footer with data,
 OK - identity:
 	OK - bug: can not refresh token,
 	NO - ext.login change: please wait, redirecting... to please wait, verifying user...
