@@ -1,5 +1,5 @@
 import { BoardService } from '@services/board.service';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   FormGroup,
@@ -21,7 +21,8 @@ import { FleetService } from '@services/fleet.service';
   templateUrl: './game-start.component.html',
   styleUrls: ['./game-start.component.css'],
 })
-export class GameStartComponent {
+export class GameStartComponent implements OnInit {
+  public name: string = 'Player';
   public form: FormGroup;
   public disabledChecks: boolean;
   public multiplayer: boolean = false;
@@ -45,6 +46,10 @@ export class GameStartComponent {
 
   get f() {
     return this.form.controls;
+  }
+
+  public ngOnInit(): void {
+    this.name = this.auth.getAuth().displayName;
   }
 
   private createForm() {

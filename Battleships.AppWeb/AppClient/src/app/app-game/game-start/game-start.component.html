@@ -3,6 +3,9 @@
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <div class="row">
+          <h2 class="form-title col-sm-12 text-left">
+            {{ this.name }}, you can start game with choosing settings below.
+          </h2>
           <h2 class="form-title col-sm-12 text-center">Game mode:</h2>
           <div class="col-sm-12 text-center">
             <div class="custom-control custom-radio custom-control-inline">
@@ -187,7 +190,7 @@
       </div>
 
       <button class="btn btn-success" type="submit" [disabled]="!form.valid">
-        Start game
+        Start new game
       </button>
     </form>
     <button type="submit" (click)="onBack()" class="btn btn-md btn-light">

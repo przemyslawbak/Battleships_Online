@@ -1,4 +1,5 @@
-- add display name in the game start?
+- bug: choosing game difficulty you will pick up game speed,
+OK - add display name in the game start?
 - AI levels - add some ai features each level, pipes?
 - speed modes,
 - add simple footer: https://stackblitz.com/edit/angularold?file=src%2Fapp%2Fapp.component.html
