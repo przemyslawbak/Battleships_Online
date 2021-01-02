@@ -1,3 +1,4 @@
+import { GameService } from './game.service';
 import { Injectable } from '@angular/core';
 import { BoardCell } from '@models/board-cell.model';
 import { Coordinates } from '@models/coordinates.model';
@@ -9,7 +10,7 @@ export class AiService {
   private opponentsFleet: number[] = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
   private mastCounter: number = 0;
   private avoid: BoardCell[] = [];
-  constructor(private board: BoardService) {}
+  constructor(private board: BoardService, private game: GameService) {}
 
   public getFireCoordinates(board: BoardCell[][]): Coordinates {
     console.clear();
@@ -38,12 +39,22 @@ export class AiService {
     }
 
     let haveMoreMasts: boolean = this.isPossibleMoreMasts();
-    if (!haveMoreMasts && targets.length > 0) {
+    if (
+      !haveMoreMasts &&
+      targets.length > 0 &&
+      this.game.getGame().gameDifficulty == 'hard'
+    ) {
       this.avoid.push.apply(this.avoid, targets);
     }
 
     //if there are targets, shooting ship, possible more masts
-    if (targets.length > 0 && this.mastCounter > 0 && haveMoreMasts) {
+    if (
+      targets.length > 0 &&
+      this.mastCounter > 0 &&
+      haveMoreMasts &&
+      (this.game.getGame().gameDifficulty == 'medium' ||
+        this.game.getGame().gameDifficulty == 'hard')
+    ) {
       //todo: DRY
       while (isRandomCoordinateForbidden) {
         randomCoordinates = targets[Math.floor(Math.random() * targets.length)];

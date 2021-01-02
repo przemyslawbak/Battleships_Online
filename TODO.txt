@@ -1,4 +1,3 @@
-- AI levels - add some ai features each level, pipes?
 - add simple footer: https://stackblitz.com/edit/angularold?file=src%2Fapp%2Fapp.component.html
 - in game-play display info about game settings: difficulty, speed, multi/single, open/link,
 - in game-play & game-deploy use time dividers,
@@ -231,6 +230,7 @@ OK - in game-play component:
 	OK - adjust: when displaying hit result, do not allow to fire,
 	OK - adjust: what if shooting cell already shot?
 OK - single player:
+	OK - AI levels - add some ai features each level - easy difficulty: only random, medium difficulty: without `avoid`, hard difficulty: all,
 	OK - style: game status, content close to the edge,
 	OK - if game-start to ai game? will be allowed?
 	OK - ai counts ships, use targets list...
