@@ -75,15 +75,25 @@ export class GameStartComponent implements OnInit {
   }
 
   public onChangeSpeed(e: any): void {
-    console.log(e.target.value); //todo:
+    if (e.target.value == 'slow') {
+      this.speed = 1;
+    } else if (e.target.value == 'moderate') {
+      this.speed = 2;
+    } else if (e.target.value == 'fast') {
+      this.speed = 3;
+    }
   }
 
   public onChangeDifficulty(e: any): void {
-    console.log(e.target.value); //todo:
+    this.difficulty = e.target.value;
   }
 
   public onChangeJoining(e: any): void {
-    console.log(e.target.value); //todo:
+    if (e.target.value == 'open') {
+      this.open = true;
+    } else {
+      this.open = false;
+    }
   }
 
   public onSubmit() {
@@ -121,8 +131,10 @@ export class GameStartComponent implements OnInit {
     model.gameId = this.getUniqueId();
     model.gameTurnNumber = 1;
     model.gameTurnPlayer = 0;
-    model.gameMulti = this.form.value.GameMulti;
-    model.gameOpen = this.form.value.GameOpen;
+    model.gameMulti = this.multiplayer;
+    model.gameOpen = this.open;
+    model.gameDifficulty = this.difficulty;
+    model.gameSpeed = this.speed;
     model.players = [player1, player2];
     model.isDeploymentAllowed = false;
     model.isStartAllowed = false;
