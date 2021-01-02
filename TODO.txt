@@ -1,7 +1,9 @@
-- add simple footer: https://stackblitz.com/edit/angularold?file=src%2Fapp%2Fapp.component.html
 - in game-play display info about game settings: difficulty, speed, multi/single, open/link,
-- in game-play & game-deploy use time dividers,
 
+- footer:
+	OK - add simple footer: https://mdbootstrap.com/support/angular/how-can-i-locate-a-footer-at-the-bottom-of-the-page/
+	- footer styles,
+	- fill up footer with data,
 OK - identity:
 	OK - bug: can not refresh token,
 	NO - ext.login change: please wait, redirecting... to please wait, verifying user...
@@ -115,6 +117,7 @@ OK - update game status with:
 	OK - can be game started?
 	OK - update backend
 OK - in deploy view and component:
+	OK - in game-play & game-deploy use time dividers,
 	OK - deploying game board on small screen responsivity,
 	NO - game boards (for 2 players): canvas drawings,
 	OK - display: DEPLOY SHIPS
@@ -164,6 +167,7 @@ OK - in connect component:
 	OK - err: ERROR TypeError: this.thenable is undefined
 	OK - bug: when playing game and joining another, on disconnect just redirects to the main view,
 OK - in game-play component:
+	OK - in game-play & game-deploy use time dividers,
 	OK - bug: on opponent disconnects can not see buttons,
 	OK - bug: small size screen long board messages moves board down in relation to animated sprites,
 	OK - small screen board responsivity,

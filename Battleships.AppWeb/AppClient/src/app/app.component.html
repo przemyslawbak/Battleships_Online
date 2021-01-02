@@ -1,8 +1,9 @@
-<body>
-  <div class="container">
-    <app-nav-menu></app-nav-menu>
+<div class="container">
+  <app-nav-menu></app-nav-menu>
+  <div class="router">
     <router-outlet></router-outlet>
-    <ngx-spinner size="medium" color="#fff" type="line-scale"></ngx-spinner>
-    <jw-modal id="info-modal"></jw-modal>
   </div>
-</body>
+  <ngx-spinner size="medium" color="#fff" type="line-scale"></ngx-spinner>
+  <jw-modal id="info-modal"></jw-modal>
+</div>
+<app-footer></app-footer>
