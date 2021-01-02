@@ -22,6 +22,7 @@ import { FleetService } from '@services/fleet.service';
   styleUrls: ['./game-deploy-ships.component.css'],
 })
 export class GameDeployComponent implements OnInit {
+  private speedDivider: number = 1;
   private updateCellsXY: boolean = false;
   private clearedBoard: boolean = true;
   public multiplayer: boolean = false;
@@ -33,7 +34,7 @@ export class GameDeployComponent implements OnInit {
   public isDeployEnabled: boolean = false;
   public userName: string = '';
   private countDown: Subscription;
-  public count: number = 30;
+  public count: number = 180;
   public fleetWaiting: Array<ShipComponent> = [];
   public fleetDeployed: Array<ShipComponent> = [];
   public playersBoard: BoardCell[][];
@@ -63,6 +64,8 @@ export class GameDeployComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.speedDivider = this.game.getGame().gameSpeedDivider;
+    this.count = 180 / this.speedDivider;
     if (!this.game.isGameStarted()) {
       this.router.navigate(['']);
     }
@@ -135,7 +138,7 @@ export class GameDeployComponent implements OnInit {
           this.count--;
         }
       } else {
-        this.count = 180;
+        this.count = 180 / this.speedDivider;
       }
       return this.count;
     });

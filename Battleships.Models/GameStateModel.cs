@@ -9,7 +9,7 @@
         public int FireCol { get; set; }
         public bool GameMulti { get; set; }
         public bool GameOpen { get; set; }
-        public int GameSpeed { get; set; }
+        public int GameSpeedDivider { get; set; }
         public string GameDifficulty { get; set; }
         public bool DisplayingResults { get; set; }
         public bool FireResult { get; set; }

@@ -26,7 +26,7 @@ export class GameStartComponent implements OnInit {
   public form: FormGroup;
   public disabledChecks: boolean;
   public multiplayer: boolean = false;
-  private speed: number = 30;
+  private speedDivider: number = 1;
   private difficulty: string = 'easy';
   private open: boolean = false;
 
@@ -76,11 +76,11 @@ export class GameStartComponent implements OnInit {
 
   public onChangeSpeed(e: any): void {
     if (e.target.value == 'slow') {
-      this.speed = 1;
+      this.speedDivider = 1;
     } else if (e.target.value == 'moderate') {
-      this.speed = 2;
+      this.speedDivider = 2;
     } else if (e.target.value == 'fast') {
-      this.speed = 3;
+      this.speedDivider = 3;
     }
   }
 
@@ -134,7 +134,7 @@ export class GameStartComponent implements OnInit {
     model.gameMulti = this.multiplayer;
     model.gameOpen = this.open;
     model.gameDifficulty = this.difficulty;
-    model.gameSpeed = this.speed;
+    model.gameSpeedDivider = this.speedDivider;
     model.players = [player1, player2];
     model.isDeploymentAllowed = false;
     model.isStartAllowed = false;

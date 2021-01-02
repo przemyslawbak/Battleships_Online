@@ -22,6 +22,7 @@ import { Coordinates } from '@models/coordinates.model';
   styleUrls: ['./game-play.component.css'],
 })
 export class GamePlayComponent implements OnInit {
+  private speedDivider: number = 1;
   private dummyHtmlElement: HTMLElement = document.createElement('DIV');
   public displaySprite: boolean = false;
   public spriteX: number = 0;
@@ -69,6 +70,8 @@ export class GamePlayComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.speedDivider = this.game.getGame().gameSpeedDivider;
+    this.count = 30 / this.speedDivider;
     if (!this.game.isGameStarted()) {
       this.router.navigate(['']);
     }
@@ -169,7 +172,7 @@ export class GamePlayComponent implements OnInit {
 
   private setupNextRound(): void {
     if (this.whoseTurnNumber == this.clientsPlayerNumber) {
-      this.count = 30;
+      this.count = 30 / this.speedDivider;
       this.gameBoardComment = this.comments.getYourTurnComment();
     } else {
       this.gameBoardComment = this.comments.getOpponentsTurnComment();
@@ -232,7 +235,7 @@ export class GamePlayComponent implements OnInit {
       if (this.isStartAllowed && !this.gameEnded) {
         if (this.count <= 0) {
           this.nextRound();
-          this.count = 30;
+          this.count = 30 / this.speedDivider;
         } else {
           if (
             this.clientsPlayerNumber == this.whoseTurnNumber &&
@@ -326,7 +329,10 @@ export class GamePlayComponent implements OnInit {
       }
 
       this.updateOpponentDisplayResult(game);
-      setTimeout(() => this.updateTurnDataAndContinue(game, isHit), 500); //todo: 3000
+      setTimeout(
+        () => this.updateTurnDataAndContinue(game, isHit),
+        3000 / this.speedDivider
+      );
     }
   }
 

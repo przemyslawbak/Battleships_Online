@@ -4,7 +4,7 @@ export interface GameState {
   gameId: number;
   gameTurnNumber: number;
   gameTurnPlayer: number;
-  gameSpeed: number;
+  gameSpeedDivider: number;
   gameDifficulty: string;
   gameMulti: boolean;
   gameOpen: boolean;
