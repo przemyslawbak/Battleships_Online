@@ -1,5 +1,4 @@
-- bug: choosing game difficulty you will pick up game speed,
-OK - add display name in the game start?
+
 - AI levels - add some ai features each level, pipes?
 - speed modes,
 - add simple footer: https://stackblitz.com/edit/angularold?file=src%2Fapp%2Fapp.component.html
@@ -98,6 +97,8 @@ OK - navbar:
 	NO - should on logout erase game service data?
 	OK - bug: on `game` click TypeError: this.game.getGame() is null,
 OK - game start component:
+	OK - bug: choosing game difficulty you will pick up game speed,
+	OK - add display name in the game start?
 	OK - change game state model for multi/single,
 	OK - radio btns in game-start component, https://mdbootstrap.com/docs/angular/forms/radio-button/
 	NO - in game service replace getGame() with gameState property reference,
