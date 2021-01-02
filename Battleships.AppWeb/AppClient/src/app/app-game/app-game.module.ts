@@ -15,6 +15,7 @@ import { GameDeployComponent } from './game-deploy/game-deploy-ships.component';
 import { GameSpriteComponent } from './game-sprite/game-sprite.component';
 import { GameRulesComponent } from './game-rules/game-rules.component';
 import { GameChatComponent } from './game-chat/game-chat.component';
+import { GameSetupComponent } from './game-setup/game-setup.component';
 
 @NgModule({
   imports: [AppRoutingModule, BrowserModule, FormsModule, ReactiveFormsModule],
@@ -31,6 +32,7 @@ import { GameChatComponent } from './game-chat/game-chat.component';
     GameSpriteComponent,
     GameRulesComponent,
     GameChatComponent,
+    GameSetupComponent,
   ],
   exports: [GameMenuComponent, GameMainComponent],
   providers: [],
