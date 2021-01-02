@@ -1,5 +1,7 @@
-- in game-play display info about game settings: difficulty, speed, multi/single, open/link,
-
+OK - game-setup component:
+	OK - create folder and files,
+	- styling,
+	- add to game-play and game-deploy,
 OK - footer:
 	OK - add simple footer: https://mdbootstrap.com/support/angular/how-can-i-locate-a-footer-at-the-bottom-of-the-page/
 	OK - footer styles,
