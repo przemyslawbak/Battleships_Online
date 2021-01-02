@@ -1,8 +1,12 @@
 import { BoardService } from '@services/board.service';
-import { ShipComponent } from './../game-ship/ship.component';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  FormControl,
+  Validators,
+} from '@angular/forms';
 import { GameState } from '@models/game-state.model';
 import { environment } from '@environments/environment';
 import { HttpClient } from '@angular/common/http';
@@ -20,6 +24,10 @@ import { FleetService } from '@services/fleet.service';
 export class GameStartComponent {
   public form: FormGroup;
   public disabledChecks: boolean;
+  public multiplayer: boolean = false;
+  private speed: number = 30;
+  private difficulty: string = 'easy';
+  private open: boolean = false;
 
   constructor(
     private spinner: NgxSpinnerService,
@@ -38,10 +46,10 @@ export class GameStartComponent {
   private createForm() {
     this.disabledChecks = true;
     this.form = this.formBuilder.group({
-      GameAi: [true],
-      GameMulti: [false],
-      GameLink: [false],
-      GameOpen: [false],
+      gameMode: new FormControl('single', Validators.required),
+      gameSpeed: new FormControl('slow', Validators.required),
+      gameOpen: new FormControl('open'),
+      gameDifficulty: new FormControl('easy'),
     });
   }
 
@@ -49,61 +57,24 @@ export class GameStartComponent {
     this.router.navigate(['']);
   }
 
-  public setGameAi() {
-    if (this.form.value.GameAi) {
-      this.form.value.GameMulti = false;
-      this.disabledChecks = true;
-      this.form.value.GameLink = false;
-      this.form.value.GameOpen = false;
+  public onChangeMode(e: any): void {
+    if (e.target.value == 'multi') {
+      this.multiplayer = true;
     } else {
-      this.form.value.GameMulti = true;
-      this.disabledChecks = false;
-      this.setOneChecked();
+      this.multiplayer = false;
     }
   }
 
-  public setGameMulti() {
-    if (this.form.value.GameMulti) {
-      this.form.value.GameAi = false;
-      this.disabledChecks = false;
-      this.setOneChecked();
-    } else {
-      this.form.value.GameAi = true;
-      this.disabledChecks = true;
-      this.form.value.GameLink = false;
-      this.form.value.GameOpen = false;
-    }
+  public onChangeSpeed(e: any): void {
+    console.log(e.target.value); //todo:
   }
 
-  public setGameOpen() {
-    this.form.value.GameAi = false;
-    if (this.form.value.GameOpen) {
-      this.form.value.GameLink = false;
-    } else {
-      this.form.value.GameLink = true;
-    }
-    this.setOneChecked();
+  public onChangeDifficulty(e: any): void {
+    console.log(e.target.value); //todo:
   }
 
-  public setGameLink() {
-    this.form.value.GameAi = false;
-    if (this.form.value.GameLink) {
-      this.form.value.GameOpen = false;
-    } else {
-      this.form.value.GameOpen = true;
-    }
-    this.setOneChecked();
-  }
-
-  private setOneChecked() {
-    if (
-      (this.form.value.GameLink == false &&
-        this.form.value.GameOpen == false) ||
-      (this.form.value.GameLink == true && this.form.value.GameOpen == true)
-    ) {
-      this.form.value.GameOpen = true;
-      this.form.value.GameLink = false;
-    }
+  public onChangeJoining(e: any): void {
+    console.log(e.target.value); //todo:
   }
 
   public onSubmit() {
@@ -141,9 +112,7 @@ export class GameStartComponent {
     model.gameId = this.getUniqueId();
     model.gameTurnNumber = 1;
     model.gameTurnPlayer = 0;
-    model.gameAi = this.form.value.GameAi;
     model.gameMulti = this.form.value.GameMulti;
-    model.gameLink = this.form.value.GameLink;
     model.gameOpen = this.form.value.GameOpen;
     model.players = [player1, player2];
     model.isDeploymentAllowed = false;
