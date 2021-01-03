@@ -28,7 +28,7 @@ export class GameStartComponent implements OnInit {
   public multiplayer: boolean = false;
   private speedDivider: number = 1;
   private difficulty: string = 'easy';
-  private open: boolean = false;
+  private open: boolean = true;
 
   constructor(
     private spinner: NgxSpinnerService,
