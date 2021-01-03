@@ -1,7 +1,18 @@
+end:
+- favicon
+- protect server controllers
+- .pipe(delay(5000)) w security service?
+- Hub move to project: Hubs
+- sanitize inputs in front end
+- remove all console.log();
+- move logic to the services
+- front-end unit testing: https://angular.io/guide/testing + Freeman
+- back-end unit testing
+
 OK - game-setup component:
 	OK - create folder and files,
-	- styling,
-	- add to game-play and game-deploy,
+	OK - styling,
+	OK - add to game-play and game-deploy,
 OK - footer:
 	OK - add simple footer: https://mdbootstrap.com/support/angular/how-can-i-locate-a-footer-at-the-bottom-of-the-page/
 	OK - footer styles,
@@ -100,6 +111,7 @@ OK - navbar:
 	NO - should on logout erase game service data?
 	OK - bug: on `game` click TypeError: this.game.getGame() is null,
 OK - game start component:
+	OK - bug: on `game open for all` sets `link only`,
 	OK - speed modes,
 	OK - bug: choosing game difficulty you will pick up game speed,
 	OK - add display name in the game start?
@@ -331,19 +343,6 @@ OK - best players component:
 	OK - if best players list empty, display in view something about it,
 OK - modal info:
 	OK - big screen: change width of modal message window,
-
-
-end:
-- front-end unit testing: https://angular.io/guide/testing + Freeman
-- back-end unit testing
-- move logic to the services
-- favicon
-- clean up JS console.log rows
-- protect server controllers
-- .pipe(delay(5000)) w security service?
-- Hub move to project: Hubs
-- sanitize inputs in front end
-- remove all console.log();
 
 future / next project:
 - style: greater font size for small screens,
