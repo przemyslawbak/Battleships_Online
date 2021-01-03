@@ -1,4 +1,4 @@
-﻿using Battleships.AppWeb.Helpers;
+﻿using Battleships.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;

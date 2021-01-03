@@ -1,4 +1,4 @@
-﻿using Battleships.AppWeb.Helpers;
+﻿using Battleships.Helpers;
 using Battleships.Models.ViewModels;
 using Battleships.Services;
 using Microsoft.AspNetCore.Http;

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Battleships.AppWeb.Hubs
+namespace Battleships.Hubs
 {
     [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin, User")]
     public class MessageHub : Hub
@@ -92,7 +92,7 @@ namespace Battleships.AppWeb.Hubs
                         string id = GetConnectionId(player.UserName);
                         await Clients.Client(id).SendAsync("ReceiveGameState", game);
                     }
-                    
+
                 }
             }
         }
@@ -139,8 +139,8 @@ namespace Battleships.AppWeb.Hubs
 
                 await SendChatMessageToUsersInGame("Left the game.", playerNames);
 
-                if ((playerNames[0] == string.Empty && playerNames[1] == string.Empty) || 
-                    (playerNames[0] == "COMPUTER" && playerNames[1] == string.Empty) || 
+                if ((playerNames[0] == string.Empty && playerNames[1] == string.Empty) ||
+                    (playerNames[0] == "COMPUTER" && playerNames[1] == string.Empty) ||
                     (playerNames[0] == string.Empty && playerNames[1] == "COMPUTER"))
                 {
                     RemoveGameFromCacheGameList(game.GameId);

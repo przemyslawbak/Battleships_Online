@@ -1,6 +1,6 @@
-﻿using Battleships.AppWeb.Hubs;
-using Battleships.DAL;
+﻿using Battleships.DAL;
 using Battleships.Helpers;
+using Battleships.Hubs;
 using Battleships.Models;
 using Battleships.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

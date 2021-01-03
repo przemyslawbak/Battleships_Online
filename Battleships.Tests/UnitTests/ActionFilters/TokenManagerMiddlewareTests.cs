@@ -1,4 +1,4 @@
-﻿using Battleships.AppWeb.Helpers;
+﻿using Battleships.Helpers;
 using Battleships.Services;
 using Microsoft.AspNetCore.Http;
 using Moq;
