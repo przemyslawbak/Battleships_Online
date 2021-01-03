@@ -65,6 +65,7 @@ namespace Battleships.AppWeb.Controllers
         /// <returns>Status code.</returns>
         [HttpPost("winner")]
         [ValidateModel]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin, User")]
         public IActionResult PostWinner([FromBody]GameWinner model)
         {
             bool result = _userRepo.AddWonGame(model);
@@ -169,6 +170,7 @@ namespace Battleships.AppWeb.Controllers
         /// <returns>Status code.</returns>
         [HttpPost("edit")]
         [ValidateModel]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin, User")]
         public async Task<IActionResult> EditUser([FromBody] EditUserViewModel model)
         {
             bool result = await _userService.UpdateUser(model);
