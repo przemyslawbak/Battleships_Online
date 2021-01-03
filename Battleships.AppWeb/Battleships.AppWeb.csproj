@@ -34,6 +34,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Battleships.DAL\Battleships.DAL.csproj" />
+    <ProjectReference Include="..\Battleships.Helpers\Battleships.Helpers.csproj" />
     <ProjectReference Include="..\Battleships.Hubs\Battleships.Hubs.csproj" />
     <ProjectReference Include="..\Battleships.Models\Battleships.Models.csproj" />
     <ProjectReference Include="..\Battleships.Services\Battleships.Services.csproj" />

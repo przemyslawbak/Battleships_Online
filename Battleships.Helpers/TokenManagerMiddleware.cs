@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Battleships.AppWeb.Helpers
+namespace Battleships.Helpers
 {
     public class TokenManagerMiddleware : IMiddleware
     {

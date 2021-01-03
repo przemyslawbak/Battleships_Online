@@ -1,11 +1,13 @@
 end:
-- Hub move to project: Hubs
+- Hub move to project: Hubs,
 - sanitize inputs in front end
 - .pipe(delay(5000)) w security service?
 - move logic to the services
 - front-end unit testing: https://angular.io/guide/testing + Freeman
 - back-end unit testing
 
+OK - backend:
+	OK - Move helpers to helpers project,
 OK - game-setup component:
 	OK - create folder and files,
 	OK - styling,

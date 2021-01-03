@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Linq;
 
-namespace Battleships.AppWeb.Helpers
+namespace Battleships.Helpers
 {
     public class ValidateModelAttribute : ActionFilterAttribute
     {
@@ -17,7 +17,7 @@ namespace Battleships.AppWeb.Helpers
             {
                 string errors = string.Join(", ", context.ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage))); //todo: method/service
 
-                context.Result =  new ObjectResult(errors + ".") { StatusCode = 409 };
+                context.Result = new ObjectResult(errors + ".") { StatusCode = 409 };
             }
         }
     }

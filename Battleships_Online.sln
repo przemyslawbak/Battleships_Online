@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Battleships.Hubs", "Battles
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Battleships.DAL", "Battleships.DAL\Battleships.DAL.csproj", "{D2B8F3D3-9F28-480B-A39C-3E432E3862D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Battleships.Tests", "Battleships.Tests\Battleships.Tests.csproj", "{99526144-A677-4DD4-B52C-8A7726361062}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Battleships.Tests", "Battleships.Tests\Battleships.Tests.csproj", "{99526144-A677-4DD4-B52C-8A7726361062}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Battleships.Helpers", "Battleships.Helpers\Battleships.Helpers.csproj", "{1A94C6D5-11BF-4893-8D2F-F2275B351DCD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{99526144-A677-4DD4-B52C-8A7726361062}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99526144-A677-4DD4-B52C-8A7726361062}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99526144-A677-4DD4-B52C-8A7726361062}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A94C6D5-11BF-4893-8D2F-F2275B351DCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A94C6D5-11BF-4893-8D2F-F2275B351DCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A94C6D5-11BF-4893-8D2F-F2275B351DCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A94C6D5-11BF-4893-8D2F-F2275B351DCD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
