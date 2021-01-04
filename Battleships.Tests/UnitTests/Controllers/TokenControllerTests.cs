@@ -33,7 +33,6 @@ namespace Battleships.Tests.UnitTests.Controllers
             string properClientId = "proper_test_client_id";
             string properClientSecret = "proper_test_client_id";
             string properEmail = "proper_test_email@gmail.com";
-            string grantType = "password";
             string properPassword = "proper_test_password";
             string properToken = "proper_test_token";
             string properName = "proper_test_name";
@@ -65,7 +64,6 @@ namespace Battleships.Tests.UnitTests.Controllers
                 ClientId = properClientId,
                 ClientSecret = properClientSecret,
                 Email = properEmail,
-                GrantType = grantType,
                 Password = properPassword,
             };
             AppUser properUser = new AppUser()

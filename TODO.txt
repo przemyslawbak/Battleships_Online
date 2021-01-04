@@ -1,8 +1,10 @@
 end:
-- .pipe(delay(5000)) w security service?
+- http timeouts?
 - move front-end logic to the services
 - front-end unit testing: https://angular.io/guide/testing + Freeman
 
+OK - security service:
+	OK - .pipe(delay(5000)) w security service?
 OK - backend:
 	NO - validate all api models - https://stackoverflow.com/a/55101315,
 	OK - sanitize all api endpoints,
@@ -18,6 +20,7 @@ OK - footer:
 	OK - footer styles,
 	OK - fill up footer with data,
 OK - identity:
+	OK - external login bug: IList<string> roles = await _userManager.GetRolesAsync(user);
 	OK - bug: can not refresh token,
 	NO - ext.login change: please wait, redirecting... to please wait, verifying user...
 	OK - add Google external login providers
