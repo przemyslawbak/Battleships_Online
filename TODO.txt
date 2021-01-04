@@ -1,8 +1,10 @@
 end:
-- http timeouts?
+
 - move front-end logic to the services
 - front-end unit testing: https://angular.io/guide/testing + Freeman
 
+OK - http serice:
+	OK - http timeouts? added 10s timeout;
 OK - security service:
 	OK - .pipe(delay(5000)) w security service?
 OK - backend:
