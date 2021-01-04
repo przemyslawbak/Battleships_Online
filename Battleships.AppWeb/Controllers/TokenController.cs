@@ -140,6 +140,8 @@ namespace Battleships.AppWeb.Controllers
                 {
                     return new ObjectResult("Error when creating new user.") { StatusCode = 500 };
                 }
+
+                user = await _userService.FindUserByEmail(model.Email);
             }
 
             string role = await _userService.GetUserRoleAsync(user);
