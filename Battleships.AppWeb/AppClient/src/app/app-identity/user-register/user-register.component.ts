@@ -106,9 +106,9 @@ export class RegisterComponent {
     model.username = this.form.value.DisplayName;
     model.captchaToken = token;
     const url = environment.apiUrl + 'api/user/register';
-    this.securityService.delayForBruteForce(5);
     this.http.post(url, model).subscribe(() => {
       this.onRegisteredLogin(model);
+      this.securityService.delayForBruteForce(10);
       this.spinner.hide();
     });
   }
