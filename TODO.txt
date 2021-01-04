@@ -1,10 +1,10 @@
 end:
-- validate all api models,
 - .pipe(delay(5000)) w security service?
 - move front-end logic to the services
 - front-end unit testing: https://angular.io/guide/testing + Freeman
 
 OK - backend:
+	NO - validate all api models - https://stackoverflow.com/a/55101315,
 	OK - sanitize all api endpoints,
 	OK - Hub move to project: Hubs,
 	- back-end unit testing,

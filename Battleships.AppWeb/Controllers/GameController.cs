@@ -15,13 +15,11 @@ namespace Battleships.AppWeb.Controllers
     {
         private readonly IMemoryAccess _memoryAccess;
         private readonly IGameService _gameService;
-        private readonly IInputSanitizer _sanitizer;
 
-        public GameController(IMemoryAccess memory, IGameService gameService, IInputSanitizer sanitizer)
+        public GameController(IMemoryAccess memory, IGameService gameService)
         {
             _memoryAccess = memory;
             _gameService = gameService;
-            _sanitizer = sanitizer;
         }
 
         /// <summary>

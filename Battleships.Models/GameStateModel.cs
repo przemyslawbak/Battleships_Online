@@ -1,4 +1,6 @@
-﻿namespace Battleships.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Battleships.Models
 {
     public class GameStateModel
     {
@@ -10,6 +12,7 @@
         public bool GameMulti { get; set; }
         public bool GameOpen { get; set; }
         public int GameSpeedDivider { get; set; }
+        [Required(ErrorMessage = "Please fill up.")]
         public string GameDifficulty { get; set; }
         public bool DisplayingResults { get; set; }
         public bool FireResult { get; set; }

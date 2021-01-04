@@ -6,8 +6,11 @@ namespace Battleships.Models.ViewModels
     [JsonObject(MemberSerialization.OptOut)]
     public class TokenRequestViewModel
     {
+        [Required(ErrorMessage = "Please fill up.")]
         public string GrantType { get; set; }
+        [Required(ErrorMessage = "Please fill up.")]
         public string ClientId { get; set; }
+        [Required(ErrorMessage = "Please fill up.")]
         public string ClientSecret { get; set; }
         [Required(ErrorMessage = "Please fill up your email address.")]
         [EmailAddress(ErrorMessage = "Please write a valid e-mail address.")]
