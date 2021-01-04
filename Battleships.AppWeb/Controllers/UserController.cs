@@ -15,14 +15,12 @@ namespace Battleships.AppWeb.Controllers
     {
         private readonly IUserService _userService;
         private readonly IUserRepository _userRepo;
-        private readonly IInputSanitizer _sanitizer;
         private readonly IEmailSender _emailSender;
 
-        public UserController(IUserService userService, IInputSanitizer sanitizer, IEmailSender emailSender, IUserRepository userRepo)
+        public UserController(IUserService userService, IEmailSender emailSender, IUserRepository userRepo)
         {
             _userRepo = userRepo;
             _userService = userService;
-            _sanitizer = sanitizer;
             _emailSender = emailSender;
         }
 
@@ -65,6 +63,7 @@ namespace Battleships.AppWeb.Controllers
         /// <returns>Status code.</returns>
         [HttpPost("winner")]
         [ValidateModel]
+        [ServiceFilter(typeof(SanitizeModelAttribute))]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin, User")]
         public IActionResult PostWinner([FromBody]GameWinner model)
         {
@@ -84,11 +83,10 @@ namespace Battleships.AppWeb.Controllers
         /// <returns>Status code.</returns>
         [HttpPost("reset")]
         [ServiceFilter(typeof(VerifyCaptchaAttribute))]
+        [ServiceFilter(typeof(SanitizeModelAttribute))]
         [ValidateModel]
         public async Task<IActionResult> PassChange([FromBody]PassResetEmailViewModel model)
         {
-            model.Email = _sanitizer.CleanUp(model.Email);
-
             AppUser user = await _userService.FindUserByEmail(model.Email);
 
             if (user == null)
@@ -114,11 +112,9 @@ namespace Battleships.AppWeb.Controllers
         /// <returns>Status code.</returns>
         [HttpPost("new-password")]
         [ValidateModel]
+        [ServiceFilter(typeof(SanitizeModelAttribute))]
         public async Task<IActionResult> PassReset([FromBody]ResetPasswordViewModel model)
         {
-            model.Email = _sanitizer.CleanUp(model.Email);
-            model.Password = _sanitizer.CleanUp(model.Password);
-
             AppUser user = await _userService.FindUserByEmail(model.Email);
 
             if (user == null)
@@ -140,12 +136,11 @@ namespace Battleships.AppWeb.Controllers
         /// <returns>Status code.</returns>
         [HttpPost("register")]
         [ServiceFilter(typeof(VerifyCaptchaAttribute))]
+        [ServiceFilter(typeof(SanitizeModelAttribute))]
         [ValidateModel]
         public async Task<IActionResult> AddNewUser([FromBody]UserRegisterViewModel model)
         {
             model.UserName = _userService.GenerateUsername(model.UserName);
-
-            model = _sanitizer.SanitizeRegisteringUserInputs(model);
 
             AppUser user = await _userService.FindUserByEmail(model.Email);
 

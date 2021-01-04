@@ -1,4 +1,5 @@
-﻿using Battleships.Models;
+﻿using Battleships.Helpers;
+using Battleships.Models;
 using Battleships.Models.ViewModels;
 using Battleships.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -14,11 +15,13 @@ namespace Battleships.AppWeb.Controllers
     {
         private readonly IMemoryAccess _memoryAccess;
         private readonly IGameService _gameService;
+        private readonly IInputSanitizer _sanitizer;
 
-        public GameController(IMemoryAccess memory, IGameService gameService)
+        public GameController(IMemoryAccess memory, IGameService gameService, IInputSanitizer sanitizer)
         {
             _memoryAccess = memory;
             _gameService = gameService;
+            _sanitizer = sanitizer;
         }
 
         /// <summary>
@@ -26,8 +29,10 @@ namespace Battleships.AppWeb.Controllers
         /// </summary>
         /// <returns>Status code.</returns>
         [HttpPost("start")]
+        [ValidateModel]
+        [ServiceFilter(typeof(SanitizeModelAttribute))]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin, User")]
-        public IActionResult StartGame(GameStateModel model)
+        public IActionResult StartGame([FromBody] GameStateModel model)
         {
             List<GameStateModel> list = _memoryAccess.GetGameList();
             list.Add(model);

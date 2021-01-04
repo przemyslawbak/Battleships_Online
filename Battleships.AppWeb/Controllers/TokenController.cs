@@ -31,6 +31,7 @@ namespace Battleships.AppWeb.Controllers
         /// <returns>Json result with response viewmodel.</returns>
         [HttpPost("auth")]
         [ValidateModel]
+        [ServiceFilter(typeof(SanitizeModelAttribute))]
         public async Task<IActionResult> JsonWebToken([FromBody] TokenRequestViewModel model)
         {
             TempData["requestIp"] = _userService.GetIpAddress(HttpContext);
@@ -53,6 +54,7 @@ namespace Battleships.AppWeb.Controllers
         /// <returns>Json result with response viewmodel.</returns>
         [HttpPost("refresh-token")]
         [ValidateModel]
+        [ServiceFilter(typeof(SanitizeModelAttribute))]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequestViewModel model)
         {
             TempData["requestIp"] = _userService.GetIpAddress(HttpContext);
@@ -80,6 +82,7 @@ namespace Battleships.AppWeb.Controllers
         /// <returns>Returns 200 status code if successfull removes tokens for user logout.</returns>
         [HttpPost("revoke-token")]
         [ValidateModel]
+        [ServiceFilter(typeof(SanitizeModelAttribute))]
         public IActionResult RevokeToken([FromBody] RevokeTokenRequestViewModel model)
         {
             if (!_tokenService.RevokeTokens(model))
@@ -95,6 +98,7 @@ namespace Battleships.AppWeb.Controllers
         /// </summary>
         /// <returns>new ChallengeResult for ExternalLoginCallback.</returns>
         [HttpGet("external-login/{provider}")]
+        [ServiceFilter(typeof(SanitizeModelAttribute))]
         public IActionResult ExternalLoginAsync(string provider, string returnUrl = null)
         {
             TempData["requestIp"] = _userService.GetIpAddress(HttpContext);
@@ -111,6 +115,7 @@ namespace Battleships.AppWeb.Controllers
         /// </summary>
         /// <returns>Registers new user or logins existing user, and returns response data to the window being opened by AppClient.</returns>
         [HttpGet("ExternalLoginCallback")]
+        [ServiceFilter(typeof(SanitizeModelAttribute))]
         public async Task<IActionResult> ExternalLoginCallback(string remoteError = null)
         {
             if (!string.IsNullOrEmpty(remoteError))

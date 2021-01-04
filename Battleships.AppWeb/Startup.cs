@@ -121,6 +121,7 @@ namespace Battleships_Online
             services.AddTransient<IMemoryAccess, MemoryAccess>();
             services.AddTransient<IGameService, GameService>();
             services.AddScoped<ValidateModelAttribute>();
+            services.AddScoped<SanitizeModelAttribute>();
             services.AddScoped<VerifyCaptchaAttribute>();
             services.AddSignalR();
         }

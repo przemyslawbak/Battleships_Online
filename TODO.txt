@@ -1,10 +1,11 @@
 end:
-- sanitize inputs in front end?
+- validate all api models,
 - .pipe(delay(5000)) w security service?
 - move front-end logic to the services
 - front-end unit testing: https://angular.io/guide/testing + Freeman
 
 OK - backend:
+	OK - sanitize all api endpoints,
 	OK - Hub move to project: Hubs,
 	- back-end unit testing,
 	OK - Move helpers to helpers project,
@@ -56,6 +57,7 @@ OK - identity:
 	OK - bug: if no email in DB for `forgotten pass`, freezes
 	OK - bug 2x hits RefreshToken
 OK - misc:
+	NO - sanitize inputs in front end?
 	OK - remove all console.log();
 	OK - favicon,
 	OK - protect server controllers,
