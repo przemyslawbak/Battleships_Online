@@ -7,6 +7,8 @@ OK - security service:
 	OK - .pipe(delay(5000)) w security service?
 OK - backend:
 	- verify proper use of DAL and repo,
+	OK - helpers unit testing,
+	OK - controllers unit testing,
 	NO - validate all api models - https://stackoverflow.com/a/55101315,
 	OK - sanitize all api endpoints,
 	OK - Hub move to project: Hubs,
