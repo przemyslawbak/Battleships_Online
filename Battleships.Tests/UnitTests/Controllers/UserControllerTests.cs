@@ -1,13 +1,10 @@
 ﻿using Battleships.AppWeb.Controllers;
-using Battleships.DAL;
 using Battleships.Models;
 using Battleships.Models.ViewModels;
 using Battleships.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -59,7 +56,7 @@ namespace Battleships.Tests.UnitTests.Controllers
             _userServiceMock.Setup(mock => mock.GenerateUsername(It.IsAny<string>())).Returns(It.IsAny<string>());
             _userServiceMock.Setup(mock => mock.GetPassResetToken(It.IsAny<AppUser>())).ReturnsAsync(It.IsAny<string>());
             _userServiceMock.Setup(mock => mock.ResetPassword(It.IsAny<AppUser>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
-            _userServiceMock.Setup(mock => mock.CreateNewUserAndAddToDbAsync(It.IsAny<UserRegisterViewModel>())).ReturnsAsync(true);
+            _userServiceMock.Setup(mock => mock.CreateUserAsync(It.IsAny<UserRegisterViewModel>())).ReturnsAsync(true);
             _emailSenderMock.Setup(mock => mock.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
 
             _controller = new UserController(_userServiceMock.Object, _emailSenderMock.Object);
@@ -232,7 +229,7 @@ namespace Battleships.Tests.UnitTests.Controllers
         {
             string expectedErrorsResult = "Error when creating new user.";
             _userServiceMock.Setup(mock => mock.FindUserByEmail(It.IsAny<string>())).ReturnsAsync((AppUser)null);
-            _userServiceMock.Setup(mock => mock.CreateNewUserAndAddToDbAsync(It.IsAny<UserRegisterViewModel>())).ReturnsAsync(false);
+            _userServiceMock.Setup(mock => mock.CreateUserAsync(It.IsAny<UserRegisterViewModel>())).ReturnsAsync(false);
 
             IActionResult result = await _controller.AddNewUser(_properRegisterUserModel);
             ObjectResult objectResult = result as ObjectResult;
