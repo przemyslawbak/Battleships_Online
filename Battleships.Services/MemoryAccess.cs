@@ -1,6 +1,7 @@
 ﻿using Battleships.Models;
 using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Battleships.Services
 {
@@ -50,6 +51,11 @@ namespace Battleships.Services
             List<GameStateModel> games = GetGameList();
             games.RemoveAll(game => game.GameId == gameId);
             SetGameList(games);
+        }
+
+        public GameStateModel GetGameById(int id)
+        {
+            return GetGameList().Where(g => g.GameId == id).FirstOrDefault();
         }
 
         public static class CacheKeys

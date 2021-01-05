@@ -47,8 +47,7 @@ namespace Battleships.AppWeb.Controllers
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin, User")]
         public IActionResult JoinGame(int id)
         {
-            List<GameStateModel> list = _memoryAccess.GetGameList();
-            GameStateModel model = _memoryAccess.GetGameList().Where(g => g.GameId == id).FirstOrDefault();
+            GameStateModel model = _memoryAccess.GetGameById(id);
 
             if (model == null)
             {

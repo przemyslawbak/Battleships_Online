@@ -14,12 +14,10 @@ namespace Battleships.AppWeb.Controllers
     public class UserController : Controller
     {
         private readonly IUserService _userService;
-        private readonly IUserRepository _userRepo;
         private readonly IEmailSender _emailSender;
 
-        public UserController(IUserService userService, IEmailSender emailSender, IUserRepository userRepo)
+        public UserController(IUserService userService, IEmailSender emailSender)
         {
-            _userRepo = userRepo;
             _userService = userService;
             _emailSender = emailSender;
         }
@@ -53,7 +51,7 @@ namespace Battleships.AppWeb.Controllers
         [HttpGet("best")]
         public IActionResult GetBestPLayers()
         {
-            List<BestPlayersViewModel> list = _userRepo.GetTop10Players();
+            List<BestPlayersViewModel> list = _userService.GetTop10Players();
             return new OkObjectResult(list);
         }
 
@@ -67,7 +65,7 @@ namespace Battleships.AppWeb.Controllers
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin, User")]
         public IActionResult PostWinner([FromBody]GameWinner model)
         {
-            bool result = _userRepo.AddWonGame(model);
+            bool result = _userService.AddWonGame(model);
 
             if (!result)
             {
@@ -91,7 +89,7 @@ namespace Battleships.AppWeb.Controllers
 
             if (user == null)
             {
-                return new ObjectResult("Wrong email address.") { StatusCode = 409 };
+                return new ObjectResult("Invalid user details.") { StatusCode = 409 };
             }
 
             string token = await _userService.GetPassResetToken(user);
@@ -119,7 +117,7 @@ namespace Battleships.AppWeb.Controllers
 
             if (user == null)
             {
-                return new ObjectResult("Wrong email address.") { StatusCode = 409 };
+                return new ObjectResult("Invalid user details.") { StatusCode = 409 };
             }
 
             if (!await _userService.ResetPassword(user, model.Token, model.Password))
@@ -146,7 +144,7 @@ namespace Battleships.AppWeb.Controllers
 
             if (user != null)
             {
-                return new ObjectResult("Email already exists.") { StatusCode = 409 };
+                return new ObjectResult("Invalid user details.") { StatusCode = 409 };
             }
 
             bool result = await _userService.CreateNewUserAndAddToDbAsync(model);
@@ -172,7 +170,7 @@ namespace Battleships.AppWeb.Controllers
 
             if (!result)
             {
-                return new ObjectResult("Error when creating new user.") { StatusCode = 500 };
+                return new ObjectResult("Error when updating user.") { StatusCode = 500 };
             }
 
             return Ok();

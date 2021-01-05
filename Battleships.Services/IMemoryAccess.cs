@@ -10,5 +10,6 @@ namespace Battleships.Services
         Dictionary<string, string> GetUserConnectionIdList();
         void SetConnectionIdList(Dictionary<string, string> ids);
         void RemoveGameFromMemory(int gameId);
+        GameStateModel GetGameById(int id);
     }
 }

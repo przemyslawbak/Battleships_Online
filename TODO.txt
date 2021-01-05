@@ -1,8 +1,12 @@
+DOUBTS:
+- using user service - user manager + repo
+
 OK - http serice:
 	OK - http timeouts? added 10s timeout;
 OK - security service:
 	OK - .pipe(delay(5000)) w security service?
 OK - backend:
+	- verify proper use of DAL and repo,
 	NO - validate all api models - https://stackoverflow.com/a/55101315,
 	OK - sanitize all api endpoints,
 	OK - Hub move to project: Hubs,

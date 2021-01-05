@@ -1,4 +1,5 @@
-﻿using Battleships.Models;
+﻿using Battleships.DAL;
+using Battleships.Models;
 using Battleships.Models.ViewModels;
 using Battleships.Services;
 using Microsoft.AspNetCore.Authentication;
@@ -18,11 +19,13 @@ namespace Battleships.Tests.UnitTests.Services
     {
         private readonly Mock<UserManager<AppUser>> _userManagerMock;
         private readonly Mock<SignInManager<AppUser>> _signInManagerMock;
+        private readonly Mock<IUserRepository> _userRepo;
         private readonly UserService _service;
 
         public UserServiceTests()
         {
-            var storeMock = new Mock<IUserStore<AppUser>>();
+            _userRepo = new Mock<IUserRepository>();
+            Mock<IUserStore<AppUser>> storeMock = new Mock<IUserStore<AppUser>>();
             _userManagerMock = new Mock<UserManager<AppUser>>(storeMock.Object, null, null, null, null, null, null, null, null);
             _signInManagerMock = CreateSignInManagerMock();
 
@@ -45,7 +48,7 @@ namespace Battleships.Tests.UnitTests.Services
             _signInManagerMock.Setup(mock => mock.ConfigureExternalAuthenticationProperties(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(new AuthenticationProperties());
             _signInManagerMock.Setup(mock => mock.GetExternalLoginInfoAsync(It.IsAny<string>())).ReturnsAsync(new ExternalLoginInfo(new ClaimsPrincipal(), "Facebook", "some_providers_key", "user_name"));
 
-            _service = new UserService(_userManagerMock.Object, _signInManagerMock.Object);
+            _service = new UserService(_userManagerMock.Object, _signInManagerMock.Object, _userRepo.Object);
         }
 
         /// <summary>

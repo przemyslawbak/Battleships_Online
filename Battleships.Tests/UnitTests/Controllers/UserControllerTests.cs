@@ -15,71 +15,116 @@ namespace Battleships.Tests.UnitTests.Controllers
 {
     public class UserControllerTests
     {
+        private readonly string _properEmail = "proper_test_email@gmail.com";
+        private readonly string _wrongEmail = "wrong_test_email@gmail.com";
+        private readonly string _properPassword = "proper_test_password";
+        private readonly string _properToken = "proper_test_token";
+        private readonly string _properName = "proper_test_name";
         private readonly Mock<IUserService> _userServiceMock;
-        private readonly Mock<IUserRepository> _repoMock;
         private readonly Mock<IEmailSender> _emailSenderMock;
         private readonly UserController _controller;
         private readonly PassResetEmailViewModel _properPassResetModel;
         private readonly ResetPasswordViewModel _properResetModel;
         private readonly UserRegisterViewModel _properRegisterUserModel;
+        private readonly AppUser _properUser;
 
         public UserControllerTests()
         {
-            string properPassword = "proper_test_password";
-            string properEmail = "proper_test_email@gmail.com";
-            string properToken = "proper_test_token";
-            string properName = "proper_test_name";
-
             _properPassResetModel = new PassResetEmailViewModel()
             {
-                CaptchaToken = properToken,
-                Email = properEmail
+                CaptchaToken = _properToken,
+                Email = _properEmail
             };
             _properResetModel = new ResetPasswordViewModel()
             {
-                Email = properEmail,
-                Password = properPassword,
-                Token = properToken
+                Email = _properEmail,
+                Password = _properPassword,
+                Token = _properToken
             };
             _properRegisterUserModel = new UserRegisterViewModel()
             {
-                Email = properEmail,
-                CaptchaToken = properToken,
-                DisplayName = properName,
-                Password = properPassword,
-                UserName = properName
+                Email = _properEmail,
+                CaptchaToken = _properToken,
+                DisplayName = _properName,
+                Password = _properPassword,
+                UserName = _properName
             };
-            AppUser properUser = new AppUser()
-            {
-                Email = properEmail
-            };
+            _properUser = new AppUser() { Email = _properEmail };
 
             _userServiceMock = new Mock<IUserService>();
             _emailSenderMock = new Mock<IEmailSender>();
-            _repoMock = new Mock<IUserRepository>();
 
-            _userServiceMock.Setup(mock => mock.FindUserByEmail(It.IsAny<string>())).ReturnsAsync(properUser);
+            _userServiceMock.Setup(mock => mock.FindUserByEmail(_properEmail)).ReturnsAsync(_properUser);
+            _userServiceMock.Setup(mock => mock.FindUserByEmail(_wrongEmail)).ReturnsAsync((AppUser)null);
             _userServiceMock.Setup(mock => mock.GenerateUsername(It.IsAny<string>())).Returns(It.IsAny<string>());
             _userServiceMock.Setup(mock => mock.GetPassResetToken(It.IsAny<AppUser>())).ReturnsAsync(It.IsAny<string>());
             _userServiceMock.Setup(mock => mock.ResetPassword(It.IsAny<AppUser>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
             _userServiceMock.Setup(mock => mock.CreateNewUserAndAddToDbAsync(It.IsAny<UserRegisterViewModel>())).ReturnsAsync(true);
             _emailSenderMock.Setup(mock => mock.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
 
-            _controller = new UserController(_userServiceMock.Object, _emailSenderMock.Object, _repoMock.Object);
+            _controller = new UserController(_userServiceMock.Object, _emailSenderMock.Object);
         }
 
+        //PostWinner
+
         [Fact]
-        private void PassChange_ValidationOfValidModelIsCorrect()
+        private void PostWinner_OnAddWonGameCorrectly_ReturnsStatusCode200()
         {
-            ValidationContext context = new ValidationContext(_properPassResetModel, null, null);
-            List<ValidationResult> results = new List<ValidationResult>();
-            bool isModelStateValid = Validator.TryValidateObject(_properPassResetModel, context, results, true);
+            _userServiceMock.Setup(mock => mock.AddWonGame(It.IsAny<GameWinner>())).Returns(true);
 
-            Assert.True(isModelStateValid);
+            IActionResult result = _controller.PostWinner(new GameWinner());
+            StatusCodeResult statusCode = result as StatusCodeResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status200OK, statusCode.StatusCode);
         }
 
         [Fact]
-        private async Task PassChange_OnValidModel_ReturnsStatusCode200()
+        private void PostWinner_OnAddWonGameFailed_ReturnsStatusCode409()
+        {
+            string expectedErrorsResult = "Error when saving winner.";
+            _userServiceMock.Setup(mock => mock.AddWonGame(It.IsAny<GameWinner>())).Returns(false);
+
+            IActionResult result = _controller.PostWinner(new GameWinner());
+            ObjectResult objectResult = result as ObjectResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status409Conflict, objectResult.StatusCode);
+            Assert.Equal(expectedErrorsResult, objectResult.Value);
+        }
+
+        //EditUser
+
+        [Fact]
+        private async Task PostWinner_OnUpdateUserCorrectly_ReturnsStatusCode200()
+        {
+            _userServiceMock.Setup(mock => mock.UpdateUser(It.IsAny<EditUserViewModel>())).ReturnsAsync(true);
+
+            IActionResult result = await _controller.EditUser(new EditUserViewModel());
+            StatusCodeResult statusCode = result as StatusCodeResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status200OK, statusCode.StatusCode);
+        }
+
+        [Fact]
+        private async Task PostWinner_OnUpdateUserFailed_ReturnsStatusCode500()
+        {
+            string expectedErrorsResult = "Error when updating user.";
+            _userServiceMock.Setup(mock => mock.UpdateUser(It.IsAny<EditUserViewModel>())).ReturnsAsync(false);
+
+            IActionResult result = await _controller.EditUser(new EditUserViewModel());
+            ObjectResult objectResult = result as ObjectResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status500InternalServerError, objectResult.StatusCode);
+            Assert.Equal(expectedErrorsResult, objectResult.Value);
+        }
+
+        //PassChange
+
+        [Fact]
+        private async Task PassChange_OnUserExistingAndSendEmailAsyncCorrect_ReturnsStatusCode200()
         {
             IActionResult result = await _controller.PassChange(_properPassResetModel);
             StatusCodeResult statusCode = result as StatusCodeResult;
@@ -89,7 +134,7 @@ namespace Battleships.Tests.UnitTests.Controllers
         }
 
         [Fact]
-        private async Task PassChange_OnEmailSendingFailed_ReturnsStatusCode502()
+        private async Task PassChange_OnSendEmailAsyncFailed_ReturnsStatusCode502()
         {
             string expectedErrorsResult = "Email could not be sent.";
             _emailSenderMock.Setup(mock => mock.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
@@ -103,17 +148,23 @@ namespace Battleships.Tests.UnitTests.Controllers
         }
 
         [Fact]
-        private void PassReset_ValidationOfValidModelIsCorrect()
+        private async Task PassChange_OnUserNotExisting_ReturnsStatusCode409()
         {
-            ValidationContext context = new ValidationContext(_properResetModel, null, null);
-            List<ValidationResult> results = new List<ValidationResult>();
-            bool isModelStateValid = Validator.TryValidateObject(_properResetModel, context, results, true);
+            string expectedErrorsResult = "Invalid user details.";
+            PassResetEmailViewModel model = new PassResetEmailViewModel() { Email = _wrongEmail };
 
-            Assert.True(isModelStateValid);
+            IActionResult result = await _controller.PassChange(model);
+            ObjectResult objectResult = result as ObjectResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status409Conflict, objectResult.StatusCode);
+            Assert.Equal(expectedErrorsResult, objectResult.Value);
         }
 
+        //PassReset
+
         [Fact]
-        private async Task PassReset_OnValidModel_ReturnsStatusCode200()
+        private async Task PassReset_OnUserExistingAndPasswordResetCorrectly_ReturnsStatusCode200()
         {
             IActionResult result = await _controller.PassReset(_properResetModel);
             StatusCodeResult statusCode = result as StatusCodeResult;
@@ -123,7 +174,7 @@ namespace Battleships.Tests.UnitTests.Controllers
         }
 
         [Fact]
-        private async Task PassReset_OnPasswordUpdatingFailed_ReturnsStatusCode500()
+        private async Task PassReset_OnPasswordResettingFailed_ReturnsStatusCode500()
         {
             string expectedErrorsResult = "Error when updating password.";
             _userServiceMock.Setup(mock => mock.ResetPassword(It.IsAny<AppUser>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
@@ -137,17 +188,23 @@ namespace Battleships.Tests.UnitTests.Controllers
         }
 
         [Fact]
-        private void AddNewUser_OnValidationOfValidModelIsCorrect()
+        private async Task PassReset_OnUserNotExisting_ReturnsStatusCode409()
         {
-            ValidationContext context = new ValidationContext(_properRegisterUserModel, null, null);
-            List<ValidationResult> results = new List<ValidationResult>();
-            bool isModelStateValid = Validator.TryValidateObject(_properRegisterUserModel, context, results, true);
+            string expectedErrorsResult = "Invalid user details.";
+            ResetPasswordViewModel model = new ResetPasswordViewModel() { Email = _wrongEmail };
 
-            Assert.True(isModelStateValid);
+            IActionResult result = await _controller.PassReset(model);
+            ObjectResult objectResult = result as ObjectResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status409Conflict, objectResult.StatusCode);
+            Assert.Equal(expectedErrorsResult, objectResult.Value);
         }
 
+        //AddNewUser
+
         [Fact]
-        private async Task AddNewUser_OnValidModel_ReturnsStatusCode200()
+        private async Task AddNewUser_OnUserNotExistingYetAndCreatedUserCorrectly_ReturnsStatusCode200()
         {
             _userServiceMock.Setup(mock => mock.FindUserByEmail(It.IsAny<string>())).ReturnsAsync((AppUser)null);
             IActionResult result = await _controller.AddNewUser(_properRegisterUserModel);
@@ -158,9 +215,9 @@ namespace Battleships.Tests.UnitTests.Controllers
         }
 
         [Fact]
-        private async Task AddNewUser_OnExistingEmailFailed_ReturnsStatusCode409()
+        private async Task AddNewUser_OnExistingUser_ReturnsStatusCode409()
         {
-            string expectedErrorsResult = "Email already exists.";
+            string expectedErrorsResult = "Invalid user details.";
 
             IActionResult result = await _controller.AddNewUser(_properRegisterUserModel);
             ObjectResult objectResult = result as ObjectResult;

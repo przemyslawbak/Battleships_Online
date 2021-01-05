@@ -1,4 +1,5 @@
-﻿using Battleships.Models;
+﻿using Battleships.DAL;
+using Battleships.Models;
 using Battleships.Models.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -15,10 +16,12 @@ namespace Battleships.Services
     public class UserService : IUserService
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly IUserRepository _userRepo;
         private readonly SignInManager<AppUser> _signInManager;
 
-        public UserService(UserManager<AppUser> userMgr, SignInManager<AppUser> signInManager)
+        public UserService(UserManager<AppUser> userMgr, SignInManager<AppUser> signInManager, IUserRepository userRepo)
         {
+            _userRepo = userRepo;
             _userManager = userMgr;
             _signInManager = signInManager;
         }
@@ -258,6 +261,16 @@ namespace Battleships.Services
             }
 
             return true;
+        }
+
+        public bool AddWonGame(GameWinner model)
+        {
+            return _userRepo.AddWonGame(model);
+        }
+
+        public List<BestPlayersViewModel> GetTop10Players()
+        {
+            return _userRepo.GetTop10Players();
         }
     }
 }
