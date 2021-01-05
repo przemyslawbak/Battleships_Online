@@ -136,7 +136,7 @@ namespace Battleships.AppWeb.Controllers
             {
                 UserRegisterViewModel model = _userService.GetRegisterModel(info);
 
-                if (!await _userService.CreateNewUserAndAddToDbAsync(model))
+                if (!await _userService.CreateUserAsync(model))
                 {
                     return new ObjectResult("Error when creating new user.") { StatusCode = 500 };
                 }

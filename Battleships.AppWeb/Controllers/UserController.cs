@@ -147,7 +147,7 @@ namespace Battleships.AppWeb.Controllers
                 return new ObjectResult("Invalid user details.") { StatusCode = 409 };
             }
 
-            bool result = await _userService.CreateNewUserAndAddToDbAsync(model);
+            bool result = await _userService.CreateUserAsync(model);
 
             if (!result)
             {

@@ -10,7 +10,7 @@ namespace Battleships.Services
 {
     public interface IUserService
     {
-        Task<bool> CreateNewUserAndAddToDbAsync(UserRegisterViewModel model);
+        Task<bool> CreateUserAsync(UserRegisterViewModel model);
         Task<AppUser> FindUserByEmail(string email);
         Task<string> GetPassResetToken(AppUser user);
         Task<bool> ResetPassword(AppUser user, string token, string password);

@@ -78,7 +78,7 @@ namespace Battleships.Tests.UnitTests.Controllers
             _userServiceMock.Setup(mock => mock.VerifyUsersPassword(It.IsAny<AppUser>(), It.IsAny<string>())).ReturnsAsync(true);
             _userServiceMock.Setup(mock => mock.GetUserRoleAsync(It.IsAny<AppUser>())).ReturnsAsync("User");
             _userServiceMock.Setup(mock => mock.GetExternalLogin()).ReturnsAsync(_externalLoginInfoInstance);
-            _userServiceMock.Setup(mock => mock.CreateNewUserAndAddToDbAsync(It.IsAny<UserRegisterViewModel>())).ReturnsAsync(true);
+            _userServiceMock.Setup(mock => mock.CreateUserAsync(It.IsAny<UserRegisterViewModel>())).ReturnsAsync(true);
             _tokenServiceMock.Setup(mock => mock.GenerateTokenResponse(It.IsAny<AppUser>(), It.IsAny<string>(), It.IsAny<string>())).Returns(_returnedResponseTokenModel);
             _tokenServiceMock.Setup(mock => mock.VerifyRefreshToken(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(true);
             _tokenServiceMock.Setup(mock => mock.RevokeTokens(_properRevokeTokenModel)).Returns(true);
@@ -257,7 +257,7 @@ namespace Battleships.Tests.UnitTests.Controllers
         {
             string expectedErrorsResult = "Error when creating new user.";
             _userServiceMock.Setup(mock => mock.FindUserByEmail(It.IsAny<string>())).ReturnsAsync((AppUser)null);
-            _userServiceMock.Setup(mock => mock.CreateNewUserAndAddToDbAsync(It.IsAny<UserRegisterViewModel>())).ReturnsAsync(false);
+            _userServiceMock.Setup(mock => mock.CreateUserAsync(It.IsAny<UserRegisterViewModel>())).ReturnsAsync(false);
             UserRegisterViewModel model = new UserRegisterViewModel() { Email = _wrongEmail };
             _userServiceMock.Setup(mock => mock.GetRegisterModel(It.IsAny<ExternalLoginInfo>())).Returns(model);
 
@@ -273,7 +273,7 @@ namespace Battleships.Tests.UnitTests.Controllers
         private async Task ExternalLoginCallback_OnUserNotExistingAndCouldCreateNewUser_ReturnsViewResultWithObject()
         {
             _userServiceMock.Setup(mock => mock.FindUserByEmail(It.IsAny<string>())).ReturnsAsync((AppUser)null);
-            _userServiceMock.Setup(mock => mock.CreateNewUserAndAddToDbAsync(It.IsAny<UserRegisterViewModel>())).ReturnsAsync(true);
+            _userServiceMock.Setup(mock => mock.CreateUserAsync(It.IsAny<UserRegisterViewModel>())).ReturnsAsync(true);
             UserRegisterViewModel model = new UserRegisterViewModel() { Email = _properEmail };
             _userServiceMock.Setup(mock => mock.GetRegisterModel(It.IsAny<ExternalLoginInfo>())).Returns(model);
 

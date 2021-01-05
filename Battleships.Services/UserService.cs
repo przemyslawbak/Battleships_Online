@@ -31,7 +31,7 @@ namespace Battleships.Services
         /// </summary>
         /// <param name="registerVm">User inputs.</param>
         /// <returns>Boolean if succeeded or not.</returns>
-        public async Task<bool> CreateNewUserAndAddToDbAsync(UserRegisterViewModel model)
+        public async Task<bool> CreateUserAsync(UserRegisterViewModel model)
         {
             AppUser user = CreateNewUser(model);
 
@@ -43,7 +43,9 @@ namespace Battleships.Services
                 return false;
             }
 
-            if (!await UpdateDbWithNewUser(user))
+            IdentityResult update = await _userManager.UpdateAsync(user);
+
+            if (!update.Succeeded)
             {
                 return false;
             }
@@ -94,14 +96,16 @@ namespace Battleships.Services
         /// <returns>Boolean if succeeded or not.</returns>
         public async Task<bool> ResetPassword(AppUser user, string token, string password)
         {
-            IdentityResult result = await _userManager.ResetPasswordAsync(user, token, password);
+            IdentityResult reset = await _userManager.ResetPasswordAsync(user, token, password);
 
-            if (!result.Succeeded)
+            if (!reset.Succeeded)
             {
                 return false;
             }
 
-            if (!await UpdateDbWithNewUser(user))
+            IdentityResult update = await _userManager.UpdateAsync(user);
+
+            if (!update.Succeeded)
             {
                 return false;
             }
@@ -212,24 +216,6 @@ namespace Battleships.Services
             };
         }
 
-        /// <summary>
-        /// Adds new user to the DB.
-        /// </summary>
-        /// <param name="user">Passed user.</param>
-        /// <returns>Boolean if succeeded or not.</returns>
-        private async Task<bool> UpdateDbWithNewUser(AppUser user)
-        {
-            try
-            {
-                await _userManager.UpdateAsync(user);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
         public async Task<string> GetUserNameById(string id)
         {
             AppUser user = await _userManager.FindByIdAsync(id);
@@ -242,7 +228,6 @@ namespace Battleships.Services
             return user.DisplayName;
         }
 
-        //todo: unit test
         public async Task<bool> UpdateUser(EditUserViewModel model)
         {
             AppUser user = await _userManager.FindByNameAsync(model.UserName);
@@ -255,7 +240,9 @@ namespace Battleships.Services
             user.DisplayName = model.DisplayName;
             user.Email = model.Email;
 
-            if (!await UpdateDbWithNewUser(user))
+            IdentityResult update = await _userManager.UpdateAsync(user);
+
+            if (!update.Succeeded)
             {
                 return false;
             }
