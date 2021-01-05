@@ -57,10 +57,6 @@ namespace Battleships.Tests.UnitTests.ActionFilters
             _filter = new VerifyCaptchaAttribute(_httpMock.Object, _userServiceMock.Object);
         }
 
-        /// <summary>
-        /// Returns created ActionExecutingContext object. 
-        /// </summary>
-        /// <returns>ActionExecutingContext object.</returns>
         private ActionExecutingContext GetActionExecutingContext()
         {
             var controllerMock = new Mock<Controller>();
@@ -70,10 +66,6 @@ namespace Battleships.Tests.UnitTests.ActionFilters
             return new ActionExecutingContext(_actionContextMock.Object, filter, dictionary, controllerMock.Object);
         }
 
-        /// <summary>
-        /// Returns created mock of ActionContext.
-        /// </summary>
-        /// <returns>Mock of ActionContext.</returns>
         private Mock<ActionContext> GetActionContextMock()
         {
             var contextMock = new Mock<HttpContext>();
@@ -113,7 +105,7 @@ namespace Battleships.Tests.UnitTests.ActionFilters
         private async Task OnActionExecuting_OnCaptchaTokenVerificationFailed_ResultIs429()
         {
             _httpMock.Setup(mock => mock.VerifyCaptchaAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
-            string expectedErrorsResult = "It looks like you are sending automated requests.";
+            string expectedErrorsResult = "Oops! Something went wrong.";
             await _filter.OnActionExecutionAsync(_actionExecutingContext, _next);
 
             IActionResult result = _actionExecutingContext.Result;
