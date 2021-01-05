@@ -6,8 +6,9 @@ OK - http serice:
 OK - security service:
 	OK - .pipe(delay(5000)) w security service?
 OK - backend:
-	OK - game service unit testing,
+	- game service unit testing,
 	- memory access unit testing,
+	- messenger unit testing,
 	- refactoring hub
 	- verify proper use of DAL and repo,
 	OK - helpers unit testing,

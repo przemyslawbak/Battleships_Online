@@ -1,5 +1,4 @@
 ﻿using Battleships.Models;
-using Battleships.Models.ViewModels;
 using Battleships.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
@@ -15,11 +14,15 @@ namespace Battleships.Hubs
     {
         private readonly IUserService _userService;
         private readonly IMemoryAccess _memoryAccess;
+        private readonly IMessenger _messenger;
+        private readonly IGameService _gameService;
 
-        public MessageHub(IUserService userService, IMemoryAccess memory)
+        public MessageHub(IUserService userService, IMemoryAccess memory, IMessenger messenger, IGameService gameService)
         {
             _userService = userService;
             _memoryAccess = memory;
+            _messenger = messenger;
+            _gameService = gameService;
         }
 
         public async Task SendChatMessage(string message, string[] playersNames)
@@ -29,83 +32,22 @@ namespace Battleships.Hubs
 
         private async Task SendChatMessageToUsersInGame(string message, string[] playersNames)
         {
-            foreach (string user in playersNames)
+            foreach (string name in playersNames)
             {
-                if (!string.IsNullOrEmpty(user))
-                {
-                    if (user != "COMPUTER")
-                    {
-                        string id = GetConnectionId(user);
-                        string displayName = await GetUserDisplay(Context.User.Identity.Name);
-                        string userName = await GetUserName(Context.User.Identity.Name);
-                        ChatMessageViewModel msg = new ChatMessageViewModel()
-                        {
-                            DisplayName = displayName,
-                            Message = message,
-                            UserName = userName,
-                            Time = DateTime.UtcNow.ToLongTimeString()
-                        };
-                        await Clients.Client(id).SendAsync("ReceiveChatMessage", msg);
-                    }
-                }
+                await _messenger.SendChatMesssage(name, message, Clients, Context);
             }
         }
 
         public async Task SendGameState(GameStateModel game)
         {
-            UpdateExistingGame(game);
+            _gameService.UpdateExistingGame(game);
 
-            await SendGameStateToUsersInGame(game);
-        }
-
-        private async Task SendGameStateToUsersInGame(GameStateModel game)
-        {
-            if (!game.GameMulti)
-            {
-                RemoveGameFromCacheGameList(game.GameId);
-            }
-
-            if (string.IsNullOrEmpty(game.Players[0].UserName) || string.IsNullOrEmpty(game.Players[1].UserName))
-            {
-                game.IsDeploymentAllowed = false;
-            }
-            else
-            {
-                game.IsDeploymentAllowed = true;
-            }
-
-            if (game.IsDeploymentAllowed && game.Players[0].IsDeployed && game.Players[1].IsDeployed)
-            {
-                game.IsStartAllowed = true;
-            }
-            else
-            {
-                game.IsStartAllowed = false;
-            }
-
-            foreach (Player player in game.Players)
-            {
-                if (!string.IsNullOrEmpty(player.UserName))
-                {
-                    if (player.UserName != "COMPUTER")
-                    {
-                        string id = GetConnectionId(player.UserName);
-                        await Clients.Client(id).SendAsync("ReceiveGameState", game);
-                    }
-
-                }
-            }
-        }
-
-        private string GetConnectionId(string user)
-        {
-            Dictionary<string, string> ids = _memoryAccess.GetUserConnectionIdList();
-            return ids[user];
+            await _messenger.SendGameStateToUsersInGame(game, Clients);
         }
 
         public override async Task OnConnectedAsync()
         {
-            string userName = await GetUserName(Context.User.Identity.Name);
+            string userName = await _userService.GetUserNameById(Context.User.Identity.Name);
             string connectionId = Context.ConnectionId;
 
             Dictionary<string, string> ids = _memoryAccess.GetUserConnectionIdList();
@@ -116,8 +58,8 @@ namespace Battleships.Hubs
 
         public override async Task OnDisconnectedAsync(Exception ex)
         {
-            string userName = await GetUserName(Context.User.Identity.Name);
-            string userDisplay = await GetUserDisplay(Context.User.Identity.Name);
+            string userName = await _userService.GetUserNameById(Context.User.Identity.Name);
+            string userDisplay = await _userService.GetUserDisplayById(Context.User.Identity.Name);
             Dictionary<string, string> ids = _memoryAccess.GetUserConnectionIdList();
             ids.Remove(userName);
             _memoryAccess.SetConnectionIdList(ids);
@@ -143,7 +85,7 @@ namespace Battleships.Hubs
                     (playerNames[0] == "COMPUTER" && playerNames[1] == string.Empty) ||
                     (playerNames[0] == string.Empty && playerNames[1] == "COMPUTER"))
                 {
-                    RemoveGameFromCacheGameList(game.GameId);
+                    _gameService.RemoveGameFromCacheGameList(game.GameId);
                 }
                 else
                 {
@@ -151,38 +93,4 @@ namespace Battleships.Hubs
                 }
             }
         }
-
-        private void RemoveGameFromCacheGameList(int gameId)
-        {
-            List<GameStateModel> games = _memoryAccess.GetGameList();
-            GameStateModel game = _memoryAccess.GetGameList().Where(g => g.GameId == gameId).FirstOrDefault();
-            if (game != null)
-            {
-                games.Remove(game);
-                _memoryAccess.SetGameList(games);
-            }
-        }
-
-        private void UpdateExistingGame(GameStateModel game)
-        {
-            List<GameStateModel> games = _memoryAccess.GetGameList();
-            GameStateModel thisGame = games.Where(g => g.GameId == game.GameId).FirstOrDefault();
-            if (thisGame != null)
-            {
-                games.Remove(thisGame);
-            }
-            games.Add(game);
-            _memoryAccess.SetGameList(games);
-        }
-
-        private async Task<string> GetUserDisplay(string id)
-        {
-            return await _userService.GetUserDisplayById(id);
-        }
-
-        private async Task<string> GetUserName(string id) //todo: remove username from models, replace with user ID
-        {
-            return await _userService.GetUserNameById(id);
-        }
-    }
 }

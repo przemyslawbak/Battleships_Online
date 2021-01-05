@@ -1,5 +1,7 @@
-﻿using Battleships.Models.ViewModels;
+﻿using Battleships.Models;
+using Battleships.Models.ViewModels;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Battleships.Services
 {
@@ -26,6 +28,18 @@ namespace Battleships.Services
             return list;
         }
 
+        public void UpdateExistingGame(GameStateModel game)
+        {
+            List<GameStateModel> games = _memoryAccess.GetGameList();
+            GameStateModel thisGame = games.Where(g => g.GameId == game.GameId).FirstOrDefault();
+            if (thisGame != null)
+            {
+                games.Remove(thisGame);
+            }
+            games.Add(game);
+            _memoryAccess.SetGameList(games);
+        }
+
         private bool IsGameEmpty(GameListedViewModel game)
         {
             if (game.Players[0] == "" && game.Players[1] == "")
@@ -45,5 +59,17 @@ namespace Battleships.Services
 
             return false;
         }
+
+        public void RemoveGameFromCacheGameList(int gameId)
+        {
+            List<GameStateModel> games = _memoryAccess.GetGameList();
+            GameStateModel game = _memoryAccess.GetGameList().Where(g => g.GameId == gameId).FirstOrDefault();
+            if (game != null)
+            {
+                games.Remove(game);
+                _memoryAccess.SetGameList(games);
+            }
+        }
     }
+}
 }
