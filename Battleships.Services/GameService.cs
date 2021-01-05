@@ -1,5 +1,4 @@
 ﻿using Battleships.Models.ViewModels;
-using System;
 using System.Collections.Generic;
 
 namespace Battleships.Services
@@ -15,19 +14,19 @@ namespace Battleships.Services
 
         public List<GameListedViewModel> RemoveEmptyGames(List<GameListedViewModel> list)
         {
-            foreach (GameListedViewModel game in list)
+            for (int i = 0; i < list.Count; i++)
             {
-                if(isGameEmpty(game))
+                if(IsGameEmpty(list[i]))
                 {
-                    list.Remove(game);
-                    _memoryAccess.RemoveGameFromMemory(game.GameId);
+                    _memoryAccess.RemoveGameFromMemory(list[i].GameId);
+                    list.Remove(list[i]);
                 }
             }
 
             return list;
         }
 
-        private bool isGameEmpty(GameListedViewModel game)
+        private bool IsGameEmpty(GameListedViewModel game)
         {
             if (game.Players[0] == "" && game.Players[1] == "")
             {
