@@ -19,7 +19,7 @@ namespace Battleships.Tests.UnitTests.Controllers
     {
         private readonly string _properEmail = "proper_test_email@gmail.com";
         private readonly string _wrongEmail = "wrong_test_email@gmail.com";
-        private string _properPassword = "proper_test_password";
+        private readonly string _properPassword = "proper_test_password";
         private readonly string _properToken = "proper_test_token";
         private readonly string _properName = "proper_test_name";
         private readonly Mock<ITokenService> _tokenServiceMock;
