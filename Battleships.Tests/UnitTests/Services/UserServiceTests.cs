@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -17,10 +16,14 @@ namespace Battleships.Tests.UnitTests.Services
 {
     public class UserServiceTests
     {
+        private readonly string _properName = "proper_test_name";
+        private readonly string _wrongName = "wrong_test_name";
+        private readonly string _properEmail = "proper_test_email@gmail.com";
         private readonly Mock<UserManager<AppUser>> _userManagerMock;
         private readonly Mock<SignInManager<AppUser>> _signInManagerMock;
         private readonly Mock<IUserRepository> _userRepo;
         private readonly UserService _service;
+        private readonly AppUser _properUser;
 
         public UserServiceTests()
         {
@@ -36,7 +39,11 @@ namespace Battleships.Tests.UnitTests.Services
                 new AppUser() { UserName = "foo1" },
                 new AppUser() { UserName = "foo2" }
             }.AsQueryable();
+            _properUser = new AppUser() { Email = _properEmail };
 
+            _userManagerMock.Setup(mock => mock.FindByNameAsync(It.IsAny<string>())).ReturnsAsync(_properUser);
+            _userManagerMock.Setup(mock => mock.FindByNameAsync(_wrongName)).ReturnsAsync((AppUser)null);
+            _userManagerMock.Setup(mock => mock.UpdateAsync(It.IsAny<AppUser>())).ReturnsAsync(IdentityResult.Success);
             _userManagerMock.SetupGet(mock => mock.Users).Returns(users);
             _userManagerMock.Setup(mock => mock.CheckPasswordAsync(It.IsAny<AppUser>(), It.IsAny<string>())).ReturnsAsync(true);
             _userManagerMock.Setup(mock => mock.CheckPasswordAsync(It.IsAny<AppUser>(), It.IsAny<string>())).ReturnsAsync(true);
@@ -51,10 +58,6 @@ namespace Battleships.Tests.UnitTests.Services
             _service = new UserService(_userManagerMock.Object, _signInManagerMock.Object, _userRepo.Object);
         }
 
-        /// <summary>
-        /// Creates and returns new Mock of AddToRoleAsync;
-        /// </summary>
-        /// <returns>Mock of AddToRoleAsync</returns>
         private Mock<SignInManager<AppUser>> CreateSignInManagerMock()
         {
             var userManagerMock = _userManagerMock;
@@ -64,43 +67,80 @@ namespace Battleships.Tests.UnitTests.Services
             return new Mock<SignInManager<AppUser>>(userManagerMock.Object, contextAccessorMock.Object, claimsFactoryMock.Object, null, null, null);
         }
 
+        //UpdateUser
+
         [Fact]
-        private async Task CreateNewUserAndAddToDbAsync_OnAllResultsSucceeded_ReturnsTrue()
+        private async Task UpdateUser_OnUserExistingAndUpdateSucceeses_ReturnsTrue()
         {
-            bool result = await _service.CreateNewUserAndAddToDbAsync(new UserRegisterViewModel());
+            EditUserViewModel model = new EditUserViewModel() { UserName = _properName };
+
+            bool result = await _service.UpdateUser(model);
 
             Assert.True(result);
         }
 
         [Fact]
-        private async Task CreateNewUserAndAddToDbAsync_OnCreateAsyncFailed_ReturnsFalse()
+        private async Task UpdateUser_OnUpdateAsyncFailed_ReturnsFalse()
+        {
+            _userManagerMock.Setup(mock => mock.UpdateAsync(It.IsAny<AppUser>())).ReturnsAsync(new IdentityResult());
+            EditUserViewModel model = new EditUserViewModel() { UserName = _properName };
+
+            bool result = await _service.UpdateUser(model);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        private async Task UpdateUser_OnUserNotExisting_ReturnsFalse()
+        {
+            EditUserViewModel model = new EditUserViewModel() { UserName = _wrongName };
+
+            bool result = await _service.UpdateUser(model);
+
+            Assert.False(result);
+        }
+
+        //CreateNewUser
+
+        [Fact]
+        private async Task CreateUserAsync_OnAllResultsSucceeded_ReturnsTrue()
+        {
+            bool result = await _service.CreateUserAsync(new UserRegisterViewModel());
+
+            Assert.True(result);
+        }
+
+        [Fact]
+        private async Task CreateUserAsync_OnCreateAsyncFailed_ReturnsFalse()
         {
             _userManagerMock.Setup(mock => mock.CreateAsync(It.IsAny<AppUser>(), It.IsAny<string>())).ReturnsAsync(new IdentityResult());
 
-            bool result = await _service.CreateNewUserAndAddToDbAsync(new UserRegisterViewModel());
+            bool result = await _service.CreateUserAsync(new UserRegisterViewModel());
 
             Assert.False(result);
         }
 
         [Fact]
-        private async Task CreateNewUserAndAddToDbAsync_OnAddToRoleAsyncFailed_ReturnsFalse()
+        private async Task CreateUserAsync_OnAddToRoleAsyncFailed_ReturnsFalse()
         {
             _userManagerMock.Setup(mock => mock.AddToRoleAsync(It.IsAny<AppUser>(), It.IsAny<string>())).ReturnsAsync(new IdentityResult());
 
-            bool result = await _service.CreateNewUserAndAddToDbAsync(new UserRegisterViewModel());
+            bool result = await _service.CreateUserAsync(new UserRegisterViewModel());
 
             Assert.False(result);
         }
 
         [Fact]
-        private async Task CreateNewUserAndAddToDbAsync_OnUpdateAsyncThrowingException_ReturnsFalse()
+        private async Task CreateUserAsync_OnUserUpdateFailed_ReturnsFalse()
         {
-            _userManagerMock.Setup(mock => mock.UpdateAsync(It.IsAny<AppUser>())).ThrowsAsync(new Exception());
+            _userManagerMock.Setup(mock => mock.UpdateAsync(It.IsAny<AppUser>())).ReturnsAsync(new IdentityResult());
 
-            bool result = await _service.CreateNewUserAndAddToDbAsync(new UserRegisterViewModel());
+            bool result = await _service.CreateUserAsync(new UserRegisterViewModel());
 
             Assert.False(result);
         }
+
+        //ResetPassword
 
         [Fact]
         private async Task ResetPassword_OnAllResultsSucceeded_ReturnsTrue()
@@ -121,9 +161,9 @@ namespace Battleships.Tests.UnitTests.Services
         }
 
         [Fact]
-        private async Task ResetPassword_OnUpdateAsyncThrowingException_ReturnsFalse()
+        private async Task ResetPassword_OnUserUpdateFailed_ReturnsFalse()
         {
-            _userManagerMock.Setup(mock => mock.UpdateAsync(It.IsAny<AppUser>())).ThrowsAsync(new Exception());
+            _userManagerMock.Setup(mock => mock.UpdateAsync(It.IsAny<AppUser>())).ReturnsAsync(new IdentityResult());
 
             bool result = await _service.ResetPassword(new AppUser(), "some_token", "some_password");
 

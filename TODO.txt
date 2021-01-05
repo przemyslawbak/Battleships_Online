@@ -6,7 +6,9 @@ OK - http serice:
 OK - security service:
 	OK - .pipe(delay(5000)) w security service?
 OK - backend:
+	- refactoring hub
 	- verify proper use of DAL and repo,
+	- services unit testing,
 	OK - helpers unit testing,
 	OK - controllers unit testing,
 	NO - validate all api models - https://stackoverflow.com/a/55101315,
