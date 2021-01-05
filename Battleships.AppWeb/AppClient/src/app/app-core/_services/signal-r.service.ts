@@ -102,7 +102,7 @@ export class SignalRService {
   };
 
   public broadcastChatMessage = (message: string): void => {
-    if (message && this.hubConnection) {
+    if (message && this.hubConnection && this.game.getGame().gameMulti) {
       this.thenable.then(() => {
         let playersNames = [];
         for (let i = 0; i < this.game.getGame().players.length; i++) {
