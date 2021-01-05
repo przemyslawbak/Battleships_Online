@@ -17,7 +17,9 @@ namespace Battleships.Tests.UnitTests.Services
         }
 
         //GetUserConnectionIdList
+        //todo:
 
         //GetGameList
+        //todo:
     }
 }

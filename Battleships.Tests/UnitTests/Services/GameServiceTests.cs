@@ -45,5 +45,14 @@ namespace Battleships.Tests.UnitTests.Services
         //UpdateExistingGame
         //todo:
 
+        //RemoveGameFromCacheGameList
+        //todo:
+
+        //RemovePlayerFromGames
+        //todo:
+
+        //RemoveGameIfEmpty
+        //todo:
+
     }
 }

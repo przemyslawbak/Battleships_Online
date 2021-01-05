@@ -26,11 +26,6 @@ namespace Battleships.Services
             _signInManager = signInManager;
         }
 
-        /// <summary>
-        /// Creates new user, attaches 'User' role and adds to the Db.
-        /// </summary>
-        /// <param name="registerVm">User inputs.</param>
-        /// <returns>Boolean if succeeded or not.</returns>
         public async Task<bool> CreateUserAsync(UserRegisterViewModel model)
         {
             AppUser user = CreateNewUser(model);
@@ -53,10 +48,6 @@ namespace Battleships.Services
             return true;
         }
 
-        /// <summary>
-        /// Generates random password.
-        /// </summary>
-        /// <returns>Random password string.</returns>
         public string GenerateRandomPassword()
         {
             Random random = new Random();
@@ -65,21 +56,11 @@ namespace Battleships.Services
             return new string(Enumerable.Repeat(chars, 20).Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
-        /// <summary>
-        /// Finds user in DB by email address.
-        /// </summary>
-        /// <param name="email">Email address.</param>
-        /// <returns>Boolean if user found.</returns>
         public async Task<AppUser> FindUserByEmail(string email)
         {
             return await _userManager.FindByEmailAsync(email);
         }
 
-        /// <summary>
-        /// Generates token for password reset.
-        /// </summary>
-        /// <param name="user">AppUser object.</param>
-        /// <returns>Generated password reset token.</returns>
         public async Task<string> GetPassResetToken(AppUser user)
         {
             string token = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -87,13 +68,6 @@ namespace Battleships.Services
             return token.Replace("/", "$");
         }
 
-        /// <summary>
-        /// Resetting user password.
-        /// </summary>
-        /// <param name="user">AppUser object.</param>
-        /// <param name="token">User reset token.</param>
-        /// <param name="password">User new password.</param>
-        /// <returns>Boolean if succeeded or not.</returns>
         public async Task<bool> ResetPassword(AppUser user, string token, string password)
         {
             IdentityResult reset = await _userManager.ResetPasswordAsync(user, token, password);
@@ -113,11 +87,6 @@ namespace Battleships.Services
             return true;
         }
 
-        /// <summary>
-        /// Generates new user name if the one passed already exists. In other case returns the same.
-        /// </summary>
-        /// <param name="userName">Initial user name.</param>
-        /// <returns>Valid unique user name.</returns>
         public string GenerateUsername(string userName)
         {
             int count = 0;
@@ -131,42 +100,21 @@ namespace Battleships.Services
             return name;
         }
 
-        /// <summary>
-        /// Gets external auth properties.
-        /// </summary>
-        /// <param name="provider">Providers name.</param>
-        /// <param name="redirectUrl">Redirection URL.</param>
-        /// <returns>Authentication properties.</returns>
         public AuthenticationProperties GetExternalAuthenticationProperties(string provider, string redirectUrl)
         {
             return _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
         }
 
-        /// <summary>
-        /// Gets external login info.
-        /// </summary>
-        /// <returns>External login info.</returns>
         public async Task<ExternalLoginInfo> GetExternalLogin()
         {
             return await _signInManager.GetExternalLoginInfoAsync();
         }
 
-        /// <summary>
-        /// Verifies if password is correct for the user.
-        /// </summary>
-        /// <param name="user">AppUser object.</param>
-        /// <param name="password">Password to be verified.</param>
-        /// <returns>Boolean if the password is correct.</returns>
         public async Task<bool> VerifyUsersPassword(AppUser user, string password)
         {
             return await _userManager.CheckPasswordAsync(user, password);
         }
 
-        /// <summary>
-        /// Returns instance of UserRegisterViewModel, where props are based on passed ExternalLoginInfo object.
-        /// </summary>
-        /// <param name="info">ExternalLoginInfo object.</param>
-        /// <returns>UserRegisterViewModel object.</returns>
         public UserRegisterViewModel GetRegisterModel(ExternalLoginInfo info)
         {
             return new UserRegisterViewModel()
@@ -178,42 +126,16 @@ namespace Battleships.Services
             };
         }
 
-        /// <summary>
-        /// Returns IP address extracted from passed HttpContext object.
-        /// </summary>
-        /// <param name="httpContext">HttpContext object.</param>
-        /// <returns>String IP address v4</returns>
         public string GetIpAddress(HttpContext httpContext)
         {
             return httpContext.Features.Get<IHttpConnectionFeature>()?.RemoteIpAddress.MapToIPv4().ToString();
         }
 
-        /// <summary>
-        /// Returns user role basing on passed AppUser object.
-        /// </summary>
-        /// <param name="user">AppUser object.</param>
-        /// <returns>String user role.</returns>
         public async Task<string> GetUserRoleAsync(AppUser user)
         {
             IList<string> roles = await _userManager.GetRolesAsync(user);
 
             return roles.FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Creates new AppUser object instance.
-        /// </summary>
-        /// <param name="model">AppUser model.</param>
-        /// <returns>New AppUser.</returns>
-        private AppUser CreateNewUser(UserRegisterViewModel model)
-        {
-            return new AppUser()
-            {
-                SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = model.UserName,
-                Email = model.Email,
-                DisplayName = model.DisplayName
-            };
         }
 
         public async Task<string> GetUserNameById(string id)
@@ -258,6 +180,17 @@ namespace Battleships.Services
         public List<BestPlayersViewModel> GetTop10Players()
         {
             return _userRepo.GetTop10Players();
+        }
+
+        private AppUser CreateNewUser(UserRegisterViewModel model)
+        {
+            return new AppUser()
+            {
+                SecurityStamp = Guid.NewGuid().ToString(),
+                UserName = model.UserName,
+                Email = model.Email,
+                DisplayName = model.DisplayName
+            };
         }
     }
 }

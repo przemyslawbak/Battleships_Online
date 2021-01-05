@@ -18,6 +18,53 @@ namespace Battleships.Services
             _cache = cache;
         }
 
+        public async Task SendGameStateToUsersInGame(GameStateModel game, IHubCallerClients clients)
+        {
+            if (!game.GameMulti)
+            {
+                _cache.RemoveGameFromMemory(game.GameId);
+            }
+
+            if (string.IsNullOrEmpty(game.Players[0].UserName) || string.IsNullOrEmpty(game.Players[1].UserName))
+            {
+                game.IsDeploymentAllowed = false; //todo: separate method
+            }
+            else
+            {
+                game.IsDeploymentAllowed = true; //todo: separate method
+            }
+
+            if (game.IsDeploymentAllowed && game.Players[0].IsDeployed && game.Players[1].IsDeployed)
+            {
+                game.IsStartAllowed = true; //todo: separate method
+            }
+            else
+            {
+                game.IsStartAllowed = false; //todo: separate method
+            }
+
+            foreach (Player player in game.Players)
+            {
+                if (!string.IsNullOrEmpty(player.UserName))
+                {
+                    if (player.UserName != "COMPUTER")
+                    {
+                        string id = GetConnectionId(player.UserName);
+                        await clients.Client(id).SendAsync("ReceiveGameState", game);
+                    }
+
+                }
+            }
+        }
+
+        public async Task SendChatMessageToUsersInGame(string message, string[] playersNames, IHubCallerClients clients, HubCallerContext context)
+        {
+            foreach (string name in playersNames)
+            {
+                await SendChatMesssage(name, message, clients, context);
+            }
+        }
+
         private async Task SendChatMesssage(string name, string message, IHubCallerClients clients, HubCallerContext context)
         {
             if (!string.IsNullOrEmpty(name))
@@ -45,67 +92,23 @@ namespace Battleships.Services
             };
         }
 
+        //todo: move to user service
         private string GetConnectionId(string name)
         {
             Dictionary<string, string> ids = _cache.GetUserConnectionIdList();
             return ids[name];
         }
 
+        //todo: move to user service
         private async Task<string> GetUserName(string id)
         {
             return await _userService.GetUserNameById(id);
         }
 
+        //todo: move to user service
         private async Task<string> GetUserDisplayById(string id)
         {
             return await _userService.GetUserDisplayById(id);
-        }
-
-        public async Task SendGameStateToUsersInGame(GameStateModel game, IHubCallerClients clients)
-        {
-            if (!game.GameMulti)
-            {
-                _cache.RemoveGameFromMemory(game.GameId);
-            }
-
-            if (string.IsNullOrEmpty(game.Players[0].UserName) || string.IsNullOrEmpty(game.Players[1].UserName))
-            {
-                game.IsDeploymentAllowed = false;
-            }
-            else
-            {
-                game.IsDeploymentAllowed = true;
-            }
-
-            if (game.IsDeploymentAllowed && game.Players[0].IsDeployed && game.Players[1].IsDeployed)
-            {
-                game.IsStartAllowed = true;
-            }
-            else
-            {
-                game.IsStartAllowed = false;
-            }
-
-            foreach (Player player in game.Players)
-            {
-                if (!string.IsNullOrEmpty(player.UserName))
-                {
-                    if (player.UserName != "COMPUTER")
-                    {
-                        string id = GetConnectionId(player.UserName);
-                        await clients.Client(id).SendAsync("ReceiveGameState", game);
-                    }
-
-                }
-            }
-        }
-
-        public async Task SendChatMessageToUsersInGame(string message, string[] playersNames, IHubCallerClients clients, HubCallerContext context)
-        {
-            foreach (string name in playersNames)
-            {
-                await SendChatMesssage(name, message, clients, context);
-            }
         }
     }
 }

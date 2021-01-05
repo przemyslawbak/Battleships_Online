@@ -22,7 +22,9 @@ namespace Battleships.Services
         {
             for (int i = 0; i < list.Count; i++)
             {
-                if(IsGameEmpty(list[i]))
+                string[] playerNames = new string[] { list[i].Players[0], list[i].Players[1] };
+
+                if (IsGameEmpty(playerNames))
                 {
                     _memoryAccess.RemoveGameFromMemory(list[i].GameId);
                     list.Remove(list[i]);
@@ -42,26 +44,6 @@ namespace Battleships.Services
             }
             games.Add(game);
             _memoryAccess.SetGameList(games);
-        }
-
-        private bool IsGameEmpty(GameListedViewModel game)
-        {
-            if (game.Players[0] == "" && game.Players[1] == "")
-            {
-                return true;
-            }
-
-            if (game.Players[0] == "COMPUTER" && game.Players[1] == "")
-            {
-                return true;
-            }
-
-            if (game.Players[0] == "" && game.Players[1] == "COMPUTER")
-            {
-                return true;
-            }
-
-            return false;
         }
 
         public void RemoveGameFromCacheGameList(int gameId)
@@ -102,9 +84,7 @@ namespace Battleships.Services
         {
             string[] playerNames = new string[] { game.Players[0].UserName, game.Players[1].UserName };
 
-            if ((playerNames[0] == string.Empty && playerNames[1] == string.Empty) ||
-                (playerNames[0] == "COMPUTER" && playerNames[1] == string.Empty) ||
-                (playerNames[0] == string.Empty && playerNames[1] == "COMPUTER"))
+            if (IsGameEmpty(playerNames))
             {
                 RemoveGameFromCacheGameList(game.GameId);
             }
@@ -114,6 +94,26 @@ namespace Battleships.Services
 
                 await _messenger.SendGameStateToUsersInGame(game, clients);
             }
+        }
+
+        private bool IsGameEmpty(string[] playerNames)
+        {
+            if (playerNames[0] == "" && playerNames[1] == "")
+            {
+                return true;
+            }
+
+            if (playerNames[0] == "COMPUTER" && string.IsNullOrEmpty(playerNames[1]))
+            {
+                return true;
+            }
+
+            if (string.IsNullOrEmpty(playerNames[0]) && playerNames[1] == "COMPUTER")
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

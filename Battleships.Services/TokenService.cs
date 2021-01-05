@@ -27,12 +27,6 @@ namespace Battleships.Services
             _hoursKeepBlacklistedTokend = _configuration.GetValue<int>("Auth:JsonWebToken:BlacklistedTokenInHours");
         }
 
-        /// <summary>
-        /// Returns SecurityTokenDescriptor object basing on AppUser properties, user role and identity claims.
-        /// </summary>
-        /// <param name="user">AppUser object.</param>
-        /// <param name="role">String user role.</param>
-        /// <returns></returns>
         public SecurityToken GetSecurityToken(AppUser user, string role)
         {
             int expiration = _configuration.GetValue<int>("Auth:JsonWebToken:TokenExpirationInMinutes");
@@ -57,10 +51,6 @@ namespace Battleships.Services
             return tokenHandler.CreateToken(tokenDescriptor);
         }
 
-        /// <summary>
-        /// Extracts authentity token from HttpContext.
-        /// </summary>
-        /// <returns>String user auth token.</returns>
         public string GetCurrentToken(HttpContext httpContext)
         {
             StringValues authorizationHeader = httpContext.Request.Headers["authorization"];
@@ -68,31 +58,16 @@ namespace Battleships.Services
             return authorizationHeader == StringValues.Empty ? string.Empty : authorizationHeader.Single().Split(' ').Last();
         }
 
-        /// <summary>
-        /// Cleaning up list ot blacklisted user auth tokens.
-        /// </summary>
         public void CleanUpBlacklistedTokens()
         {
             _tokenRepo.CleanUpBlacklistedTokens(_hoursKeepBlacklistedTokend);
         }
 
-        /// <summary>
-        /// Verifies in DB if refresh token is still valid.
-        /// </summary>
-        /// <param name="refreshToken">Token to be verified.</param>
-        /// <param name="email">Email address assigned to AppUser object.</param>
-        /// <param name="requstIp">Clients IP address.</param>
-        /// <returns>Boolean true if token is valid.</returns>
         public bool VerifyRefreshToken(string refreshToken, string email, string requstIp)
         {
             return _tokenRepo.VerifyReceivedToken(refreshToken, email, requstIp);
         }
 
-        /// <summary>
-        /// After logging out, deletes refresh token from DB, cleans up blacklisted wuth tokens, and blacklisting token that was in use.
-        /// </summary>
-        /// <param name="model">RevokeTokenRequestViewModel oject with listed tokens and AppUser data.</param>
-        /// <returns>Boolean if successfully tokens are revoked.</returns>
         public bool RevokeTokens(RevokeTokenRequestViewModel model)
         {
             try
@@ -109,13 +84,6 @@ namespace Battleships.Services
             }
         }
 
-        /// <summary>
-        /// Returns TokenResponseViewModel object with AppClients authentity credentials.
-        /// </summary>
-        /// <param name="user">AppUser object.</param>
-        /// <param name="role">String with user role.</param>
-        /// <param name="ip">Request IP address.</param>
-        /// <returns></returns>
         public TokenResponseViewModel GenerateTokenResponse(AppUser user, string role, string ip)
         {
             SecurityToken token = GetSecurityToken(user, role);
@@ -136,10 +104,11 @@ namespace Battleships.Services
             };
         }
 
-        /// <summary>
-        /// Generates new refresh token.
-        /// </summary>
-        /// <returns>New encrypted refresh token.</returns>
+        public bool IsTokenBlacklisted(string currentToken)
+        {
+            return _tokenRepo.IsTokenBlacklisted(currentToken);
+        }
+
         private string GenerateRefreshToken()
         {
             using (RNGCryptoServiceProvider rngCryptoServiceProvider = new RNGCryptoServiceProvider())
@@ -148,16 +117,6 @@ namespace Battleships.Services
                 rngCryptoServiceProvider.GetBytes(randomBytes);
                 return Convert.ToBase64String(randomBytes);
             }
-        }
-
-        /// <summary>
-        /// Checks if token is blacklisted from use.
-        /// </summary>
-        /// <param name="currentToken">Current user auth token.</param>
-        /// <returns>Boolean result.</returns>
-        public bool IsTokenBlacklisted(string currentToken)
-        {
-            return _tokenRepo.IsTokenBlacklisted(currentToken);
         }
     }
 }

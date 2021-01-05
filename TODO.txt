@@ -1,5 +1,6 @@
 DOUBTS:
 - using user service - user manager + repo
+- do I need method comments in service classes?
 
 OK - http serice:
 	OK - http timeouts? added 10s timeout;
