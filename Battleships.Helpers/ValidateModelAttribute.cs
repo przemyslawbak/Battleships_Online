@@ -15,7 +15,7 @@ namespace Battleships.Helpers
 
             if (context.ModelState.IsValid == false)
             {
-                string errors = string.Join(", ", context.ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage))); //todo: method/service
+                string errors = string.Join(", ", context.ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage)));
 
                 context.Result = new ObjectResult(errors + ".") { StatusCode = 409 };
             }

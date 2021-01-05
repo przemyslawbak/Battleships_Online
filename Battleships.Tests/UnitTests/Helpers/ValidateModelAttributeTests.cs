@@ -32,10 +32,6 @@ namespace Battleships.Tests.UnitTests.ActionFilters
             _filter = new ValidateModelAttribute();
         }
 
-        /// <summary>
-        /// Returns created instance of ActionExecutingContext object.
-        /// </summary>
-        /// <returns>ActionExecutingContext object</returns>
         private ActionExecutingContext GetActionExecutingContext()
         {
             var controllerMock = new Mock<Controller>();
@@ -45,10 +41,6 @@ namespace Battleships.Tests.UnitTests.ActionFilters
             return new ActionExecutingContext(_actionContextMock.Object, filter, dictionary, controllerMock.Object);
         }
 
-        /// <summary>
-        /// Returns created mock of ActionContext.
-        /// </summary>
-        /// <returns>Mock of ActionContext.</returns>
         private Mock<ActionContext> GetActionContext()
         {
             var contextMock = new Mock<HttpContext>();
