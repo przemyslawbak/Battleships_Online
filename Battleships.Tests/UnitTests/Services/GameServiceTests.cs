@@ -10,13 +10,15 @@ namespace Battleships.Tests.UnitTests.Services
     public class GameServiceTests
     {
         private readonly Mock<IMemoryAccess> _cacheMock;
+        private readonly Mock<IMessenger> _messengerMock;
         private readonly GameService _service;
 
         public GameServiceTests()
         {
             _cacheMock = new Mock<IMemoryAccess>();
+            _messengerMock = new Mock<IMessenger>();
 
-            _service = new GameService(_cacheMock.Object);
+            _service = new GameService(_cacheMock.Object, _messengerMock.Object);
         }
 
         //RemoveEmptyGames

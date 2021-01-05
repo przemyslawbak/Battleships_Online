@@ -18,7 +18,7 @@ namespace Battleships.Services
             _cache = cache;
         }
 
-        public async Task SendChatMesssage(string name, string message, IHubCallerClients clients, HubCallerContext context)
+        private async Task SendChatMesssage(string name, string message, IHubCallerClients clients, HubCallerContext context)
         {
             if (!string.IsNullOrEmpty(name))
             {
@@ -97,6 +97,14 @@ namespace Battleships.Services
                     }
 
                 }
+            }
+        }
+
+        public async Task SendChatMessageToUsersInGame(string message, string[] playersNames, IHubCallerClients clients, HubCallerContext context)
+        {
+            foreach (string name in playersNames)
+            {
+                await SendChatMesssage(name, message, clients, context);
             }
         }
     }

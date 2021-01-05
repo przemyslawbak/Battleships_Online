@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Battleships.Hubs
@@ -27,15 +26,7 @@ namespace Battleships.Hubs
 
         public async Task SendChatMessage(string message, string[] playersNames)
         {
-            await SendChatMessageToUsersInGame(message, playersNames);
-        }
-
-        private async Task SendChatMessageToUsersInGame(string message, string[] playersNames)
-        {
-            foreach (string name in playersNames)
-            {
-                await _messenger.SendChatMesssage(name, message, Clients, Context);
-            }
+            await _messenger.SendChatMessageToUsersInGame(message, playersNames, Clients, Context);
         }
 
         public async Task SendGameState(GameStateModel game)
@@ -59,38 +50,32 @@ namespace Battleships.Hubs
         public override async Task OnDisconnectedAsync(Exception ex)
         {
             string userName = await _userService.GetUserNameById(Context.User.Identity.Name);
-            string userDisplay = await _userService.GetUserDisplayById(Context.User.Identity.Name);
+
             Dictionary<string, string> ids = _memoryAccess.GetUserConnectionIdList();
             ids.Remove(userName);
             _memoryAccess.SetConnectionIdList(ids);
 
-            var list = _memoryAccess.GetGameList();
-            List<GameStateModel> playersGames = _memoryAccess.GetGameList().Where(g => g.Players.Any(p => p.UserName == userName)).ToList();
+            List<GameStateModel> playersGames = _gameService.GetPlayersGames(userName);
+            await MessageAllPlayersInAllGames(playersGames);
+            await RemoveEmptyGames(playersGames);
+        }
+
+        private async Task RemoveEmptyGames(List<GameStateModel> playersGames)
+        {
             foreach (GameStateModel game in playersGames)
             {
-                foreach (var player in game.Players)
-                {
-                    if (player.UserName == userName)
-                    {
-                        player.UserName = string.Empty;
-                        player.DisplayName = string.Empty;
-                    }
-                }
-
-                string[] playerNames = new string[] { game.Players[0].UserName, game.Players[1].UserName };
-
-                await SendChatMessageToUsersInGame("Left the game.", playerNames);
-
-                if ((playerNames[0] == string.Empty && playerNames[1] == string.Empty) ||
-                    (playerNames[0] == "COMPUTER" && playerNames[1] == string.Empty) ||
-                    (playerNames[0] == string.Empty && playerNames[1] == "COMPUTER"))
-                {
-                    _gameService.RemoveGameFromCacheGameList(game.GameId);
-                }
-                else
-                {
-                    await SendGameState(game);
-                }
+                await _gameService.RemoveGameIfEmpty(game, Clients);
             }
         }
+
+        private async Task MessageAllPlayersInAllGames(List<GameStateModel> playersGames)
+        {
+            foreach (GameStateModel game in playersGames)
+            {
+                string[] playersNames = new string[] { game.Players[0].UserName, game.Players[1].UserName };
+
+                await _messenger.SendChatMessageToUsersInGame("Left the game.", playersNames, Clients, Context);
+            }
+        }
+    }
 }

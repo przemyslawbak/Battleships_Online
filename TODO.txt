@@ -9,7 +9,7 @@ OK - backend:
 	- game service unit testing,
 	- memory access unit testing,
 	- messenger unit testing,
-	- refactoring hub
+	OK - refactoring hub
 	- verify proper use of DAL and repo,
 	OK - helpers unit testing,
 	OK - controllers unit testing,
