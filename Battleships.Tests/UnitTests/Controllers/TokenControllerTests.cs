@@ -8,8 +8,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Moq;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,8 +28,6 @@ namespace Battleships.Tests.UnitTests.Controllers
 
         public TokenControllerTests()
         {
-            string properClientId = "proper_test_client_id";
-            string properClientSecret = "proper_test_client_id";
             string properEmail = "proper_test_email@gmail.com";
             string properPassword = "proper_test_password";
             string properToken = "proper_test_token";
@@ -61,8 +57,6 @@ namespace Battleships.Tests.UnitTests.Controllers
             };
             _properTokenRequestModel = new TokenRequestViewModel()
             {
-                ClientId = properClientId,
-                ClientSecret = properClientSecret,
                 Email = properEmail,
                 Password = properPassword,
             };
@@ -93,18 +87,10 @@ namespace Battleships.Tests.UnitTests.Controllers
             _controller = new TokenController(_tokenServiceMock.Object, _userServiceMock.Object) { TempData = tempData };
         }
 
-        [Fact]
-        private void JsonWebToken_ValidationOfValidModelIsCorrect()
-        {
-            ValidationContext context = new ValidationContext(_properTokenRequestModel, null, null);
-            List<ValidationResult> results = new List<ValidationResult>();
-            bool isModelStateValid = Validator.TryValidateObject(_properTokenRequestModel, context, results, true);
-
-            Assert.True(isModelStateValid);
-        }
+        //JsonWebToken
 
         [Fact]
-        private async Task JsonWebToken_OnValidModel_ReturnsJsonResult()
+        private async Task JsonWebToken_OnUserExistingAndCorrectPassword_ReturnsJsonResult()
         {
             IActionResult result = await _controller.JsonWebToken(_properTokenRequestModel);
             JsonResult resultObject = result as JsonResult;
@@ -135,7 +121,7 @@ namespace Battleships.Tests.UnitTests.Controllers
         }
 
         [Fact]
-        private async Task JsonWebToken_OnWrongUserPass_ReturnsStatusCode409()
+        private async Task JsonWebToken_OnWrongUserPassword_ReturnsStatusCode409()
         {
             string expectedErrorsResult = "Invalid user details.";
             _userServiceMock.Setup(mock => mock.VerifyUsersPassword(It.IsAny<AppUser>(), It.IsAny<string>())).ReturnsAsync(false);
@@ -148,18 +134,10 @@ namespace Battleships.Tests.UnitTests.Controllers
             Assert.Equal(expectedErrorsResult, objectResult.Value);
         }
 
-        [Fact]
-        private void RefreshToken_ValidationOfValidModelIsCorrect()
-        {
-            ValidationContext context = new ValidationContext(_properRefreshTokenModel, null, null);
-            List<ValidationResult> results = new List<ValidationResult>();
-            bool isModelStateValid = Validator.TryValidateObject(_properRefreshTokenModel, context, results, true);
-
-            Assert.True(isModelStateValid);
-        }
+        //RefreshToken
 
         [Fact]
-        private async Task RefreshToken_OnValidModel_ReturnsJsonResult()
+        private async Task RefreshToken_OnUserExistingAndTokenPositiveVerification_ReturnsJsonResult()
         {
             IActionResult result = await _controller.RefreshToken(_properRefreshTokenModel);
             JsonResult resultObject = result as JsonResult;
@@ -189,18 +167,12 @@ namespace Battleships.Tests.UnitTests.Controllers
             Assert.Equal(expectedErrorsResult, objectResult.Value);
         }
 
-        [Fact]
-        private void RevokeToken_ValidationOfValidModelIsCorrect()
-        {
-            ValidationContext context = new ValidationContext(_properRevokeTokenModel, null, null);
-            List<ValidationResult> results = new List<ValidationResult>();
-            bool isModelStateValid = Validator.TryValidateObject(_properRevokeTokenModel, context, results, true);
+        //todo: test: RefreshToken_OnTokenNegativeVerification_ReturnsStatusCode409()
 
-            Assert.True(isModelStateValid);
-        }
+        //RevokeToken
 
         [Fact]
-        private void RevokeToken_OnValidModel_Returns200StatusCode()
+        private void RevokeToken_OnRevokingTokenPassed_Returns200StatusCode()
         {
             IActionResult result = _controller.RevokeToken(_properRevokeTokenModel);
             StatusCodeResult statusCode = result as StatusCodeResult;
@@ -212,17 +184,21 @@ namespace Battleships.Tests.UnitTests.Controllers
         [Fact]
         private void RevokeToken_OnRevokingTokensFailed_Returns500StatusCode()
         {
+            string expectedErrorsResult = "There was a problem logging the user out correctly.";
             _tokenServiceMock.Setup(mock => mock.RevokeTokens(_properRevokeTokenModel)).Returns(false);
 
             IActionResult result = _controller.RevokeToken(_properRevokeTokenModel);
             ObjectResult objectResult = result as ObjectResult;
 
             Assert.NotNull(result);
-            Assert.Equal(StatusCodes.Status500InternalServerError, objectResult.StatusCode);
+            Assert.Equal(StatusCodes.Status409Conflict, objectResult.StatusCode);
+            Assert.Equal(expectedErrorsResult, objectResult.Value);
         }
 
+        //ExternalLoginCallback
+
         [Fact]
-        private async Task ExternalLoginCallback_OnWithCorrectValuesReturned_ReturnsJsonResult()
+        private async Task ExternalLoginCallback_OnNoRemoteErrorAndInfoReceivedAndUserExisting_ReturnsJsonResult()
         {
             IActionResult result = await _controller.ExternalLoginCallback(null);
             ViewResult resultObject = result as ViewResult;
@@ -266,7 +242,7 @@ namespace Battleships.Tests.UnitTests.Controllers
         }
 
         [Fact]
-        private async Task ExternalLoginCallback_OnUserNotFoundAndCouldNotCreateNewUser_ReturnsStatusCode500()
+        private async Task ExternalLoginCallback_OnUserNotExistingAndCouldNotCreateNewUser_ReturnsStatusCode500()
         {
             string expectedErrorsResult = "Error when creating new user.";
             _userServiceMock.Setup(mock => mock.FindUserByEmail(It.IsAny<string>())).ReturnsAsync((AppUser)null);
@@ -279,5 +255,7 @@ namespace Battleships.Tests.UnitTests.Controllers
             Assert.Equal(StatusCodes.Status500InternalServerError, objectResult.StatusCode);
             Assert.Equal(expectedErrorsResult, objectResult.Value);
         }
+
+        //todo: ExternalLoginCallback_OnUserNotExistingAndCouldCreateNewUser_ReturnView
     }
 }
