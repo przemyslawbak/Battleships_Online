@@ -23,9 +23,9 @@ namespace Battleships.Services
         UserRegisterViewModel GetRegisterModel(ExternalLoginInfo info);
         string GetIpAddress(HttpContext httpContext);
         Task<string> GetUserRoleAsync(AppUser user);
-        Task<string> GetUserDisplayById(string id);
         Task<bool> UpdateUser(EditUserViewModel model);
         bool AddWonGame(GameWinner model);
         List<BestPlayersViewModel> GetTop10Players();
+        Task<string> GetUserDisplayByName(string name);
     }
 }

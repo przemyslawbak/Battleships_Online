@@ -1,21 +1,18 @@
 ﻿using Battleships.Models;
-using Battleships.Models.ViewModels;
 using Microsoft.AspNetCore.SignalR;
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Battleships.Services
 {
     public class Messenger : IMessenger
     {
-        private readonly IUserService _userService;
         private readonly IMemoryAccess _cache;
+        private readonly ISender _sender;
 
-        public Messenger(IUserService userService, IMemoryAccess cache)
+        public Messenger(IMemoryAccess cache, ISender sender)
         {
-            _userService = userService;
             _cache = cache;
+            _sender = sender;
         }
 
         public async Task SendGameStateToUsersInGame(GameStateModel game, IHubCallerClients clients)
@@ -25,90 +22,18 @@ namespace Battleships.Services
                 _cache.RemoveGameFromMemory(game.GameId);
             }
 
-            if (string.IsNullOrEmpty(game.Players[0].UserName) || string.IsNullOrEmpty(game.Players[1].UserName))
-            {
-                game.IsDeploymentAllowed = false; //todo: separate method
-            }
-            else
-            {
-                game.IsDeploymentAllowed = true; //todo: separate method
-            }
-
-            if (game.IsDeploymentAllowed && game.Players[0].IsDeployed && game.Players[1].IsDeployed)
-            {
-                game.IsStartAllowed = true; //todo: separate method
-            }
-            else
-            {
-                game.IsStartAllowed = false; //todo: separate method
-            }
-
             foreach (Player player in game.Players)
             {
-                if (!string.IsNullOrEmpty(player.UserName))
-                {
-                    if (player.UserName != "COMPUTER")
-                    {
-                        string id = GetConnectionId(player.UserName);
-                        await clients.Client(id).SendAsync("ReceiveGameState", game);
-                    }
-
-                }
+                await _sender.SendGameState(player.UserName, game, clients);
             }
         }
 
-        public async Task SendChatMessageToUsersInGame(string message, string[] playersNames, IHubCallerClients clients, HubCallerContext context)
+        public async Task SendChatMessageToUsersInGame(string message, string[] playerNames, IHubCallerClients clients)
         {
-            foreach (string name in playersNames)
+            foreach (string name in playerNames)
             {
-                await SendChatMesssage(name, message, clients, context);
+                await _sender.SendChatMesssage(name, message, clients);
             }
-        }
-
-        private async Task SendChatMesssage(string name, string message, IHubCallerClients clients, HubCallerContext context)
-        {
-            if (!string.IsNullOrEmpty(name))
-            {
-                if (name != "COMPUTER")
-                {
-                    string id = GetConnectionId(name);
-                    await clients.Client(id).SendAsync("ReceiveChatMessage", GenerateChatMessageAsync(message, context));
-                }
-            }
-        }
-
-        private async Task<ChatMessageViewModel> GenerateChatMessageAsync(string message, HubCallerContext context)
-        {
-            string displayName = await GetUserDisplayById(context.User.Identity.Name);
-            string userName = await GetUserName(context.User.Identity.Name);
-
-
-            return new ChatMessageViewModel()
-            {
-                DisplayName = displayName,
-                Message = message,
-                UserName = userName,
-                Time = DateTime.UtcNow.ToLongTimeString()
-            };
-        }
-
-        //todo: move to user service
-        private string GetConnectionId(string name)
-        {
-            Dictionary<string, string> ids = _cache.GetUserConnectionIdList();
-            return ids[name];
-        }
-
-        //todo: move to user service
-        private async Task<string> GetUserName(string id)
-        {
-            return await _userService.GetUserNameById(id);
-        }
-
-        //todo: move to user service
-        private async Task<string> GetUserDisplayById(string id)
-        {
-            return await _userService.GetUserDisplayById(id);
         }
     }
 }

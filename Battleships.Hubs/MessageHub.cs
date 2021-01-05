@@ -24,16 +24,15 @@ namespace Battleships.Hubs
             _gameService = gameService;
         }
 
-        public async Task SendChatMessage(string message, string[] playersNames)
+        public async Task SendChatMessage(string message, string[] playerNames)
         {
-            await _messenger.SendChatMessageToUsersInGame(message, playersNames, Clients, Context);
+            await _messenger.SendChatMessageToUsersInGame(message, playerNames, Clients);
         }
 
         public async Task SendGameState(GameStateModel game)
         {
-            _gameService.UpdateExistingGame(game);
 
-            await _messenger.SendGameStateToUsersInGame(game, Clients);
+            await _gameService.UpdateGame(game, Clients);
         }
 
         public override async Task OnConnectedAsync()
@@ -56,6 +55,7 @@ namespace Battleships.Hubs
             _memoryAccess.SetConnectionIdList(ids);
 
             List<GameStateModel> playersGames = _gameService.GetPlayersGames(userName);
+            playersGames = _gameService.RemovePlayerFromGames(playersGames, userName);
             await MessageAllPlayersInAllGames(playersGames);
             await RemoveEmptyGames(playersGames);
         }
@@ -72,9 +72,9 @@ namespace Battleships.Hubs
         {
             foreach (GameStateModel game in playersGames)
             {
-                string[] playersNames = new string[] { game.Players[0].UserName, game.Players[1].UserName };
+                string[] playerNames = new string[] { game.Players[0].UserName, game.Players[1].UserName };
 
-                await _messenger.SendChatMessageToUsersInGame("Left the game.", playersNames, Clients, Context);
+                await _messenger.SendChatMessageToUsersInGame("Left the game.", playerNames, Clients);
             }
         }
     }

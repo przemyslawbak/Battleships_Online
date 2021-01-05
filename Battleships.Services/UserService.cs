@@ -144,12 +144,6 @@ namespace Battleships.Services
             return user.UserName;
         }
 
-        public async Task<string> GetUserDisplayById(string id)
-        {
-            AppUser user = await _userManager.FindByIdAsync(id);
-            return user.DisplayName;
-        }
-
         public async Task<bool> UpdateUser(EditUserViewModel model)
         {
             AppUser user = await _userManager.FindByNameAsync(model.UserName);
@@ -191,6 +185,12 @@ namespace Battleships.Services
                 Email = model.Email,
                 DisplayName = model.DisplayName
             };
+        }
+
+        public async Task<string> GetUserDisplayByName(string name)
+        {
+            AppUser user = await _userManager.FindByNameAsync(name);
+            return user.DisplayName;
         }
     }
 }
