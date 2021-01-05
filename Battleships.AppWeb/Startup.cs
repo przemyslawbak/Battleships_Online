@@ -120,6 +120,7 @@ namespace Battleships_Online
             services.AddTransient<IHttpClientProvider, HttpClientProvider>();
             services.AddTransient<IMemoryAccess, MemoryAccess>();
             services.AddTransient<IMessenger, Messenger>();
+            services.AddTransient<ISender, Sender>();
             services.AddTransient<IGameService, GameService>();
             services.AddScoped<ValidateModelAttribute>();
             services.AddScoped<SanitizeModelAttribute>();

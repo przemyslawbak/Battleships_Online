@@ -7,9 +7,11 @@ OK - http serice:
 OK - security service:
 	OK - .pipe(delay(5000)) w security service?
 OK - backend:
+	OK - bug: signal-r disconnects on chat message being sent,
 	- game service unit testing,
 	- memory access unit testing,
 	- messenger unit testing,
+	- sender unit testing,
 	OK - refactoring hub
 	- verify proper use of DAL and repo,
 	OK - helpers unit testing,
@@ -265,6 +267,7 @@ OK - in game-play component:
 	OK - adjust: when displaying hit result, do not allow to fire,
 	OK - adjust: what if shooting cell already shot?
 OK - single player:
+	OK - in signal-r service sending chat mesages only when multiplayer game,
 	OK - AI levels - add some ai features each level - easy difficulty: only random, medium difficulty: without `avoid`, hard difficulty: all,
 	OK - style: game status, content close to the edge,
 	OK - if game-start to ai game? will be allowed?
