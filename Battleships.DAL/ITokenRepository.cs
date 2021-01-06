@@ -8,5 +8,7 @@
         void AddBlacklistedToken(string token);
         bool IsTokenBlacklisted(string currentToken);
         void CleanUpBlacklistedTokens(int hoursKeepBlacklistedTokend);
+        void RemoveToken(string email);
+        bool IsTokenSaved(string email);
     }
 }

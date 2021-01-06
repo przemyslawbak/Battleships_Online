@@ -39,14 +39,7 @@ namespace Battleships.DAL
 
         public void SaveRefreshToken(string refreshToken, string email, string ip)
         {
-            bool emailExists = _context.RefreshTokens.Any(tokens => tokens.Email == email);
-
-            if (emailExists)
-            {
-                _context.RefreshTokens.Remove(_context.RefreshTokens.First(tokens => tokens.Email == email));
-            }
-
-            if (ip == "0.0.0.1") ip = "127.0.0.1";
+            ip = CheckIp(ip);
 
             _context.RefreshTokens.Add(new RefreshToken() { IpAddress = ip, Token = refreshToken, Email = email });
             _context.SaveChanges();
@@ -54,16 +47,34 @@ namespace Battleships.DAL
 
         public bool VerifyReceivedToken(string refreshToken, string email, string ip)
         {
-            if (ip == "0.0.0.1") ip = "127.0.0.1";
-            System.Collections.Generic.List<RefreshToken> list = _context.RefreshTokens.ToList();
-            bool verify = _context.RefreshTokens.Any(tokens => tokens.Token == refreshToken && tokens.IpAddress == ip && tokens.Email == email);
+            ip = CheckIp(ip);
 
-            return verify;
+            return _context.RefreshTokens.Any(tokens => tokens.Token == refreshToken && tokens.IpAddress == ip && tokens.Email == email);
         }
 
         public bool IsTokenBlacklisted(string currentToken)
         {
             return _context.BlacklistedTokens.Any(token => token.Token == currentToken);
+        }
+
+        public void RemoveToken(string email)
+        {
+            if (IsTokenSaved(email))
+            {
+                _context.RefreshTokens.Remove(_context.RefreshTokens.First(tokens => tokens.Email == email));
+            }
+        }
+
+        public bool IsTokenSaved(string email)
+        {
+            return _context.RefreshTokens.Any(tokens => tokens.Email == email);
+        }
+
+        private string CheckIp(string ip)
+        {
+            if (ip == "0.0.0.1") ip = "127.0.0.1";
+
+            return ip;
         }
     }
 }

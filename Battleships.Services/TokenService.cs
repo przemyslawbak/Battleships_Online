@@ -91,7 +91,7 @@ namespace Battleships.Services
             string encodedToken = new JwtSecurityTokenHandler().WriteToken(token);
             string refreshToken = GenerateRefreshToken();
 
-            _tokenRepo.SaveRefreshToken(refreshToken, user.Email, ip);
+            SaveToken(user.Email, refreshToken, ip);
 
             return new TokenResponseViewModel()
             {
@@ -107,6 +107,12 @@ namespace Battleships.Services
         public bool IsTokenBlacklisted(string currentToken)
         {
             return _tokenRepo.IsTokenBlacklisted(currentToken);
+        }
+
+        private void SaveToken(string email, string refreshToken, string ip)
+        {
+            _tokenRepo.RemoveToken(email);
+            _tokenRepo.SaveRefreshToken(refreshToken, email, ip);
         }
 
         private string GenerateRefreshToken()
