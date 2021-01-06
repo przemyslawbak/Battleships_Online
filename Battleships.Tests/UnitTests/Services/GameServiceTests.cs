@@ -1,8 +1,10 @@
 ﻿using Battleships.Models;
 using Battleships.Models.ViewModels;
 using Battleships.Services;
+using Microsoft.AspNetCore.SignalR;
 using Moq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Battleships.Tests.UnitTests.Services
@@ -79,10 +81,24 @@ namespace Battleships.Tests.UnitTests.Services
 
         //RemoveGameIfEmpty
 
+        [Theory]
+        [InlineData("", "", 0, 1)]
+        [InlineData("", "UserName", 1, 0)]
+        [InlineData("UserName", "", 1, 0)]
+        [InlineData("COMPUTER", "", 0, 1)]
+        [InlineData("", "COMPUTER", 0, 1)]
+        [InlineData("UserName", "COMPUTER", 1, 0)]
+        [InlineData("COMPUTER", "UserName", 1, 0)]
+        private async Task RemoveGameIfEmpty_OnUserNameValues_ReturnsListItems(string user0Name, string user1Name, int gameNotEmpty, int gameEmpty)
+        {
+            GameStateModel game = new GameStateModel() { Players = new Player[] { new Player() { UserName = user0Name }, new Player() { UserName = user1Name } }, GameId = 666 };
+            Mock<IHubCallerClients> clientsMock = new Mock<IHubCallerClients>();
 
+            await _service.RemoveGameIfEmpty(game, clientsMock.Object);
 
-        //UpdateGame
-        //todo:
-
+            _cacheMock.Verify(mock => mock.RemoveGameFromMemory(game.GameId), Times.Exactly(gameEmpty));
+            _cacheMock.Verify(mock => mock.UpdateGame(game, clientsMock.Object), Times.Exactly(gameNotEmpty));
+            _messengerMock.Verify(mock => mock.SendGameStateToUsersInGame(game, clientsMock.Object), Times.Exactly(gameNotEmpty));
+        }
     }
 }

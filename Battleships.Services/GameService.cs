@@ -63,7 +63,7 @@ namespace Battleships.Services
 
             if (IsGameEmpty(playerNames))
             {
-                _memoryAccess.RemoveGameFromCacheGameList(game.GameId);
+                _memoryAccess.RemoveGameFromMemory(game.GameId);
             }
             else
             {
