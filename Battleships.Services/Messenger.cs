@@ -1,5 +1,6 @@
 ﻿using Battleships.Models;
 using Microsoft.AspNetCore.SignalR;
+using System;
 using System.Threading.Tasks;
 
 namespace Battleships.Services
@@ -24,7 +25,10 @@ namespace Battleships.Services
 
             foreach (Player player in game.Players)
             {
-                await _sender.SendGameState(player.UserName, game, clients);
+                if (IsValidUserName(player.UserName))
+                {
+                    await _sender.SendGameState(player.UserName, game, clients);
+                }
             }
         }
 
@@ -32,8 +36,24 @@ namespace Battleships.Services
         {
             foreach (string name in playerNames)
             {
-                await _sender.SendChatMesssage(name, message, clients);
+                if (IsValidUserName(name))
+                {
+                    await _sender.SendChatMesssage(name, message, clients);
+                }
             }
+        }
+
+        private bool IsValidUserName(string name)
+        {
+            if (!string.IsNullOrEmpty(name))
+            {
+                if (name != "COMPUTER")
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

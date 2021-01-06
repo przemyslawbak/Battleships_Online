@@ -20,27 +20,15 @@ namespace Battleships.Services
 
         public async Task SendGameState(string name, GameStateModel game, IHubCallerClients clients)
         {
-            if (!string.IsNullOrEmpty(name))
-            {
-                if (name != "COMPUTER")
-                {
-                    string id = GetConnectionId(name);
-                    await clients.Client(id).SendAsync("ReceiveGameState", game);
-                }
-            }
+            string id = GetConnectionId(name);
+            await clients.Client(id).SendAsync("ReceiveGameState", game);
         }
 
         public async Task SendChatMesssage(string name, string message, IHubCallerClients clients)
         {
-            if (!string.IsNullOrEmpty(name))
-            {
-                if (name != "COMPUTER")
-                {
-                    string id = GetConnectionId(name);
-                    ChatMessageViewModel model = await GenerateChatMessageAsync(message, name);
-                    await clients.Client(id).SendAsync("ReceiveChatMessage", model);
-                }
-            }
+            string id = GetConnectionId(name);
+            ChatMessageViewModel model = await GenerateChatMessageAsync(message, name);
+            await clients.Client(id).SendAsync("ReceiveChatMessage", model);
         }
 
         private string GetConnectionId(string name)

@@ -16,6 +16,7 @@ namespace Battleships.DAL
         public bool AddWonGame(GameWinner model)
         {
             AppUser user = _context.Users.Where(u => u.UserName == model.UserName).FirstOrDefault();
+
             if (user == null)
             {
                 return false;
