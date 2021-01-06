@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Battleships.Services
 {
@@ -58,17 +57,6 @@ namespace Battleships.Services
         public GameStateModel GetGameById(int id)
         {
             return GetGameList().Where(g => g.GameId == id).FirstOrDefault();
-        }
-
-        public void RemoveGameFromCacheGameList(int gameId)
-        {
-            List<GameStateModel> games = GetGameList();
-            GameStateModel game = GetGameList().Where(g => g.GameId == gameId).FirstOrDefault();
-            if (game != null)
-            {
-                games.Remove(game);
-                SetGameList(games);
-            }
         }
 
         public GameStateModel UpdateGame(GameStateModel game, IHubCallerClients clients)
