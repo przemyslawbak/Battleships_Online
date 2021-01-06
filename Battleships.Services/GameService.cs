@@ -9,13 +9,15 @@ namespace Battleships.Services
 {
     public class GameService : IGameService
     {
+        private readonly IUserNameValidator _nameValidator;
         private readonly IMemoryAccess _memoryAccess;
         private readonly IMessenger _messenger;
 
-        public GameService(IMemoryAccess memoryAccess, IMessenger messenger)
+        public GameService(IMemoryAccess memoryAccess, IMessenger messenger, IUserNameValidator nameValidator)
         {
             _memoryAccess = memoryAccess;
             _messenger = messenger;
+            _nameValidator = nameValidator;
         }
 
         public List<GameListedViewModel> RemoveEmptyGames(List<GameListedViewModel> list)
@@ -24,7 +26,7 @@ namespace Battleships.Services
             {
                 string[] playerNames = new string[] { list[i].Players[0], list[i].Players[1] };
 
-                if (IsGameEmpty(playerNames))
+                if (_nameValidator.IsGameEmpty(playerNames))
                 {
                     _memoryAccess.RemoveGameFromMemory(list[i].GameId);
                     list.Remove(list[i]);
@@ -61,7 +63,7 @@ namespace Battleships.Services
         {
             string[] playerNames = new string[] { game.Players[0].UserName, game.Players[1].UserName };
 
-            if (IsGameEmpty(playerNames))
+            if (_nameValidator.IsGameEmpty(playerNames))
             {
                 _memoryAccess.RemoveGameFromMemory(game.GameId);
             }
@@ -70,26 +72,6 @@ namespace Battleships.Services
                 _memoryAccess.UpdateGame(game, clients);
                 await _messenger.SendGameStateToUsersInGame(game, clients);
             }
-        }
-
-        private bool IsGameEmpty(string[] playerNames)
-        {
-            if (playerNames[0] == "" && playerNames[1] == "")
-            {
-                return true;
-            }
-
-            if (playerNames[0] == "COMPUTER" && string.IsNullOrEmpty(playerNames[1]))
-            {
-                return true;
-            }
-
-            if (string.IsNullOrEmpty(playerNames[0]) && playerNames[1] == "COMPUTER")
-            {
-                return true;
-            }
-
-            return false;
         }
     }
 }

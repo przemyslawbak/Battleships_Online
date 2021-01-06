@@ -13,31 +13,32 @@ namespace Battleships.Tests.UnitTests.Services
     {
         private readonly Mock<IMemoryAccess> _cacheMock;
         private readonly Mock<IMessenger> _messengerMock;
+        private readonly Mock<IUserNameValidator> _nameValidatorMock;
         private readonly GameService _service;
 
         public GameServiceTests()
         {
             _cacheMock = new Mock<IMemoryAccess>();
             _messengerMock = new Mock<IMessenger>();
+            _nameValidatorMock = new Mock<IUserNameValidator>();
 
-            _service = new GameService(_cacheMock.Object, _messengerMock.Object);
+            _service = new GameService(_cacheMock.Object, _messengerMock.Object, _nameValidatorMock.Object);
         }
 
         //RemoveEmptyGames
 
         [Theory]
-        [InlineData("", "", 0)]
-        [InlineData("", "UserName", 1)]
-        [InlineData("UserName", "", 1)]
-        [InlineData("COMPUTER", "", 0)]
-        [InlineData("", "COMPUTER", 0)]
-        [InlineData("UserName", "COMPUTER", 1)]
-        [InlineData("COMPUTER", "UserName", 1)]
-        private void RemoveEmptyGames_OnUserNameValues_ReturnsListItems(string user0Name, string user1Name, int expected)
+        [InlineData(false, 1)]
+        [InlineData(true, 0)]
+        private void RemoveEmptyGames_OnUserNameValues_ReturnsListItems(bool isGameEmpty, int expected)
         {
-            GameListedViewModel game = new GameListedViewModel() { Players = new string[] { user0Name, user1Name } };
+            string userName = "player_one_userName";
+            string otherName = "player_one_otherName";
+            GameListedViewModel game = new GameListedViewModel() { Players = new string[] { userName, otherName } };
             List<GameListedViewModel> games = new List<GameListedViewModel>();
             games.Add(game);
+            string[] players = new string[] { game.Players[0], game.Players[1] };
+            _nameValidatorMock.Setup(mock => mock.IsGameEmpty(players)).Returns(isGameEmpty);
 
             List<GameListedViewModel> result = _service.RemoveEmptyGames(games);
 
@@ -82,17 +83,16 @@ namespace Battleships.Tests.UnitTests.Services
         //RemoveGameIfEmpty
 
         [Theory]
-        [InlineData("", "", 0, 1)]
-        [InlineData("", "UserName", 1, 0)]
-        [InlineData("UserName", "", 1, 0)]
-        [InlineData("COMPUTER", "", 0, 1)]
-        [InlineData("", "COMPUTER", 0, 1)]
-        [InlineData("UserName", "COMPUTER", 1, 0)]
-        [InlineData("COMPUTER", "UserName", 1, 0)]
-        private async Task RemoveGameIfEmpty_OnUserNameValues_ReturnsListItems(string user0Name, string user1Name, int gameNotEmpty, int gameEmpty)
+        [InlineData(false, 1, 0)]
+        [InlineData(true, 0, 1)]
+        private async Task RemoveGameIfEmpty_OnUserNameValues_ReturnsListItems(bool isGameEmpty, int gameNotEmpty, int gameEmpty)
         {
+            string user0Name = "player_0_userName";
+            string user1Name = "player_1_userName";
             GameStateModel game = new GameStateModel() { Players = new Player[] { new Player() { UserName = user0Name }, new Player() { UserName = user1Name } }, GameId = 666 };
             Mock<IHubCallerClients> clientsMock = new Mock<IHubCallerClients>();
+            string[] players = new string[] { game.Players[0].UserName, game.Players[1].UserName };
+            _nameValidatorMock.Setup(mock => mock.IsGameEmpty(players)).Returns(isGameEmpty);
 
             await _service.RemoveGameIfEmpty(game, clientsMock.Object);
 
