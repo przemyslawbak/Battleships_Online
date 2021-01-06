@@ -12,7 +12,5 @@ namespace Battleships.Services
         List<GameStateModel> GetPlayersGames(string userName);
         Task RemoveGameIfEmpty(GameStateModel game, Microsoft.AspNetCore.SignalR.IHubCallerClients clients);
         List<GameStateModel> RemovePlayerFromGames(List<GameStateModel> playersGames, string userName);
-        GameStateModel UpdateDeploymentAndStartAllowed(GameStateModel game);
-        Task UpdateGame(GameStateModel game, IHubCallerClients clients);
     }
 }

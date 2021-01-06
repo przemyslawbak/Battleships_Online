@@ -1,6 +1,5 @@
 ﻿using Battleships.Models;
 using Microsoft.AspNetCore.SignalR;
-using System;
 using System.Threading.Tasks;
 
 namespace Battleships.Services

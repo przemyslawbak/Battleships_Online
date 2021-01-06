@@ -42,16 +42,46 @@ namespace Battleships.Tests.UnitTests.Services
             Assert.Equal(expected, result.Count);
         }
 
-        //UpdateExistingGame
-        //todo:
-
-        //RemoveGameFromCacheGameList
-        //todo:
-
         //RemovePlayerFromGames
-        //todo:
+
+        [Fact]
+        private void RemovePlayerFromGames_OnPlayerInGame_RemovesPlayerNames()
+        {
+            string userName = "player_one_userName";
+            string displayName = "player_one_displayName";
+            List<GameStateModel> playersGames = new List<GameStateModel>()
+            {
+                new GameStateModel() { Players = new Player[] {new Player() { UserName = userName, DisplayName = displayName } }}
+            };
+
+            List<GameStateModel> result = _service.RemovePlayerFromGames(playersGames, userName);
+
+            Assert.Empty(result[0].Players[0].UserName);
+            Assert.Empty(result[0].Players[0].DisplayName);
+        }
+
+        [Fact]
+        private void RemovePlayerFromGames_OnPlayerNotInGame_NotRemovesPlayerNames()
+        {
+            string userName = "player_one_userName";
+            string otherName = "player_other_userName";
+            string displayName = "player_one_displayName";
+            List<GameStateModel> playersGames = new List<GameStateModel>()
+            {
+                new GameStateModel() { Players = new Player[] {new Player() { UserName = otherName, DisplayName = displayName } }}
+            };
+
+            List<GameStateModel> result = _service.RemovePlayerFromGames(playersGames, userName);
+
+            Assert.Equal(otherName, result[0].Players[0].UserName);
+            Assert.Equal(displayName, result[0].Players[0].DisplayName);
+        }
 
         //RemoveGameIfEmpty
+
+
+
+        //UpdateGame
         //todo:
 
     }

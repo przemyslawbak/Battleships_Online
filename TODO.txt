@@ -7,9 +7,10 @@ OK - http serice:
 OK - security service:
 	OK - .pipe(delay(5000)) w security service?
 OK - backend:
+	- game service unit testing,
+	OK - clean up models / vm,
 	- verify proper use of DAL and repo,
 	OK - bug: signal-r disconnects on chat message being sent,
-	- game service unit testing,
 	- memory access unit testing,
 	- messenger unit testing,
 	NO - sender unit testing,

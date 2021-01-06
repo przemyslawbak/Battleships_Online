@@ -1,7 +1,9 @@
 ﻿using Battleships.Models;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Battleships.Services
 {
@@ -58,10 +60,69 @@ namespace Battleships.Services
             return GetGameList().Where(g => g.GameId == id).FirstOrDefault();
         }
 
+        public void RemoveGameFromCacheGameList(int gameId)
+        {
+            List<GameStateModel> games = GetGameList();
+            GameStateModel game = GetGameList().Where(g => g.GameId == gameId).FirstOrDefault();
+            if (game != null)
+            {
+                games.Remove(game);
+                SetGameList(games);
+            }
+        }
+
+        public GameStateModel UpdateGame(GameStateModel game, IHubCallerClients clients)
+        {
+            game = UpdateDeploymentAndStartAllowed(game);
+            UpdateExistingGame(game);
+
+            return game;
+        }
+
         public static class CacheKeys
         {
             public static string GameList { get { return "_GameList"; } }
             public static string ConnectionIdList { get { return "_ConnectionIdList"; } }
+        }
+
+        private GameStateModel UpdateDeploymentAndStartAllowed(GameStateModel game)
+        {
+            game.IsDeploymentAllowed = IsDeploymentAllowed(game.Players);
+            game.IsStartAllowed = IsStartAllowed(game.IsDeploymentAllowed, game.Players);
+
+            return game;
+        }
+
+        private bool IsStartAllowed(bool isDeploymentAllowed, Player[] players)
+        {
+            if (isDeploymentAllowed && players[0].IsDeployed && players[1].IsDeployed)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool IsDeploymentAllowed(Player[] players)
+        {
+            if (string.IsNullOrEmpty(players[0].UserName) || string.IsNullOrEmpty(players[1].UserName))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private void UpdateExistingGame(GameStateModel game)
+        {
+            List<GameStateModel> games = GetGameList();
+            GameStateModel thisGame = games.Where(g => g.GameId == game.GameId).FirstOrDefault();
+            if (thisGame != null)
+            {
+                games.Remove(thisGame);
+            }
+            games.Add(game);
+            SetGameList(games);
         }
     }
 }
