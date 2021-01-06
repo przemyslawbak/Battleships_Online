@@ -3,7 +3,6 @@ using Ganss.XSS;
 
 namespace Battleships.Services
 {
-    //todo: mock sanitizer
     public class InputSanitizer : IInputSanitizer
     {
         private readonly HtmlSanitizer _sanitizer;
@@ -17,11 +16,6 @@ namespace Battleships.Services
             return _sanitizer.Sanitize(input);
         }
 
-        /// <summary>
-        /// Sanitizing user inputs
-        /// </summary>
-        /// <param name="userRegisterVm">Passed user vm</param>
-        /// <returns>Sanitized user vm</returns>
         public UserRegisterViewModel SanitizeRegisteringUserInputs(UserRegisterViewModel userRegisterVm)
         {
             return new UserRegisterViewModel()

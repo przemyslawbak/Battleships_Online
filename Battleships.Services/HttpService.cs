@@ -20,13 +20,6 @@ namespace Battleships.Services
             _httpClient = httpClient;
             _sharedHttpClient = _httpClient.GetHttpClient();
         }
-
-        /// <summary>
-        /// Verifies if passed captchaToken is correct by sending HTTP request to the Goole Web Api, together with extracted IP address and secret string.
-        /// </summary>
-        /// <param name="captchaToken">String captchaToken.</param>
-        /// <param name="ip">String IP address.</param>
-        /// <returns>Boolean captcha token verification.</returns>
         public async Task<bool> VerifyCaptchaAsync(string captchaToken, string ip)
         {
             string secret = _configuration["ReCaptcha3:SecretKey"];
@@ -42,13 +35,6 @@ namespace Battleships.Services
             return false;
         }
 
-        /// <summary>
-        /// Gets captcha token verification response.
-        /// </summary>
-        /// <param name="captchaToken">String captchaToken.</param>
-        /// <param name="ip">String IP address.</param>
-        /// <param name="secret">String Google API secret.</param>
-        /// <returns>RecaptchaVerificationResponseModel</returns>
         private async Task<RecaptchaVerificationResponseModel> GetCaptchaResponseAsync(string captchaToken, string ip, string secret)
         {
             Dictionary<string, string> values = new Dictionary<string, string>

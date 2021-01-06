@@ -5,16 +5,16 @@ namespace Battleships.Tests.UnitTests.Services
 {
     public class MessengerTests
     {
-        private readonly Mock<IUserService> _userServiceMock;
+        private readonly Mock<ISender> _senderMock;
         private readonly Mock<IMemoryAccess> _cacheMock;
         private readonly Messenger _service;
 
         public MessengerTests()
         {
-            _userServiceMock = new Mock<IUserService>();
+            _senderMock = new Mock<ISender>();
             _cacheMock = new Mock<IMemoryAccess>();
 
-            _service = new Messenger(_userServiceMock.Object, _cacheMock.Object);
+            _service = new Messenger(_cacheMock.Object, _senderMock.Object);
         }
 
         //SendGameStateToUsersInGame

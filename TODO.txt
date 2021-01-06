@@ -7,13 +7,13 @@ OK - http serice:
 OK - security service:
 	OK - .pipe(delay(5000)) w security service?
 OK - backend:
+	- verify proper use of DAL and repo,
 	OK - bug: signal-r disconnects on chat message being sent,
 	- game service unit testing,
 	- memory access unit testing,
 	- messenger unit testing,
 	- sender unit testing,
 	OK - refactoring hub
-	- verify proper use of DAL and repo,
 	OK - helpers unit testing,
 	OK - controllers unit testing,
 	NO - validate all api models - https://stackoverflow.com/a/55101315,

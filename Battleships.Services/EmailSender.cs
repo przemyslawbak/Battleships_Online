@@ -14,13 +14,6 @@ namespace Battleships.Services
             _configuration = configuration;
         }
 
-        /// <summary>
-        /// Method is sending an email with provided message.
-        /// </summary>
-        /// <param name="email">Email address to be sent to.</param>
-        /// <param name="subject">Message subject.</param>
-        /// <param name="message">Message body.</param>
-        /// <returns>Boolean if sent successfully or not.</returns>
         public async Task<bool> SendEmailAsync(string email, string subject, string message)
         {
             MimeMessage msg = PrepareMesaage(message, subject, email);
@@ -28,11 +21,6 @@ namespace Battleships.Services
             return await SendViaClientAsync(msg);
         }
 
-        /// <summary>
-        /// Executes sending of previously prepared message.
-        /// </summary>
-        /// <param name="msg">MimeMessage object.</param>
-        /// <returns>Boolean if sent successfully or not.</returns>
         private async Task<bool> SendViaClientAsync(MimeMessage msg)
         {
             try
@@ -54,13 +42,6 @@ namespace Battleships.Services
             }
         }
 
-        /// <summary>
-        /// Prepares message to be sent.
-        /// </summary>
-        /// <param name="message">Message body string.</param>
-        /// <param name="subject">Message subject.</param>
-        /// <param name="email">An email address to be sent to.</param>
-        /// <returns>MimeMessage object.</returns>
         private MimeMessage PrepareMesaage(string message, string subject, string email)
         {
             MimeMessage mailMessage = new MimeMessage();

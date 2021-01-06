@@ -40,12 +40,7 @@ namespace Battleships.Services
 
             IdentityResult update = await _userManager.UpdateAsync(user);
 
-            if (!update.Succeeded)
-            {
-                return false;
-            }
-
-            return true;
+            return update.Succeeded;
         }
 
         public string GenerateRandomPassword()
@@ -79,12 +74,7 @@ namespace Battleships.Services
 
             IdentityResult update = await _userManager.UpdateAsync(user);
 
-            if (!update.Succeeded)
-            {
-                return false;
-            }
-
-            return true;
+            return update.Succeeded;
         }
 
         public string GenerateUsername(string userName)
@@ -158,12 +148,7 @@ namespace Battleships.Services
 
             IdentityResult update = await _userManager.UpdateAsync(user);
 
-            if (!update.Succeeded)
-            {
-                return false;
-            }
-
-            return true;
+            return update.Succeeded;
         }
 
         public bool AddWonGame(GameWinner model)
