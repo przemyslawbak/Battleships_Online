@@ -31,7 +31,7 @@ namespace Battleships.Hubs
 
         public async Task SendGameState(GameStateModel game)
         {
-            _memoryAccess.UpdateGame(game, Clients);
+            _memoryAccess.UpdateGame(game);
             await _messenger.SendGameStateToUsersInGame(game, Clients);
         }
 

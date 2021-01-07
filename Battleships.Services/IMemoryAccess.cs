@@ -13,6 +13,6 @@ namespace Battleships.Services
         void SetConnectionIdList(Dictionary<string, object> ids);
         void RemoveGameFromMemory(int gameId);
         GameStateModel GetGameById(int id);
-        GameStateModel UpdateGame(GameStateModel game, IHubCallerClients clients);
+        GameStateModel UpdateGame(GameStateModel game);
     }
 }

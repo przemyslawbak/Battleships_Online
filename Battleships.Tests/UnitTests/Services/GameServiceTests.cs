@@ -97,7 +97,7 @@ namespace Battleships.Tests.UnitTests.Services
             await _service.RemoveGameIfEmpty(game, clientsMock.Object);
 
             _cacheMock.Verify(mock => mock.RemoveGameFromMemory(game.GameId), Times.Exactly(gameEmpty));
-            _cacheMock.Verify(mock => mock.UpdateGame(game, clientsMock.Object), Times.Exactly(gameNotEmpty));
+            _cacheMock.Verify(mock => mock.UpdateGame(game), Times.Exactly(gameNotEmpty));
             _messengerMock.Verify(mock => mock.SendGameStateToUsersInGame(game, clientsMock.Object), Times.Exactly(gameNotEmpty));
         }
     }

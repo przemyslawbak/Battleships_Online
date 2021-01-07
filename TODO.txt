@@ -11,7 +11,7 @@ OK - backend:
 	OK - clean up models / vm,
 	- verify proper use of DAL and repo,
 	OK - bug: signal-r disconnects on chat message being sent,
-	- memory access unit testing,
+	OK - memory access unit testing,
 	OK - messenger unit testing,
 	NO - sender unit testing,
 	OK - refactoring hub
@@ -20,7 +20,6 @@ OK - backend:
 	NO - validate all api models - https://stackoverflow.com/a/55101315,
 	OK - sanitize all api endpoints,
 	OK - Hub move to project: Hubs,
-	- back-end unit testing,
 	OK - Move helpers to helpers project,
 OK - game-setup component:
 	OK - create folder and files,

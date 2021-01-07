@@ -69,7 +69,7 @@ namespace Battleships.Services
             }
             else
             {
-                _memoryAccess.UpdateGame(game, clients);
+                _memoryAccess.UpdateGame(game);
                 await _messenger.SendGameStateToUsersInGame(game, clients);
             }
         }

@@ -1,5 +1,4 @@
 ﻿using Battleships.Models;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,7 +64,7 @@ namespace Battleships.Services
             return GetGameList().Where(g => g.GameId == id).FirstOrDefault();
         }
 
-        public GameStateModel UpdateGame(GameStateModel game, IHubCallerClients clients)
+        public GameStateModel UpdateGame(GameStateModel game)
         {
             game = UpdateDeploymentAndStartAllowed(game);
             UpdateExistingGame(game);
