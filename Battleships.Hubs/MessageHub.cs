@@ -40,7 +40,7 @@ namespace Battleships.Hubs
             string userName = await _userService.GetUserNameById(Context.User.Identity.Name);
             string connectionId = Context.ConnectionId;
 
-            Dictionary<string, string> ids = _memoryAccess.GetUserConnectionIdList();
+            Dictionary<string, object> ids = _memoryAccess.GetUserConnectionIdList();
             ids.Add(userName, connectionId);
 
             _memoryAccess.SetConnectionIdList(ids);
@@ -50,7 +50,7 @@ namespace Battleships.Hubs
         {
             string userName = await _userService.GetUserNameById(Context.User.Identity.Name);
 
-            Dictionary<string, string> ids = _memoryAccess.GetUserConnectionIdList();
+            Dictionary<string, object> ids = _memoryAccess.GetUserConnectionIdList();
             ids.Remove(userName);
             _memoryAccess.SetConnectionIdList(ids);
 

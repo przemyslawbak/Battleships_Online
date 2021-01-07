@@ -33,8 +33,8 @@ namespace Battleships.Services
 
         private string GetConnectionId(string name)
         {
-            Dictionary<string, string> ids = _cache.GetUserConnectionIdList();
-            return ids[name];
+            Dictionary<string, object> ids = _cache.GetUserConnectionIdList();
+            return ids[name].ToString();
         }
 
         private async Task<ChatMessageViewModel> GenerateChatMessageAsync(string message, string name)

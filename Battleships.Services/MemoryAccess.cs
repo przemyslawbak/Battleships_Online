@@ -6,6 +6,12 @@ using System.Linq;
 
 namespace Battleships.Services
 {
+    public static class CacheKeys
+    {
+        public static string GameList { get { return "_GameList"; } }
+        public static string ConnectionIdList { get { return "_ConnectionIdList"; } }
+    }
+
     public class MemoryAccess : IMemoryAccess
     {
         private IMemoryCache _cache;
@@ -15,18 +21,18 @@ namespace Battleships.Services
             _cache = memoryCache;
         }
 
-        public Dictionary<string, string> GetUserConnectionIdList()
+        public Dictionary<string, object> GetUserConnectionIdList()
         {
-            if (!_cache.TryGetValue(CacheKeys.ConnectionIdList, out Dictionary<string, string> result))
+            if (!_cache.TryGetValue(CacheKeys.ConnectionIdList, out Dictionary<string, object> result))
             {
-                result = new Dictionary<string, string>();
+                result = new Dictionary<string, object>();
                 _cache.Set(CacheKeys.ConnectionIdList, result);
             }
 
             return result;
         }
 
-        public void SetConnectionIdList(Dictionary<string, string> list)
+        public void SetConnectionIdList(Dictionary<string, object> list)
         {
             _cache.Set(CacheKeys.ConnectionIdList, list);
         }
@@ -65,12 +71,6 @@ namespace Battleships.Services
             UpdateExistingGame(game);
 
             return game;
-        }
-
-        public static class CacheKeys
-        {
-            public static string GameList { get { return "_GameList"; } }
-            public static string ConnectionIdList { get { return "_ConnectionIdList"; } }
         }
 
         private GameStateModel UpdateDeploymentAndStartAllowed(GameStateModel game)

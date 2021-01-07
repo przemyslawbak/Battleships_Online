@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Battleships.DAL", "Battlesh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Battleships.Tests", "Battleships.Tests\Battleships.Tests.csproj", "{99526144-A677-4DD4-B52C-8A7726361062}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Battleships.Helpers", "Battleships.Helpers\Battleships.Helpers.csproj", "{1A94C6D5-11BF-4893-8D2F-F2275B351DCD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Battleships.Helpers", "Battleships.Helpers\Battleships.Helpers.csproj", "{1A94C6D5-11BF-4893-8D2F-F2275B351DCD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
