@@ -5,7 +5,7 @@ import {
   HttpRequest,
   HTTP_INTERCEPTORS,
 } from '@angular/common/http';
-import { fakeAsync, getTestBed, inject, TestBed } from '@angular/core/testing';
+import { getTestBed, inject, TestBed } from '@angular/core/testing';
 import { JtwInterceptor } from './jtw.interceptor';
 import {
   HttpClientTestingModule,
@@ -37,7 +37,7 @@ describe('JtwInterceptor', () => {
     });
 
     injector = getTestBed();
-    httpMock = injector.get(HttpTestingController);
+    httpMock = injector.inject(HttpTestingController);
   });
 
   afterEach(() => {

@@ -16,6 +16,7 @@ import { HttpClient } from '@angular/common/http';
 import { Player } from '@models/player.model';
 import { AiService } from '@services/ai.service';
 import { Coordinates } from '@models/coordinates.model';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   templateUrl: './game-play.component.html',
@@ -60,7 +61,8 @@ export class GamePlayComponent implements OnInit {
     private router: Router,
     private game: GameService,
     private signalRService: SignalRService,
-    private player: PlayerService
+    private player: PlayerService,
+    private spinner: NgxSpinnerService
   ) {}
 
   ngOnDestroy() {
@@ -217,6 +219,7 @@ export class GamePlayComponent implements OnInit {
     };
     this.http.post<any>(url, data).subscribe(() => {
       this.modalService.open('info-modal', info);
+      this.spinner.hide();
     });
   }
 

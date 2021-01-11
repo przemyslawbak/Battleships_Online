@@ -5,7 +5,6 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { catchError, switchMap, filter, take } from 'rxjs/operators';
 
@@ -18,7 +17,6 @@ export class ErrorInterceptor implements HttpInterceptor {
   constructor(
     public auth: AuthService,
     private router: Router,
-    private spinner: NgxSpinnerService,
     private modalService: ModalService,
     private securityService: SecurityService
   ) {}
@@ -97,7 +95,6 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   private genericErrorHandler(error: any) {
     this.modalService.open('info-modal', error.error);
-    this.spinner.hide();
   }
 
   protected tryGetRefreshTokenService(): Observable<boolean> {

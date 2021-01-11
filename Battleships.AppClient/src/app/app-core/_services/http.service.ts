@@ -26,6 +26,7 @@ export class HttpService {
       timeout(10000),
       catchError(() => {
         this.modalService.open('info-modal', 'Connection time out.');
+        this.spinner.hide();
         return of(null);
       })
     );
