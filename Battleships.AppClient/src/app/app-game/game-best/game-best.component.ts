@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./game-best.component.css'],
 })
 export class GameBestComponent implements OnInit {
-  public playersList: Array<BestPlayer> = [];
+  public playersList: BestPlayer[] = [];
   public note: string = 'Loading list...';
 
   constructor(

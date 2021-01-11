@@ -14,7 +14,7 @@ export class HttpService {
     private modalService: ModalService
   ) {}
 
-  public getData(url: string): Observable<HttpResponse<any>> {
+  public getData(url: string): Observable<any> {
     this.spinner.show();
     this.result = this.getResult(url);
     this.spinner.hide();
