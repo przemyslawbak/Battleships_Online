@@ -10,6 +10,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { PolicyComponent } from './policy/policy.component';
 import { FooterComponent } from './footer/footer.component';
 
+import { ErrorService } from './_services/error.service';
 import { HttpService } from '@services/http.service';
 import { ModalService } from '@services/modal.service';
 import { SecurityService } from '@services/security.service';
@@ -52,6 +53,7 @@ import { ErrorInterceptor } from './_helpers/error.interceptor';
       useClass: ErrorInterceptor,
       multi: true,
     },
+    ErrorService,
     FleetService,
     AiService,
     CommentsService,
