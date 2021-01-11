@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
+  HttpEvent,
   HttpHandler,
   HttpInterceptor,
   HttpRequest,
@@ -15,7 +16,7 @@ export class JtwInterceptor implements HttpInterceptor {
   public intercept(
     request: HttpRequest<any>,
     next: HttpHandler
-  ): Observable<any> {
+  ): Observable<HttpEvent<any>> {
     if (this.auth.isLoggedIn()) {
       request = this.auth.addAuthHeader(request);
     }

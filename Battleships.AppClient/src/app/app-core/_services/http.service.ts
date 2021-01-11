@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { catchError, timeout } from 'rxjs/operators';
@@ -14,7 +14,7 @@ export class HttpService {
     private modalService: ModalService
   ) {}
 
-  public getData(url: string): Observable<any> {
+  public getData(url: string): Observable<HttpResponse<any>> {
     this.spinner.show();
     this.result = this.getResult(url);
     this.spinner.hide();
@@ -24,7 +24,7 @@ export class HttpService {
   private getResult(url: string): Observable<any> {
     return this.http.get<any>(url).pipe(
       timeout(10000),
-      catchError((e) => {
+      catchError(() => {
         this.modalService.open('info-modal', 'Connection time out.');
         return of(null);
       })
