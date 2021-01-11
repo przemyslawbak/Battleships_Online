@@ -1,7 +1,7 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpRequest } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
@@ -118,6 +118,14 @@ export class AuthService {
     } else {
       return false;
     }
+  }
+
+  public isRoleCorrect(route: ActivatedRouteSnapshot, user: LoginResponse) {
+    if (route.data.roles && route.data.roles.indexOf(user.role) === -1) {
+      return false;
+    }
+
+    return true;
   }
 
   private getTokenResponse(url: string, data): Observable<boolean> {

@@ -1,6 +1,9 @@
 DOUBTS:
-- using user service - user manager + repo
+- using user service - user manager + repo?
+- is my DAL a DAL or Repo layer?
 - do I need method comments in service classes?
+- sanitize inputs with EF, I dont think so.
+- unit test one scenario/result if there is no logic?
 
 OK - http serice:
 	OK - http timeouts? added 10s timeout;
@@ -9,7 +12,7 @@ OK - security service:
 OK - backend:
 	OK - game service unit testing,
 	OK - clean up models / vm,
-	- verify proper use of DAL and repo,
+	OK - verify proper use of DAL and repo,
 	OK - bug: signal-r disconnects on chat message being sent,
 	OK - memory access unit testing,
 	OK - messenger unit testing,
@@ -71,7 +74,7 @@ OK - identity:
 	OK - bug 2x hits RefreshToken
 OK - misc:
 	- move front-end logic to the services
-	- front-end unit testing: https://angular.io/guide/testing + Freeman
+	OK - front-end unit testing: https://angular.io/guide/testing + Freeman
 	NO - sanitize inputs in front end?
 	OK - remove all console.log();
 	OK - favicon,
@@ -299,6 +302,7 @@ OK - single player:
 	OK - what if player wins the game? Log it,
 	OK - what if game started as a multi, but changed to be a single player? now removing from the list all single player games
 OK - sprites:
+	- Pro Angular 9 Animations examples,
 	NO - sounds for hit effects,
 	OK - create game sprite component,
 	OK - bug: explosio is not revealed, in inspector check "ng-reflect-ng-if"
