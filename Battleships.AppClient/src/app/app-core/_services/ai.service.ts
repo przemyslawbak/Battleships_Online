@@ -50,7 +50,6 @@ export class AiService {
       this.mastCounter,
       this.opponentsFleet
     );
-    console.log('have more masts? ' + haveMoreMasts);
 
     if (!haveMoreMasts) {
       this.removeShipFromArray(this.mastCounter, this.opponentsFleet);
@@ -63,7 +62,6 @@ export class AiService {
         possibleTargets
       )
     ) {
-      console.log('hit isHighDifficultyAndNoMoreMastsButHaveTargets');
       this.avoid = this.addPossibleTargetsToAvoidList(
         this.avoid,
         possibleTargets
@@ -112,14 +110,13 @@ export class AiService {
     possibleTargetsCount: number,
     mastCounter: number
   ): number {
-    console.log('hit: ' + hit);
-    console.log('possibleTargetsCount: ' + possibleTargetsCount);
-    console.log('mastCounter: ' + mastCounter);
     if (hit) {
-      return mastCounter++;
+      return mastCounter + 1;
     } else if (!hit && possibleTargetsCount == 0 && mastCounter > 0) {
       return 0;
     }
+
+    return mastCounter;
   }
 
   //todo: board list
@@ -224,8 +221,6 @@ export class AiService {
     mastCounter: number,
     opponentsFleet: number[]
   ): boolean {
-    console.log('opponentsFleet count:' + opponentsFleet.length);
-    console.log('mast count:' + mastCounter);
     let result: boolean = false;
     if (mastCounter > 0) {
       for (let i = 1; i < 4; i++) {

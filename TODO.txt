@@ -39,6 +39,7 @@ OK - footer:
 	OK - footer styles,
 	OK - fill up footer with data,
 OK - identity:
+	- bug: after refactoring helpers refresh token is not refreshed,
 	OK - external login bug: IList<string> roles = await _userManager.GetRolesAsync(user);
 	OK - bug: can not refresh token,
 	NO - ext.login change: please wait, redirecting... to please wait, verifying user...
@@ -278,7 +279,8 @@ OK - in game-play component:
 	OK - adjust: when displaying hit result, do not allow to fire,
 	OK - adjust: what if shooting cell already shot?
 OK - single player:
-	- bug: after refactoring ai-service does increase difficulty,
+	OK - bug: after refactoring ai-service does increase difficulty,
+	- bug: in board service: ERROR Error: Uncaught (in promise): TypeError: this.game.getGame() is null,
 	OK - in signal-r service sending chat mesages only when multiplayer game,
 	OK - AI levels - add some ai features each level - easy difficulty: only random, medium difficulty: without `avoid`, hard difficulty: all,
 	OK - style: game status, content close to the edge,
@@ -347,6 +349,7 @@ OK - privacy component:
 	NO - cookies popup/modal,
 	OK - link in nav menu
 OK - open games list component:
+	- bug: when can not refresh token, empty game is displayed,
 	OK - on game list load check for empty games and remove them,
 	OK - empty game slot - green,
 	OK - in chrome table first column has still wrong size,
