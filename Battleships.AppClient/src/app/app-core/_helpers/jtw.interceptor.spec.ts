@@ -1,4 +1,3 @@
-import { HttpService } from './../_services/http.service';
 import {
   HttpClient,
   HttpHeaders,
@@ -26,7 +25,6 @@ describe('JtwInterceptor', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
-        HttpService,
         {
           provide: HTTP_INTERCEPTORS,
           useClass: JtwInterceptor,
@@ -42,6 +40,10 @@ describe('JtwInterceptor', () => {
 
   afterEach(() => {
     httpMock.verify();
+  });
+
+  it('Injector_ShouldBeCreated', () => {
+    expect(injector).toBeTruthy();
   });
 
   it('intercept_OnNotLoggedInUser_ReturnsRequestWithoutAuthHeader', inject(
