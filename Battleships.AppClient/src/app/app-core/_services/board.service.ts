@@ -335,7 +335,6 @@ export class BoardService {
     shotsCommenced: BoardCell[],
     avoid: BoardCell[]
   ): BoardCell[] {
-    console.log(avoid);
     let forbidden: BoardCell[] = [];
     forbidden.push.apply(forbidden, cornerCells);
     forbidden.push.apply(forbidden, shotsMissed);

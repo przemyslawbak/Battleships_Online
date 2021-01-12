@@ -280,7 +280,7 @@ OK - in game-play component:
 	OK - adjust: what if shooting cell already shot?
 OK - single player:
 	OK - bug: after refactoring ai-service does increase difficulty,
-	- bug: in board service: ERROR Error: Uncaught (in promise): TypeError: this.game.getGame() is null,
+	OK - bug: in board service: ERROR Error: Uncaught (in promise): TypeError: this.game.getGame() is null,
 	OK - in signal-r service sending chat mesages only when multiplayer game,
 	OK - AI levels - add some ai features each level - easy difficulty: only random, medium difficulty: without `avoid`, hard difficulty: all,
 	OK - style: game status, content close to the edge,
