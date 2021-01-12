@@ -10,7 +10,7 @@ OK - error service:
 	OK - troubles with testing Handling Failed requests,
 	- add other response errors: https://dev.to/youssefzidan/handling-http-error-messages-globally-using-interceptors-and-toasters-angular-27bj,
 OK - http serice:
-	- spinners start from interceptor,
+	OK - spinners start from interceptor,
 	- use POST, PUT, GET, DELETE,
 	OK - http timeouts? added 10s timeout;
 OK - security service:
