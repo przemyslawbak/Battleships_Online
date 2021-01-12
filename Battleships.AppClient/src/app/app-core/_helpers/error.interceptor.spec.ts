@@ -1,5 +1,3 @@
-import { RouterTestingModule } from '@angular/router/testing';
-import { HttpService } from './../_services/http.service';
 import { HttpErrorResponse, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { ErrorInterceptor } from './error.interceptor';
@@ -7,6 +5,8 @@ import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
+
+import { HttpService } from './../_services/http.service';
 import { ErrorService } from '@services/error.service';
 
 describe('ErrorInterceptor', () => {
@@ -22,7 +22,7 @@ describe('ErrorInterceptor', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+      imports: [HttpClientTestingModule],
       providers: [
         HttpService,
         {

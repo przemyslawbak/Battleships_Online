@@ -1,4 +1,3 @@
-import { NgxSpinnerService } from 'ngx-spinner';
 import { Injectable } from '@angular/core';
 import {
   HttpEvent,
@@ -8,6 +7,8 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable()
 export class SpinnerInterceptor implements HttpInterceptor {
