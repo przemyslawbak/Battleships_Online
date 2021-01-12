@@ -328,7 +328,24 @@ export class BoardService {
 
     return list;
   }
-  getShipCells(dropPlace: BoardCell[]): any {
+
+  public getAllForbiddenCells(
+    cornerCells: BoardCell[],
+    shotsMissed: BoardCell[],
+    shotsCommenced: BoardCell[],
+    avoid: BoardCell[]
+  ): BoardCell[] {
+    console.log(avoid);
+    let forbidden: BoardCell[] = [];
+    forbidden.push.apply(forbidden, cornerCells);
+    forbidden.push.apply(forbidden, shotsMissed);
+    forbidden.push.apply(forbidden, shotsCommenced);
+    forbidden.push.apply(forbidden, avoid);
+
+    return forbidden;
+  }
+
+  private getShipCells(dropPlace: BoardCell[]): any {
     let list: BoardCell[] = [];
     for (let i = 0; i < dropPlace.length; i++) {
       list.push({

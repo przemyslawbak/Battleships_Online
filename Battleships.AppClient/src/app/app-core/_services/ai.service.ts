@@ -6,103 +6,239 @@ import { BoardService } from '@services/board.service';
 
 @Injectable()
 export class AiService {
-  public hit: boolean = false;
-  private opponentsFleet: number[] = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
   private mastCounter: number = 0;
+  private opponentsFleet: number[] = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
+  public hit: boolean = false;
   private avoid: BoardCell[] = [];
   constructor(private board: BoardService, private game: GameService) {}
 
   public getFireCoordinates(board: BoardCell[][]): Coordinates {
-    console.clear();
-    let hits: BoardCell[] = this.board.getCurrentHits(board); // hit cells
-    let missed: BoardCell[] = this.board.getCurrentMissed(board); //missed cells
-    let forbidden: BoardCell[] = []; //can not shoot there
-    let targets: BoardCell[] = []; //potential targets after hit
-    let isRandomCoordinateForbidden: boolean = true;
+    let shotsCommenced: BoardCell[] = this.board.getCurrentHits(board);
+    let shotsMissed: BoardCell[] = this.board.getCurrentMissed(board);
+    let cornerCells: BoardCell[] = this.board.getCornerCells(shotsCommenced);
     let randomCoordinates: Coordinates = {
       row: -1,
       col: -1,
     } as Coordinates;
-    forbidden.push.apply(forbidden, this.board.getCornerCells(hits));
-    forbidden.push.apply(forbidden, missed);
-    forbidden.push.apply(forbidden, hits);
-    forbidden.push.apply(forbidden, this.avoid);
-    targets = this.board.getPotentialTargets(forbidden, hits);
-    if (this.hit) {
-      this.mastCounter++;
-    } else if (!this.hit && targets.length == 0) {
-      if (this.mastCounter > 0) {
-        //remove ship from array
-        this.removeShipFromArray(this.mastCounter);
-        this.mastCounter = 0;
-      }
-    }
 
-    let haveMoreMasts: boolean = this.isPossibleMoreMasts();
-    if (
-      !haveMoreMasts &&
-      targets.length > 0 &&
-      this.game.getGame().gameDifficulty == 'hard'
-    ) {
-      this.avoid.push.apply(this.avoid, targets);
-    }
+    let forbiddenCells: BoardCell[] = this.board.getAllForbiddenCells(
+      cornerCells,
+      shotsMissed,
+      shotsCommenced,
+      this.avoid
+    );
 
-    //if there are targets, shooting ship, possible more masts
-    if (
-      targets.length > 0 &&
-      this.mastCounter > 0 &&
-      haveMoreMasts &&
-      (this.game.getGame().gameDifficulty == 'medium' ||
-        this.game.getGame().gameDifficulty == 'hard')
-    ) {
-      //todo: DRY
-      while (isRandomCoordinateForbidden) {
-        randomCoordinates = targets[Math.floor(Math.random() * targets.length)];
-        if (!this.checkIfRandomIsForbidden(forbidden, randomCoordinates)) {
-          isRandomCoordinateForbidden = false;
-        }
-      }
-      return {
-        row: randomCoordinates.row,
-        col: randomCoordinates.col,
-      } as Coordinates;
-    } else {
-      //todo: DRY
-      while (isRandomCoordinateForbidden) {
-        randomCoordinates = this.getRandomCoordinates();
-        if (!this.checkIfRandomIsForbidden(forbidden, randomCoordinates)) {
-          isRandomCoordinateForbidden = false;
-        }
-      }
+    let possibleTargets: BoardCell[] = this.board.getPotentialTargets(
+      forbiddenCells,
+      shotsCommenced
+    );
 
-      return randomCoordinates;
-    }
-  }
+    this.opponentsFleet = this.updateOpponentsFleet(
+      this.hit,
+      possibleTargets.length,
+      this.mastCounter,
+      this.opponentsFleet
+    );
 
-  private removeShipFromArray(mastCounter: number) {
-    const index = this.opponentsFleet.indexOf(mastCounter);
-    if (index > -1) {
-      this.opponentsFleet.splice(index, 1);
-    }
-  }
+    this.mastCounter = this.updateMastCounter(
+      this.hit,
+      possibleTargets.length,
+      this.mastCounter
+    );
 
-  private isPossibleMoreMasts(): boolean {
-    let res: boolean = false;
-    if (this.mastCounter > 0) {
-      for (let i = 1; i < 4; i++) {
-        if (this.opponentsFleet.indexOf(this.mastCounter + i) > -1) {
-          res = true;
-        }
-      }
-    }
-    if (!res) {
-      this.removeShipFromArray(this.mastCounter);
+    let haveMoreMasts: boolean = this.isPossibleMoreMasts(
+      this.mastCounter,
+      this.opponentsFleet
+    );
+    console.log('have more masts? ' + haveMoreMasts);
+
+    if (!haveMoreMasts) {
+      this.removeShipFromArray(this.mastCounter, this.opponentsFleet);
       this.mastCounter = 0;
     }
 
-    return res;
+    if (
+      this.isHighDifficultyAndNoMoreMastsButHaveTargets(
+        haveMoreMasts,
+        possibleTargets
+      )
+    ) {
+      console.log('hit isHighDifficultyAndNoMoreMastsButHaveTargets');
+      this.avoid = this.addPossibleTargetsToAvoidList(
+        this.avoid,
+        possibleTargets
+      );
+    }
+
+    if (
+      this.isShootingShipAndProperDifficulty(
+        possibleTargets,
+        haveMoreMasts,
+        this.mastCounter
+      )
+    ) {
+      randomCoordinates = this.getRandomBoardCoordinates(
+        forbiddenCells,
+        possibleTargets
+      );
+    } else {
+      let boardTargets: BoardCell[] = this.getBoardTargetArray();
+      randomCoordinates = this.getRandomBoardCoordinates(
+        forbiddenCells,
+        boardTargets
+      );
+    }
+
+    return randomCoordinates;
   }
 
+  //todo: fleet service
+  private updateOpponentsFleet(
+    hit: boolean,
+    possibleTargetsCount: number,
+    mastCounter: number,
+    opponentsFleet: number[]
+  ): number[] {
+    if (!hit && possibleTargetsCount == 0 && mastCounter > 0) {
+      return this.removeShipFromArray(mastCounter, opponentsFleet);
+    }
+
+    return opponentsFleet;
+  }
+
+  //todo: fleet service
+  private updateMastCounter(
+    hit: boolean,
+    possibleTargetsCount: number,
+    mastCounter: number
+  ): number {
+    console.log('hit: ' + hit);
+    console.log('possibleTargetsCount: ' + possibleTargetsCount);
+    console.log('mastCounter: ' + mastCounter);
+    if (hit) {
+      return mastCounter++;
+    } else if (!hit && possibleTargetsCount == 0 && mastCounter > 0) {
+      return 0;
+    }
+  }
+
+  //todo: board list
+  private addPossibleTargetsToAvoidList(
+    avoid: BoardCell[],
+    possibleTargets: BoardCell[]
+  ): BoardCell[] {
+    return avoid.push.apply(avoid, possibleTargets);
+  }
+
+  //todo: game service
+  private isHighDifficultyAndNoMoreMastsButHaveTargets(
+    haveMoreMasts: boolean,
+    possibleTargets: BoardCell[]
+  ) {
+    if (
+      !haveMoreMasts &&
+      possibleTargets.length > 0 &&
+      this.game.getGame().gameDifficulty == 'hard'
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
+  //todo: game service
+  private isShootingShipAndProperDifficulty(
+    possibleTargets: BoardCell[],
+    haveMoreMasts: boolean,
+    mastCounter: number
+  ): boolean {
+    if (
+      possibleTargets.length > 0 &&
+      mastCounter > 0 &&
+      haveMoreMasts &&
+      this.isMediumOrHighDifficulty()
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  //todo: game service
+  private isMediumOrHighDifficulty() {
+    if (
+      this.game.getGame().gameDifficulty == 'medium' ||
+      this.game.getGame().gameDifficulty == 'hard'
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
+  //todo: board service
+  private getBoardTargetArray(): BoardCell[] {
+    let list: BoardCell[] = [];
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        let cell: BoardCell = { col: i, row: j, value: 0 } as BoardCell;
+        list.push(cell);
+      }
+    }
+
+    return list;
+  }
+
+  //todo: board service
+  private getRandomBoardCoordinates(
+    forbiddenCells: BoardCell[],
+    possibleTargets: BoardCell[]
+  ): Coordinates {
+    let isRandomCoordinateForbidden: boolean = true;
+    let randomCoordinates: Coordinates;
+    while (isRandomCoordinateForbidden) {
+      randomCoordinates =
+        possibleTargets[Math.floor(Math.random() * possibleTargets.length)];
+      if (!this.checkIfRandomIsForbidden(forbiddenCells, randomCoordinates)) {
+        isRandomCoordinateForbidden = false;
+      }
+    }
+
+    return randomCoordinates;
+  }
+
+  //todo: fleet service
+  private removeShipFromArray(
+    mastCounter: number,
+    opponentsFleet: number[]
+  ): number[] {
+    const index = opponentsFleet.indexOf(mastCounter);
+    if (index > -1) {
+      opponentsFleet.splice(index, 1);
+    }
+
+    return opponentsFleet;
+  }
+
+  //todo: fleet service
+  private isPossibleMoreMasts(
+    mastCounter: number,
+    opponentsFleet: number[]
+  ): boolean {
+    console.log('opponentsFleet count:' + opponentsFleet.length);
+    console.log('mast count:' + mastCounter);
+    let result: boolean = false;
+    if (mastCounter > 0) {
+      for (let i = 1; i < 4; i++) {
+        if (opponentsFleet.indexOf(mastCounter + i) > -1) {
+          result = true;
+        }
+      }
+    }
+
+    return result;
+  }
+
+  //todo: board service
   private checkIfRandomIsForbidden(
     cells: BoardCell[],
     coord: Coordinates
@@ -114,12 +250,5 @@ export class AiService {
     }
 
     return false;
-  }
-
-  private getRandomCoordinates(): Coordinates {
-    return {
-      row: Math.floor(Math.random() * 10),
-      col: Math.floor(Math.random() * 10),
-    } as Coordinates;
   }
 }

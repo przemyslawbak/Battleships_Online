@@ -79,6 +79,8 @@ OK - identity:
 	OK - bug: if no email in DB for `forgotten pass`, freezes
 	OK - bug 2x hits RefreshToken
 OK - misc:
+	- services unit testing,
+	- components unit testing,
 	- move front-end logic to the services
 	OK - front-end unit testing: https://angular.io/guide/testing + Freeman
 	NO - sanitize inputs in front end?
@@ -276,6 +278,7 @@ OK - in game-play component:
 	OK - adjust: when displaying hit result, do not allow to fire,
 	OK - adjust: what if shooting cell already shot?
 OK - single player:
+	- bug: after refactoring ai-service does increase difficulty,
 	OK - in signal-r service sending chat mesages only when multiplayer game,
 	OK - AI levels - add some ai features each level - easy difficulty: only random, medium difficulty: without `avoid`, hard difficulty: all,
 	OK - style: game status, content close to the edge,
