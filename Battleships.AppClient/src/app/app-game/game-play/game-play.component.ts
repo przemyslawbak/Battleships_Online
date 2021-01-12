@@ -17,6 +17,7 @@ import { Player } from '@models/player.model';
 import { AiService } from '@services/ai.service';
 import { Coordinates } from '@models/coordinates.model';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { HttpService } from '@services/http.service';
 
 @Component({
   templateUrl: './game-play.component.html',
@@ -53,7 +54,7 @@ export class GamePlayComponent implements OnInit {
 
   constructor(
     private ai: AiService,
-    private http: HttpClient,
+    private http: HttpService,
     private comments: CommentsService,
     private board: BoardService,
     private auth: AuthService,
@@ -212,15 +213,12 @@ export class GamePlayComponent implements OnInit {
   }
 
   private addWonGame(info: string, winnerNumber: number): void {
-    const url = environment.apiUrl + 'api/user/winner';
     const data = {
       UserName: this.game.getGame().players[winnerNumber].userName,
       Multiplayer: this.game.getGame().gameMulti,
     };
-    this.http.post<any>(url, data).subscribe(() => {
-      this.modalService.open('info-modal', info);
-      this.spinner.hide();
-    });
+    this.modalService.open('info-modal', info);
+    this.http.postWinner(data);
   }
 
   private resetBoardColors(): void {

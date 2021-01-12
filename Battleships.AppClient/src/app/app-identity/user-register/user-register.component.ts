@@ -6,15 +6,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '@environments/environment';
 
 import { ReCaptchaV3Service } from 'ng-recaptcha';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { SecurityService } from '@services/security.service';
 
 import { NewUser } from '@models/new-user.model';
 import { AuthService } from '@services/auth.service';
+import { HttpService } from '@services/http.service';
 
 @Component({
   templateUrl: './user-register.component.html',
@@ -25,9 +23,8 @@ export class RegisterComponent {
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
-    private http: HttpClient,
+    private http: HttpService,
     private auth: AuthService,
-    private spinner: NgxSpinnerService,
     private recaptchaV3Service: ReCaptchaV3Service,
     private securityService: SecurityService
   ) {
@@ -51,7 +48,6 @@ export class RegisterComponent {
   }
 
   public beforeSubmittingForm(): void {
-    this.spinner.show();
     this.recaptchaV3Service.execute('formSubmit').subscribe((token) => {
       this.onSubmit(token);
     });
@@ -105,11 +101,9 @@ export class RegisterComponent {
     model.password = this.form.value.Password;
     model.username = this.form.value.DisplayName;
     model.captchaToken = token;
-    const url = environment.apiUrl + 'api/user/register';
-    this.http.post(url, model).subscribe(() => {
+    this.http.postNewUser(model).subscribe(() => {
       this.onRegisteredLogin(model);
       this.securityService.delayForBruteForce(10);
-      this.spinner.hide();
     });
   }
 }

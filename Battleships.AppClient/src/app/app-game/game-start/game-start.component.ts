@@ -8,14 +8,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { GameState } from '@models/game-state.model';
-import { environment } from '@environments/environment';
-import { HttpClient } from '@angular/common/http';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { SignalRService } from '@services/signal-r.service';
 import { GameService } from '@services/game.service';
 import { AuthService } from '@services/auth.service';
 import { Player } from '@models/player.model';
 import { FleetService } from '@services/fleet.service';
+import { HttpService } from '@services/http.service';
 
 @Component({
   templateUrl: './game-start.component.html',
@@ -31,10 +29,9 @@ export class GameStartComponent implements OnInit {
   private open: boolean = true;
 
   constructor(
-    private spinner: NgxSpinnerService,
     private router: Router,
     private formBuilder: FormBuilder,
-    private http: HttpClient,
+    private http: HttpService,
     private game: GameService,
     private signalRService: SignalRService,
     public auth: AuthService,
@@ -97,13 +94,10 @@ export class GameStartComponent implements OnInit {
   }
 
   public onSubmit() {
-    this.spinner.show();
     this.signalRService.stopConnection(false);
     this.game.setGame(null);
     let model = this.initGameStartState();
-    const url = environment.apiUrl + 'api/game/start';
-    this.http.post(url, model).subscribe(() => {
-      this.spinner.hide();
+    this.http.postGameState(model).subscribe(() => {
       this.router.navigate(['connect-game/' + model.gameId]);
     });
   }

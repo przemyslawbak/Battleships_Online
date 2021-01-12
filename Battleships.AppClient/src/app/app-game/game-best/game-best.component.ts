@@ -26,8 +26,7 @@ export class GameBestComponent implements OnInit {
   }
 
   private executeCall(): void {
-    const url = environment.apiUrl + 'api/user/best';
-    this.http.getData(url).subscribe((val) => {
+    this.http.getBestPlayers().subscribe((val) => {
       this.playersList = val;
       if (this.playersList.length == 0 || !this.playersList) {
         this.note = 'No players found!';

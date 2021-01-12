@@ -7,7 +7,11 @@ DOUBTS:
 
 OK - error service:
 	OK - after refactoring bug: can not return Observable<boolean>,
+	- troubles with testing Handling Failed requests,
+	- add 404 response error,
 OK - http serice:
+	- spinners start from interceptor,
+	- use POST, PUT, GET, DELETE,
 	OK - http timeouts? added 10s timeout;
 OK - security service:
 	OK - .pipe(delay(5000)) w security service?

@@ -1,6 +1,6 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { HttpClient, HttpRequest } from '@angular/common/http';
+import { HttpRequest } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -9,6 +9,7 @@ import { environment } from '@environments/environment';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 import { LoginResponse } from '@models/login-response.model';
+import { HttpService } from './http.service';
 
 @Injectable()
 export class AuthService {
@@ -16,7 +17,7 @@ export class AuthService {
 
   constructor(
     private router: Router,
-    private http: HttpClient,
+    private http: HttpService,
     @Inject(PLATFORM_ID) private platformId: any,
     private spinner: NgxSpinnerService
   ) {}
@@ -55,16 +56,12 @@ export class AuthService {
   }
 
   public logout(): boolean {
-    this.spinner.show();
-    const url = environment.apiUrl + 'api/token/revoke-token';
     const data = {
       UserName: this.getAuth().user,
       RefreshToken: this.getAuth().refreshToken,
       Token: this.getAuth().token,
     };
-    this.http.post<any>(url, data).subscribe(() => {
-      this.spinner.hide();
-    });
+    this.http.postRevokeData(data);
     this.setAuth(null);
     this.router.navigate(['']);
     return true;
@@ -128,10 +125,9 @@ export class AuthService {
     return true;
   }
 
-  private getTokenResponse(url: string, data): Observable<boolean> {
-    this.spinner.show();
-    return this.http.post<LoginResponse>(url, data).pipe(
-      map((res: LoginResponse) => {
+  private getTokenResponse(url: string, data: any): Observable<boolean> {
+    return this.http.postLoginResponse(url, data).pipe(
+      map((res: any) => {
         const token = res && res.token;
         if (token) {
           this.setAuth(res);

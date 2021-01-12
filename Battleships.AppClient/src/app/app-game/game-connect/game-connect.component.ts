@@ -28,20 +28,19 @@ export class GameConnectComponent implements OnInit {
 
   public ngOnInit(): void {
     const id: string = this.route.snapshot.paramMap.get('id');
-    const url: string = environment.apiUrl + 'api/game/join?id=' + id;
 
     if (id) {
-      this.getGamestateAndRedirect(url);
+      this.getGamestateAndRedirect(id);
     } else {
       this.findIdAndReconnect();
     }
   }
 
-  private getGamestateAndRedirect(url: string): void {
+  private getGamestateAndRedirect(id: string): void {
     const userName: string = this.auth.getAuth().user;
     const displayName: string = this.auth.getAuth().displayName;
 
-    this.http.getData(url).subscribe((game: GameState) => {
+    this.http.getGameState(id).subscribe((game: GameState) => {
       if (game) {
         this.signalRService.startConnection();
         let gameUserNames: string[] = this.getUserNames(game.players);

@@ -1,4 +1,8 @@
-import { HttpHandler, HttpRequest } from '@angular/common/http';
+import {
+  HttpErrorResponse,
+  HttpHandler,
+  HttpRequest,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
@@ -25,18 +29,18 @@ export class ErrorService {
     this.genericErrorHandler(error);
   }
 
-  public handleOtherError(error: any) {
+  public handleOtherError(error: HttpErrorResponse) {
     this.securityService.delayForBruteForce(10);
     this.genericErrorHandler(error);
   }
 
-  public handleBotError(error: any) {
+  public handleBotError(error: HttpErrorResponse) {
     this.securityService.delayForBruteForce(10);
     this.genericErrorHandler(error);
   }
 
   public handleAuthError(
-    error: any,
+    error: HttpErrorResponse,
     next: HttpHandler,
     request: HttpRequest<any>
   ): void {
@@ -77,12 +81,12 @@ export class ErrorService {
     }
   }
 
-  private genericErrorHandler(error: any) {
+  private genericErrorHandler(error: HttpErrorResponse) {
     this.modalService.open('info-modal', error.error);
   }
 
   protected tryGetRefreshTokenService(): Observable<boolean> {
-    var subject = new Subject<boolean>();
+    let subject = new Subject<boolean>();
     this.auth.refreshToken().subscribe((res) => subject.next(res));
 
     return subject.asObservable();

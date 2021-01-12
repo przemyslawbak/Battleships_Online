@@ -44,8 +44,7 @@ export class GameJoinComponent implements OnInit {
   }
 
   private getOpenGames(): void {
-    const url = environment.apiUrl + 'api/game/open';
-    this.http.getData(url).subscribe((val: OpenGames[]) => {
+    this.http.getOpenGames().subscribe((val: OpenGames[]) => {
       this.gameList = val;
       if (this.gameList.length == 0 || !this.gameList) {
         this.note = 'No games found!';
