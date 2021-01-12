@@ -4,12 +4,16 @@ import { ShipComponent } from '../../app-game/game-ship/ship.component';
 import { Injectable } from '@angular/core';
 import { DropModel } from '@models/drop-model';
 import { Player } from '@models/player.model';
+import { GameService } from './game.service';
 
 @Injectable()
 export class BoardService {
+  public avoidCells: BoardCell[] = [];
   public hoverPlace: DropModel = {} as DropModel;
   public isDropAllowed: boolean;
   public lastDropCells: Array<BoardCell> = [];
+
+  constructor(private game: GameService) {}
 
   public isThereAWinner(players: Player[]): number {
     let result: number = -1;
@@ -329,17 +333,15 @@ export class BoardService {
     return list;
   }
 
-  public getAllForbiddenCells(
-    cornerCells: BoardCell[],
-    shotsMissed: BoardCell[],
-    shotsCommenced: BoardCell[],
-    avoid: BoardCell[]
-  ): BoardCell[] {
+  public getAllForbiddenCells(board: BoardCell[][]): BoardCell[] {
     let forbidden: BoardCell[] = [];
-    forbidden.push.apply(forbidden, cornerCells);
-    forbidden.push.apply(forbidden, shotsMissed);
-    forbidden.push.apply(forbidden, shotsCommenced);
-    forbidden.push.apply(forbidden, avoid);
+    forbidden.push.apply(
+      forbidden,
+      this.getCornerCells(this.getCurrentHits(board))
+    );
+    forbidden.push.apply(forbidden, this.getCurrentMissed(board));
+    forbidden.push.apply(forbidden, this.getCurrentHits(board));
+    forbidden.push.apply(forbidden, this.avoidCells);
 
     return forbidden;
   }
@@ -443,10 +445,12 @@ export class BoardService {
 
   public getPotentialTargets(
     forbidden: BoardCell[],
-    hits: BoardCell[]
+    board: BoardCell[][]
   ): BoardCell[] {
     let list: BoardCell[] = [];
-    let sideLineCells: BoardCell[] = this.getSideCells(hits);
+    let sideLineCells: BoardCell[] = this.getSideCells(
+      this.getCurrentHits(board)
+    );
 
     for (let i = 0; i < sideLineCells.length; i++) {
       let isWrong: boolean = false;
@@ -477,5 +481,71 @@ export class BoardService {
       board[coord.col][coord.row].value == 3
       ? true
       : false;
+  }
+
+  public addPossibleTargetsToAvoidList(
+    avoid: BoardCell[],
+    possibleTargets: BoardCell[]
+  ): BoardCell[] {
+    return avoid.push.apply(avoid, possibleTargets);
+  }
+
+  public getBoardTargetArray(): BoardCell[] {
+    let list: BoardCell[] = [];
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        let cell: BoardCell = { col: i, row: j, value: 0 } as BoardCell;
+        list.push(cell);
+      }
+    }
+
+    return list;
+  }
+
+  public getRandomBoardCoordinates(
+    forbiddenCells: BoardCell[],
+    possibleTargets: BoardCell[]
+  ): Coordinates {
+    let isRandomCoordinateForbidden: boolean = true;
+    let randomCoordinates: Coordinates;
+    while (isRandomCoordinateForbidden) {
+      randomCoordinates =
+        possibleTargets[Math.floor(Math.random() * possibleTargets.length)];
+      if (!this.checkIfRandomIsForbidden(forbiddenCells, randomCoordinates)) {
+        isRandomCoordinateForbidden = false;
+      }
+    }
+
+    return randomCoordinates;
+  }
+
+  public checkIfRandomIsForbidden(
+    cells: BoardCell[],
+    coord: Coordinates
+  ): boolean {
+    for (let i = 0; i < cells.length; i++) {
+      if (cells[i].row == coord.row && cells[i].col == coord.col) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  public updateCellsToBeAvoided(
+    haveMoreMasts: boolean,
+    possibleTargets: BoardCell[]
+  ) {
+    if (
+      this.game.isHighDifficultyAndNoMoreMastsButHaveTargets(
+        haveMoreMasts,
+        possibleTargets
+      )
+    ) {
+      this.avoidCells = this.addPossibleTargetsToAvoidList(
+        this.avoidCells,
+        possibleTargets
+      );
+    }
   }
 }

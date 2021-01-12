@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BoardCell } from '@models/board-cell.model';
 import { GameState } from '@models/game-state.model';
 import { Subject } from 'rxjs';
 
@@ -26,6 +27,48 @@ export class GameService {
 
   public isGameStarted(): boolean {
     if (this.gameState) {
+      return true;
+    }
+
+    return false;
+  }
+
+  public isHighDifficultyAndNoMoreMastsButHaveTargets(
+    haveMoreMasts: boolean,
+    possibleTargets: BoardCell[]
+  ) {
+    if (
+      !haveMoreMasts &&
+      possibleTargets.length > 0 &&
+      this.getGame().gameDifficulty == 'hard'
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
+  public isShootingShipAndProperDifficulty(
+    possibleTargets: BoardCell[],
+    haveMoreMasts: boolean,
+    mastCounter: number
+  ): boolean {
+    if (
+      possibleTargets.length > 0 &&
+      mastCounter > 0 &&
+      haveMoreMasts &&
+      this.isMediumOrHighDifficulty()
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  private isMediumOrHighDifficulty() {
+    if (
+      this.getGame().gameDifficulty == 'medium' ||
+      this.getGame().gameDifficulty == 'hard'
+    ) {
       return true;
     }
 

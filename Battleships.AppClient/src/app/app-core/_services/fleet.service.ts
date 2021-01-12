@@ -17,4 +17,59 @@ export class FleetService {
       { size: 1, rotation: 0 },
     ];
   }
+
+  public updateOpponentsFleet(
+    hit: boolean,
+    possibleTargetsCount: number,
+    mastCounter: number,
+    opponentsFleet: number[]
+  ): number[] {
+    if (!hit && possibleTargetsCount == 0 && mastCounter > 0) {
+      return this.removeShipFromArray(mastCounter, opponentsFleet);
+    }
+
+    return opponentsFleet;
+  }
+
+  public removeShipFromArray(
+    mastCounter: number,
+    opponentsFleet: number[]
+  ): number[] {
+    const index = opponentsFleet.indexOf(mastCounter);
+    if (index > -1) {
+      opponentsFleet.splice(index, 1);
+    }
+
+    return opponentsFleet;
+  }
+
+  public updateMastCounter(
+    hit: boolean,
+    possibleTargetsCount: number,
+    mastCounter: number
+  ): number {
+    if (hit) {
+      return mastCounter + 1;
+    } else if (!hit && possibleTargetsCount == 0 && mastCounter > 0) {
+      return 0;
+    }
+
+    return mastCounter;
+  }
+
+  public isPossibleMoreMasts(
+    mastCounter: number,
+    opponentsFleet: number[]
+  ): boolean {
+    let result: boolean = false;
+    if (mastCounter > 0) {
+      for (let i = 1; i < 4; i++) {
+        if (opponentsFleet.indexOf(mastCounter + i) > -1) {
+          result = true;
+        }
+      }
+    }
+
+    return result;
+  }
 }
