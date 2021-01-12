@@ -1,7 +1,7 @@
 import { HttpHandler, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { filter, switchMap, take } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { ModalService } from './modal.service';
@@ -39,7 +39,7 @@ export class ErrorService {
     error: any,
     next: HttpHandler,
     request: HttpRequest<any>
-  ) {
+  ): void {
     if (this.auth.isLoggedIn()) {
       const accessExpired = this.auth.isTokenExpired();
       if (accessExpired) {
@@ -47,7 +47,7 @@ export class ErrorService {
           this.isRefreshing = true;
           this.refreshTokenSubject.next(null);
 
-          return this.tryGetRefreshTokenService().pipe(
+          this.tryGetRefreshTokenService().pipe(
             switchMap((authResult: boolean) => {
               this.isRefreshing = false;
               if (authResult) {
@@ -60,7 +60,7 @@ export class ErrorService {
             })
           );
         } else {
-          return this.refreshTokenSubject.pipe(
+          this.refreshTokenSubject.pipe(
             filter((authResult) => authResult != null),
             take(1),
             switchMap(() => {
@@ -70,7 +70,7 @@ export class ErrorService {
           );
         }
       } else {
-        return next.handle(this.auth.addAuthHeader(request));
+        next.handle(this.auth.addAuthHeader(request));
       }
     } else {
       this.router.navigate(['join-site']);
@@ -82,6 +82,9 @@ export class ErrorService {
   }
 
   protected tryGetRefreshTokenService(): Observable<boolean> {
-    return this.auth.refreshToken();
+    var subject = new Subject<boolean>();
+    this.auth.refreshToken().subscribe((res) => subject.next(res));
+
+    return subject.asObservable();
   }
 }

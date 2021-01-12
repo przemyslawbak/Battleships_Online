@@ -5,6 +5,8 @@ DOUBTS:
 - sanitize inputs with EF, I dont think so.
 - unit test one scenario/result if there is no logic?
 
+OK - error service:
+	OK - after refactoring bug: can not return Observable<boolean>,
 OK - http serice:
 	OK - http timeouts? added 10s timeout;
 OK - security service:
