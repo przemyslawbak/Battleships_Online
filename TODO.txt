@@ -7,8 +7,8 @@ DOUBTS:
 
 OK - error service:
 	OK - after refactoring bug: can not return Observable<boolean>,
-	- troubles with testing Handling Failed requests,
-	- add 404 response error,
+	OK - troubles with testing Handling Failed requests,
+	- add other response errors: https://dev.to/youssefzidan/handling-http-error-messages-globally-using-interceptors-and-toasters-angular-27bj,
 OK - http serice:
 	- spinners start from interceptor,
 	- use POST, PUT, GET, DELETE,
