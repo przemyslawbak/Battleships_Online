@@ -502,7 +502,7 @@ export class BoardService {
     return list;
   }
 
-  public getRandomBoardCoordinates(
+  private getRandomBoardCoordinates(
     forbiddenCells: BoardCell[],
     possibleTargets: BoardCell[]
   ): Coordinates {
@@ -546,6 +546,26 @@ export class BoardService {
         this.avoidCells,
         possibleTargets
       );
+    }
+  }
+
+  public getShootingCoordinates(
+    possibleTargets: BoardCell[],
+    haveMoreMasts: boolean,
+    mastCounter: number,
+    forbiddenCells: BoardCell[]
+  ): Coordinates {
+    if (
+      this.game.isShootingShipAndProperDifficulty(
+        possibleTargets,
+        haveMoreMasts,
+        mastCounter
+      )
+    ) {
+      return this.getRandomBoardCoordinates(forbiddenCells, possibleTargets);
+    } else {
+      let boardTargets: BoardCell[] = this.getBoardTargetArray();
+      return this.getRandomBoardCoordinates(forbiddenCells, boardTargets);
     }
   }
 }
