@@ -1,12 +1,9 @@
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { Injectable } from '@angular/core';
 import { HttpRequest } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
-
-import { NgxSpinnerService } from 'ngx-spinner';
 
 import { LoginResponse } from '@models/login-response.model';
 import { HttpService } from './http.service';
@@ -15,12 +12,7 @@ import { HttpService } from './http.service';
 export class AuthService {
   authKey = 'auth';
 
-  constructor(
-    private router: Router,
-    private http: HttpService,
-    @Inject(PLATFORM_ID) private platformId: any,
-    private spinner: NgxSpinnerService
-  ) {}
+  constructor(private router: Router, private http: HttpService) {}
 
   public login(email: string, password: string): Observable<boolean> {
     const url = environment.apiUrl + 'api/token/auth';
@@ -67,27 +59,22 @@ export class AuthService {
     return true;
   }
 
-  public setAuth(auth: LoginResponse | null): boolean {
-    if (isPlatformBrowser(this.platformId)) {
-      if (auth) {
-        auth.token = auth.token.replace(/\$/g, '/').replace(/\@/g, '=');
-        auth.refreshToken = auth.refreshToken
-          .replace(/\$/g, '/')
-          .replace(/\@/g, '=');
-        localStorage.setItem(this.authKey, JSON.stringify(auth));
-      } else {
-        localStorage.removeItem(this.authKey);
-      }
+  public setAuth(auth: LoginResponse | null): void {
+    if (auth) {
+      auth.token = auth.token.replace(/\$/g, '/').replace(/\@/g, '=');
+      auth.refreshToken = auth.refreshToken
+        .replace(/\$/g, '/')
+        .replace(/\@/g, '=');
+      localStorage.setItem(this.authKey, JSON.stringify(auth));
+    } else {
+      localStorage.removeItem(this.authKey);
     }
-    return true;
   }
 
   public getAuth(): LoginResponse | null {
-    if (isPlatformBrowser(this.platformId)) {
-      const i = localStorage.getItem(this.authKey);
-      if (i) {
-        return JSON.parse(i);
-      }
+    const i = localStorage.getItem(this.authKey);
+    if (i) {
+      return JSON.parse(i);
     }
     return null;
   }
@@ -101,10 +88,7 @@ export class AuthService {
   }
 
   public isLoggedIn(): boolean {
-    if (isPlatformBrowser(this.platformId)) {
-      return localStorage.getItem(this.authKey) != null;
-    }
-    return false;
+    return localStorage.getItem(this.authKey) != null;
   }
 
   public isTokenExpired(): boolean {
@@ -117,7 +101,10 @@ export class AuthService {
     }
   }
 
-  public isRoleCorrect(route: ActivatedRouteSnapshot, user: LoginResponse) {
+  public isRoleCorrect(
+    route: ActivatedRouteSnapshot,
+    user: LoginResponse
+  ): boolean {
     if (route.data.roles && route.data.roles.indexOf(user.role) === -1) {
       return false;
     }
@@ -128,15 +115,17 @@ export class AuthService {
   private getTokenResponse(url: string, data: any): Observable<boolean> {
     return this.http.postLoginResponse(url, data).pipe(
       map((res: any) => {
-        const token = res && res.token;
-        if (token) {
-          this.setAuth(res);
-          this.spinner.hide();
-          return true;
-        }
-        this.spinner.hide();
-        return false;
+        return this.isResponseCorrect(res);
       })
     );
+  }
+
+  private isResponseCorrect(res: any): any {
+    const token = res && res.token;
+    if (token) {
+      this.setAuth(res);
+      return true;
+    }
+    return false;
   }
 }
