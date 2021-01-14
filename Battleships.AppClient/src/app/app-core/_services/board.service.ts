@@ -533,12 +533,12 @@ export class BoardService {
   }
 
   public updateCellsToBeAvoided(
-    haveMoreMasts: boolean,
+    haveShipsWithMoreMasts: boolean,
     possibleTargets: BoardCell[]
   ) {
     if (
       this.game.isHighDifficultyAndNoMoreMastsButHaveTargets(
-        haveMoreMasts,
+        haveShipsWithMoreMasts,
         possibleTargets
       )
     ) {
@@ -551,14 +551,14 @@ export class BoardService {
 
   public getShootingCoordinates(
     possibleTargets: BoardCell[],
-    haveMoreMasts: boolean,
+    haveShipsWithMoreMasts: boolean,
     mastCounter: number,
     forbiddenCells: BoardCell[]
   ): Coordinates {
     if (
-      this.game.isShootingShipAndProperDifficulty(
+      this.game.isShootingShipAndNotLowDifficulty(
         possibleTargets,
-        haveMoreMasts,
+        haveShipsWithMoreMasts,
         mastCounter
       )
     ) {

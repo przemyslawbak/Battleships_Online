@@ -5,14 +5,14 @@ import { Subject } from 'rxjs';
 
 @Injectable()
 export class GameService {
-  public gameState: GameState;
+  private gameState: GameState;
   public gameStateChange: Subject<GameState> = new Subject<GameState>();
 
   constructor() {}
 
   public setGame(game: GameState | null): void {
+    this.gameState = game;
     if (game) {
-      this.gameState = game;
       this.gameStateChange.next(this.gameState);
     }
   }
@@ -34,13 +34,13 @@ export class GameService {
   }
 
   public isHighDifficultyAndNoMoreMastsButHaveTargets(
-    haveMoreMasts: boolean,
+    haveShipsWithMoreMasts: boolean,
     possibleTargets: BoardCell[]
-  ) {
+  ): boolean {
     if (
-      !haveMoreMasts &&
+      !haveShipsWithMoreMasts &&
       possibleTargets.length > 0 &&
-      this.getGame().gameDifficulty == 'hard'
+      this.gameState.gameDifficulty == 'hard'
     ) {
       return true;
     }
@@ -48,27 +48,24 @@ export class GameService {
     return false;
   }
 
-  public isShootingShipAndProperDifficulty(
+  public isShootingShipAndNotLowDifficulty(
     possibleTargets: BoardCell[],
-    haveMoreMasts: boolean,
+    haveShipsWithMoreMasts: boolean,
     mastCounter: number
   ): boolean {
     if (
       possibleTargets.length > 0 &&
       mastCounter > 0 &&
-      haveMoreMasts &&
-      this.isMediumOrHighDifficulty()
+      haveShipsWithMoreMasts &&
+      !this.isLowDifficulty()
     ) {
       return true;
     }
     return false;
   }
 
-  private isMediumOrHighDifficulty() {
-    if (
-      this.getGame().gameDifficulty == 'medium' ||
-      this.getGame().gameDifficulty == 'hard'
-    ) {
+  private isLowDifficulty() {
+    if (this.gameState.gameDifficulty == 'low') {
       return true;
     }
 

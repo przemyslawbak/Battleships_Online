@@ -16,31 +16,37 @@ describe('FleetService', () => {
     {
       fakeMastCount: 1,
       fakeFleet: [1, 2, 3, 4],
-      haveMoreMasts: true,
+      haveShipsWithMoreMasts: true,
       resultLegth: 4,
       resultFleet: [1, 2, 3, 4],
     },
     {
       fakeMastCount: 1,
       fakeFleet: [2, 3, 4],
-      haveMoreMasts: false,
+      haveShipsWithMoreMasts: false,
       resultLegth: 3,
       resultFleet: [2, 3, 4],
     },
     {
       fakeMastCount: 1,
       fakeFleet: [1, 2, 3, 4],
-      haveMoreMasts: false,
+      haveShipsWithMoreMasts: false,
       resultLegth: 3,
       resultFleet: [2, 3, 4],
     },
   ].forEach(
-    ({ fakeMastCount, fakeFleet, haveMoreMasts, resultLegth, resultFleet }) => {
-      it(`'removeShipFromArray_OnVariousParameterValues_Masts:${fakeMastCount}-HaveMoreMasts:${haveMoreMasts}_ShouldReturnCorrectResult_Legth:${resultLegth}`, () => {
+    ({
+      fakeMastCount,
+      fakeFleet,
+      haveShipsWithMoreMasts,
+      resultLegth,
+      resultFleet,
+    }) => {
+      it(`'removeShipFromArray_OnVariousParameterValues_Masts:${fakeMastCount}-haveShipsWithMoreMasts:${haveShipsWithMoreMasts}_ShouldReturnCorrectResult_Legth:${resultLegth}`, () => {
         let result: number[] = fleetService.removeShipFromArray(
           fakeMastCount,
           fakeFleet,
-          haveMoreMasts
+          haveShipsWithMoreMasts
         );
 
         expect(result.length).toBe(resultLegth);
@@ -170,20 +176,26 @@ describe('FleetService', () => {
     expect(result).toBe(0);
   });
 
-  it('checkCounter_OnHaveMoreMastsTrue_ReturnsSameMastCounter', () => {
-    let haveMoreMasts: boolean = true;
+  it('checkCounter_OnhaveShipsWithMoreMastsTrue_ReturnsSameMastCounter', () => {
+    let haveShipsWithMoreMasts: boolean = true;
     let mastCounter: number = 2;
 
-    let result: number = fleetService.checkCounter(haveMoreMasts, mastCounter);
+    let result: number = fleetService.checkCounter(
+      haveShipsWithMoreMasts,
+      mastCounter
+    );
 
     expect(result).toBe(2);
   });
 
-  it('checkCounter_OnHaveMoreMastsFalse_ReturnsZero', () => {
-    let haveMoreMasts: boolean = false;
+  it('checkCounter_OnhaveShipsWithMoreMastsFalse_ReturnsZero', () => {
+    let haveShipsWithMoreMasts: boolean = false;
     let mastCounter: number = 2;
 
-    let result: number = fleetService.checkCounter(haveMoreMasts, mastCounter);
+    let result: number = fleetService.checkCounter(
+      haveShipsWithMoreMasts,
+      mastCounter
+    );
 
     expect(result).toBe(0);
   });

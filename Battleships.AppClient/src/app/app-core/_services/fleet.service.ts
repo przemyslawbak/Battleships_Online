@@ -35,10 +35,10 @@ export class FleetService {
   public removeShipFromArray(
     mastCounter: number,
     opponentsFleet: number[],
-    haveMoreMasts: boolean
+    haveShipsWithMoreMasts: boolean
   ): number[] {
     const index = opponentsFleet.indexOf(mastCounter);
-    if (index > -1 && !haveMoreMasts) {
+    if (index > -1 && !haveShipsWithMoreMasts) {
       opponentsFleet.splice(index, 1);
     }
 
@@ -59,8 +59,11 @@ export class FleetService {
     return mastCounter;
   }
 
-  public checkCounter(haveMoreMasts: boolean, mastCounter: number): number {
-    if (!haveMoreMasts) {
+  public checkCounter(
+    haveShipsWithMoreMasts: boolean,
+    mastCounter: number
+  ): number {
+    if (!haveShipsWithMoreMasts) {
       return 0;
     }
 

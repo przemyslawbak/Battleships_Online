@@ -31,7 +31,7 @@ export class AiService {
       this.mastCounter
     );
 
-    let haveMoreMasts: boolean = this.fleet.isPossibleMoreMasts(
+    let haveShipsWithMoreMasts: boolean = this.fleet.isPossibleMoreMasts(
       this.mastCounter,
       this.opponentsFleet
     );
@@ -39,16 +39,19 @@ export class AiService {
     this.opponentsFleet = this.fleet.removeShipFromArray(
       this.mastCounter,
       this.opponentsFleet,
-      haveMoreMasts
+      haveShipsWithMoreMasts
     );
 
-    this.mastCounter = this.fleet.checkCounter(haveMoreMasts, this.mastCounter);
+    this.mastCounter = this.fleet.checkCounter(
+      haveShipsWithMoreMasts,
+      this.mastCounter
+    );
 
-    this.board.updateCellsToBeAvoided(haveMoreMasts, possibleTargets);
+    this.board.updateCellsToBeAvoided(haveShipsWithMoreMasts, possibleTargets);
 
     return this.board.getShootingCoordinates(
       possibleTargets,
-      haveMoreMasts,
+      haveShipsWithMoreMasts,
       this.mastCounter,
       forbiddenCells
     );
