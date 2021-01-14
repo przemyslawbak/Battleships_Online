@@ -355,7 +355,7 @@ OK - privacy component:
 	NO - cookies popup/modal,
 	OK - link in nav menu
 OK - open games list component:
-	- bug: when can not refresh token, empty game is displayed,
+	NO - bug: when can not refresh token, empty game is displayed,
 	OK - on game list load check for empty games and remove them,
 	OK - empty game slot - green,
 	OK - in chrome table first column has still wrong size,
