@@ -23,9 +23,8 @@ export class NavMenuComponent {
     }
   }
 
-  public logout(): boolean {
+  public logout(): void {
     this.signalRService.stopConnection(true);
-    const result = this.auth.logout();
-    return result;
+    this.auth.logout();
   }
 }
