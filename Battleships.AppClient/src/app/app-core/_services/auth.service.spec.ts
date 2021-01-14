@@ -2,6 +2,8 @@ import { LoginResponse } from '@models/login-response.model';
 import { HttpHeaders, HttpRequest } from '@angular/common/http';
 import { AuthService } from './auth.service';
 import { of } from 'rxjs';
+import { UserRole } from '@models/user-role.model';
+import { ActivatedRouteSnapshot, Data } from '@angular/router';
 
 describe('AuthService', () => {
   let request: HttpRequest<any>;
@@ -47,10 +49,12 @@ describe('AuthService', () => {
       user: 'ccc',
       refreshToken: 'ddd',
       displayName: 'eee',
-      role: 'User',
+      role: UserRole.User,
     } as LoginResponse;
     authService = new AuthService(routerMock, httpServiceMock);
     httpServiceMock.addAuthHeader.calls.reset();
+    httpServiceMock.postRevokeData.calls.reset();
+    httpServiceMock.postForRefreshToken.calls.reset();
   });
 
   it('Service_ShouldBeCreated', () => {
@@ -59,6 +63,7 @@ describe('AuthService', () => {
 
   it('localStorage_ShouldSetAnItem', () => {
     localStorage.setItem('foo', 'bar');
+
     expect(localStorage.getItem('foo')).toBe('bar');
   });
 
@@ -66,6 +71,7 @@ describe('AuthService', () => {
     user = null;
     httpServiceMock.postForLoginResponse.and.returnValue(of(user));
     localStorage.setItem('auth', 'bar');
+
     authService.login('some_email', 'some_pass').subscribe((data) => {
       expect(data).toBeFalse;
       expect(localStorage.getItem('auth')).toBe(null);
@@ -77,6 +83,7 @@ describe('AuthService', () => {
     httpServiceMock.postForLoginResponse.and.returnValue(of(user));
     httpServiceMock.postForRefreshToken.and.returnValue(of(user));
     localStorage.clear();
+
     authService.login('some_email', 'some_pass').subscribe((data) => {
       expect(data).toBeTrue;
       let value: LoginResponse = JSON.parse(localStorage.getItem('auth'));
@@ -93,7 +100,6 @@ describe('AuthService', () => {
   it('addAuthHeader_OnNullUser_NotCallsAddAuthHeader', () => {
     httpServiceMock.addAuthHeader.and.returnValue(request);
     localStorage.clear();
-
     authService.addAuthHeader(request);
 
     expect(httpServiceMock.addAuthHeader).toHaveBeenCalledTimes(0);
@@ -125,5 +131,119 @@ describe('AuthService', () => {
     expect(value.refreshToken).toBe(user.refreshToken);
     expect(value.displayName).toBe(user.displayName);
     expect(value.role).toBe(user.role);
+  });
+
+  it('setAuth_OnNullUserValue_RemovesUserFromStorage', () => {
+    localStorage.setItem('auth', JSON.stringify(user));
+    authService.setAuth(null);
+
+    expect(localStorage.getItem('auth')).toBe(null);
+  });
+
+  it('setAuth_OnUserValue_AddsUserToTheStorage', () => {
+    localStorage.clear();
+    authService.setAuth(user);
+
+    let value: LoginResponse = JSON.parse(localStorage.getItem('auth'));
+
+    expect(value.token).toBe(user.token);
+    expect(value.email).toBe(user.email);
+    expect(value.user).toBe(user.user);
+    expect(value.refreshToken).toBe(user.refreshToken);
+    expect(value.displayName).toBe(user.displayName);
+    expect(value.role).toBe(user.role);
+  });
+
+  it('logout_OnNullUserValue_NeverCallsPostRevokeData', () => {
+    localStorage.clear();
+    authService.logout();
+
+    expect(httpServiceMock.postRevokeData).toHaveBeenCalledTimes(0);
+  });
+
+  it('logout_OnUserValue_CallsPostRevokeDataOnceAndSetsUserToNull', () => {
+    httpServiceMock.postRevokeData.and.returnValue(of(null));
+    localStorage.setItem('auth', JSON.stringify(user));
+    authService.logout();
+
+    expect(httpServiceMock.postRevokeData).toHaveBeenCalledTimes(1);
+    expect(localStorage.getItem('auth')).toBe(null);
+  });
+
+  it('refreshToken_OnNullUserValue_NeverCallsPostForRefreshToken', () => {
+    localStorage.clear();
+    authService.refreshToken();
+
+    expect(httpServiceMock.postForRefreshToken).toHaveBeenCalledTimes(0);
+  });
+
+  it('refreshToken_OnUserValue_CallsPostForRefreshToken', () => {
+    let userBeforeUpdate = user;
+    userBeforeUpdate.refreshToken = 'I am before refresh';
+    userBeforeUpdate.token = 'I am before refresh';
+    httpServiceMock.postForRefreshToken.and.returnValue(of(user));
+    localStorage.setItem('auth', JSON.stringify(user));
+    authService.refreshToken();
+    let value: LoginResponse = JSON.parse(localStorage.getItem('auth'));
+
+    expect(httpServiceMock.postForRefreshToken).toHaveBeenCalledTimes(1);
+    expect(value.token).toBe(user.token);
+    expect(value.email).toBe(user.email);
+    expect(value.user).toBe(user.user);
+    expect(value.refreshToken).toBe(user.refreshToken);
+    expect(value.displayName).toBe(user.displayName);
+    expect(value.role).toBe(user.role);
+  });
+
+  it('isAdmin_OnUserRole_ReturnsFalse', () => {
+    user.role = UserRole.User;
+    localStorage.setItem('auth', JSON.stringify(user));
+
+    let value: boolean = authService.isAdmin();
+
+    expect(value).toBe(false);
+  });
+
+  it('isAdmin_OnAdminRole_ReturnsTrue', () => {
+    user.role = UserRole.Admin;
+    localStorage.setItem('auth', JSON.stringify(user));
+
+    let value: boolean = authService.isAdmin();
+
+    expect(value).toBe(true);
+  });
+
+  it('isLoggedIn_OnNullUserValue_ReturnsFalse', () => {
+    localStorage.clear();
+    let value: boolean = authService.isLoggedIn();
+
+    expect(value).toBe(false);
+  });
+
+  it('isLoggedIn_OnUserValue_ReturnsTrue', () => {
+    localStorage.setItem('auth', JSON.stringify(user));
+    let value: boolean = authService.isLoggedIn();
+
+    expect(value).toBe(true);
+  });
+
+  it('isRoleCorrect_OnMatchingRoles_ReturnsTrue', () => {
+    let activatedRoute: ActivatedRouteSnapshot = new ActivatedRouteSnapshot();
+    let data: Data = { roles: 'User' } as Data;
+    activatedRoute.data = data;
+
+    let value: boolean = authService.isRoleCorrect(activatedRoute, user);
+
+    expect(value).toBe(true);
+  });
+
+  it('isRoleCorrect_OnNotMatchingRoles_ReturnsFalse', () => {
+    let activatedRoute: ActivatedRouteSnapshot = new ActivatedRouteSnapshot();
+    let data: Data = { roles: 'Admin' } as Data;
+    activatedRoute.data = data;
+
+    let value: boolean = authService.isRoleCorrect(activatedRoute, user);
+
+    expect(value).toBe(false);
   });
 });

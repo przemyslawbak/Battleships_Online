@@ -6,6 +6,7 @@ import { LoginResponse } from '@models/login-response.model';
 import { HttpService } from './http.service';
 import { HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { UserRole } from '@models/user-role.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -29,7 +30,6 @@ export class AuthService {
 
   public addAuthHeader(request: HttpRequest<any>): HttpRequest<any> {
     const user = this.getAuth();
-    console.log(user);
     if (user) {
       request = this.http.addAuthHeader(request, user.token);
     }
@@ -59,25 +59,24 @@ export class AuthService {
     }
   }
 
+  //todo: separate service
   private updateTokenCharacters(token: string): string {
     return token.replace(/\$/g, '/').replace(/\@/g, '=');
   }
 
-  public setExternalAuth(user: LoginResponse) {
-    this.setAuth(user);
-  }
-
   public logout() {
-    const data = {
-      UserName: this.getAuth().user,
-      RefreshToken: this.getAuth().refreshToken,
-      Token: this.getAuth().token,
-    };
-    this.http.postRevokeData(data).subscribe(() => {
-      this.stopRefreshTokenTimer();
-      this.setAuth(null);
-      this.router.navigate(['']);
-    });
+    if (this.isLoggedIn()) {
+      const data = {
+        UserName: this.getAuth().user,
+        RefreshToken: this.getAuth().refreshToken,
+        Token: this.getAuth().token,
+      };
+      this.http.postRevokeData(data).subscribe((nullResult) => {
+        this.stopRefreshTokenTimer();
+        this.setAuth(nullResult);
+        this.router.navigate(['']);
+      });
+    }
   }
 
   public refreshToken(): void {
@@ -97,7 +96,7 @@ export class AuthService {
   }
 
   public isAdmin(): boolean {
-    if (this.getAuth().role === 'Admin') {
+    if (this.getAuth().role == 'Admin') {
       return true;
     }
 
@@ -116,7 +115,7 @@ export class AuthService {
     route: ActivatedRouteSnapshot,
     user: LoginResponse
   ): boolean {
-    if (route.data.roles && route.data.roles.indexOf(user.role) === -1) {
+    if (route.data.roles.indexOf(user.role) === -1) {
       return false;
     }
 
@@ -125,9 +124,9 @@ export class AuthService {
 
   //helper methods
 
-  private refreshTokenTimeout;
+  private refreshTokenTimeout: NodeJS.Timeout;
 
-  private startRefreshTokenTimer() {
+  private startRefreshTokenTimer(): void {
     const timeTokenExpires =
       JSON.parse(atob(this.getAuth().token.split('.')[1])).exp * 1000;
     const timeNow = Date.now();
@@ -135,7 +134,7 @@ export class AuthService {
     this.refreshTokenTimeout = setTimeout(() => this.refreshToken(), timeout);
   }
 
-  private stopRefreshTokenTimer() {
+  private stopRefreshTokenTimer(): void {
     clearTimeout(this.refreshTokenTimeout);
   }
 }
