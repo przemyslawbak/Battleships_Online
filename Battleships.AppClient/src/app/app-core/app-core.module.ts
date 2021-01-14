@@ -25,7 +25,7 @@ import { AiService } from '@services/ai.service';
 import { FleetService } from '@services/fleet.service';
 
 import { AuthGuard } from './_helpers/auth.guard';
-import { JtwInterceptor } from './_helpers/jtw.interceptor';
+import { JwtInterceptor } from './_helpers/jwt.interceptor';
 import { ErrorInterceptor } from './_helpers/error.interceptor';
 
 @NgModule({
@@ -46,7 +46,7 @@ import { ErrorInterceptor } from './_helpers/error.interceptor';
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: JtwInterceptor,
+      useClass: JwtInterceptor,
       multi: true,
     },
     {

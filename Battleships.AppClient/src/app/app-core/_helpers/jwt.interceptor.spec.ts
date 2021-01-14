@@ -5,7 +5,7 @@ import {
   HTTP_INTERCEPTORS,
 } from '@angular/common/http';
 import { getTestBed, inject, TestBed } from '@angular/core/testing';
-import { JtwInterceptor } from './jtw.interceptor';
+import { JwtInterceptor } from './jwt.interceptor';
 import {
   HttpClientTestingModule,
   HttpTestingController,
@@ -28,7 +28,7 @@ describe('JtwInterceptor', () => {
       providers: [
         {
           provide: HTTP_INTERCEPTORS,
-          useClass: JtwInterceptor,
+          useClass: JwtInterceptor,
           multi: true,
         },
         { provide: AuthService, useValue: authMock },

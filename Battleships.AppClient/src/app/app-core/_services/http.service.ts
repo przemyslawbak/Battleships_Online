@@ -109,7 +109,6 @@ export class HttpService {
     request: HttpRequest<any>,
     token: string
   ): import('@angular/common/http').HttpRequest<any> {
-    console.log('token: ' + token);
     return request.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`,
