@@ -1,75 +1,17 @@
 import { Injectable } from '@angular/core';
-import { HttpRequest } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { environment } from '@environments/environment';
 
 import { LoginResponse } from '@models/login-response.model';
 import { HttpService } from './http.service';
+import { HttpRequest } from '@angular/common/http';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-  authKey = 'auth';
+  private authKey = 'auth';
 
   constructor(private router: Router, private http: HttpService) {}
-
-  public login(email: string, password: string): Observable<boolean> {
-    const url = environment.apiUrl + 'api/token/auth';
-    const data = {
-      Email: email,
-      Password: password,
-      GrantType: 'password',
-    };
-
-    return this.getTokenResponse(url, data);
-  }
-
-  public addAuthHeader(request: HttpRequest<any>): HttpRequest<any> {
-    const token = this.getAuth()!.token;
-    if (token) {
-      request = request.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-    }
-
-    return request;
-  }
-
-  public refreshToken(): Observable<boolean> {
-    const url = environment.apiUrl + 'api/token/refresh-token';
-    const data = {
-      Email: this.getAuth().email,
-      RefreshToken: this.getAuth().refreshToken,
-    };
-    return this.getTokenResponse(url, data);
-  }
-
-  public logout(): boolean {
-    const data = {
-      UserName: this.getAuth().user,
-      RefreshToken: this.getAuth().refreshToken,
-      Token: this.getAuth().token,
-    };
-    this.http.postRevokeData(data);
-    this.setAuth(null);
-    this.router.navigate(['']);
-    return true;
-  }
-
-  public setAuth(auth: LoginResponse | null): void {
-    if (auth) {
-      auth.token = auth.token.replace(/\$/g, '/').replace(/\@/g, '=');
-      auth.refreshToken = auth.refreshToken
-        .replace(/\$/g, '/')
-        .replace(/\@/g, '=');
-      localStorage.setItem(this.authKey, JSON.stringify(auth));
-    } else {
-      localStorage.removeItem(this.authKey);
-    }
-  }
 
   public getAuth(): LoginResponse | null {
     const i = localStorage.getItem(this.authKey);
@@ -77,6 +19,78 @@ export class AuthService {
       return JSON.parse(i);
     }
     return null;
+  }
+
+  public setAuth(user: LoginResponse | null) {
+    if (user) {
+      user.token = user.token.replace(/\$/g, '/').replace(/\@/g, '=');
+      user.refreshToken = this.correctRefreshToken(user.refreshToken);
+      localStorage.setItem(this.authKey, JSON.stringify(user));
+    } else {
+      localStorage.removeItem(this.authKey);
+    }
+  }
+
+  private correctRefreshToken(refreshToken: string): string {
+    return refreshToken.replace(/\$/g, '/').replace(/\@/g, '=');
+  }
+
+  public setExternalAuth(res: LoginResponse) {
+    console.log('setExternalAuth');
+    this.setAuth(res);
+    this.startRefreshTokenTimer();
+  }
+
+  public addAuthHeader(request: HttpRequest<any>): HttpRequest<any> {
+    const user = this.getAuth();
+    if (user) {
+      request = this.http.addAuthHeader(request, user.token);
+    }
+
+    return request;
+  }
+
+  public login(email: string, password: string) {
+    const data = {
+      Email: email,
+      Password: password,
+      GrantType: 'password',
+    };
+    return this.http.postForLoginResponse(data).pipe(
+      map((user) => {
+        this.setAuth(user);
+        this.startRefreshTokenTimer();
+        return user;
+      })
+    );
+  }
+
+  public logout() {
+    const data = {
+      UserName: this.getAuth().user,
+      RefreshToken: this.getAuth().refreshToken,
+      Token: this.getAuth().token,
+    };
+    this.http.postRevokeData(data).subscribe((res) => {
+      this.stopRefreshTokenTimer();
+      this.setAuth(res);
+      this.router.navigate(['']);
+    });
+  }
+
+  public refreshToken() {
+    const data = {
+      Email: this.getAuth().email,
+      RefreshToken: this.getAuth().refreshToken,
+    };
+    return this.http.postForRefreshToken(data).pipe(
+      map((user) => {
+        alert('refresh');
+        this.setAuth(user);
+        this.startRefreshTokenTimer();
+        return user;
+      })
+    );
   }
 
   public isAdmin(): boolean {
@@ -88,17 +102,11 @@ export class AuthService {
   }
 
   public isLoggedIn(): boolean {
-    return localStorage.getItem(this.authKey) != null;
-  }
-
-  public isTokenExpired(): boolean {
-    if (this.isLoggedIn()) {
-      const token = this.getAuth().token;
-      const expiry = JSON.parse(atob(token.split('.')[1])).exp;
-      return Math.floor(new Date().getTime() / 1000) >= expiry;
-    } else {
-      return false;
+    if (this.getAuth()) {
+      return true;
     }
+
+    return false;
   }
 
   public isRoleCorrect(
@@ -112,20 +120,22 @@ export class AuthService {
     return true;
   }
 
-  private getTokenResponse(url: string, data: any): Observable<boolean> {
-    return this.http.postLoginResponse(url, data).pipe(
-      map((res: any) => {
-        return this.isResponseCorrect(res);
-      })
+  //helper methods
+
+  private refreshTokenTimeout;
+
+  private startRefreshTokenTimer() {
+    const timeTokenExpires =
+      JSON.parse(atob(this.getAuth().token.split('.')[1])).exp * 1000;
+    const timeNow = Date.now();
+    const timeout = timeTokenExpires - timeNow - 60000;
+    this.refreshTokenTimeout = setTimeout(
+      () => this.refreshToken().subscribe((res) => this.setAuth(res)),
+      timeout
     );
   }
 
-  private isResponseCorrect(res: any): any {
-    const token = res && res.token;
-    if (token) {
-      this.setAuth(res);
-      return true;
-    }
-    return false;
+  private stopRefreshTokenTimer() {
+    clearTimeout(this.refreshTokenTimeout);
   }
 }

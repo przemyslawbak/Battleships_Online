@@ -13,10 +13,6 @@ import { SecurityService } from './security.service';
 
 @Injectable()
 export class ErrorService {
-  private isRefreshing = false;
-  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
-    null
-  );
   constructor(
     private modalService: ModalService,
     private auth: AuthService,
@@ -39,43 +35,10 @@ export class ErrorService {
     this.genericErrorHandler(error);
   }
 
-  public handleAuthError(
-    error: HttpErrorResponse,
-    next: HttpHandler,
-    request: HttpRequest<any>
-  ): void {
+  public handleAuthError(error: HttpErrorResponse): void {
     if (this.auth.isLoggedIn()) {
-      const accessExpired = this.auth.isTokenExpired();
-      if (accessExpired) {
-        if (!this.isRefreshing) {
-          this.isRefreshing = true;
-          this.refreshTokenSubject.next(null);
-
-          this.tryGetRefreshTokenService().pipe(
-            switchMap((authResult: boolean) => {
-              this.isRefreshing = false;
-              if (authResult) {
-                this.refreshTokenSubject.next(authResult);
-                const modifiedRequest = this.auth.addAuthHeader(request);
-                return next.handle(modifiedRequest);
-              } else {
-                this.auth.logout();
-              }
-            })
-          );
-        } else {
-          this.refreshTokenSubject.pipe(
-            filter((authResult) => authResult != null),
-            take(1),
-            switchMap(() => {
-              const modifiedRequest = this.auth.addAuthHeader(request);
-              return next.handle(modifiedRequest);
-            })
-          );
-        }
-      } else {
-        next.handle(this.auth.addAuthHeader(request));
-      }
+      this.securityService.delayForBruteForce(1); //todo: set 10
+      this.genericErrorHandler(error);
     } else {
       this.router.navigate(['join-site']);
     }
@@ -83,12 +46,5 @@ export class ErrorService {
 
   private genericErrorHandler(error: HttpErrorResponse) {
     this.modalService.open('info-modal', error.error);
-  }
-
-  protected tryGetRefreshTokenService(): Observable<boolean> {
-    let subject = new Subject<boolean>();
-    this.auth.refreshToken().subscribe((res) => subject.next(res));
-
-    return subject.asObservable();
   }
 }

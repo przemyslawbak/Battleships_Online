@@ -39,7 +39,10 @@ OK - footer:
 	OK - footer styles,
 	OK - fill up footer with data,
 OK - identity:
-	- bug: after refactoring helpers refresh token is not refreshed,
+	OK - refactored auth-service completly and changed refresh-token system,
+	OK - bug: refresh timer works, need to set up correctly,
+	OK - bug: throws always 401 on requests problem with timeout fixed,
+	OK - bug: external login sux,
 	OK - external login bug: IList<string> roles = await _userManager.GetRolesAsync(user);
 	OK - bug: can not refresh token,
 	NO - ext.login change: please wait, redirecting... to please wait, verifying user...
@@ -280,6 +283,7 @@ OK - in game-play component:
 	OK - adjust: when displaying hit result, do not allow to fire,
 	OK - adjust: what if shooting cell already shot?
 OK - single player:
+	- set default difficulty to hard,
 	OK - bug: after refactoring ai-service does increase difficulty,
 	OK - bug: in board service: ERROR Error: Uncaught (in promise): TypeError: this.game.getGame() is null,
 	OK - in signal-r service sending chat mesages only when multiplayer game,
