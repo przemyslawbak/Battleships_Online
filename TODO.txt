@@ -6,6 +6,7 @@ DOUBTS:
 - unit test one scenario/result if there is no logic?
 
 OK - error service:
+	- call delayForBruteForce for each method call, test it,
 	OK - after refactoring bug: can not return Observable<boolean>,
 	OK - troubles with testing Handling Failed requests,
 	- add other response errors: https://dev.to/youssefzidan/handling-http-error-messages-globally-using-interceptors-and-toasters-angular-27bj,
@@ -39,7 +40,7 @@ OK - footer:
 	OK - footer styles,
 	OK - fill up footer with data,
 OK - identity:
-	- switch off spinner for refreshing token, in the interceptor,
+	- switch off spinner for refreshing token, in the interceptor, use logic from error-interceptor,
 	OK - refactored auth-service completly and changed refresh-token system,
 	OK - bug: refresh timer works, need to set up correctly,
 	OK - bug: throws always 401 on requests problem with timeout fixed,
