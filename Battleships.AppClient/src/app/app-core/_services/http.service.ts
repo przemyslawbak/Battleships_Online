@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpRequest } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { environment } from '@environments/environment';
 import { GameState } from '@models/game-state.model';
@@ -7,6 +7,7 @@ import { EditUser } from '@models/edit-user.model';
 import { PassResetModel } from '@models/password-reset.model';
 import { PassForgottenModel } from '@models/password-forgotten.model';
 import { NewUser } from '@models/new-user.model';
+import { LoginResponse } from '@models/login-response.model';
 
 @Injectable()
 export class HttpService {
@@ -16,12 +17,28 @@ export class HttpService {
     UserName: string;
     RefreshToken: string;
     Token: string;
-  }) {
+  }): Observable<LoginResponse> {
     const url = environment.apiUrl + 'api/token/revoke-token';
-    this.http.post(url, data);
+    let subject = new Subject<any>();
+    this.http.post<any>(url, data).subscribe(() => subject.next(null));
+
+    return subject.asObservable();
   }
 
-  public postLoginResponse(url: string, data: any): Observable<any> {
+  public postForRefreshToken(data: { Email: string; RefreshToken: string }) {
+    const url = environment.apiUrl + 'api/token/refresh-token';
+    let subject = new Subject<any>();
+    this.http.post<any>(url, data).subscribe((res) => subject.next(res));
+
+    return subject.asObservable();
+  }
+
+  public postForLoginResponse(data: {
+    Email: string;
+    Password: string;
+    GrantType: string;
+  }): Observable<LoginResponse> {
+    const url = environment.apiUrl + 'api/token/auth';
     let subject = new Subject<any>();
     this.http.post<any>(url, data).subscribe((res) => subject.next(res));
 
@@ -86,5 +103,17 @@ export class HttpService {
   public getOpenGames() {
     const url = environment.apiUrl + 'api/game/open';
     return this.http.get(url);
+  }
+
+  public addAuthHeader(
+    request: HttpRequest<any>,
+    token: string
+  ): import('@angular/common/http').HttpRequest<any> {
+    console.log('token: ' + token);
+    return request.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   }
 }
