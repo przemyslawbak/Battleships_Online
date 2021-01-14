@@ -64,6 +64,7 @@ export class GameDeployComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.board.avoidCells = [];
     this.speedDivider = this.game.getGame().gameSpeedDivider;
     this.count = 180 / this.speedDivider;
     if (!this.game.isGameStarted()) {

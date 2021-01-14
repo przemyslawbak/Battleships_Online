@@ -12,11 +12,9 @@ import { GameState } from '@models/game-state.model';
 import { Subscription, timer } from 'rxjs';
 import { BoardService } from '@services/board.service';
 import { CommentsService } from '@services/comments.service';
-import { HttpClient } from '@angular/common/http';
 import { Player } from '@models/player.model';
 import { AiService } from '@services/ai.service';
 import { Coordinates } from '@models/coordinates.model';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { HttpService } from '@services/http.service';
 
 @Component({
@@ -62,8 +60,7 @@ export class GamePlayComponent implements OnInit {
     private router: Router,
     private game: GameService,
     private signalRService: SignalRService,
-    private player: PlayerService,
-    private spinner: NgxSpinnerService
+    private player: PlayerService
   ) {}
 
   ngOnDestroy() {
