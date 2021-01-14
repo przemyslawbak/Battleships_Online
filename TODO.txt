@@ -39,6 +39,7 @@ OK - footer:
 	OK - footer styles,
 	OK - fill up footer with data,
 OK - identity:
+	- switch off spinner for refreshing token, in the interceptor,
 	OK - refactored auth-service completly and changed refresh-token system,
 	OK - bug: refresh timer works, need to set up correctly,
 	OK - bug: throws always 401 on requests problem with timeout fixed,

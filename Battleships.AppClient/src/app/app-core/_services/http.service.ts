@@ -25,7 +25,10 @@ export class HttpService {
     return subject.asObservable();
   }
 
-  public postForRefreshToken(data: { Email: string; RefreshToken: string }) {
+  public postForRefreshToken(data: {
+    Email: string;
+    RefreshToken: string;
+  }): Observable<LoginResponse> {
     const url = environment.apiUrl + 'api/token/refresh-token';
     let subject = new Subject<any>();
     this.http.post<any>(url, data).subscribe((res) => subject.next(res));
@@ -45,12 +48,12 @@ export class HttpService {
     return subject.asObservable();
   }
 
-  public postWinner(data: { UserName: string; Multiplayer: boolean }) {
+  public postWinner(data: { UserName: string; Multiplayer: boolean }): void {
     const url = environment.apiUrl + 'api/user/winner';
     this.http.post(url, data);
   }
 
-  public postGameState(model: GameState): Observable<any> {
+  public postGameState(model: GameState): Observable<GameState[]> {
     const url = environment.apiUrl + 'api/game/start';
     let subject = new Subject<any>();
     this.http.post<any>(url, model).subscribe((res) => subject.next(res));
