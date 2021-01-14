@@ -41,6 +41,7 @@ describe('ErrorService', () => {
     );
     modalServiceMock.displayErrorMessage.calls.reset();
     securityServiceMock.delayForBruteForce.calls.reset();
+    routerMock.navigate.calls.reset();
   });
 
   it('Service_ShouldBeCreated', () => {
@@ -48,7 +49,7 @@ describe('ErrorService', () => {
   });
 
   it('handleAuthError_OnNullUserValue_RedirectsToJoinSiteView', () => {
-    localStorage.clear();
+    authServiceMock.isLoggedIn.and.returnValue(false);
     let error: HttpErrorResponse = new HttpErrorResponse({});
     errorService.handleAuthError(error);
 
