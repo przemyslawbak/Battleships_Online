@@ -17,7 +17,7 @@ export class CloseComponent implements OnInit {
   public ngOnInit(): void {
     this.tokenResponse = this.getTokenResponse();
     if (this.tokenResponse) {
-      this.auth.setExternalAuth(this.tokenResponse);
+      this.auth.setAuth(this.tokenResponse);
     }
 
     parent.window.close();

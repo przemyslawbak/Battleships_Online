@@ -34,7 +34,7 @@ export class LoginExternalProvidersComponent implements OnInit {
     if (!window.externalProviderLogin) {
       window.externalProviderLogin = function (auth: LoginResponse) {
         this.zone.run(() => {
-          this.auth.setExternalAuth(auth);
+          this.auth.setAuth(auth);
           this.router.navigate(['']);
         });
       };
