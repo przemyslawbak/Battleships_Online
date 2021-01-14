@@ -87,7 +87,7 @@ const routes: Routes = [
     component: ForgottenComponent,
   },
   {
-    path: 'close/:email/:user/:token/:refresh/:display',
+    path: 'close-external/:email/:user/:token/:refresh/:display',
     component: CloseComponent,
   },
   {

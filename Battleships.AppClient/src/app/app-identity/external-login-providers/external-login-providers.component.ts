@@ -1,5 +1,4 @@
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { environment } from '@environments/environment';
@@ -23,24 +22,21 @@ export class LoginExternalProvidersComponent implements OnInit {
   constructor(
     private router: Router,
     private auth: AuthService,
-    @Inject(PLATFORM_ID) private platformId: any,
     private spinner: NgxSpinnerService,
     private modalService: ModalService,
     private route: ActivatedRoute
   ) {}
 
   public ngOnInit() {
-    if (!isPlatformBrowser(this.platformId)) {
-      return;
-    }
-
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 
     this.closePopUpWindow();
     if (!window.externalProviderLogin) {
       window.externalProviderLogin = function (auth: LoginResponse) {
         this.zone.run(() => {
-          this.auth.setAuth(auth);
+          console.log('login external:');
+          console.log(auth);
+          this.auth.setExternalAuth(auth);
           this.router.navigate(['']);
         });
       };
@@ -48,9 +44,6 @@ export class LoginExternalProvidersComponent implements OnInit {
   }
 
   public callExternalLogin(providerName: string) {
-    if (!isPlatformBrowser(this.platformId)) {
-      return;
-    }
     this.spinner.show();
     const url = environment.apiUrl + 'api/token/external-login/' + providerName;
 
