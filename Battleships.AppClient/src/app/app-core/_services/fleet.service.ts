@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+
 import { ShipComponent } from 'app/app-game/game-ship/ship.component';
 
 @Injectable()
@@ -58,6 +59,14 @@ export class FleetService {
     return mastCounter;
   }
 
+  public checkCounter(haveMoreMasts: boolean, mastCounter: number): number {
+    if (!haveMoreMasts) {
+      return 0;
+    }
+
+    return mastCounter;
+  }
+
   public isPossibleMoreMasts(
     mastCounter: number,
     opponentsFleet: number[]
@@ -72,13 +81,5 @@ export class FleetService {
     }
 
     return result;
-  }
-
-  public checkCounter(haveMoreMasts: boolean, mastCounter: number): number {
-    if (!haveMoreMasts) {
-      return 0;
-    }
-
-    return mastCounter;
   }
 }
