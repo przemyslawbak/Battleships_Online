@@ -1,9 +1,10 @@
-import { LoginResponse } from '@models/login-response.model';
 import { HttpHeaders, HttpRequest } from '@angular/common/http';
-import { AuthService } from './auth.service';
 import { of } from 'rxjs';
-import { UserRole } from '@models/user-role.model';
 import { ActivatedRouteSnapshot, Data } from '@angular/router';
+
+import { AuthService } from './auth.service';
+import { UserRole } from '@models/user-role.model';
+import { LoginResponse } from '@models/login-response.model';
 
 describe('AuthService', () => {
   let request: HttpRequest<any>;

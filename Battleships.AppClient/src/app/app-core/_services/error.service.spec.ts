@@ -1,6 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { LoginResponse } from '@models/login-response.model';
-import { UserRole } from '@models/user-role.model';
+
 import { ErrorService } from './error.service';
 
 describe('ErrorService', () => {
