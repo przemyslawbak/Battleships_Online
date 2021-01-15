@@ -12,6 +12,7 @@ import { EditProfileComponent } from './app-identity/edit-profile/edit-profile.c
 //misc
 import { AuthGuard } from './app-core/_helpers/auth.guard';
 import { UserRole } from '@models/user-role.model';
+import { PolicyComponent } from './app-core/policy/policy.component';
 
 //trial
 import { TestComponent } from './app-trials/user-test-auth/user-test-auth.component';
@@ -26,7 +27,6 @@ import { GamePlayComponent } from './app-game/game-play/game-play.component';
 import { GameConnectComponent } from './app-game/game-connect/game-connect.component';
 import { GameDeployComponent } from './app-game/game-deploy/game-deploy-ships.component';
 import { GameRulesComponent } from './app-game/game-rules/game-rules.component';
-import { PolicyComponent } from './app-core/policy/policy.component';
 
 const routes: Routes = [
   {

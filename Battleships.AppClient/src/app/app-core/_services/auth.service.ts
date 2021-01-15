@@ -62,7 +62,6 @@ export class AuthService {
     }
   }
 
-  //todo: separate service
   private updateTokenCharacters(token: string): string {
     return this.text.replaceSpecialCharacters(token);
   }
@@ -75,8 +74,8 @@ export class AuthService {
         Token: this.getAuth().token,
       };
       this.http.postRevokeData(data).subscribe((nullResult) => {
-        this.stopRefreshTokenTimer();
         this.setAuth(nullResult);
+        this.stopRefreshTokenTimer();
         this.router.navigate(['']);
       });
     }
@@ -110,6 +109,7 @@ export class AuthService {
     route: ActivatedRouteSnapshot,
     user: LoginResponse
   ): boolean {
+    console.log(route);
     return route.data.roles.indexOf(user.role) === -1 ? false : true;
   }
 

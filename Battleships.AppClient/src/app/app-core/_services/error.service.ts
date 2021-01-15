@@ -12,12 +12,11 @@ export class ErrorService {
     private auth: AuthService,
     private router: Router,
     private securityService: SecurityService
-  ) {
-    this.securityService.delayForBruteForce(10);
-  }
+  ) {}
 
   public handleBackendError(error: any): void {
     error.error = 'Back-end server problems.';
+    this.securityService.delayForBruteForce(10);
     this.modalService.displayErrorMessage(error);
   }
 
@@ -26,10 +25,12 @@ export class ErrorService {
   }
 
   public handleBotError(error: HttpErrorResponse): void {
+    this.securityService.delayForBruteForce(10);
     this.modalService.displayErrorMessage(error);
   }
 
   public handleAuthError(error: HttpErrorResponse): void {
+    this.securityService.delayForBruteForce(10);
     if (this.auth.isLoggedIn()) {
       this.modalService.displayErrorMessage(error);
     } else {

@@ -16,7 +16,6 @@ export class ModalService {
   }
 
   public add(modal: ModalComponent): void {
-    console.log('add');
     this.modals.push(modal);
   }
 
@@ -26,8 +25,6 @@ export class ModalService {
 
   public open(id: string, message: string): void {
     const modal = this.modals.find((arr) => arr.id === id);
-    console.log('modal');
-    console.log(modal);
     modal.open(message);
   }
 

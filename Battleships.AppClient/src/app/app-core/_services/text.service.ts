@@ -4,8 +4,13 @@ import { Injectable } from '@angular/core';
 export class TextService {
   constructor() {}
 
+  //todo: test
   public getErrorMessage(error: any): string {
-    return error.error == null ? 'Unknown error.' : error.error;
+    if (error != null) {
+      return error.error == null ? 'Unknown error.' : error.error;
+    }
+
+    return 'Unknown error.';
   }
 
   public splitToken(token: string): string {

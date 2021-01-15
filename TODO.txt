@@ -40,6 +40,7 @@ OK - footer:
 	OK - footer styles,
 	OK - fill up footer with data,
 OK - identity:
+	OK - in auth guard on canActivate fail display info,
 	- in external login components use proper Angular events,
 	- switch off spinner for refreshing token, in the interceptor, use logic from error-interceptor,
 	OK - refactored auth-service completly and changed refresh-token system,
@@ -86,6 +87,7 @@ OK - identity:
 	OK - bug: if no email in DB for `forgotten pass`, freezes
 	OK - bug 2x hits RefreshToken
 OK - misc:
+	OK - bug: securty delay starts on each request,
 	- any text parsing / formatting methods move to text service,
 	- walk through Jasmine docs: https://jasmine.github.io/2.0/introduction.html
 	- services unit testing,
