@@ -11,6 +11,10 @@ describe('AuthService', () => {
   let user: LoginResponse;
   let authService: AuthService;
   const routerMock = jasmine.createSpyObj('Router', ['navigate']);
+  const textServiceMock = jasmine.createSpyObj('TextService', [
+    'splitToken',
+    'replaceSpecialCharacters',
+  ]);
   const httpServiceMock = jasmine.createSpyObj('HttpService', [
     'addAuthHeader',
     'postForLoginResponse',
@@ -52,10 +56,14 @@ describe('AuthService', () => {
       displayName: 'eee',
       role: UserRole.User,
     } as LoginResponse;
-    authService = new AuthService(routerMock, httpServiceMock);
+    authService = new AuthService(routerMock, httpServiceMock, textServiceMock);
     httpServiceMock.addAuthHeader.calls.reset();
     httpServiceMock.postRevokeData.calls.reset();
     httpServiceMock.postForRefreshToken.calls.reset();
+    textServiceMock.splitToken.and.returnValue(
+      'eyJ1bmlxdWVfbmFtZSI6Ijc3MjA3NmNkLTVkN2QtNGI1OS05NmE0LTZjOGM5MzE3YjFlYSIsInJvbGUiOiJVc2VyIiwibmJmIjoxNjEwNjE3NjM0LCJleHAiOjE2MTA2MTgyMzQsImlhdCI6MTYxMDYxNzYzNCwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDk2Mi8iLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUwOTYyLyJ9'
+    );
+    textServiceMock.replaceSpecialCharacters.and.returnValue('somegoodtoken');
   });
 
   it('Service_ShouldBeCreated', () => {
