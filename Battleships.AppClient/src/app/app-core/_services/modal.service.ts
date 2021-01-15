@@ -1,17 +1,18 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+
 import { ModalComponent } from '../modal-views/modal-views.component';
+import { TextService } from './text.service';
 
 @Injectable()
 export class ModalService {
   private modals: ModalComponent[] = [];
 
+  constructor(private text: TextService) {}
+
   public displayErrorMessage(error: HttpErrorResponse) {
-    if (error.error == null) {
-      this.open('info-modal', 'Unknown error.');
-    } else {
-      this.open('info-modal', error.error);
-    }
+    let message: string = this.text.getErrorMessage(error.error);
+    this.open('info-modal', message);
   }
 
   public add(modal: ModalComponent): void {

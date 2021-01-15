@@ -23,6 +23,7 @@ import { BoardService } from '@services/board.service';
 import { CommentsService } from '@services/comments.service';
 import { AiService } from '@services/ai.service';
 import { FleetService } from '@services/fleet.service';
+import { TextService } from '@services/text.service';
 
 import { AuthGuard } from './_helpers/auth.guard';
 import { JwtInterceptor } from './_helpers/jwt.interceptor';
@@ -72,6 +73,7 @@ import { ErrorInterceptor } from './_helpers/error.interceptor';
     AuthGuard,
     GameService,
     SignalRService,
+    TextService,
   ],
 })
 export class AppCoreModule {}

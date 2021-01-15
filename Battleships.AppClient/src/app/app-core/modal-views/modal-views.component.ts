@@ -16,11 +16,12 @@ import { ModalService } from '@services/modal.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class ModalComponent implements OnInit, OnDestroy {
-  message: string;
-  @Input() id: string;
-  private element: any;
+  public message: string;
+  @Input() public id: string;
+  private element: HTMLElement;
 
   constructor(private modalService: ModalService, private el: ElementRef) {
+    console.log('component');
     this.element = el.nativeElement;
   }
 

@@ -86,6 +86,7 @@ OK - identity:
 	OK - bug: if no email in DB for `forgotten pass`, freezes
 	OK - bug 2x hits RefreshToken
 OK - misc:
+	- any text parsing / formatting methods move to text service,
 	- walk through Jasmine docs: https://jasmine.github.io/2.0/introduction.html
 	- services unit testing,
 	- components unit testing,
