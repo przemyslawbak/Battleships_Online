@@ -53,22 +53,15 @@ export class GameService {
     haveShipsWithMoreMasts: boolean,
     mastCounter: number
   ): boolean {
-    if (
-      possibleTargets.length > 0 &&
+    return possibleTargets.length > 0 &&
       mastCounter > 0 &&
       haveShipsWithMoreMasts &&
       !this.isLowDifficulty()
-    ) {
-      return true;
-    }
-    return false;
+      ? true
+      : false;
   }
 
   private isLowDifficulty() {
-    if (this.gameState.gameDifficulty == 'low') {
-      return true;
-    }
-
-    return false;
+    return this.gameState.gameDifficulty == 'low' ? true : false;
   }
 }

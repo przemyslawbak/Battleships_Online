@@ -16,16 +16,16 @@ export class ErrorService {
     this.securityService.delayForBruteForce(10);
   }
 
-  public handleBackendError(error: any) {
+  public handleBackendError(error: any): void {
     error.error = 'Back-end server problems.';
     this.modalService.displayErrorMessage(error);
   }
 
-  public handleOtherError(error: HttpErrorResponse) {
+  public handleOtherError(error: HttpErrorResponse): void {
     this.modalService.displayErrorMessage(error);
   }
 
-  public handleBotError(error: HttpErrorResponse) {
+  public handleBotError(error: HttpErrorResponse): void {
     this.modalService.displayErrorMessage(error);
   }
 

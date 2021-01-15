@@ -25,11 +25,9 @@ export class FleetService {
     mastCounter: number,
     opponentsFleet: number[]
   ): number[] {
-    if (!hit && possibleTargetsCount == 0 && mastCounter > 0) {
-      return this.removeShipFromArray(mastCounter, opponentsFleet, false);
-    }
-
-    return opponentsFleet;
+    return !hit && possibleTargetsCount == 0 && mastCounter > 0
+      ? this.removeShipFromArray(mastCounter, opponentsFleet, false)
+      : opponentsFleet;
   }
 
   public removeShipFromArray(
@@ -38,6 +36,7 @@ export class FleetService {
     haveShipsWithMoreMasts: boolean
   ): number[] {
     const index = opponentsFleet.indexOf(mastCounter);
+
     if (index > -1 && !haveShipsWithMoreMasts) {
       opponentsFleet.splice(index, 1);
     }
@@ -63,11 +62,7 @@ export class FleetService {
     haveShipsWithMoreMasts: boolean,
     mastCounter: number
   ): number {
-    if (!haveShipsWithMoreMasts) {
-      return 0;
-    }
-
-    return mastCounter;
+    return !haveShipsWithMoreMasts ? 0 : mastCounter;
   }
 
   public isPossibleMoreMasts(

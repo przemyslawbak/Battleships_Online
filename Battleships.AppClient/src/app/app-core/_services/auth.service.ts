@@ -96,30 +96,18 @@ export class AuthService {
   }
 
   public isAdmin(): boolean {
-    if (this.getAuth().role == 'Admin') {
-      return true;
-    }
-
-    return false;
+    return this.getAuth().role == 'Admin' ? true : false;
   }
 
   public isLoggedIn(): boolean {
-    if (this.getAuth()) {
-      return true;
-    }
-
-    return false;
+    return this.getAuth() ? true : false;
   }
 
   public isRoleCorrect(
     route: ActivatedRouteSnapshot,
     user: LoginResponse
   ): boolean {
-    if (route.data.roles.indexOf(user.role) === -1) {
-      return false;
-    }
-
-    return true;
+    return route.data.roles.indexOf(user.role) === -1 ? false : true;
   }
 
   //helper methods
