@@ -19,7 +19,7 @@ export class TestComponent implements OnInit {
     /*
     const url = environment.apiUrl + 'api/user/test';
     this.http.getTestData(url).subscribe((val) => {
-      console.log('POST call successful value returned in body', val);
+      //.log('POST call successful value returned in body', val);
     });
     */
   }

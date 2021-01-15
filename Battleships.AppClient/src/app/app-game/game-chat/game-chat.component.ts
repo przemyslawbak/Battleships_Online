@@ -17,18 +17,12 @@ export class GameChatComponent implements OnInit {
 
   public ngOnInit(): void {
     this.initGameSubscription();
-    this.resetMessageListeners();
   }
 
   public ngOnDestroy() {
     if (this._subMessage) {
       this._subMessage.unsubscribe();
     }
-  }
-
-  private resetMessageListeners() {
-    this.signalRService.removeChatMessageListener();
-    this.signalRService.addChatMessageListener();
   }
 
   private initGameSubscription() {

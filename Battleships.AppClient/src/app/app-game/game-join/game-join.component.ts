@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { environment } from '@environments/environment';
 import { Router } from '@angular/router';
 
 import { AuthService } from '@services/auth.service';
@@ -36,10 +35,6 @@ export class GameJoinComponent implements OnInit {
   }
 
   public redirect(gameId: number): void {
-    if (this.currentGame != gameId) {
-      this.signalRService.stopConnection(false);
-    }
-
     this.router.navigate(['connect-game/' + gameId]);
   }
 

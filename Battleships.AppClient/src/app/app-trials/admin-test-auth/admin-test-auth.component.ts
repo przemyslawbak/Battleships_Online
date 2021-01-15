@@ -19,7 +19,7 @@ export class AdminComponent implements OnInit {
     /*
     const url = environment.apiUrl + 'api/user/admin';
     this.http.getAdminData(url).subscribe((val) => {
-      console.log('GET call successful value returned in body', val);
+      //.log('GET call successful value returned in body', val);
     });
     */
   }

@@ -72,7 +72,6 @@ export class GameDeployComponent implements OnInit {
     }
     this.userName = this.auth.getAuth().user;
     this.startCounter();
-    this.resetMessageListeners();
     this.initGameSubscription();
     this.playersBoard = this.board.getEmptyBoard();
     this.clearedBoard = false;
@@ -143,11 +142,6 @@ export class GameDeployComponent implements OnInit {
       }
       return this.count;
     });
-  }
-
-  private resetMessageListeners() {
-    this.signalRService.removeGameStateListener();
-    this.signalRService.addGameStateListener();
   }
 
   public setRotation(name: string): void {

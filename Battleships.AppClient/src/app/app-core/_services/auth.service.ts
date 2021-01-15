@@ -105,12 +105,15 @@ export class AuthService {
     return this.getAuth() ? true : false;
   }
 
+  //todo: test case: route.data.roles = null / undefines
+
   public isRoleCorrect(
     route: ActivatedRouteSnapshot,
     user: LoginResponse
   ): boolean {
-    console.log(route);
-    return route.data.roles.indexOf(user.role) === -1 ? false : true;
+    return route.data.roles && route.data.roles.indexOf(user.role) === -1
+      ? false
+      : true;
   }
 
   //helper methods

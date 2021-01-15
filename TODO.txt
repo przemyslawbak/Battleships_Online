@@ -40,7 +40,8 @@ OK - footer:
 	OK - footer styles,
 	OK - fill up footer with data,
 OK - identity:
-	OK - in auth guard on canActivate fail display info,
+	OK - bug: route.data.roles is undefined,
+	- in auth guard on canActivate fail display info,
 	- in external login components use proper Angular events,
 	- switch off spinner for refreshing token, in the interceptor, use logic from error-interceptor,
 	OK - refactored auth-service completly and changed refresh-token system,
@@ -87,7 +88,6 @@ OK - identity:
 	OK - bug: if no email in DB for `forgotten pass`, freezes
 	OK - bug 2x hits RefreshToken
 OK - misc:
-	OK - bug: securty delay starts on each request,
 	- any text parsing / formatting methods move to text service,
 	- walk through Jasmine docs: https://jasmine.github.io/2.0/introduction.html
 	- services unit testing,
@@ -360,7 +360,7 @@ OK - privacy component:
 	NO - cookies popup/modal,
 	OK - link in nav menu
 OK - open games list component:
-	NO - bug: when can not refresh token, empty game is displayed,
+	- bug: when can not refresh token, empty game is displayed - removes only one empty game,
 	OK - on game list load check for empty games and remove them,
 	OK - empty game slot - green,
 	OK - in chrome table first column has still wrong size,
@@ -370,6 +370,7 @@ OK - open games list component:
 	OK - bug: display 1/1 in game list,
 	OK - in open games list - if all slots are occupied, do not show `Play` button,
 OK - game chat:
+	- bug: in multiplayer after rejoining game chat is not displayed,
 	OK - move chat to separate component,
 	OK - create separate folder and component files,
 	OK - chat time full UTC,

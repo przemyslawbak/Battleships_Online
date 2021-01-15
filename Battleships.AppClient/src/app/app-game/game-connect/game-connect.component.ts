@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { environment } from '@environments/environment';
 
 import { AuthService } from '@services/auth.service';
 import { GameService } from '@services/game.service';
@@ -27,6 +26,7 @@ export class GameConnectComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
+    this.resetHubListeners();
     const id: string = this.route.snapshot.paramMap.get('id');
 
     if (id) {
@@ -36,13 +36,16 @@ export class GameConnectComponent implements OnInit {
     }
   }
 
+  private resetHubListeners(): void {
+    this.signalRService.startConnection();
+  }
+
   private getGamestateAndRedirect(id: string): void {
     const userName: string = this.auth.getAuth().user;
     const displayName: string = this.auth.getAuth().displayName;
 
     this.http.getGameState(id).subscribe((game: GameState) => {
       if (game) {
-        this.signalRService.startConnection();
         let gameUserNames: string[] = this.getUserNames(game.players);
 
         //if game already played by this user
@@ -85,7 +88,9 @@ export class GameConnectComponent implements OnInit {
     if (gameUserNames.includes('')) {
       game.players = this.setPlayerNames(game.players, userName, displayName);
       this.initGame(game);
-      this.signalRService.broadcastChatMessage('Connected to the game.');
+      if (game.gameMulti) {
+        this.signalRService.broadcastChatMessage('Connected to the game.');
+      }
     } else {
       this.informAboutNoEmptySlot();
     }

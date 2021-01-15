@@ -94,8 +94,6 @@ export class GameStartComponent implements OnInit {
   }
 
   public onSubmit() {
-    this.signalRService.stopConnection(false);
-    this.game.setGame(null);
     let model = this.initGameStartState();
     this.http.postGameState(model).subscribe(() => {
       this.router.navigate(['connect-game/' + model.gameId]);

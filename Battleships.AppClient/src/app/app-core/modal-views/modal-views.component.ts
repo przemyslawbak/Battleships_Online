@@ -21,7 +21,6 @@ export class ModalComponent implements OnInit, OnDestroy {
   private element: HTMLElement;
 
   constructor(private modalService: ModalService, private el: ElementRef) {
-    console.log('component');
     this.element = el.nativeElement;
   }
 

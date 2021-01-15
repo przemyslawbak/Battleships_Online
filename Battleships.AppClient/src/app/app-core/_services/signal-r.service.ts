@@ -1,119 +1,97 @@
 import { Injectable } from '@angular/core';
-import * as signalR from '@aspnet/signalr';
-import { environment } from '@environments/environment';
 import { GameState } from '@models/game-state.model';
 import { ChatMessage } from '@models/chat-message.model';
 import { AuthService } from '@services/auth.service';
 import { GameService } from '@services/game.service';
-import { ModalService } from '@services/modal.service';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
+import { HubConnectionService } from './hub-connection.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SignalRService {
-  private redirectToHome: boolean = true;
-  private hubConnection: signalR.HubConnection;
-  private url = environment.apiUrl + 'messageHub';
-  private thenable: Promise<void>;
   public message: ChatMessage;
   public messageChange: Subject<ChatMessage> = new Subject<ChatMessage>();
+  private _subChat: any;
+  private _subGame: any;
 
   constructor(
-    private modalService: ModalService,
     public auth: AuthService,
     private game: GameService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private hub: HubConnectionService
+  ) {
+    this.initConnectionSubscriptions();
+  }
 
-  public startConnection = (): void => {
-    if (!this.hubConnection) {
+  private initConnectionSubscriptions() {
+    this._subChat = this.hub.messageChange.subscribe((message: ChatMessage) => {
+      this.message = message;
+      this.messageChange.next(this.message);
+    });
+    this._subGame = this.hub.gameChange.subscribe((game: GameState) => {
+      this.game.setGame(game);
+    });
+  }
+
+  public startConnection(): void {
+    if (!this.hub.isConnectionStarted() && this.auth.isLoggedIn()) {
       const token = this.auth.getAuth().token;
-      this.hubConnection = new signalR.HubConnectionBuilder()
-        .withUrl(this.url, { accessTokenFactory: () => token })
-        .build();
-      this.startHubConnection();
-
-      this.hubConnection.onclose(() => this.connectionHubClosed());
-    }
-  };
-
-  private startHubConnection() {
-    this.thenable = this.hubConnection.start();
-    this.thenable
-      .then(() => console.log('Connection started!'))
-      .catch((err) =>
-        console.log('Error while establishing connection :( ' + err)
-      );
-  }
-
-  public stopConnection(redirectToHome: boolean): void {
-    this.redirectToHome = redirectToHome;
-    if (this.hubConnection) {
-      this.hubConnection.stop();
+      this.hub.createHubConnectionBuilder(token);
+      this.removeGameStateListener();
+      this.addGameStateListener();
+      this.removeChatMessageListener();
+      this.addChatMessageListener();
     }
   }
 
-  private connectionHubClosed(): void {
-    this.game.setGame(null);
-    if (this.game.isGameStarted()) {
-      this.modalService.open(
-        'info-modal',
-        'You have been disconnected from game you played.'
-      );
+  public restartConnection() {
+    this.hub.restart(this.game.isGameStarted());
+  }
 
-      if (this.redirectToHome) {
-        this.router.navigate(['']);
-      }
+  public stopConnection(): void {
+    if (this.hub.isConnectionStarted()) {
+      this.hub.disconnect(this.game.isGameStarted());
     }
-    this.hubConnection = null;
+
+    this.router.navigate(['']);
   }
 
   public removeGameStateListener(): void {
-    this.hubConnection.off('ReceiveGameState');
+    if (this.hub.isConnectionStarted()) {
+      this.hub.connectionGameStateOff();
+    }
   }
 
-  public addGameStateListener = (): void => {
-    this.hubConnection.on('ReceiveGameState', (gameState: GameState) => {
-      this.game.setGame(gameState);
-    });
-  };
+  public addGameStateListener(): void {
+    this.hub.connectionGameStateOn();
+  }
 
-  public broadcastGameState = (game: GameState): void => {
-    if (game && this.hubConnection) {
-      this.thenable.then(() => {
-        this.hubConnection
-          .invoke('SendGameState', game)
-          .catch((err) => console.error('game state broadcast error: ' + err));
-      });
+  public broadcastGameState(game: GameState): void {
+    if (game && this.hub.isConnectionStarted()) {
+      this.hub.broadcastGame(game);
     }
-  };
+  }
 
   public removeChatMessageListener(): void {
-    this.hubConnection.off('ReceiveChatMessage');
+    if (this.hub.isConnectionStarted()) {
+      this.hub.connectionChatOff();
+    }
   }
 
-  public addChatMessageListener = (): void => {
-    this.hubConnection.on('ReceiveChatMessage', (chatMessage: ChatMessage) => {
-      this.message = chatMessage;
-      this.messageChange.next(this.message);
-    });
-  };
+  public addChatMessageListener(): void {
+    this.hub.connectionChatOn();
+  }
 
-  public broadcastChatMessage = (message: string): void => {
-    if (message && this.hubConnection && this.game.getGame().gameMulti) {
-      this.thenable.then(() => {
-        let playersNames = [];
-        for (let i = 0; i < this.game.getGame().players.length; i++) {
-          if (this.game.getGame().players[i].userName) {
-            playersNames.push(this.game.getGame().players[i].userName);
-          }
-        }
-        this.hubConnection
-          .invoke('SendChatMessage', message, playersNames)
-          .catch((err) => console.error('chat broadcast error: ' + err));
-      });
+  public broadcastChatMessage(message: string): void {
+    let game: GameState = this.game.getGame();
+    if (message && this.hub.isConnectionStarted() && game.gameMulti) {
+      let playersNames: string[] = [];
+      for (let i = 0; i < game.players.length; i++) {
+        playersNames.push(game.players[i].userName);
+      }
+      this.hub.broadcastChat(message, playersNames);
     }
-  };
+  }
 }
