@@ -39,11 +39,9 @@ export class SignalRService {
     if (!this.hub.isConnectionStarted() && this.auth.isLoggedIn()) {
       const token = this.auth.getAuth().token;
       this.hub.createHubConnectionBuilder(token);
-      this.removeGameStateListener();
-      this.addGameStateListener();
-      this.removeChatMessageListener();
-      this.addChatMessageListener();
     }
+
+    this.resetHubListeners();
   }
 
   public restartConnection() {
@@ -93,5 +91,12 @@ export class SignalRService {
       }
       this.hub.broadcastChat(message, playersNames);
     }
+  }
+
+  private resetHubListeners() {
+    this.removeGameStateListener();
+    this.addGameStateListener();
+    this.removeChatMessageListener();
+    this.addChatMessageListener();
   }
 }

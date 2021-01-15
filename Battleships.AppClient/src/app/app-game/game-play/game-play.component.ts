@@ -236,6 +236,7 @@ export class GamePlayComponent implements OnInit {
           this.count = 30 / this.speedDivider;
         } else {
           if (
+            this.game.getGame() &&
             this.clientsPlayerNumber == this.whoseTurnNumber &&
             !this.isResultBeingDisplayed
           ) {

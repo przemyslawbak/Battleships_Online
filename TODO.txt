@@ -289,6 +289,7 @@ OK - in game-play component:
 	OK - adjust: when displaying hit result, do not allow to fire,
 	OK - adjust: what if shooting cell already shot?
 OK - single player:
+	OK - bug: when logged out and game is null, single player game counter is still running,
 	- set default difficulty to hard,
 	OK - bug: after refactoring ai-service does increase difficulty,
 	OK - bug: in board service: ERROR Error: Uncaught (in promise): TypeError: this.game.getGame() is null,
