@@ -8,8 +8,6 @@ export class TextService {
   //todo: test
   public getErrorMessage(error: HttpErrorResponse): string {
     if (error != null) {
-      console.log('error.status');
-      console.log(error.status);
       switch (error.status) {
         case 400:
           return 'Bad Request.';

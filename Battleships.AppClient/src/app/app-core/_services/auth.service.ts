@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
-import { map } from 'rxjs/operators';
 
 import { LoginResponse } from '@models/login-response.model';
 import { HttpService } from './http.service';
 import { HttpRequest } from '@angular/common/http';
 import { TextService } from './text.service';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -17,18 +17,18 @@ export class AuthService {
     private text: TextService
   ) {}
 
-  public login(email: string, password: string) {
+  public login(email: string, password: string): Observable<LoginResponse> {
     const data = {
       Email: email,
       Password: password,
       GrantType: 'password',
     };
-    return this.http.postForLoginResponse(data).pipe(
-      map((user) => {
-        this.setAuth(user);
-        return user;
-      })
-    );
+    let subject = new Subject<LoginResponse>();
+    this.http.postForLoginResponse(data).subscribe((user) => {
+      this.setAuth(user);
+      subject.next(user);
+    });
+    return subject.asObservable();
   }
 
   public addAuthHeader(request: HttpRequest<any>): HttpRequest<any> {
@@ -87,11 +87,9 @@ export class AuthService {
         Email: this.getAuth().email,
         RefreshToken: this.getAuth().refreshToken,
       };
-      this.http.postForRefreshToken(data).pipe(
-        map((user) => {
-          this.setAuth(user);
-        })
-      );
+      this.http.postForRefreshToken(data).subscribe((user) => {
+        this.setAuth(user);
+      });
     }
 
     return null;
@@ -120,7 +118,7 @@ export class AuthService {
 
   private refreshTokenTimeout: NodeJS.Timeout;
 
-  private startRefreshTokenTimer(): void {
+  public startRefreshTokenTimer(): void {
     const timeTokenExpires =
       JSON.parse(atob(this.text.splitToken(this.getAuth().token))).exp * 1000;
     const timeNow = Date.now();

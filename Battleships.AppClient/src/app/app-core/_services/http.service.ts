@@ -32,7 +32,9 @@ export class HttpService {
   }): Observable<LoginResponse> {
     const url = environment.apiUrl + 'api/token/refresh-token';
     let subject = new Subject<any>();
-    this.http.post<any>(url, data).subscribe((res) => subject.next(res));
+    this.http.post<any>(url, data).subscribe((res) => {
+      subject.next(res);
+    });
 
     return subject.asObservable();
   }

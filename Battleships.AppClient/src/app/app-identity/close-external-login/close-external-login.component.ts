@@ -10,14 +10,12 @@ import { AuthService } from '@services/auth.service';
   styleUrls: ['./close-external-login.component.css'],
 })
 export class CloseComponent implements OnInit {
-  tokenResponse: LoginResponse;
-
   constructor(private route: ActivatedRoute, private auth: AuthService) {}
 
   public ngOnInit(): void {
-    this.tokenResponse = this.getTokenResponse();
-    if (this.tokenResponse) {
-      this.auth.setAuth(this.tokenResponse);
+    let loginResponse = this.getTokenResponse();
+    if (loginResponse) {
+      this.auth.setAuth(loginResponse);
     }
 
     parent.window.close();

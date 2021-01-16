@@ -31,14 +31,6 @@ export class LoginExternalProvidersComponent implements OnInit {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 
     this.closePopUpWindow();
-    if (!window.externalProviderLogin) {
-      window.externalProviderLogin = function (auth: LoginResponse) {
-        this.zone.run(() => {
-          this.auth.setAuth(auth);
-          this.router.navigate(['']);
-        });
-      };
-    }
   }
 
   public callExternalLogin(providerName: string) {
@@ -120,6 +112,7 @@ export class LoginExternalProvidersComponent implements OnInit {
     this.externalProviderWindow.document.body.innerHTML = html;
     const checkIntervalId = setInterval(() => {
       if (this.externalProviderWindow.closed) {
+        this.auth.startRefreshTokenTimer();
         clearInterval(checkIntervalId);
         this.handleCloseExternalProvider();
       } else {

@@ -41,7 +41,8 @@ OK - footer:
 	OK - fill up footer with data,
 OK - identity:
 	OK - bug: on 401 status is unknown error displayed,
-	- im not sure if token refreshing works,
+	OK - bug: im not sure if token refreshing works, update: does not work with external login prov.,
+	OK - bug: after refreshing token timer does not start again,
 	OK - bug: route.data.roles is undefined,
 	OK - bug: in auth guard on canActivate fail display info,
 	- in external login components use proper Angular events,
