@@ -4,13 +4,12 @@ DOUBTS:
 - do I need method comments in service classes?
 - sanitize inputs with EF, I dont think so.
 - unit test one scenario/result if there is no logic?
+- services with components?
 
 !!!!!!!!!!!!
 - update spinner-interceptor tests for refresh-token case,
 - updated auth-service login_OnReceivedUser_DoesSetAuth: Async function did not complete within 5000ms,
 - updated auth-service login_OnNotReceivedUser_DoesNotSetAuth: Async function did not complete within 5000ms,
-- update signalr-service tests: Cannot read property 'subscribe' of undefined,
-- 
 
 OK - error service:
 	NO - call delayForBruteForce for each method call, test it,
@@ -99,6 +98,7 @@ OK - identity:
 	OK - bug: if no email in DB for `forgotten pass`, freezes
 	OK - bug 2x hits RefreshToken
 OK - misc:
+	OK - update signalr-service tests: Cannot read property 'subscribe' of undefined,
 	- on connection reset redirecting to home page is pissing of a bit,
 	OK - adjusted security method to be async,
 	- any text parsing / formatting methods move to text service,

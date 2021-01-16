@@ -114,8 +114,6 @@ export class AuthService {
       : true;
   }
 
-  //helper methods
-
   private refreshTokenTimeout: NodeJS.Timeout;
 
   public startRefreshTokenTimer(): void {
