@@ -6,8 +6,12 @@ import { GameState } from '@models/game-state.model';
 import { Subject } from 'rxjs';
 import { ModalService } from './modal.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class HubConnectionService {
+  public isConnecting: boolean = false;
+  public isDisconnecting: boolean = false;
   private isGameStarted: boolean = false;
   public message: ChatMessage;
   public messageChange: Subject<ChatMessage> = new Subject<ChatMessage>();
@@ -18,8 +22,7 @@ export class HubConnectionService {
   private hubSendChatMessageMethodName: string = 'SendChatMessage';
   private hubReceiveGameStateMethodName: string = 'ReceiveGameState';
   private hubSendGameStateMethodName: string = 'SendGameState';
-  private thenable: Promise<void>;
-  private hubConnection: signalR.HubConnection;
+  private hubConnection: signalR.HubConnection = null;
 
   constructor(private modalService: ModalService) {}
 
@@ -32,31 +35,26 @@ export class HubConnectionService {
   }
 
   private startHubConnection(): void {
-    this.thenable = this.hubConnection.start();
-    this.thenable.catch((err) =>
-      this.modalService.open(
-        'info-modal',
-        'Error while establishing connection: ' + err
-      )
-    );
+    this.isConnecting = true;
+    this.hubConnection.start().then(() => {
+      this.isConnecting = false;
+    });
   }
 
   public disconnect(isGameStarted: boolean): void {
+    this.isDisconnecting = true;
     this.isGameStarted = isGameStarted;
-    this.hubConnection.stop();
-  }
-
-  public restart(isGameStarted: boolean) {
-    this.isGameStarted = isGameStarted;
-    this.disconnect(isGameStarted);
-    this.startHubConnection();
+    this.hubConnection.stop().then(() => {
+      this.isDisconnecting = false;
+    });
+    this.hubConnection = null;
   }
 
   private connectionHubClosed(): void {
     if (this.isGameStarted) {
       this.modalService.open(
         'info-modal',
-        'You are now disconnected from game you played.'
+        'You have been disconnected from provious game.'
       );
     }
     this.gameState = null;
@@ -69,16 +67,14 @@ export class HubConnectionService {
   }
 
   public broadcastGame(game: GameState): void {
-    this.thenable.then(() => {
-      this.hubConnection
-        .invoke(this.hubSendGameStateMethodName, game)
-        .catch((err) =>
-          this.modalService.open(
-            'info-modal',
-            'Game state broadcast error: ' + err
-          )
-        );
-    });
+    this.hubConnection
+      .invoke(this.hubSendGameStateMethodName, game)
+      .catch((err) =>
+        this.modalService.open(
+          'info-modal',
+          'Game state broadcast error: ' + err
+        )
+      );
   }
 
   public connectionGameStateOff(): void {
@@ -110,12 +106,10 @@ export class HubConnectionService {
   }
 
   public broadcastChat(message: string, playersNames: string[]) {
-    this.thenable.then(() => {
-      this.hubConnection
-        .invoke(this.hubSendChatMessageMethodName, message, playersNames)
-        .catch((err) =>
-          this.modalService.open('info-modal', 'Chat broadcast error: ' + err)
-        );
-    });
+    this.hubConnection
+      .invoke(this.hubSendChatMessageMethodName, message, playersNames)
+      .catch((err) =>
+        this.modalService.open('info-modal', 'Chat broadcast error: ' + err)
+      );
   }
 }

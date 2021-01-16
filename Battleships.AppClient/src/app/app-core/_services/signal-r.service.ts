@@ -7,10 +7,9 @@ import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { HubConnectionService } from './hub-connection.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class SignalRService {
+  public canConnectGame: boolean = false;
   public message: ChatMessage;
   public messageChange: Subject<ChatMessage> = new Subject<ChatMessage>();
   private _subChat: any;
@@ -35,17 +34,28 @@ export class SignalRService {
     });
   }
 
-  public startConnection(): void {
+  private delay(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  public async startConnection(): Promise<void> {
+    console.clear();
+    this.canConnectGame = false;
+    this.stopConnection();
+    while (this.hub.isDisconnecting) {
+      await this.delay(1000);
+    }
     if (!this.hub.isConnectionStarted() && this.auth.isLoggedIn()) {
       const token = this.auth.getAuth().token;
       this.hub.createHubConnectionBuilder(token);
+
+      while (this.hub.isConnecting) {
+        await this.delay(1000);
+      }
     }
 
     this.resetHubListeners();
-  }
-
-  public restartConnection() {
-    this.hub.restart(this.game.isGameStarted());
+    this.canConnectGame = true;
   }
 
   public stopConnection(): void {

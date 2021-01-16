@@ -7,7 +7,7 @@ DOUBTS:
 
 OK - error service:
 	- call delayForBruteForce for each method call, test it,
-	OK - after refactoring bug: can not return Observable<boolean>,
+	OK - after refactoring - bug: can not return Observable<boolean>,
 	OK - troubles with testing Handling Failed requests,
 	- add other response errors: https://dev.to/youssefzidan/handling-http-error-messages-globally-using-interceptors-and-toasters-angular-27bj,
 OK - http serice:
@@ -40,8 +40,10 @@ OK - footer:
 	OK - footer styles,
 	OK - fill up footer with data,
 OK - identity:
+	- bug: on 401 status is unknown error displayed,
+	- im not sure if token refreshing works,
 	OK - bug: route.data.roles is undefined,
-	- in auth guard on canActivate fail display info,
+	OK - bug: in auth guard on canActivate fail display info,
 	- in external login components use proper Angular events,
 	- switch off spinner for refreshing token, in the interceptor, use logic from error-interceptor,
 	OK - refactored auth-service completly and changed refresh-token system,
@@ -88,6 +90,8 @@ OK - identity:
 	OK - bug: if no email in DB for `forgotten pass`, freezes
 	OK - bug 2x hits RefreshToken
 OK - misc:
+	- on connection reset redirecting to home page is pissing of a bit,
+	OK - adjusted security method to be async,
 	- any text parsing / formatting methods move to text service,
 	- walk through Jasmine docs: https://jasmine.github.io/2.0/introduction.html
 	- services unit testing,
@@ -212,6 +216,7 @@ OK - in deploy view and component:
 	OK - bug: deployed ships are not visible,
 	OK - bug: status data display is shifted, why?
 OK - in connect component:
+	- bug: meybe need to reset hub connection only when joining to new game?
 	OK - bug: can not join played game,
 	OK - what with played games if player joins other game? - disconnect signalr first, show message, clear gamestate,
 	OK - what with played games if player creates new game? - disconnect signalr first, show message, clear gamestate,
@@ -289,8 +294,10 @@ OK - in game-play component:
 	OK - adjust: when displaying hit result, do not allow to fire,
 	OK - adjust: what if shooting cell already shot?
 OK - single player:
+	- bug: when starting single player game twice, something is wrong, need to check it,
+	OK - bug: on easy difficulty computer is playing at least medium,
 	OK - bug: when logged out and game is null, single player game counter is still running,
-	- set default difficulty to hard,
+	OK - set default difficulty to hard,
 	OK - bug: after refactoring ai-service does increase difficulty,
 	OK - bug: in board service: ERROR Error: Uncaught (in promise): TypeError: this.game.getGame() is null,
 	OK - in signal-r service sending chat mesages only when multiplayer game,
@@ -361,6 +368,7 @@ OK - privacy component:
 	NO - cookies popup/modal,
 	OK - link in nav menu
 OK - open games list component:
+	- bug: when rejoining game disconnects hub,
 	- bug: when can not refresh token, empty game is displayed - removes only one empty game,
 	OK - on game list load check for empty games and remove them,
 	OK - empty game slot - green,
@@ -371,7 +379,7 @@ OK - open games list component:
 	OK - bug: display 1/1 in game list,
 	OK - in open games list - if all slots are occupied, do not show `Play` button,
 OK - game chat:
-	- bug: in multiplayer after rejoining game chat is not displayed,
+	OK - bug: in multiplayer after rejoining game chat is not displayed,
 	OK - move chat to separate component,
 	OK - create separate folder and component files,
 	OK - chat time full UTC,

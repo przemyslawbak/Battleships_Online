@@ -25,7 +25,7 @@ export class GameStartComponent implements OnInit {
   public disabledChecks: boolean;
   public multiplayer: boolean = false;
   private speedDivider: number = 1;
-  private difficulty: string = 'easy';
+  private difficulty: string = 'hard';
   private open: boolean = true;
 
   constructor(
@@ -55,7 +55,7 @@ export class GameStartComponent implements OnInit {
       gameMode: new FormControl('single', Validators.required),
       gameSpeed: new FormControl('slow', Validators.required),
       gameOpen: new FormControl('open'),
-      gameDifficulty: new FormControl('easy'),
+      gameDifficulty: new FormControl('hard'),
     });
   }
 

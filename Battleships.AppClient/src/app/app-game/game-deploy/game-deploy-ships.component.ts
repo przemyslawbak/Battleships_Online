@@ -75,6 +75,7 @@ export class GameDeployComponent implements OnInit {
     this.initGameSubscription();
     this.playersBoard = this.board.getEmptyBoard();
     this.clearedBoard = false;
+    this.updateGameValues(this.game.getGame());
   }
 
   public ngAfterViewInit(): void {

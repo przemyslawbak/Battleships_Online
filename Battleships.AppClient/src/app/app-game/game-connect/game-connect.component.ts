@@ -25,22 +25,29 @@ export class GameConnectComponent implements OnInit {
     private signalRService: SignalRService
   ) {}
 
-  public ngOnInit(): void {
-    this.resetHubListeners();
+  public async ngOnInit(): Promise<void> {
     const id: string = this.route.snapshot.paramMap.get('id');
+    this.resetHubConnection();
+    while (!this.signalRService.canConnectGame) {
+      await this.delay(1000);
+    }
 
     if (id) {
-      this.getGamestateAndRedirect(id);
+      this.getGameStateAndRedirect(id);
     } else {
       this.findIdAndReconnect();
     }
   }
 
-  private resetHubListeners(): void {
+  private delay(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  private resetHubConnection(): void {
     this.signalRService.startConnection();
   }
 
-  private getGamestateAndRedirect(id: string): void {
+  private getGameStateAndRedirect(id: string): void {
     const userName: string = this.auth.getAuth().user;
     const displayName: string = this.auth.getAuth().displayName;
 
@@ -101,7 +108,6 @@ export class GameConnectComponent implements OnInit {
       game.players = this.setComputerOpponent(game.players);
     }
     this.game.setGame(game); //set first state
-    this.signalRService.broadcastGameState(game);
     if (game.players[0].isDeployed && game.players[1].isDeployed) {
       this.router.navigate(['play-game']);
     } else {

@@ -78,7 +78,6 @@ export class GamePlayComponent implements OnInit {
     this.userName = this.auth.getAuth().user;
     this.startCounter();
     this.initGameSubscription();
-    this.resetMessageListeners();
     this.updateGameValues(this.game.getGame());
   }
 
@@ -252,11 +251,6 @@ export class GamePlayComponent implements OnInit {
 
   private nextRound(): void {
     this.fire(-1, -1, this.dummyHtmlElement);
-  }
-
-  private resetMessageListeners() {
-    this.signalRService.removeGameStateListener();
-    this.signalRService.addGameStateListener();
   }
 
   private initGameSubscription() {

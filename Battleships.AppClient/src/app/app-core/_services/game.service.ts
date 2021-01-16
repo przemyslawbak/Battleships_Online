@@ -62,6 +62,6 @@ export class GameService {
   }
 
   private isLowDifficulty() {
-    return this.gameState.gameDifficulty == 'low' ? true : false;
+    return this.gameState.gameDifficulty == 'easy' ? true : false;
   }
 }

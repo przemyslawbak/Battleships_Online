@@ -138,7 +138,7 @@ describe('GameService', () => {
   });
 
   it('isShootingShipAndNotLowDifficulty_OnLowDifficulty_ReturnsFalse', () => {
-    let game: GameState = { gameDifficulty: 'low' } as GameState;
+    let game: GameState = { gameDifficulty: 'easy' } as GameState;
     let possibleTargets: BoardCell[] = [{} as BoardCell];
     let haveShipsWithMoreMasts: boolean = true;
     let mastsCounter: number = 1;
