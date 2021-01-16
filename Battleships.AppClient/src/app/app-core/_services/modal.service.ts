@@ -11,7 +11,7 @@ export class ModalService {
   constructor(private text: TextService) {}
 
   public displayErrorMessage(error: HttpErrorResponse) {
-    let message: string = this.text.getErrorMessage(error.error);
+    let message: string = this.text.getErrorMessage(error);
     this.open('info-modal', message);
   }
 

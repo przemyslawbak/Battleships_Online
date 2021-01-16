@@ -39,7 +39,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     if (error.status === 0) {
       this.error.handleBackendError(error);
-    } else if ([401, 403].includes(error.status)) {
+    } else if (error.status === 401 || error.status === 403) {
       this.error.handleAuthError(error);
     } else if (error.status === 429) {
       this.error.handleBotError(error);

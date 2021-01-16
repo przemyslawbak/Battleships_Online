@@ -6,10 +6,10 @@ DOUBTS:
 - unit test one scenario/result if there is no logic?
 
 OK - error service:
-	- call delayForBruteForce for each method call, test it,
+	NO - call delayForBruteForce for each method call, test it,
 	OK - after refactoring - bug: can not return Observable<boolean>,
 	OK - troubles with testing Handling Failed requests,
-	- add other response errors: https://dev.to/youssefzidan/handling-http-error-messages-globally-using-interceptors-and-toasters-angular-27bj,
+	OK - add other response errors: https://dev.to/youssefzidan/handling-http-error-messages-globally-using-interceptors-and-toasters-angular-27bj,
 OK - http serice:
 	OK - spinners start from interceptor,
 	- use POST, PUT, GET, DELETE,
