@@ -50,7 +50,7 @@ export class EditProfileComponent {
     model.userName = this.auth.getAuth().user;
     model.displayName = this.form.value.DisplayName;
     model.email = this.form.value.Email;
-    this.http.postUpdatedUser(model).subscribe(() => {
+    this.http.putUpdatedUser(model).subscribe(() => {
       this.auth.logout();
       this.modalService.open(
         'info-modal',

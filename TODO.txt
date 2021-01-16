@@ -12,7 +12,7 @@ OK - error service:
 	OK - add other response errors: https://dev.to/youssefzidan/handling-http-error-messages-globally-using-interceptors-and-toasters-angular-27bj,
 OK - http serice:
 	OK - spinners start from interceptor,
-	- use POST, PUT, GET, DELETE,
+	OK - use POST, PUT, GET, DELETE,
 	OK - http timeouts? added 10s timeout;
 OK - security service:
 	OK - .pipe(delay(5000)) w security service?
@@ -40,7 +40,7 @@ OK - footer:
 	OK - footer styles,
 	OK - fill up footer with data,
 OK - identity:
-	- bug: on 401 status is unknown error displayed,
+	OK - bug: on 401 status is unknown error displayed,
 	- im not sure if token refreshing works,
 	OK - bug: route.data.roles is undefined,
 	OK - bug: in auth guard on canActivate fail display info,

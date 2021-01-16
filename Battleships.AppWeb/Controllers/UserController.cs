@@ -105,10 +105,10 @@ namespace Battleships.AppWeb.Controllers
         }
 
         /// <summary>
-        /// POST: api/user/newpassword
+        /// PUT: api/user/newpassword
         /// </summary>
         /// <returns>Status code.</returns>
-        [HttpPost("new-password")]
+        [HttpPut("new-password")]
         [ValidateModel]
         [ServiceFilter(typeof(SanitizeModelAttribute))]
         public async Task<IActionResult> PassReset([FromBody]ResetPasswordViewModel model)
@@ -158,10 +158,10 @@ namespace Battleships.AppWeb.Controllers
         }
 
         /// <summary>
-        /// POST: api/user/edit
+        /// PUT: api/user/edit
         /// </summary>
         /// <returns>Status code.</returns>
-        [HttpPost("edit")]
+        [HttpPut("edit")]
         [ValidateModel]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin, User")]
         public async Task<IActionResult> EditUser([FromBody] EditUserViewModel model)

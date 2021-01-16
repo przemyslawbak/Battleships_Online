@@ -35,7 +35,7 @@ export class PassResetComponent implements OnInit {
 
   public onSubmit() {
     this.passModel.password = this.form.value.Password;
-    this.http.postNewPass(this.passModel).subscribe(() => {
+    this.http.putNewPass(this.passModel).subscribe(() => {
       this.modalService.open(
         'info-modal',
         'Now you can log in with your password.'

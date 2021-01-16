@@ -62,18 +62,18 @@ export class HttpService {
     return subject.asObservable();
   }
 
-  public postUpdatedUser(model: EditUser): Observable<any> {
+  public putUpdatedUser(model: EditUser): Observable<any> {
     const url = environment.apiUrl + 'api/user/edit';
     let subject = new Subject<any>();
-    this.http.post<any>(url, model).subscribe((res) => subject.next(res));
+    this.http.put<any>(url, model).subscribe((res) => subject.next(res));
 
     return subject.asObservable();
   }
 
-  public postNewPass(model: PassResetModel): Observable<any> {
+  public putNewPass(model: PassResetModel): Observable<any> {
     const url = environment.apiUrl + 'api/user/new-password';
     let subject = new Subject<any>();
-    this.http.post<any>(url, model).subscribe((res) => subject.next(res));
+    this.http.put<any>(url, model).subscribe((res) => subject.next(res));
 
     return subject.asObservable();
   }
