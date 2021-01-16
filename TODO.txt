@@ -5,6 +5,13 @@ DOUBTS:
 - sanitize inputs with EF, I dont think so.
 - unit test one scenario/result if there is no logic?
 
+!!!!!!!!!!!!
+- update spinner-interceptor tests for refresh-token case,
+- updated auth-service login_OnReceivedUser_DoesSetAuth: Async function did not complete within 5000ms,
+- updated auth-service login_OnNotReceivedUser_DoesNotSetAuth: Async function did not complete within 5000ms,
+- update signalr-service tests: Cannot read property 'subscribe' of undefined,
+- 
+
 OK - error service:
 	NO - call delayForBruteForce for each method call, test it,
 	OK - after refactoring - bug: can not return Observable<boolean>,
@@ -40,13 +47,14 @@ OK - footer:
 	OK - footer styles,
 	OK - fill up footer with data,
 OK - identity:
+	- what about refresh timer when browser refreshed?
 	OK - bug: on 401 status is unknown error displayed,
 	OK - bug: im not sure if token refreshing works, update: does not work with external login prov.,
 	OK - bug: after refreshing token timer does not start again,
 	OK - bug: route.data.roles is undefined,
 	OK - bug: in auth guard on canActivate fail display info,
 	- in external login components use proper Angular events,
-	- switch off spinner for refreshing token, in the interceptor, use logic from error-interceptor,
+	OK - switch off spinner for refreshing token, in the interceptor, use logic from error-interceptor,
 	OK - refactored auth-service completly and changed refresh-token system,
 	OK - bug: refresh timer works, need to set up correctly,
 	OK - bug: throws always 401 on requests problem with timeout fixed,

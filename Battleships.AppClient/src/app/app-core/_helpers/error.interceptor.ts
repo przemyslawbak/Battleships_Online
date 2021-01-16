@@ -33,10 +33,6 @@ export class ErrorInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): any {
-    if (request.url.indexOf('refresh') !== -1) {
-      return next.handle(request);
-    }
-
     if (error.status === 0) {
       this.error.handleBackendError(error);
     } else if (error.status === 401 || error.status === 403) {

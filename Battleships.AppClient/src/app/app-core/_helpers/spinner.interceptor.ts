@@ -19,6 +19,10 @@ export class SpinnerInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
+    if (request.url.indexOf('refresh') > -1) {
+      return next.handle(request);
+    }
+
     this.totalRequests++;
     this.spinner.show();
     return next.handle(request).pipe(
