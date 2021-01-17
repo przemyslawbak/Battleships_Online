@@ -24,6 +24,13 @@ export class SignalRService {
     this.initConnectionSubscriptions();
   }
 
+  public ngOnDestroy() {
+    if (this._subChat && this._subGame) {
+      this._subChat.unsubscribe();
+      this._subGame.unsubscribe();
+    }
+  }
+
   private initConnectionSubscriptions() {
     this._subChat = this.hub.messageChange.subscribe((message: ChatMessage) => {
       this.message = message;

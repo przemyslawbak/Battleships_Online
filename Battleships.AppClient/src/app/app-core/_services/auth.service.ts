@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
 
 import { LoginResponse } from '@models/login-response.model';
 import { HttpService } from './http.service';
 import { HttpRequest } from '@angular/common/http';
 import { TextService } from './text.service';
-import { Observable, Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {

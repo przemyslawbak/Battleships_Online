@@ -84,8 +84,8 @@ describe('AuthService', () => {
     authService.login('some_email', 'some_pass').subscribe((data) => {
       expect(data).toBeFalse;
       expect(localStorage.getItem('auth')).toBe(null);
-      done();
     });
+    done();
   });
 
   it('login_OnReceivedUser_DoesSetAuth', (done) => {
@@ -102,8 +102,8 @@ describe('AuthService', () => {
       expect(value.refreshToken).toBe(user.refreshToken);
       expect(value.displayName).toBe(user.displayName);
       expect(value.role).toBe(user.role);
-      done();
     });
+    done();
   });
 
   it('addAuthHeader_OnNullUser_NotCallsAddAuthHeader', () => {
