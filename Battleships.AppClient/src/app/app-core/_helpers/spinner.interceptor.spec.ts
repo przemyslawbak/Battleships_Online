@@ -38,6 +38,8 @@ describe('SpinnerInterceptor', () => {
 
   afterEach(() => {
     httpMock.verify();
+    spinnersMock.show.calls.reset();
+    spinnersMock.hide.calls.reset();
   });
 
   it('Injector_ShouldBeCreated', () => {
@@ -50,7 +52,7 @@ describe('SpinnerInterceptor', () => {
     service.getGameState('1').subscribe(
       (data) => {
         expect(data).toBe(sample_data);
-        expect(spinnersMock.show).toHaveBeenCalled();
+        expect(spinnersMock.show).toHaveBeenCalledTimes(1);
         done();
       },
       (error: HttpErrorResponse) => {
@@ -69,6 +71,27 @@ describe('SpinnerInterceptor', () => {
       status: 200,
       statusText: 'Ok',
     });
-    expect(spinnersMock.hide).toHaveBeenCalled();
+    expect(spinnersMock.hide).toHaveBeenCalledTimes(1);
+  });
+
+  it('SpinnerInterceptor_OnHttpRefreshTokenRequest_NotCallsOpenAndHideSpinner', (done) => {
+    const data = {
+      Email: 'any_email',
+      RefreshToken: 'any_token',
+    };
+    service.postForRefreshToken(data).subscribe(() => {
+      expect(spinnersMock.show).toHaveBeenCalledTimes(0);
+      done();
+    });
+
+    const testRequest = httpMock.expectOne(
+      'http://localhost:50962/api/token/refresh-token'
+    );
+    expect(testRequest.request.method).toBe('POST');
+    testRequest.flush(data, {
+      status: 200,
+      statusText: 'Ok',
+    });
+    expect(spinnersMock.hide).toHaveBeenCalledTimes(0);
   });
 });

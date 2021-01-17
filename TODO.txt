@@ -8,7 +8,6 @@ DOUBTS:
 - should all subscriptions be unsubscribed?
 
 !!!!!!!!!!!!
-- update spinner-interceptor tests for refresh-token case,
 
 OK - error service:
 	NO - call delayForBruteForce for each method call, test it,
@@ -99,6 +98,7 @@ OK - identity:
 	OK - bug: if no email in DB for `forgotten pass`, freezes
 	OK - bug 2x hits RefreshToken
 OK - misc:
+	OK - update spinner-interceptor tests for refresh-token case,
 	OK - update signalr-service tests: Cannot read property 'subscribe' of undefined,
 	- on connection reset redirecting to home page is pissing of a bit,
 	OK - adjusted security method to be async,
