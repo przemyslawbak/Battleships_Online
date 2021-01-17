@@ -7,8 +7,6 @@ DOUBTS:
 - services with components?
 - should all subscriptions be unsubscribed?
 
-!!!!!!!!!!!!
-
 OK - error service:
 	NO - call delayForBruteForce for each method call, test it,
 	OK - after refactoring - bug: can not return Observable<boolean>,
@@ -46,7 +44,7 @@ OK - footer:
 OK - identity:
 	OK - updated auth-service login_OnReceivedUser_DoesSetAuth: Async function did not complete within 5000ms,
 	OK - updated auth-service login_OnNotReceivedUser_DoesNotSetAuth: Async function did not complete within 5000ms,
-	- what about refresh timer when browser refreshed?
+	OK - what about refresh timer when browser refreshed?
 	OK - bug: on 401 status is unknown error displayed,
 	OK - bug: im not sure if token refreshing works, update: does not work with external login prov.,
 	OK - bug: after refreshing token timer does not start again,
@@ -100,13 +98,11 @@ OK - identity:
 OK - misc:
 	OK - update spinner-interceptor tests for refresh-token case,
 	OK - update signalr-service tests: Cannot read property 'subscribe' of undefined,
-	- on connection reset redirecting to home page is pissing of a bit,
+	X - on connection reset redirecting to home page is pissing off a bit,
 	OK - adjusted security method to be async,
 	- any text parsing / formatting methods move to text service,
-	- walk through Jasmine docs: https://jasmine.github.io/2.0/introduction.html
 	- services unit testing,
 	- components unit testing,
-	- move front-end logic to the services
 	OK - front-end unit testing: https://angular.io/guide/testing + Freeman
 	NO - sanitize inputs in front end?
 	OK - remove all console.log();
@@ -226,7 +222,7 @@ OK - in deploy view and component:
 	OK - bug: deployed ships are not visible,
 	OK - bug: status data display is shifted, why?
 OK - in connect component:
-	- bug: meybe need to reset hub connection only when joining to new game?
+	X - bug: maeby need to reset hub connection only when joining to new game?
 	OK - bug: can not join played game,
 	OK - what with played games if player joins other game? - disconnect signalr first, show message, clear gamestate,
 	OK - what with played games if player creates new game? - disconnect signalr first, show message, clear gamestate,
@@ -304,7 +300,7 @@ OK - in game-play component:
 	OK - adjust: when displaying hit result, do not allow to fire,
 	OK - adjust: what if shooting cell already shot?
 OK - single player:
-	- bug: when starting single player game twice, something is wrong, need to check it,
+	X - bug: when starting single player game twice, something is wrong, need to check it,
 	OK - bug: on easy difficulty computer is playing at least medium,
 	OK - bug: when logged out and game is null, single player game counter is still running,
 	OK - set default difficulty to hard,
@@ -342,7 +338,6 @@ OK - single player:
 	OK - what if player wins the game? Log it,
 	OK - what if game started as a multi, but changed to be a single player? now removing from the list all single player games
 OK - sprites:
-	- Pro Angular 9 Animations examples,
 	NO - sounds for hit effects,
 	OK - create game sprite component,
 	OK - bug: explosio is not revealed, in inspector check "ng-reflect-ng-if"
@@ -378,8 +373,8 @@ OK - privacy component:
 	NO - cookies popup/modal,
 	OK - link in nav menu
 OK - open games list component:
-	- bug: when rejoining game disconnects hub,
-	- bug: when can not refresh token, empty game is displayed - removes only one empty game,
+	X - bug: when rejoining game disconnects the hub,
+	X - bug: when can not refresh token, empty game is displayed - removes only one empty game,
 	OK - on game list load check for empty games and remove them,
 	OK - empty game slot - green,
 	OK - in chrome table first column has still wrong size,
@@ -412,6 +407,8 @@ OK - modal info:
 	OK - big screen: change width of modal message window,
 
 future / next project:
+- walk through Jasmine docs: https://jasmine.github.io/2.0/introduction.html
+- Pro Angular 9 Animations examples,
 - style: greater font size for small screens,
 - verify opponent board only in backend,
 - all http post calls to the service,

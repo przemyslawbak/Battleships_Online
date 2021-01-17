@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { NavigationStart, Router } from '@angular/router';
+import { AuthService } from '@services/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +10,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Battleships';
-  constructor() {}
+  private subscription: Subscription;
+  constructor(private router: Router, private auth: AuthService) {
+    this.subscription = router.events.subscribe((event) => {
+      if (event instanceof NavigationStart && !router.navigated) {
+        console.log('navi start');
+        auth.refreshToken();
+      }
+    });
+  }
 }
