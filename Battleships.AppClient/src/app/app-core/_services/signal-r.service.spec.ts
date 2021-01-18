@@ -6,6 +6,7 @@ import { HubConnectionService } from './hub-connection.service';
 import { ModalService } from './modal.service';
 import { SignalRService } from './signal-r.service';
 import { LoginResponse } from '@models/login-response.model';
+import { ɵbypassSanitizationTrustResourceUrl } from '@angular/core';
 
 describe('SignalRService', () => {
   let signalrService: SignalRService;
@@ -14,7 +15,11 @@ describe('SignalRService', () => {
     'isLoggedIn',
   ]);
   const routerMock = jasmine.createSpyObj('Router', ['navigate']);
-  const modalServiceMock = jasmine.createSpyObj('ModalSevice', ['add']);
+  const modalServiceMock = jasmine.createSpyObj('ModalSevice', [
+    'add',
+    'open',
+    'close',
+  ]);
   let hubServiceMock: any;
   const gameServiceMock = jasmine.createSpyObj('GameService', [
     'getGame',
@@ -206,24 +211,114 @@ describe('SignalRService', () => {
   });
 
   it('startConnection_OnConnectionNotStartedAndLoggedInUser_CallsSeveralHubMethodsAndBuildsConnectionAndSetsConnectGameToTrue', async () => {
-    hubServiceMock = jasmine.createSpyObj('HubConnectionService', [
-      'createHubConnectionBuilder',
-      'connectionGameStateOff',
-      'connectionGameStateOn',
-      'connectionChatOff',
-      'connectionChatOn',
-    ]);
-    hubServiceMock.isConnectionStarted.and.returnValue(null);
+    let spyIsConnectionStarted = spyOn(hubServiceMock, 'isConnectionStarted');
+    spyIsConnectionStarted.and.returnValue(false);
+    let spy1 = spyOn(hubServiceMock, 'createHubConnectionBuilder');
+    let spy2 = spyOn(hubServiceMock, 'connectionGameStateOff');
+    let spy3 = spyOn(hubServiceMock, 'connectionGameStateOn');
+    let spy4 = spyOn(hubServiceMock, 'connectionChatOff');
+    let spy5 = spyOn(hubServiceMock, 'connectionChatOn');
+    let spy6 = spyOn(hubServiceMock, 'startHubConnection');
+    let spy7 = spyOn(hubServiceMock, 'declareOnClose');
+    let spy8 = spyOn(hubServiceMock, 'disconnect');
     gameServiceMock.isGameStarted.and.returnValue(false);
     authServiceMock.isLoggedIn.and.returnValue(true);
-    let auth = { token: 'any_token' } as LoginResponse;
-    authServiceMock.getAuth.and.returnValue(auth);
+    authServiceMock.getAuth.and.returnValue({
+      token: 'any_token',
+    } as LoginResponse);
     await signalrService.startConnection();
 
-    expect(hubServiceMock.createHubConnectionBuilder).toHaveBeenCalledTimes(1);
-    expect(hubServiceMock.connectionGameStateOff).toHaveBeenCalledTimes(0);
-    expect(hubServiceMock.connectionGameStateOn).toHaveBeenCalledTimes(1);
-    expect(hubServiceMock.connectionChatOff).toHaveBeenCalledTimes(0);
-    expect(hubServiceMock.connectionChatOn).toHaveBeenCalledTimes(1);
+    expect(spy1).toHaveBeenCalledTimes(1);
+    expect(spy2).toHaveBeenCalledTimes(0);
+    expect(spy3).toHaveBeenCalledTimes(1);
+    expect(spy4).toHaveBeenCalledTimes(0);
+    expect(spy5).toHaveBeenCalledTimes(1);
+    expect(spy6).toHaveBeenCalledTimes(1);
+    expect(spy7).toHaveBeenCalledTimes(1);
+    expect(spy8).toHaveBeenCalledTimes(0);
+  });
+
+  it('startConnection_OnConnectionStartedAndLoggedInUser_CallsSeveralHubMethodsAndBuildsConnectionAndSetsConnectGameToTrue', async () => {
+    let spyIsConnectionStarted = spyOn(hubServiceMock, 'isConnectionStarted');
+    spyIsConnectionStarted.and.returnValue(true);
+    let spy1 = spyOn(hubServiceMock, 'createHubConnectionBuilder');
+    let spy2 = spyOn(hubServiceMock, 'connectionGameStateOff');
+    let spy3 = spyOn(hubServiceMock, 'connectionGameStateOn');
+    let spy4 = spyOn(hubServiceMock, 'connectionChatOff');
+    let spy5 = spyOn(hubServiceMock, 'connectionChatOn');
+    let spy6 = spyOn(hubServiceMock, 'startHubConnection');
+    let spy7 = spyOn(hubServiceMock, 'declareOnClose');
+    let spy8 = spyOn(hubServiceMock, 'disconnect');
+    gameServiceMock.isGameStarted.and.returnValue(false);
+    authServiceMock.isLoggedIn.and.returnValue(true);
+    authServiceMock.getAuth.and.returnValue({
+      token: 'any_token',
+    } as LoginResponse);
+    await signalrService.startConnection();
+
+    expect(spy1).toHaveBeenCalledTimes(0);
+    expect(spy2).toHaveBeenCalledTimes(1);
+    expect(spy3).toHaveBeenCalledTimes(1);
+    expect(spy4).toHaveBeenCalledTimes(1);
+    expect(spy5).toHaveBeenCalledTimes(1);
+    expect(spy6).toHaveBeenCalledTimes(0);
+    expect(spy7).toHaveBeenCalledTimes(0);
+    expect(spy8).toHaveBeenCalledTimes(1);
+  });
+
+  it('startConnection_OnConnectionStartedAndNotLoggedInUser_CallsSeveralHubMethodsAndBuildsConnectionAndSetsConnectGameToTrue', async () => {
+    let spyIsConnectionStarted = spyOn(hubServiceMock, 'isConnectionStarted');
+    spyIsConnectionStarted.and.returnValue(true);
+    let spy1 = spyOn(hubServiceMock, 'createHubConnectionBuilder');
+    let spy2 = spyOn(hubServiceMock, 'connectionGameStateOff');
+    let spy3 = spyOn(hubServiceMock, 'connectionGameStateOn');
+    let spy4 = spyOn(hubServiceMock, 'connectionChatOff');
+    let spy5 = spyOn(hubServiceMock, 'connectionChatOn');
+    let spy6 = spyOn(hubServiceMock, 'startHubConnection');
+    let spy7 = spyOn(hubServiceMock, 'declareOnClose');
+    let spy8 = spyOn(hubServiceMock, 'disconnect');
+    gameServiceMock.isGameStarted.and.returnValue(false);
+    authServiceMock.isLoggedIn.and.returnValue(false);
+    authServiceMock.getAuth.and.returnValue({
+      token: 'any_token',
+    } as LoginResponse);
+    await signalrService.startConnection();
+
+    expect(spy1).toHaveBeenCalledTimes(0);
+    expect(spy2).toHaveBeenCalledTimes(1);
+    expect(spy3).toHaveBeenCalledTimes(1);
+    expect(spy4).toHaveBeenCalledTimes(1);
+    expect(spy5).toHaveBeenCalledTimes(1);
+    expect(spy6).toHaveBeenCalledTimes(0);
+    expect(spy7).toHaveBeenCalledTimes(0);
+    expect(spy8).toHaveBeenCalledTimes(1);
+  });
+
+  it('startConnection_OnConnectionNotStartedAndNotLoggedInUser_CallsSeveralHubMethodsAndBuildsConnectionAndSetsConnectGameToTrue', async () => {
+    let spyIsConnectionStarted = spyOn(hubServiceMock, 'isConnectionStarted');
+    spyIsConnectionStarted.and.returnValue(false);
+    let spy1 = spyOn(hubServiceMock, 'createHubConnectionBuilder');
+    let spy2 = spyOn(hubServiceMock, 'connectionGameStateOff');
+    let spy3 = spyOn(hubServiceMock, 'connectionGameStateOn');
+    let spy4 = spyOn(hubServiceMock, 'connectionChatOff');
+    let spy5 = spyOn(hubServiceMock, 'connectionChatOn');
+    let spy6 = spyOn(hubServiceMock, 'startHubConnection');
+    let spy7 = spyOn(hubServiceMock, 'declareOnClose');
+    let spy8 = spyOn(hubServiceMock, 'disconnect');
+    gameServiceMock.isGameStarted.and.returnValue(false);
+    authServiceMock.isLoggedIn.and.returnValue(false);
+    authServiceMock.getAuth.and.returnValue({
+      token: 'any_token',
+    } as LoginResponse);
+    await signalrService.startConnection();
+
+    expect(spy1).toHaveBeenCalledTimes(0);
+    expect(spy2).toHaveBeenCalledTimes(0);
+    expect(spy3).toHaveBeenCalledTimes(1);
+    expect(spy4).toHaveBeenCalledTimes(0);
+    expect(spy5).toHaveBeenCalledTimes(1);
+    expect(spy6).toHaveBeenCalledTimes(0);
+    expect(spy7).toHaveBeenCalledTimes(0);
+    expect(spy8).toHaveBeenCalledTimes(0);
   });
 });

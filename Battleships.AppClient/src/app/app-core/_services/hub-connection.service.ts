@@ -12,8 +12,8 @@ import { ModalService } from './modal.service';
 export class HubConnectionService {
   private isGameStarted: boolean = false;
   public message: ChatMessage;
-  public messageChange: Subject<ChatMessage> = new Subject<ChatMessage>();
   public gameState: GameState;
+  public messageChange: Subject<ChatMessage> = new Subject<ChatMessage>();
   public gameChange: Subject<GameState> = new Subject<GameState>();
   private url = environment.apiUrl + 'messageHub';
   private hubReceiveChatMessageMethodName: string = 'ReceiveChatMessage';
@@ -28,16 +28,18 @@ export class HubConnectionService {
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(this.url, { accessTokenFactory: () => token })
       .build();
-    await this.startHubConnection();
-    this.hubConnection.onclose(() => this.connectionHubClosed());
   }
 
-  private async startHubConnection(): Promise<void> {
+  public async startHubConnection(): Promise<void> {
     return new Promise((resolve) => {
       this.hubConnection.start().then(() => {
         resolve();
       });
     });
+  }
+
+  public declareOnClose(): void {
+    this.hubConnection.onclose(() => this.connectionHubClosed());
   }
 
   public async disconnect(isGameStarted: boolean): Promise<void> {
@@ -85,7 +87,7 @@ export class HubConnectionService {
     this.hubConnection.off(this.hubReceiveGameStateMethodName);
   }
 
-  public connectionGameStateOn() {
+  public connectionGameStateOn(): void {
     this.hubConnection.on(
       this.hubReceiveGameStateMethodName,
       (gameState: GameState) => {
@@ -109,15 +111,11 @@ export class HubConnectionService {
     );
   }
 
-  public broadcastChat(message: string, playersNames: string[]) {
+  public broadcastChat(message: string, playersNames: string[]): void {
     this.hubConnection
       .invoke(this.hubSendChatMessageMethodName, message, playersNames)
       .catch((err) =>
         this.modalService.open('info-modal', 'Chat broadcast error: ' + err)
       );
-  }
-
-  private delay(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }

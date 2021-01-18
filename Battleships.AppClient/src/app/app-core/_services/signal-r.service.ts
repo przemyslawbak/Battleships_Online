@@ -28,12 +28,24 @@ export class SignalRService {
     this._subGame.unsubscribe();
   }
 
+  private initConnectionSubscriptions() {
+    this._subChat = this.hub.messageChange.subscribe((message: ChatMessage) => {
+      this.message = message;
+      this.messageChange.next(this.message);
+    });
+    this._subGame = this.hub.gameChange.subscribe((game: GameState) => {
+      this.game.setGame(game);
+    });
+  }
+
   public async startConnection(): Promise<void> {
     await this.stopConnection();
 
     if (!this.hub.isConnectionStarted() && this.auth.isLoggedIn()) {
       const token = this.auth.getAuth().token;
       await this.hub.createHubConnectionBuilder(token);
+      await this.hub.startHubConnection();
+      this.hub.declareOnClose();
     }
 
     this.resetHubListeners();
@@ -45,16 +57,6 @@ export class SignalRService {
     }
 
     this.router.navigate(['']);
-  }
-
-  private initConnectionSubscriptions() {
-    this._subChat = this.hub.messageChange.subscribe((message: ChatMessage) => {
-      this.message = message;
-      this.messageChange.next(this.message);
-    });
-    this._subGame = this.hub.gameChange.subscribe((game: GameState) => {
-      this.game.setGame(game);
-    });
   }
 
   public removeGameStateListener(): void {
