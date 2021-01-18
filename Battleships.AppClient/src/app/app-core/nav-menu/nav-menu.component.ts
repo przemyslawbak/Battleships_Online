@@ -23,8 +23,8 @@ export class NavMenuComponent {
     }
   }
 
-  public logout(): void {
-    this.signalRService.stopConnection();
+  public async logout(): Promise<void> {
+    await this.signalRService.stopConnection();
     this.auth.logout();
   }
 }

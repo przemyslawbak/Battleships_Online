@@ -7,6 +7,10 @@ DOUBTS:
 - services with components?
 - should all subscriptions be unsubscribed?
 
+!!!!!!!!!!!!!!
+in startConnection_OnConnectionNotStartedAndLoggedInUser_CallsSeveralHubMethodsAndBuildsConnectionAndSetsConnectGameToTrue
+test error: Cannot read property 'and' of undefined
+
 OK - error service:
 	NO - call delayForBruteForce for each method call, test it,
 	OK - after refactoring - bug: can not return Observable<boolean>,
@@ -103,6 +107,7 @@ OK - misc:
 	- any text parsing / formatting methods move to text service,
 	- services unit testing,
 	- components unit testing,
+	- all units test check for `has no expectations` warnings,
 	OK - front-end unit testing: https://angular.io/guide/testing + Freeman
 	NO - sanitize inputs in front end?
 	OK - remove all console.log();
@@ -222,7 +227,8 @@ OK - in deploy view and component:
 	OK - bug: deployed ships are not visible,
 	OK - bug: status data display is shifted, why?
 OK - in connect component:
-	X - bug: maeby need to reset hub connection only when joining to new game?
+	X - bug: when joining game again - game is null i signalr service,
+	X - bug: maebe need to reset hub connection only when joining to new game?
 	OK - bug: can not join played game,
 	OK - what with played games if player joins other game? - disconnect signalr first, show message, clear gamestate,
 	OK - what with played games if player creates new game? - disconnect signalr first, show message, clear gamestate,

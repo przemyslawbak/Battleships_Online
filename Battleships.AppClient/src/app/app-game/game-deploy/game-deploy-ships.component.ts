@@ -104,7 +104,6 @@ export class GameDeployComponent implements OnInit {
           );
           game.players[this.aiPlayerNumber].isDeployed = true;
 
-          this.game.setGame(game);
           this.signalRService.broadcastGameState(game);
         }
       }
@@ -288,7 +287,6 @@ export class GameDeployComponent implements OnInit {
     game.gameMulti = false;
     game.players = this.setComputerOpponent(game.players);
 
-    this.game.setGame(game);
     this.signalRService.broadcastGameState(game);
   }
 
