@@ -27,10 +27,8 @@ export class GameConnectComponent implements OnInit {
 
   public async ngOnInit(): Promise<void> {
     const id: string = this.route.snapshot.paramMap.get('id');
-    this.resetHubConnection();
-    while (!this.signalRService.canConnectGame) {
-      await this.delay(1000);
-    }
+
+    await this.resetHubConnection();
 
     if (id) {
       this.getGameStateAndRedirect(id);
@@ -39,12 +37,8 @@ export class GameConnectComponent implements OnInit {
     }
   }
 
-  private delay(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
-  private resetHubConnection(): void {
-    this.signalRService.startConnection();
+  private async resetHubConnection(): Promise<void> {
+    await this.signalRService.startConnection();
   }
 
   private getGameStateAndRedirect(id: string): void {
@@ -57,14 +51,14 @@ export class GameConnectComponent implements OnInit {
 
         //if game already played by this user
         if (gameUserNames.includes(userName)) {
-          this.initGame(game);
+          this.initGame(game, true);
         } else {
           //if game is multiplayer or no players assigned
           if (
             game.gameMulti ||
             !this.checkForAnyPlayerConnected(game.players)
           ) {
-            //if hame has empty slot
+            //if name has empty slot
             this.checkForEmptySlots(game, userName, displayName);
           } else {
             this.modalService.open(
@@ -94,18 +88,23 @@ export class GameConnectComponent implements OnInit {
 
     if (gameUserNames.includes('')) {
       game.players = this.setPlayerNames(game.players, userName, displayName);
-      this.initGame(game);
-      if (game.gameMulti) {
-        this.signalRService.broadcastChatMessage('Connected to the game.');
-      }
+      this.initGame(game, false);
     } else {
       this.informAboutNoEmptySlot();
     }
   }
 
-  private initGame(game: GameState): void {
+  private async initGame(
+    game: GameState,
+    isJoinedAlready: boolean
+  ): Promise<void> {
+    if (isJoinedAlready) {
+      //
+    }
     if (!game.gameMulti) {
       game.players = this.setComputerOpponent(game.players);
+    } else {
+      this.signalRService.broadcastChatMessage('Connected to the game.');
     }
     this.game.setGame(game); //set first state
     if (game.players[0].isDeployed && game.players[1].isDeployed) {

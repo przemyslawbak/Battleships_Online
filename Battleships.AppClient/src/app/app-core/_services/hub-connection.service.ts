@@ -10,8 +10,6 @@ import { ModalService } from './modal.service';
   providedIn: 'root',
 })
 export class HubConnectionService {
-  public isConnecting: boolean = false;
-  public isDisconnecting: boolean = false;
   private isGameStarted: boolean = false;
   public message: ChatMessage;
   public messageChange: Subject<ChatMessage> = new Subject<ChatMessage>();
@@ -26,28 +24,34 @@ export class HubConnectionService {
 
   constructor(private modalService: ModalService) {}
 
-  public createHubConnectionBuilder(token: string): void {
+  public async createHubConnectionBuilder(token: string): Promise<void> {
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(this.url, { accessTokenFactory: () => token })
       .build();
-    this.startHubConnection();
+    await this.startHubConnection();
     this.hubConnection.onclose(() => this.connectionHubClosed());
   }
 
-  private startHubConnection(): void {
-    this.isConnecting = true;
-    this.hubConnection.start().then(() => {
-      this.isConnecting = false;
+  private async startHubConnection(): Promise<void> {
+    return new Promise((resolve) => {
+      this.hubConnection.start().then(() => {
+        resolve();
+      });
     });
   }
 
-  public disconnect(isGameStarted: boolean): void {
-    this.isDisconnecting = true;
-    this.isGameStarted = isGameStarted;
-    this.hubConnection.stop().then(() => {
-      this.isDisconnecting = false;
+  public async disconnect(isGameStarted: boolean): Promise<void> {
+    return new Promise((resolve) => {
+      if (this.isConnectionStarted()) {
+        this.isGameStarted = isGameStarted;
+        this.hubConnection.stop().then(() => {
+          this.hubConnection = null;
+          resolve();
+        });
+      } else {
+        resolve();
+      }
     });
-    this.hubConnection = null;
   }
 
   private connectionHubClosed(): void {
@@ -111,5 +115,9 @@ export class HubConnectionService {
       .catch((err) =>
         this.modalService.open('info-modal', 'Chat broadcast error: ' + err)
       );
+  }
+
+  private delay(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }

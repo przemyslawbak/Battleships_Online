@@ -14,7 +14,6 @@ export class AppComponent {
   constructor(private router: Router, private auth: AuthService) {
     this.subscription = router.events.subscribe((event) => {
       if (event instanceof NavigationStart && !router.navigated) {
-        console.log('navi start');
         auth.refreshToken();
       }
     });

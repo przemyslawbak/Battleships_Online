@@ -3,17 +3,16 @@ import { GameState } from '@models/game-state.model';
 import { ChatMessage } from '@models/chat-message.model';
 import { AuthService } from '@services/auth.service';
 import { GameService } from '@services/game.service';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { HubConnectionService } from './hub-connection.service';
 
 @Injectable()
 export class SignalRService {
-  public canConnectGame: boolean = false;
   public message: ChatMessage;
   public messageChange: Subject<ChatMessage> = new Subject<ChatMessage>();
-  private _subChat: any;
-  private _subGame: any;
+  private _subChat: Subscription;
+  private _subGame: Subscription;
 
   constructor(
     public auth: AuthService,
@@ -25,10 +24,27 @@ export class SignalRService {
   }
 
   public ngOnDestroy() {
-    if (this._subChat && this._subGame) {
-      this._subChat.unsubscribe();
-      this._subGame.unsubscribe();
+    this._subChat.unsubscribe();
+    this._subGame.unsubscribe();
+  }
+
+  public async startConnection(): Promise<void> {
+    await this.stopConnection();
+
+    if (!this.hub.isConnectionStarted() && this.auth.isLoggedIn()) {
+      const token = this.auth.getAuth().token;
+      await this.hub.createHubConnectionBuilder(token);
     }
+
+    this.resetHubListeners();
+  }
+
+  public async stopConnection(): Promise<void> {
+    if (this.hub.isConnectionStarted()) {
+      await this.hub.disconnect(this.game.isGameStarted());
+    }
+
+    this.router.navigate(['']);
   }
 
   private initConnectionSubscriptions() {
@@ -39,38 +55,6 @@ export class SignalRService {
     this._subGame = this.hub.gameChange.subscribe((game: GameState) => {
       this.game.setGame(game);
     });
-  }
-
-  private delay(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
-  public async startConnection(): Promise<void> {
-    console.clear();
-    this.canConnectGame = false;
-    this.stopConnection();
-    while (this.hub.isDisconnecting) {
-      await this.delay(1000);
-    }
-    if (!this.hub.isConnectionStarted() && this.auth.isLoggedIn()) {
-      const token = this.auth.getAuth().token;
-      this.hub.createHubConnectionBuilder(token);
-
-      while (this.hub.isConnecting) {
-        await this.delay(1000);
-      }
-    }
-
-    this.resetHubListeners();
-    this.canConnectGame = true;
-  }
-
-  public stopConnection(): void {
-    if (this.hub.isConnectionStarted()) {
-      this.hub.disconnect(this.game.isGameStarted());
-    }
-
-    this.router.navigate(['']);
   }
 
   public removeGameStateListener(): void {
