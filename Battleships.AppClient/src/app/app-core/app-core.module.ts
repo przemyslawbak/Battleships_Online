@@ -25,6 +25,7 @@ import { AiService } from '@services/ai.service';
 import { FleetService } from '@services/fleet.service';
 import { TextService } from '@services/text.service';
 import { HubConnectionService } from '@services/hub-connection.service';
+import { HubBuilderService } from '@services/hub-builder.service';
 
 import { AuthGuard } from './_helpers/auth.guard';
 import { JwtInterceptor } from './_helpers/jwt.interceptor';
@@ -61,6 +62,7 @@ import { ErrorInterceptor } from './_helpers/error.interceptor';
       useClass: SpinnerInterceptor,
       multi: true,
     },
+    HubBuilderService,
     HubConnectionService,
     ErrorService,
     FleetService,

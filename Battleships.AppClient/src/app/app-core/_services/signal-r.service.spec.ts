@@ -6,7 +6,6 @@ import { HubConnectionService } from './hub-connection.service';
 import { ModalService } from './modal.service';
 import { SignalRService } from './signal-r.service';
 import { LoginResponse } from '@models/login-response.model';
-import { ɵbypassSanitizationTrustResourceUrl } from '@angular/core';
 
 describe('SignalRService', () => {
   let signalrService: SignalRService;

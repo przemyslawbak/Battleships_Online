@@ -6,9 +6,11 @@ import { GameService } from '@services/game.service';
 import { Subject, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { HubConnectionService } from './hub-connection.service';
+import { environment } from '@environments/environment';
 
 @Injectable()
 export class SignalRService {
+  private url = environment.apiUrl + 'messageHub';
   public message: ChatMessage;
   public messageChange: Subject<ChatMessage> = new Subject<ChatMessage>();
   private _subChat: Subscription;
@@ -43,7 +45,7 @@ export class SignalRService {
 
     if (!this.hub.isConnectionStarted() && this.auth.isLoggedIn()) {
       const token = this.auth.getAuth().token;
-      await this.hub.createHubConnectionBuilder(token);
+      await this.hub.createHubConnectionBuilder(token, this.url);
       await this.hub.startHubConnection();
       this.hub.declareOnClose();
     }

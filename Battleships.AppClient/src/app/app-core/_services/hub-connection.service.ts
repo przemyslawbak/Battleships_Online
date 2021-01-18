@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@aspnet/signalr';
-import { environment } from '@environments/environment';
+import { Subject } from 'rxjs';
+
+import { HubBuilderService } from './hub-builder.service';
+import { ModalService } from './modal.service';
 import { ChatMessage } from '@models/chat-message.model';
 import { GameState } from '@models/game-state.model';
-import { Subject } from 'rxjs';
-import { ModalService } from './modal.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,19 +16,26 @@ export class HubConnectionService {
   public gameState: GameState;
   public messageChange: Subject<ChatMessage> = new Subject<ChatMessage>();
   public gameChange: Subject<GameState> = new Subject<GameState>();
-  private url = environment.apiUrl + 'messageHub';
   private hubReceiveChatMessageMethodName: string = 'ReceiveChatMessage';
   private hubSendChatMessageMethodName: string = 'SendChatMessage';
   private hubReceiveGameStateMethodName: string = 'ReceiveGameState';
   private hubSendGameStateMethodName: string = 'SendGameState';
-  private hubConnection: signalR.HubConnection = null;
+  public hubConnection: signalR.HubConnection = null;
 
-  constructor(private modalService: ModalService) {}
+  constructor(
+    private modalService: ModalService,
+    private builder: HubBuilderService
+  ) {}
 
-  public async createHubConnectionBuilder(token: string): Promise<void> {
-    this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(this.url, { accessTokenFactory: () => token })
-      .build();
+  public isConnectionStarted(): boolean {
+    return this.hubConnection ? true : false;
+  }
+
+  public async createHubConnectionBuilder(
+    token: string,
+    url: string
+  ): Promise<void> {
+    this.hubConnection = this.builder.buildNewHub(url, token);
   }
 
   public async startHubConnection(): Promise<void> {
@@ -66,10 +74,6 @@ export class HubConnectionService {
     this.gameState = null;
     this.gameChange.next(this.gameState);
     this.hubConnection = null;
-  }
-
-  public isConnectionStarted(): boolean {
-    return this.hubConnection ? true : false;
   }
 
   public broadcastGame(game: GameState): void {
