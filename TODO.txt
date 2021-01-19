@@ -7,10 +7,6 @@ DOUBTS:
 - services with components?
 - should all subscriptions be unsubscribed?
 
-!!!!!!!!!!!!!!
-in startConnection_OnConnectionNotStartedAndLoggedInUser_CallsSeveralHubMethodsAndBuildsConnectionAndSetsConnectGameToTrue
-test error: Cannot read property 'and' of undefined
-
 OK - error service:
 	NO - call delayForBruteForce for each method call, test it,
 	OK - after refactoring - bug: can not return Observable<boolean>,
@@ -100,6 +96,8 @@ OK - identity:
 	OK - bug: if no email in DB for `forgotten pass`, freezes
 	OK - bug 2x hits RefreshToken
 OK - misc:
+	- remove all `===`,
+	OK - signalr service spec test error: Cannot read property 'and' of undefined,
 	OK - update spinner-interceptor tests for refresh-token case,
 	OK - update signalr-service tests: Cannot read property 'subscribe' of undefined,
 	X - on connection reset redirecting to home page is pissing off a bit,

@@ -16,6 +16,7 @@ import { GameState } from '@models/game-state.model';
 import { BoardCell } from '@models/board-cell.model';
 import { Player } from '@models/player.model';
 import { FleetService } from '@services/fleet.service';
+import { AiService } from '@services/ai.service';
 
 @Component({
   templateUrl: './game-deploy-ships.component.html',
@@ -48,7 +49,8 @@ export class GameDeployComponent implements OnInit {
     private signalRService: SignalRService,
     private game: GameService,
     private player: PlayerService,
-    private fleet: FleetService
+    private fleet: FleetService,
+    private ai: AiService
   ) {
     this.isDeployed = false;
     this.fleetWaiting = this.fleet.createFleet();
@@ -233,7 +235,7 @@ export class GameDeployComponent implements OnInit {
   ): BoardCell[][] {
     if (this.isDeploymentAllowed) {
       while (fleet.length > 0) {
-        board = this.board.autoDeployShip(board, fleet[0]);
+        board = this.ai.autoDeployShip(board, fleet[0]);
         if (computer) {
           fleet.splice(0, 1);
         } else {

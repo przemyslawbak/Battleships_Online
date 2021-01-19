@@ -15,67 +15,60 @@ export class BoardService {
 
   constructor(private game: GameService) {}
 
+  //ok
   public isThereAWinner(players: Player[]): number {
     let result: number = -1;
-    if (this.CheckForWinner(players[0].board)) {
-      result = 1;
-    }
-    if (this.CheckForWinner(players[1].board)) {
-      result = 0;
+    for (let i = 0; i < players.length; i++){
+      if (this.CheckForWinner(players[i].board) {
+        result = i;
+      }
     }
 
     return result;
   }
 
-  public CheckForWinner(board: BoardCell[][]): boolean {
-    let hits: number = 0;
-    for (let i = 0; i < 10; i++) {
-      for (let j = 0; j < 10; j++) {
-        if (board[i][j].value == 2) {
-          hits++;
-        }
-      }
-    }
+  //todo: player service
+  private CheckForWinner(board: BoardCell[][]): boolean {
+    let result = board.flat().filter(({ value }) => value == 2);
 
-    return hits == 20 ? true : false;
+    return result.length == 20 ? true : false;
   }
 
-  public eraseOpponentsShips(board: BoardCell[][]): BoardCell[][] {
-    for (let i = 0; i < 10; i++) {
-      for (let j = 0; j < 10; j++) {
-        if (board[i][j].value == 1) {
-          board[i][j].color = 'rgba(0, 162, 255, 0.2)';
-        }
-
-        if (board[i][j].value == 2) {
-          board[i][j].color = 'red';
-        }
-      }
+  //ok
+  public hideOpponentsShips(board: BoardCell[][]): BoardCell[][] {
+    let shipArr = board.flat().filter(({ value }) => value == 1);
+    let hitArr = board.flat().filter(({ value }) => value == 2);
+    for (let i = 0; i < shipArr.length; i++) {
+      shipArr[i].color = 'rgba(0, 162, 255, 0.2)';
     }
+    for (let i = 0; i < hitArr.length; i++) {
+      hitArr[i].color = 'red';
+    }
+
     return board;
   }
 
+  //ok
   public showOwnShips(board: BoardCell[][]): BoardCell[][] {
-    for (let i = 0; i < 10; i++) {
-      for (let j = 0; j < 10; j++) {
-        if (board[i][j].value == 1) {
-          board[i][j].color = 'green';
-        }
-
-        if (board[i][j].value == 2) {
-          board[i][j].color = 'red';
-        }
-      }
+    let shipArr = board.flat().filter(({ value }) => value == 1);
+    let hitArr = board.flat().filter(({ value }) => value == 2);
+    for (let i = 0; i < shipArr.length; i++) {
+      shipArr[i].color = 'green';
     }
+    for (let i = 0; i < hitArr.length; i++) {
+      hitArr[i].color = 'red';
+    }
+    
     return board;
   }
 
+  //ok
   public deployShip(
     board: BoardCell[][],
     coord: Coordinates,
     nextShip: ShipComponent
   ): BoardCell[][] {
-    let dropCells: Array<BoardCell> = this.getDropCells(board, coord, nextShip);
+    let dropCells: Array<BoardCell> = this.getShipsDropCells(board, coord, nextShip);
     for (let i = 0; i < dropCells.length; i++) {
       board[dropCells[i].col][dropCells[i].row].value = 1;
       board[dropCells[i].col][dropCells[i].row].color = 'green';
@@ -84,66 +77,14 @@ export class BoardService {
     return board;
   }
 
+  //ok
   public resetEmptyCellsColors(board: BoardCell[][]): BoardCell[][] {
-    for (let i = 0; i < 10; i++) {
-      for (let j = 0; j < 10; j++) {
-        if (board[i][j].value == 0) {
-          board[i][j].color = 'rgba(0, 162, 255, 0.2)';
-        }
-      }
+    let seaArr = board.flat().filter(({ value }) => value == 0);
+    for (let i = 0; i < seaArr.length; i++) {
+      seaArr[i].color = 'rgba(0, 162, 255, 0.2)';
     }
 
     return board;
-  }
-
-  public autoDeployShip(
-    board: BoardCell[][],
-    ship: ShipComponent
-  ): BoardCell[][] {
-    this.isDropAllowed = false;
-    let randomRotate: boolean = Math.random() < 0.5;
-    let emptyCellArray: BoardCell[] = [];
-    let randomEmptyCell: BoardCell = null;
-
-    let coord: Coordinates = {
-      row: 0,
-      col: 0,
-    } as Coordinates;
-
-    if (randomRotate) {
-      ship.rotation = 90;
-    } else {
-      ship.rotation = 0;
-    }
-
-    for (let i = 0; i < 10; i++) {
-      for (let j = 0; j < 10; j++) {
-        if (board[i][j].value == 0) {
-          emptyCellArray.push(board[i][j]);
-        }
-      }
-    }
-
-    while (!this.isDropAllowed) {
-      let randomIndex: number = Math.floor(
-        Math.random() * Math.floor(emptyCellArray.length)
-      );
-      randomEmptyCell = emptyCellArray[randomIndex];
-
-      var dummyHtmlElement: HTMLElement = document.createElement('DIV');
-
-      coord.row = randomEmptyCell.row;
-      coord.col = randomEmptyCell.col;
-
-      this.checkHoveredElement(board, 'cell', coord, dummyHtmlElement, ship);
-
-      emptyCellArray.splice(randomIndex, 1);
-    }
-
-    board = this.deployShip(board, coord, ship);
-
-    let updatedBoard = board;
-    return updatedBoard;
   }
 
   public checkHoveredElement(
@@ -158,7 +99,7 @@ export class BoardService {
     dropPlace.row = coord.row;
     dropPlace.col = coord.col;
 
-    let dropCells: Array<BoardCell> = this.getDropCells(board, coord, nextShip);
+    let dropCells: Array<BoardCell> = this.getShipsDropCells(board, coord, nextShip);
     this.lastDropCells = dropCells;
 
     if (elementType == 'cell') {
@@ -222,7 +163,8 @@ export class BoardService {
     return exists ? item : ({ row: -1, col: -1, value: -1 } as BoardCell);
   }
 
-  public getDropCells(
+  //todo: fleet service
+  private getShipsDropCells(
     board: BoardCell[][],
     coord: Coordinates,
     nextShip: ShipComponent
@@ -567,5 +509,52 @@ export class BoardService {
       let boardTargets: BoardCell[] = this.getBoardTargetArray();
       return this.getRandomBoardCoordinates(forbiddenCells, boardTargets);
     }
+  }
+
+  public getEmptyCells(board: BoardCell[][]): BoardCell[] {
+    let emptyCells: BoardCell[];
+
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        if (board[i][j].value == 0) {
+          emptyCells.push(board[i][j]);
+        }
+      }
+    }
+
+    return emptyCells;
+  }
+
+  public getDeployCoordinates(board: BoardCell[][], ship: ShipComponent): Coordinates {
+    let emptyCellArray: BoardCell[] = this.getEmptyCells(board);
+    let coord: Coordinates = {
+      row: 0,
+      col: 0,
+    } as Coordinates;
+    let randomEmptyCell: BoardCell = null;
+
+    while (!this.isDropAllowed) {
+      let randomIndex: number = Math.floor(
+        Math.random() * Math.floor(emptyCellArray.length)
+      );
+      randomEmptyCell = emptyCellArray[randomIndex];
+
+      let dummyHtmlElement: HTMLElement = document.createElement('DIV');
+
+      coord.row = randomEmptyCell.row;
+      coord.col = randomEmptyCell.col;
+
+      this.checkHoveredElement(
+        board,
+        'cell',
+        coord,
+        dummyHtmlElement,
+        ship
+      );
+
+      emptyCellArray.splice(randomIndex, 1);
+    }
+
+    return coord;
   }
 }

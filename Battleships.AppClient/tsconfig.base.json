@@ -4,9 +4,9 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "paths": {
-      "@environments/*": [ "environments/*" ],
-      "@services/*": [ "app/app-core/_services/*" ],
-      "@models/*": [ "app/app-core/_models/*" ]
+      "@environments/*": ["environments/*"],
+      "@services/*": ["app/app-core/_services/*"],
+      "@models/*": ["app/app-core/_models/*"]
     },
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
@@ -17,9 +17,6 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "es2020",
-    "lib": [
-      "es2018",
-      "dom"
-    ]
+    "lib": ["es2015", "es2019", "dom"]
   }
 }

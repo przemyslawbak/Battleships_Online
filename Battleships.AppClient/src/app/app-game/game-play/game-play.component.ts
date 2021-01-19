@@ -218,7 +218,7 @@ export class GamePlayComponent implements OnInit {
   }
 
   private resetBoardColors(): void {
-    this.boards[this.opponentsPlayerNumber] = this.board.eraseOpponentsShips(
+    this.boards[this.opponentsPlayerNumber] = this.board.hideOpponentsShips(
       this.boards[this.opponentsPlayerNumber]
     );
 
