@@ -29,15 +29,15 @@ export class BoardService {
 
   //todo: player service
   private CheckForWinner(board: BoardCell[][]): boolean {
-    let result = board.flat().filter(({ value }) => value == 2);
+    let result = board.flat().filter(x => x.value == 2);
 
     return result.length == 20 ? true : false;
   }
 
   //ok
   public hideOpponentsShips(board: BoardCell[][]): BoardCell[][] {
-    let shipArr = board.flat().filter(({ value }) => value == 1);
-    let hitArr = board.flat().filter(({ value }) => value == 2);
+    let shipArr = board.flat().filter(x => x.value == 1);
+    let hitArr = board.flat().filter(x => x.value == 2);
     for (let i = 0; i < shipArr.length; i++) {
       shipArr[i].color = 'rgba(0, 162, 255, 0.2)';
     }
@@ -50,8 +50,8 @@ export class BoardService {
 
   //ok
   public showOwnShips(board: BoardCell[][]): BoardCell[][] {
-    let shipArr = board.flat().filter(({ value }) => value == 1);
-    let hitArr = board.flat().filter(({ value }) => value == 2);
+    let shipArr = board.flat().filter(x => x.value == 1);
+    let hitArr = board.flat().filter(x => x.value == 2);
     for (let i = 0; i < shipArr.length; i++) {
       shipArr[i].color = 'green';
     }
@@ -79,88 +79,12 @@ export class BoardService {
 
   //ok
   public resetEmptyCellsColors(board: BoardCell[][]): BoardCell[][] {
-    let seaArr = board.flat().filter(({ value }) => value == 0);
+    let seaArr = board.flat().filter(x => x.value == 0);
     for (let i = 0; i < seaArr.length; i++) {
       seaArr[i].color = 'rgba(0, 162, 255, 0.2)';
     }
 
     return board;
-  }
-
-  public checkHoveredElement(
-    board: BoardCell[][],
-    elementType: string,
-    coord: Coordinates,
-    element: HTMLElement,
-    nextShip: ShipComponent
-  ): BoardCell[][] {
-    let dropPlace = {} as DropModel;
-    dropPlace.type = elementType;
-    dropPlace.row = coord.row;
-    dropPlace.col = coord.col;
-
-    let dropCells: Array<BoardCell> = this.getShipsDropCells(board, coord, nextShip);
-    this.lastDropCells = dropCells;
-
-    if (elementType == 'cell') {
-      let allow: boolean = this.validateDropPlace(board, dropCells, nextShip);
-
-      if (allow) {
-        this.isDropAllowed = true;
-        this.hoverPlace = dropPlace;
-        for (let i = 0; i < dropCells.length; i++) {
-          board[dropCells[i].col][dropCells[i].row].color = 'rgb(0, 162, 255)';
-        }
-      } else {
-        this.isDropAllowed = false;
-        element.style.backgroundColor = 'red';
-      }
-    }
-
-    return board;
-  }
-
-  public resetBoardElement(
-    board: BoardCell[][],
-    element: HTMLElement,
-    coord: Coordinates
-  ): BoardCell[][] {
-    if (board[coord.col][coord.row].value == 1) {
-      element.style.backgroundColor = 'green';
-    } else {
-      element.style.backgroundColor = 'rgba(0, 162, 255, 0.2)';
-    }
-    for (let i = 0; i < this.lastDropCells.length; i++) {
-      if (
-        board[this.lastDropCells[i].col][this.lastDropCells[i].row].value == 1
-      ) {
-        board[this.lastDropCells[i].col][this.lastDropCells[i].row].color =
-          'green';
-      } else {
-        board[this.lastDropCells[i].col][this.lastDropCells[i].row].color =
-          'rgba(0, 162, 255, 0.2)';
-      }
-    }
-
-    return board;
-  }
-
-  public getCell(
-    rotation: number,
-    i: number,
-    coord: Coordinates,
-    board: BoardCell[][]
-  ): BoardCell {
-    let item: BoardCell =
-      rotation == 0
-        ? ({ row: coord.row, col: coord.col + i, value: 0 } as BoardCell)
-        : ({ row: coord.row + i, col: coord.col, value: 0 } as BoardCell);
-
-    let exists: boolean = board.some((b) =>
-      b.some((c) => c.row == item.row && c.col == item.col)
-    );
-
-    return exists ? item : ({ row: -1, col: -1, value: -1 } as BoardCell);
   }
 
   //todo: fleet service
@@ -188,10 +112,10 @@ export class BoardService {
     return result;
   }
 
+  //ok
   public getEmptyBoard(): BoardCell[][] {
-    let board: BoardCell[][] = [];
-    for (let i = 0; i < 10; i++) {
-      board[i] = [];
+    let board: BoardCell[][] = new Array(10);
+    for (let i = 0; i < board.length; i++) {
       for (let j = 0; j < 10; j++) {
         board[i][j] = {
           row: j,
@@ -207,65 +131,41 @@ export class BoardService {
     return board;
   }
 
-  public validateDropPlace(
+  //ok, sevice?
+  private validateDropPlace(
     board: BoardCell[][],
-    dropPlace: Array<BoardCell>,
+    dropPlace: BoardCell[],
     nextShip: ShipComponent
   ): boolean {
-    let result: boolean = true;
+    if (!nextShip){
+      return false;
+    }
 
-    if (nextShip) {
-      if (dropPlace.length !== nextShip.size) {
-        result = false;
+    if (dropPlace.length !== nextShip.size) {
+        return false;
       }
-    } else {
-      result = false;
-    }
 
-    if (!this.isShipNotTouchingOther(dropPlace, board)) {
-      result = false;
-    }
-
-    return result;
-  }
-
-  private isShipNotTouchingOther(
-    dropPlace: BoardCell[],
-    playersBoard: BoardCell[][]
-  ): boolean {
-    let result: boolean = true;
-    let forbiddenCells: Array<BoardCell> = this.getForbiddenCells(dropPlace);
-
-    if (!this.compareBoardWithForbiddenCells(forbiddenCells, playersBoard)) {
-      result = false;
-    }
-
-    return result;
-  }
-
-  private compareBoardWithForbiddenCells(
-    forbiddenCells: Array<BoardCell>,
-    playersBoard: BoardCell[][]
-  ): boolean {
-    for (let i = 0; i < 10; i++) {
-      for (let j = 0; j < 10; j++) {
-        if (playersBoard[i][j].value !== 1) continue;
-        for (let f = 0; f < forbiddenCells.length; f++) {
-          if (
-            playersBoard[i][j].col == forbiddenCells[f].col &&
-            playersBoard[i][j].row == forbiddenCells[f].row &&
-            playersBoard[i][j].value == 1
-          ) {
-            return false;
-          }
-        }
-      }
+    if (!this.compareBoardWithForbiddenCells(dropPlace, board)) {
+      return false;
     }
 
     return true;
   }
 
-  public getForbiddenCells(dropPlace: BoardCell[]): BoardCell[] {
+  //ok
+  private compareBoardWithForbiddenCells(
+    dropPlace: BoardCell[],
+    playersBoard: BoardCell[][]
+  ): boolean {
+    let forbiddenCells: BoardCell[] = this.getForbiddenCells(dropPlace);
+    let ships = playersBoard.flat().filter(x => x.value == 1);
+    let contains = forbiddenCells.filter(x => ships.some(y => x.col === y.col && x.row === y.row));
+    
+    return contains.length < 0;
+  }
+
+  //ok
+  private getForbiddenCells(dropPlace: BoardCell[]): BoardCell[] {
     let list: BoardCell[] = [];
 
     list.push.apply(list, this.getCornerCells(dropPlace));
@@ -275,6 +175,7 @@ export class BoardService {
     return list;
   }
 
+  //ok
   public getAllForbiddenCells(board: BoardCell[][]): BoardCell[] {
     let forbidden: BoardCell[] = [];
     forbidden.push.apply(
@@ -288,6 +189,7 @@ export class BoardService {
     return forbidden;
   }
 
+  //ok, fleet service?
   private getShipCells(dropPlace: BoardCell[]): any {
     let list: BoardCell[] = [];
     for (let i = 0; i < dropPlace.length; i++) {
@@ -301,6 +203,7 @@ export class BoardService {
     return list;
   }
 
+  //ok
   public getSideCells(dropPlace: BoardCell[]): BoardCell[] {
     let list: BoardCell[] = [];
     for (let i = 0; i < dropPlace.length; i++) {
@@ -331,6 +234,7 @@ export class BoardService {
     return list;
   }
 
+  //ok
   public getCornerCells(dropPlace: BoardCell[]): BoardCell[] {
     let list: BoardCell[] = [];
     for (let i = 0; i < dropPlace.length; i++) {
@@ -359,32 +263,17 @@ export class BoardService {
     return list;
   }
 
-  public getCurrentHits(board: BoardCell[][]): BoardCell[] {
-    let list: BoardCell[] = [];
-    for (let i = 0; i < 10; i++) {
-      for (let j = 0; j < 10; j++) {
-        if (board[i][j].value == 2) {
-          list.push(board[i][j]);
-        }
-      }
-    }
-
-    return list;
+  //ok
+  private getCurrentHits(board: BoardCell[][]): BoardCell[] {
+    return board.flat().filter(x => x.value == 2);
   }
 
+  //ok
   public getCurrentMissed(board: BoardCell[][]): BoardCell[] {
-    let list: BoardCell[] = [];
-    for (let i = 0; i < 10; i++) {
-      for (let j = 0; j < 10; j++) {
-        if (board[i][j].value == 3) {
-          list.push(board[i][j]);
-        }
-      }
-    }
-
-    return list;
+    return board.flat().filter(x => x.value == 3);
   }
 
+  
   public getPotentialTargets(
     forbidden: BoardCell[],
     board: BoardCell[][]
@@ -556,5 +445,83 @@ export class BoardService {
     }
 
     return coord;
+  }
+
+  //damn
+
+  public checkHoveredElement(
+    board: BoardCell[][],
+    elementType: string,
+    coord: Coordinates,
+    element: HTMLElement,
+    nextShip: ShipComponent
+  ): BoardCell[][] {
+    let dropPlace = {} as DropModel;
+    dropPlace.type = elementType;
+    dropPlace.row = coord.row;
+    dropPlace.col = coord.col;
+
+    let dropCells: Array<BoardCell> = this.getShipsDropCells(board, coord, nextShip);
+    this.lastDropCells = dropCells;
+
+    if (elementType == 'cell') {
+      let allow: boolean = this.validateDropPlace(board, dropCells, nextShip);
+
+      if (allow) {
+        this.isDropAllowed = true;
+        this.hoverPlace = dropPlace;
+        for (let i = 0; i < dropCells.length; i++) {
+          board[dropCells[i].col][dropCells[i].row].color = 'rgb(0, 162, 255)';
+        }
+      } else {
+        this.isDropAllowed = false;
+        element.style.backgroundColor = 'red';
+      }
+    }
+
+    return board;
+  }
+
+  public resetBoardElement(
+    board: BoardCell[][],
+    element: HTMLElement,
+    coord: Coordinates
+  ): BoardCell[][] {
+    if (board[coord.col][coord.row].value == 1) {
+      element.style.backgroundColor = 'green';
+    } else {
+      element.style.backgroundColor = 'rgba(0, 162, 255, 0.2)';
+    }
+    for (let i = 0; i < this.lastDropCells.length; i++) {
+      if (
+        board[this.lastDropCells[i].col][this.lastDropCells[i].row].value == 1
+      ) {
+        board[this.lastDropCells[i].col][this.lastDropCells[i].row].color =
+          'green';
+      } else {
+        board[this.lastDropCells[i].col][this.lastDropCells[i].row].color =
+          'rgba(0, 162, 255, 0.2)';
+      }
+    }
+
+    return board;
+  }
+
+  public getCell(
+    rotation: number,
+    i: number,
+    coord: Coordinates,
+    board: BoardCell[][]
+  ): BoardCell {
+    let item: BoardCell =
+      rotation == 0
+        ? ({ row: coord.row, col: coord.col + i, value: 0 } as BoardCell)
+        : ({ row: coord.row + i, col: coord.col, value: 0 } as BoardCell);
+
+    let exists: boolean = board.some((b) =>
+      b.some((c) => c.row == item.row && c.col == item.col)
+    );
+
+    return exists ? item : ({ row: -1, col: -1, value: -1 } as BoardCell);
   }
 }
