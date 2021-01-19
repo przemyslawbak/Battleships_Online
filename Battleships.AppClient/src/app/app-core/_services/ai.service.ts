@@ -4,13 +4,18 @@ import { Coordinates } from '@models/coordinates.model';
 import { BoardService } from '@services/board.service';
 import { ShipComponent } from 'app/app-game/game-ship/ship.component';
 import { FleetService } from './fleet.service';
+import { RandomizerService } from './randomizer.service';
 
 @Injectable()
 export class AiService {
   private mastCounter: number = 0;
   private opponentsFleet: number[] = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
   public hit: boolean = false;
-  constructor(private board: BoardService, private fleet: FleetService) {}
+  constructor(
+    private board: BoardService,
+    private fleet: FleetService,
+    private randomizer: RandomizerService
+  ) {}
 
   public getFireCoordinates(board: BoardCell[][]): Coordinates {
     let forbiddenCells: BoardCell[] = this.board.getAllForbiddenCells(board);
@@ -64,10 +69,11 @@ export class AiService {
   ): BoardCell[][] {
     this.board.isDropAllowed = false;
 
-    ship.rotation = this.fleet.randomRotateShip(Math.random() < 0.5);
+    let randomHalf = this.randomizer.randomHalf();
+    ship.rotation = this.fleet.randomRotateShip(randomHalf);
     let coord: Coordinates = this.board.getDeployCoordinates(board, ship);
 
-    board = this.board.deployShip(board, coord, ship);
+    board = this.board.deployShipOnBoard(board, coord, ship);
     return board;
   }
 }

@@ -155,7 +155,7 @@ export class GameDeployComponent implements OnInit {
   public deployShip(row: number, col: number): void {
     let coord: Coordinates = { row: row, col: col } as Coordinates;
     if (this.board.isDropAllowed && this.isDeploymentAllowed) {
-      this.playersBoard = this.board.deployShip(
+      this.playersBoard = this.board.deployShipOnBoard(
         this.playersBoard,
         coord,
         this.fleetWaiting[0]

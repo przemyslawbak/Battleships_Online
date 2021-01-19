@@ -1,3 +1,4 @@
+import { BoardCellService } from './_services/board-cell.service';
 import { RandomizerService } from './_services/randomizer.service';
 import { BoardFiltersService } from './_services/board-filters.service';
 import { SpinnerInterceptor } from './_helpers/spinner.interceptor';
@@ -64,6 +65,7 @@ import { ErrorInterceptor } from './_helpers/error.interceptor';
       useClass: SpinnerInterceptor,
       multi: true,
     },
+    BoardCellService,
     RandomizerService,
     BoardFiltersService,
     HubBuilderService,

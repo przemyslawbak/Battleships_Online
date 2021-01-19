@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BoardCell } from '@models/board-cell.model';
 import { AuthService } from '@services/auth.service';
 import { GameService } from '@services/game.service';
 
@@ -14,5 +15,11 @@ export class PlayerService {
     ];
 
     return playerNames.indexOf(userName);
+  }
+
+  //todo: test below
+
+  public CheckForWinner(hits: BoardCell[]): boolean {
+    return hits.length == 20 ? true : false;
   }
 }

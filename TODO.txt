@@ -6,6 +6,7 @@ DOUBTS:
 - unit test one scenario/result if there is no logic?
 - services with components?
 - should all subscriptions be unsubscribed?
+- shoudl I split services around in separate folders?
 
 OK - error service:
 	NO - call delayForBruteForce for each method call, test it,
