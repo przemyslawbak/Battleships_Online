@@ -176,7 +176,6 @@ export class GameDeployComponent implements OnInit {
   }
 
   public checkHoveredElement(
-    elementType: string,
     row: number,
     col: number,
     element: HTMLElement
@@ -185,7 +184,6 @@ export class GameDeployComponent implements OnInit {
     if (this.isDeploymentAllowed) {
       this.playersBoard = this.board.checkHoveredElement(
         this.playersBoard,
-        elementType,
         coord,
         element,
         this.fleetWaiting[0]
