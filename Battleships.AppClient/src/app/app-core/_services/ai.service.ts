@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BoardCell } from '@models/board-cell.model';
 import { Coordinates } from '@models/coordinates.model';
 import { BoardService } from '@services/board.service';
+import { ShipComponent } from 'app/app-game/game-ship/ship.component';
 import { FleetService } from './fleet.service';
 
 @Injectable()
@@ -55,5 +56,18 @@ export class AiService {
       this.mastCounter,
       forbiddenCells
     );
+  }
+
+  public autoDeployShip(
+    board: BoardCell[][],
+    ship: ShipComponent
+  ): BoardCell[][] {
+    this.board.isDropAllowed = false;
+
+    ship.rotation = this.fleet.randomRotateShip(Math.random() < 0.5);
+    let coord: Coordinates = this.board.getDeployCoordinates(board, ship);
+
+    board = this.board.deployShip(board, coord, ship);
+    return board;
   }
 }
