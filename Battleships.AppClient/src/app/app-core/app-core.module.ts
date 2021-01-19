@@ -1,3 +1,4 @@
+import { BoardFiltersService } from './_services/board-filters.service';
 import { SpinnerInterceptor } from './_helpers/spinner.interceptor';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -62,6 +63,7 @@ import { ErrorInterceptor } from './_helpers/error.interceptor';
       useClass: SpinnerInterceptor,
       multi: true,
     },
+    BoardFiltersService,
     HubBuilderService,
     HubConnectionService,
     ErrorService,
