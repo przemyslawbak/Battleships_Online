@@ -19,12 +19,12 @@ describe('HubConnectionService', () => {
     'close',
   ]);
   const builderServiceMock = jasmine.createSpyObj('HubBuilderService', [
-    'buildNewService',
+    'buildNewHub',
   ]);
 
   beforeEach(() => {
     hubService = new HubConnectionService(modalServiceMock, builderServiceMock);
-    builderServiceMock.buildNewService.and.returnValue(hubMock);
+    builderServiceMock.buildNewHub.and.returnValue(hubMock);
   });
 
   it('Service_ShouldBeCreated', () => {
