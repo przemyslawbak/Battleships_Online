@@ -41,7 +41,7 @@ describe('CommentsService', () => {
     'updateDroppedBoardCells',
     'getCellsArray',
     'resetElementsBackground',
-    'clearDropcellsValues',
+    'clearDropCellsValues',
   ]);
 
   beforeEach(() => {
@@ -221,5 +221,31 @@ describe('CommentsService', () => {
       initialBoard,
       []
     );
+  });
+
+  it('isCellAlreadyShot_OnValueFromServiceTrue_ReturnsTrue', () => {
+    cellsServiceMock.isCellShotBefore.and.returnValue(true);
+    let result = boardService.isCellAlreadyShot(
+      {
+        row: 0,
+        col: 0,
+      } as Coordinates,
+      [[{ row: 0, col: 0, value: 0 } as BoardCell]]
+    );
+
+    expect(result).toBe(true);
+  });
+
+  it('isCellAlreadyShot_OnValueFromServiceFalse_ReturnsFalse', () => {
+    cellsServiceMock.isCellShotBefore.and.returnValue(false);
+    let result = boardService.isCellAlreadyShot(
+      {
+        row: 0,
+        col: 0,
+      } as Coordinates,
+      [[{ row: 0, col: 0, value: 0 } as BoardCell]]
+    );
+
+    expect(result).toBe(false);
   });
 });

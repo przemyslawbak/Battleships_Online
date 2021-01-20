@@ -216,7 +216,7 @@ export class BoardService {
       element,
       board[coord.col][coord.row]
     );
-    board = this.cells.clearDropcellsValues(board, dropCells);
+    board = this.cells.clearDropCellsValues(board, dropCells);
 
     return board;
   }
@@ -259,8 +259,7 @@ export class BoardService {
       let cellModel: BoardCell = this.cells.getCell(
         nextShip.rotation,
         i,
-        coord,
-        board
+        coord
       );
       let isCellValid: boolean = this.cells.validateCellBoundary(cellModel);
       if (isCellValid) {

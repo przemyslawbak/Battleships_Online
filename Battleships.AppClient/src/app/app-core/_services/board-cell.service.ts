@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BoardCell } from '@models/board-cell.model';
 import { Coordinates } from '@models/coordinates.model';
-import { ShipComponent } from 'app/app-game/game-ship/ship.component';
 
 @Injectable()
 export class BoardCellService {
@@ -152,13 +151,6 @@ export class BoardCellService {
     return list;
   }
 
-  public isCellShotBefore(coord: Coordinates, board: BoardCell[][]): boolean {
-    return (
-      board[coord.col][coord.row].value == 2 ||
-      board[coord.col][coord.row].value == 3
-    );
-  }
-
   public addCellsToAvoidList(
     avoid: BoardCell[],
     possibleTargets: BoardCell[]
@@ -172,7 +164,8 @@ export class BoardCellService {
       cellModel.col <= 9 &&
       cellModel.row >= 0 &&
       cellModel.row <= 9 &&
-      cellModel.value >= 0
+      cellModel.value >= 0 &&
+      cellModel.value <= 3
     ) {
       return true;
     }
@@ -180,53 +173,23 @@ export class BoardCellService {
     return false;
   }
 
-  public getDroppedCell(cell: BoardCell): BoardCell {
-    cell.value = 1;
-    cell.color = 'green';
-
-    return cell;
-  }
-
-  public getHoverCell(cell: BoardCell): BoardCell {
-    cell.color = 'rgb(0, 162, 255)';
-
-    return cell;
-  }
-
   public getCell(
-    rotation: number,
-    cellNumber: number,
-    coord: Coordinates,
-    board: BoardCell[][]
-  ): BoardCell {
-    let cell: BoardCell = this.getCellWithRotation(rotation, cellNumber, coord);
-    let exists: boolean = this.isCellOnBoard(board, cell);
-
-    return exists ? cell : ({ row: -1, col: -1, value: -1 } as BoardCell);
-  }
-
-  public isCellOnBoard(board: BoardCell[][], cell: BoardCell): boolean {
-    return board.some((b) =>
-      b.some((c) => c.row == cell.row && c.col == cell.col)
-    );
-  }
-
-  private getCellWithRotation(
     rotation: number,
     cellNumber: number,
     coord: Coordinates
   ): BoardCell {
-    return rotation == 0
-      ? ({
-          row: coord.row,
-          col: coord.col + cellNumber,
-          value: 0,
-        } as BoardCell)
-      : ({
-          row: coord.row + cellNumber,
-          col: coord.col,
-          value: 0,
-        } as BoardCell);
+    let cell: BoardCell = this.getCellWithRotation(rotation, cellNumber, coord);
+
+    return this.validateCellBoundary(cell)
+      ? cell
+      : ({ row: -1, col: -1, value: -1 } as BoardCell);
+  }
+
+  public isCellShotBefore(coord: Coordinates, board: BoardCell[][]): boolean {
+    return (
+      board[coord.col][coord.row].value == 2 ||
+      board[coord.col][coord.row].value == 3
+    );
   }
 
   public getForbiddenCells(dropPlace: BoardCell[]): BoardCell[] {
@@ -261,7 +224,10 @@ export class BoardCellService {
 
     return board;
   }
-  public clearDropcellsValues(
+
+  //<-----------------------------------
+
+  public clearDropCellsValues(
     board: BoardCell[][],
     dropCells: BoardCell[]
   ): BoardCell[][] {
@@ -288,5 +254,36 @@ export class BoardCellService {
     }
 
     return element;
+  }
+
+  private getCellWithRotation(
+    rotation: number,
+    cellNumber: number,
+    coord: Coordinates
+  ): BoardCell {
+    return rotation == 0
+      ? ({
+          row: coord.row,
+          col: coord.col + cellNumber,
+          value: 0,
+        } as BoardCell)
+      : ({
+          row: coord.row + cellNumber,
+          col: coord.col,
+          value: 0,
+        } as BoardCell);
+  }
+
+  private getDroppedCell(cell: BoardCell): BoardCell {
+    cell.value = 1;
+    cell.color = 'green';
+
+    return cell;
+  }
+
+  private getHoverCell(cell: BoardCell): BoardCell {
+    cell.color = 'rgb(0, 162, 255)';
+
+    return cell;
   }
 }
