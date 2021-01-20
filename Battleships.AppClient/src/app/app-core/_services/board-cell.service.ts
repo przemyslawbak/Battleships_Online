@@ -277,4 +277,32 @@ export class BoardCellService {
 
     return board;
   }
+  public clearDropcellsValues(
+    board: BoardCell[][],
+    dropCells: BoardCell[]
+  ): BoardCell[][] {
+    for (let i = 0; i < dropCells.length; i++) {
+      if (board[dropCells[i].col][dropCells[i].row].value == 1) {
+        board[dropCells[i].col][dropCells[i].row].color = 'green';
+      } else {
+        board[dropCells[i].col][dropCells[i].row].color =
+          'rgba(0, 162, 255, 0.2)';
+      }
+    }
+
+    return board;
+  }
+
+  public resetElementsBackground(
+    element: HTMLElement,
+    cell: BoardCell
+  ): HTMLElement {
+    if (cell.value == 1) {
+      element.style.backgroundColor = 'green';
+    } else {
+      element.style.backgroundColor = 'rgba(0, 162, 255, 0.2)';
+    }
+
+    return element;
+  }
 }

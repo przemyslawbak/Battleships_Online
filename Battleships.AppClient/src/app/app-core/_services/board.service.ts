@@ -228,11 +228,24 @@ export class BoardService {
     board: BoardCell[][],
     coord: Coordinates,
     nextShip: ShipComponent
-  ): Array<BoardCell> {
+  ): BoardCell[] {
     return nextShip ? this.getCellsArray(board, coord, nextShip) : [];
   }
 
-  //<--------------------------------------------
+  public resetBoardElement(
+    board: BoardCell[][],
+    element: HTMLElement,
+    coord: Coordinates,
+    dropCells: BoardCell[]
+  ): BoardCell[][] {
+    element = this.cells.resetElementsBackground(
+      element,
+      board[coord.col][coord.row]
+    );
+    board = this.cells.clearDropcellsValues(board, dropCells);
+
+    return board;
+  }
 
   public getAutoDeployCoordinates(
     board: BoardCell[][],
@@ -263,28 +276,5 @@ export class BoardService {
     }
 
     return coord;
-  }
-
-  public resetBoardElement(
-    board: BoardCell[][],
-    element: HTMLElement,
-    coord: Coordinates,
-    dropCells: BoardCell[]
-  ): BoardCell[][] {
-    if (board[coord.col][coord.row].value == 1) {
-      element.style.backgroundColor = 'green';
-    } else {
-      element.style.backgroundColor = 'rgba(0, 162, 255, 0.2)';
-    }
-    for (let i = 0; i < dropCells.length; i++) {
-      if (board[dropCells[i].col][dropCells[i].row].value == 1) {
-        board[dropCells[i].col][dropCells[i].row].color = 'green';
-      } else {
-        board[dropCells[i].col][dropCells[i].row].color =
-          'rgba(0, 162, 255, 0.2)';
-      }
-    }
-
-    return board;
   }
 }

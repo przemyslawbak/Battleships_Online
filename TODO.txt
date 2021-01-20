@@ -8,6 +8,10 @@ DOUBTS:
 - should all subscriptions be unsubscribed?
 - shoudl I split services around in separate folders?
 
+!!!!!!!!!!!!!!!!!!!!!!!!!!
+- debug board service and ship deploying,
+- remove not needed code from `getAutoDeployCoordinates`
+
 OK - error service:
 	NO - call delayForBruteForce for each method call, test it,
 	OK - after refactoring - bug: can not return Observable<boolean>,

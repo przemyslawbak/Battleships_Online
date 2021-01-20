@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BoardCell } from '@models/board-cell.model';
 import { Coordinates } from '@models/coordinates.model';
-import { BoardFiltersService } from './board-filters.service';
+import { BoardCellService } from './board-cell.service';
 
 @Injectable()
 export class RandomizerService {
-  constructor(private filters: BoardFiltersService) {}
+  constructor(private cells: BoardCellService) {}
 
   public randomHalf(): boolean {
     return Math.random() < 0.5;
@@ -32,7 +32,7 @@ export class RandomizerService {
     forbiddenCells: BoardCell[],
     coord: Coordinates
   ): boolean {
-    this.filters.filterIsCellAllowed(forbiddenCells, coord).length > 0
+    this.cells.filterIsCellAllowed(forbiddenCells, coord).length > 0
       ? true
       : false;
 
