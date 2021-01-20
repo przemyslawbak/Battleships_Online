@@ -20,23 +20,15 @@ export class RandomizerService {
     while (isRandomCoordinateForbidden) {
       let index = Math.floor(Math.random() * possibleTargets.length);
       randomCoordinates = possibleTargets[index];
-      if (!this.checkIfRandomIsForbidden(forbiddenCells, randomCoordinates)) {
+      if (
+        this.cells.filterIsCellAllowed(forbiddenCells, randomCoordinates)
+          .length == 0
+      ) {
         isRandomCoordinateForbidden = false;
       }
     }
 
     return randomCoordinates;
-  }
-
-  private checkIfRandomIsForbidden(
-    forbiddenCells: BoardCell[],
-    coord: Coordinates
-  ): boolean {
-    this.cells.filterIsCellAllowed(forbiddenCells, coord).length > 0
-      ? true
-      : false;
-
-    return false;
   }
 
   public getRandomIndex(emptyCellArray: BoardCell[]): number {
