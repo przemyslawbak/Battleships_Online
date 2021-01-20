@@ -199,7 +199,7 @@ export class GameDeployComponent implements OnInit {
         coord,
         this.fleetWaiting[0]
       );
-      this.board.updateHoveredElements(
+      this.playersBoard = this.board.updateHoveredElements(
         dropCells,
         this.playersBoard,
         isDropAllowed,

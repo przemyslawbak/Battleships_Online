@@ -147,31 +147,32 @@ export class BoardService {
     return board;
   }
 
-  private compareBoardWithForbiddenCells(
-    dropPlace: BoardCell[],
-    board: BoardCell[][]
-  ): boolean {
-    let forbiddenCells: BoardCell[] = this.cells.getForbiddenCells(dropPlace);
-    let shipArr = this.cells.filterShipCells(board);
-
-    return this.cells.filterForbiddenCells(forbiddenCells, shipArr).length < 1;
-  }
-
-  private getBoardTargetArray(): BoardCell[] {
-    return this.cells.filterEmptyBoard(this.getEmptyBoard());
-  }
-
   public verifyHoveredElement(
     board: BoardCell[][],
     dropCells: BoardCell[],
     nextShip: ShipComponent
   ): boolean {
-    let comparison: boolean = this.compareBoardWithForbiddenCells(
-      dropCells,
-      board
+    let forbiddenCells: BoardCell[] = this.cells.getForbiddenCells(dropCells);
+    let shipArr = this.cells.filterShipCells(board);
+    let filteredForbiddenCells: BoardCell[] = this.cells.filterForbiddenCells(
+      forbiddenCells,
+      shipArr
     );
+    if (!nextShip) {
+      return false;
+    }
+    if (
+      dropCells.length == nextShip.size &&
+      filteredForbiddenCells.length < 1
+    ) {
+      return true;
+    }
 
-    return this.cells.isDropCellPlaceAllowed(dropCells, nextShip, comparison);
+    return false;
+  }
+
+  private getBoardTargetArray(): BoardCell[] {
+    return this.cells.filterEmptyBoard(this.getEmptyBoard());
   }
 
   public updateHoveredElements(
@@ -179,11 +180,12 @@ export class BoardService {
     board: BoardCell[][],
     isDropAllowed: boolean,
     htmlElement: HTMLElement
-  ) {
+  ): BoardCell[][] {
     if (isDropAllowed) {
-      board = this.cells.updateHoveredBoardCells(board, dropCells);
+      return this.cells.updateHoveredBoardCells(board, dropCells);
     } else {
       htmlElement.style.backgroundColor = 'red';
+      return board;
     }
   }
 
@@ -258,14 +260,14 @@ export class BoardService {
     } as Coordinates;
 
     while (!isDropAllowed) {
+      let randomIndex: number = this.randomizer.getRandomIndex(emptyCellArray); //
+      let randomEmptyCell: BoardCell = emptyCellArray[randomIndex]; //
+      let dummyHtmlElement: HTMLElement = document.createElement('DIV'); //
+      coord.row = randomEmptyCell.row; //
+      coord.col = randomEmptyCell.col; //
       let dropCells = this.getShipsDropCells(board, coord, ship);
-      let randomIndex: number = this.randomizer.getRandomIndex(emptyCellArray);
-      let randomEmptyCell: BoardCell = emptyCellArray[randomIndex];
-      let dummyHtmlElement: HTMLElement = document.createElement('DIV');
-      coord.row = randomEmptyCell.row;
-      coord.col = randomEmptyCell.col;
       isDropAllowed = this.verifyHoveredElement(board, dropCells, ship);
-      this.updateHoveredElements(
+      board = this.updateHoveredElements(
         dropCells,
         board,
         isDropAllowed,

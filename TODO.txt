@@ -46,6 +46,7 @@ OK - footer:
 	OK - footer styles,
 	OK - fill up footer with data,
 OK - identity:
+	- if 401/409, log off and communicate to login again,
 	OK - updated auth-service login_OnReceivedUser_DoesSetAuth: Async function did not complete within 5000ms,
 	OK - updated auth-service login_OnNotReceivedUser_DoesNotSetAuth: Async function did not complete within 5000ms,
 	OK - what about refresh timer when browser refreshed?
@@ -100,6 +101,7 @@ OK - identity:
 	OK - bug: if no email in DB for `forgotten pass`, freezes
 	OK - bug 2x hits RefreshToken
 OK - misc:
+	OK - bug: auto drop cell not works properly,
 	- remove all `===`,
 	OK - signalr service spec test error: Cannot read property 'and' of undefined,
 	OK - update spinner-interceptor tests for refresh-token case,

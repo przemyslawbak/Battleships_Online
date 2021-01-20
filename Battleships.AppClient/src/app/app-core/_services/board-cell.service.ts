@@ -229,22 +229,6 @@ export class BoardCellService {
         } as BoardCell);
   }
 
-  public isDropCellPlaceAllowed(
-    dropCells: BoardCell[],
-    nextShip: ShipComponent,
-    comparison: boolean
-  ): boolean {
-    if (!nextShip || !comparison) {
-      return false;
-    }
-
-    if (dropCells.length !== nextShip.size) {
-      return false;
-    }
-
-    return true;
-  }
-
   public getForbiddenCells(dropPlace: BoardCell[]): BoardCell[] {
     let list: BoardCell[] = [];
     list.push.apply(list, this.getCornerCells(dropPlace));
