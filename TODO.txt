@@ -8,9 +8,6 @@ DOUBTS:
 - should all subscriptions be unsubscribed?
 - shoudl I split services around in separate folders?
 
-!!!!!!!!!!!!!!!!!!!!!!!!!!
-- remove not needed code from `getAutoDeployCoordinates`
-
 OK - error service:
 	NO - call delayForBruteForce for each method call, test it,
 	OK - after refactoring - bug: can not return Observable<boolean>,
@@ -191,6 +188,7 @@ OK - update game status with:
 	OK - can be game started?
 	OK - update backend
 OK - in deploy view and component:
+	OK - remove not needed code from `getAutoDeployCoordinates`
 	OK - bug: ship deploy click did not work,
 	OK - in game-play & game-deploy use time dividers,
 	OK - deploying game board on small screen responsivity,

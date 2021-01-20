@@ -19,7 +19,7 @@ export class PlayerService {
 
   //todo: test below
 
-  public CheckForWinner(hits: BoardCell[]): boolean {
+  public checkForWinner(hits: BoardCell[]): boolean {
     return hits.length == 20 ? true : false;
   }
 }

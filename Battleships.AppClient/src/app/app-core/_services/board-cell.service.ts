@@ -166,7 +166,7 @@ export class BoardCellService {
     return avoid.push.apply(avoid, possibleTargets);
   }
 
-  public validateCell(cellModel: BoardCell): boolean {
+  public validateCellBoundary(cellModel: BoardCell): boolean {
     if (
       cellModel.col >= 0 &&
       cellModel.col <= 9 &&

@@ -20,15 +20,14 @@ export class BoardService {
   ) {}
 
   public isThereAWinner(players: Player[]): number {
-    let result: number = -1;
     for (let i = 0; i < players.length; i++) {
       let hits = this.cells.filterHitCells(players[i].board);
-      if (this.player.CheckForWinner(hits)) {
-        result = i;
+      if (this.player.checkForWinner(hits)) {
+        return i;
       }
     }
 
-    return result;
+    return -1;
   }
 
   public getEmptyBoard(): BoardCell[][] {
@@ -171,10 +170,6 @@ export class BoardService {
     return false;
   }
 
-  private getBoardTargetArray(): BoardCell[] {
-    return this.cells.filterEmptyBoard(this.getEmptyBoard());
-  }
-
   public updateHoveredElements(
     dropCells: BoardCell[],
     board: BoardCell[][],
@@ -183,32 +178,10 @@ export class BoardService {
   ): BoardCell[][] {
     if (isDropAllowed) {
       return this.cells.updateHoveredBoardCells(board, dropCells);
-    } else {
-      htmlElement.style.backgroundColor = 'red';
-      return board;
-    }
-  }
-
-  private getCellsArray(
-    board: BoardCell[][],
-    coord: Coordinates,
-    nextShip: ShipComponent
-  ): BoardCell[] {
-    let result: BoardCell[] = [];
-    for (let i = 0; i < nextShip.size; i++) {
-      let cellModel: BoardCell = this.cells.getCell(
-        nextShip.rotation,
-        i,
-        coord,
-        board
-      );
-      let isCellValid: boolean = this.cells.validateCell(cellModel);
-      if (isCellValid) {
-        result.push(cellModel);
-      }
     }
 
-    return result;
+    htmlElement.style.backgroundColor = 'red';
+    return board;
   }
 
   public deployShipOnBoard(
@@ -260,22 +233,43 @@ export class BoardService {
     } as Coordinates;
 
     while (!isDropAllowed) {
-      let randomIndex: number = this.randomizer.getRandomIndex(emptyCellArray); //
-      let randomEmptyCell: BoardCell = emptyCellArray[randomIndex]; //
-      let dummyHtmlElement: HTMLElement = document.createElement('DIV'); //
-      coord.row = randomEmptyCell.row; //
-      coord.col = randomEmptyCell.col; //
+      let randomIndex: number = this.randomizer.getRandomIndex(emptyCellArray);
+      let randomEmptyCell: BoardCell = emptyCellArray[randomIndex];
+      coord.row = randomEmptyCell.row;
+      coord.col = randomEmptyCell.col;
       let dropCells = this.getShipsDropCells(board, coord, ship);
       isDropAllowed = this.verifyHoveredElement(board, dropCells, ship);
-      board = this.updateHoveredElements(
-        dropCells,
-        board,
-        isDropAllowed,
-        dummyHtmlElement
-      );
       emptyCellArray.splice(randomIndex, 1);
     }
 
     return coord;
+  }
+
+  private getBoardTargetArray(): BoardCell[] {
+    return this.cells.filterEmptyBoard(this.getEmptyBoard());
+  }
+
+  private getCellsArray(
+    board: BoardCell[][],
+    coord: Coordinates,
+    nextShip: ShipComponent
+  ): BoardCell[] {
+    let result: BoardCell[] = [];
+    for (let i = 0; i < nextShip.size; i++) {
+      let cellModel: BoardCell = this.cells.getCell(
+        nextShip.rotation,
+        i,
+        coord,
+        board
+      );
+      let isCellValid: boolean = this.cells.validateCellBoundary(cellModel);
+      if (isCellValid) {
+        result.push(cellModel);
+      } else {
+        return [];
+      }
+    }
+
+    return result;
   }
 }
