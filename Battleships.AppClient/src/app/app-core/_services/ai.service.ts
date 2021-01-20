@@ -67,8 +67,6 @@ export class AiService {
     board: BoardCell[][],
     ship: ShipComponent
   ): BoardCell[][] {
-    this.board.isDropAllowed = false;
-
     let randomHalf = this.randomizer.randomHalf();
     ship.rotation = this.fleet.randomRotateShip(randomHalf);
     let coord: Coordinates = this.board.getAutoDeployCoordinates(board, ship);

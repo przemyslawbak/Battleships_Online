@@ -9,7 +9,6 @@ DOUBTS:
 - shoudl I split services around in separate folders?
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!
-- debug board service and ship deploying,
 - remove not needed code from `getAutoDeployCoordinates`
 
 OK - error service:
@@ -190,6 +189,7 @@ OK - update game status with:
 	OK - can be game started?
 	OK - update backend
 OK - in deploy view and component:
+	OK - bug: ship deploy click did not work,
 	OK - in game-play & game-deploy use time dividers,
 	OK - deploying game board on small screen responsivity,
 	NO - game boards (for 2 players): canvas drawings,

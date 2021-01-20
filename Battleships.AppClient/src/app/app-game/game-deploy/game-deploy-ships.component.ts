@@ -154,7 +154,8 @@ export class GameDeployComponent implements OnInit {
 
   public deployShip(row: number, col: number): void {
     let coord: Coordinates = { row: row, col: col } as Coordinates;
-    if (this.board.isDropAllowed && this.isDeploymentAllowed) {
+    let isDropAllowed: boolean = this.isDroppingShipAllowed(coord);
+    if (isDropAllowed && this.isDeploymentAllowed) {
       this.playersBoard = this.board.deployShipOnBoard(
         this.playersBoard,
         coord,
@@ -191,15 +192,11 @@ export class GameDeployComponent implements OnInit {
     htmlElement: HTMLElement
   ): void {
     let coord: Coordinates = { row: row, col: col } as Coordinates;
-    if (this.isDeploymentAllowed) {
+    let isDropAllowed: boolean = this.isDroppingShipAllowed(coord);
+    if (isDropAllowed && this.isDeploymentAllowed) {
       let dropCells = this.board.getShipsDropCells(
         this.playersBoard,
         coord,
-        this.fleetWaiting[0]
-      );
-      let isDropAllowed: boolean = this.board.verifyHoveredElement(
-        this.playersBoard,
-        dropCells,
         this.fleetWaiting[0]
       );
       this.board.updateHoveredElements(
@@ -209,6 +206,19 @@ export class GameDeployComponent implements OnInit {
         htmlElement
       );
     }
+  }
+
+  private isDroppingShipAllowed(coord: Coordinates): boolean {
+    let dropCells = this.board.getShipsDropCells(
+      this.playersBoard,
+      coord,
+      this.fleetWaiting[0]
+    );
+    return this.board.verifyHoveredElement(
+      this.playersBoard,
+      dropCells,
+      this.fleetWaiting[0]
+    );
   }
 
   private moveFromWaitingToDeployed(): void {

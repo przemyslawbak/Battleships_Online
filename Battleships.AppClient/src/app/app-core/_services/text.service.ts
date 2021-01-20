@@ -28,7 +28,7 @@ export class TextService {
           return 'Validation Error!';
 
         default:
-          return 'Unknown error.';
+          return 'Unknown error. Please try again.';
       }
     }
   }
