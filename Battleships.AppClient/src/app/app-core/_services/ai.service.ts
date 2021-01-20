@@ -71,7 +71,7 @@ export class AiService {
 
     let randomHalf = this.randomizer.randomHalf();
     ship.rotation = this.fleet.randomRotateShip(randomHalf);
-    let coord: Coordinates = this.board.getDeployCoordinates(board, ship);
+    let coord: Coordinates = this.board.getAutoDeployCoordinates(board, ship);
 
     board = this.board.deployShipOnBoard(board, coord, ship);
     return board;

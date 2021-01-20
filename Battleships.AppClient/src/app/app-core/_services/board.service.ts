@@ -12,7 +12,6 @@ import { BoardCellService } from './board-cell.service';
 export class BoardService {
   public avoidCells: BoardCell[] = [];
   public isDropAllowed: boolean;
-  public lastDropCells: Array<BoardCell> = [];
 
   constructor(
     private game: GameService,
@@ -72,7 +71,7 @@ export class BoardService {
         possibleTargets
       )
     ) {
-      this.avoidCells = this.addPossibleTargetsToAvoidList(
+      this.avoidCells = this.cells.addCellsToAvoidList(
         this.avoidCells,
         possibleTargets
       );
@@ -100,116 +99,18 @@ export class BoardService {
         );
   }
 
-  public getDeployCoordinates(
-    board: BoardCell[][],
-    ship: ShipComponent
-  ): Coordinates {
-    let emptyCellArray: BoardCell[] = this.cells.filterEmptySeaCells(board);
-    let coord: Coordinates = {
-      row: 0,
-      col: 0,
-    } as Coordinates;
-    let randomEmptyCell: BoardCell = null;
-
-    while (!this.isDropAllowed) {
-      let randomIndex: number = this.randomizer.getRandomIndex(emptyCellArray);
-      randomEmptyCell = emptyCellArray[randomIndex];
-      let dummyHtmlElement: HTMLElement = document.createElement('DIV');
-      coord.row = randomEmptyCell.row;
-      coord.col = randomEmptyCell.col;
-      this.checkHoveredElement(board, coord, dummyHtmlElement, ship);
-      emptyCellArray.splice(randomIndex, 1);
-    }
-
-    return coord;
-  }
-
   public getPotentialTargets(
     forbidden: BoardCell[],
     board: BoardCell[][]
   ): BoardCell[] {
     let currentHits: BoardCell[] = this.cells.filterHitCells(board);
     let sideLineCells: BoardCell[] = this.cells.getSideCells(currentHits);
-
     let wrongCells: BoardCell[] = this.cells.filterTargetCells(
       forbidden,
       sideLineCells
     );
 
     return this.cells.filterWrongCells(sideLineCells, wrongCells);
-  }
-
-  public checkHoveredElement(
-    board: BoardCell[][],
-    coord: Coordinates,
-    element: HTMLElement,
-    nextShip: ShipComponent
-  ): BoardCell[][] {
-    this.lastDropCells = this.getShipsDropCells(board, coord, nextShip);
-
-    if (this.isDropPlaceAllowed(board, this.lastDropCells, nextShip)) {
-      this.isDropAllowed = true;
-      for (let i = 0; i < this.lastDropCells.length; i++) {
-        board[this.lastDropCells[i].col][this.lastDropCells[i].row].color =
-          'rgb(0, 162, 255)';
-      }
-    } else {
-      this.isDropAllowed = false;
-      element.style.backgroundColor = 'red';
-    }
-
-    return board;
-  }
-
-  public resetBoardElement(
-    board: BoardCell[][],
-    element: HTMLElement,
-    coord: Coordinates
-  ): BoardCell[][] {
-    if (board[coord.col][coord.row].value == 1) {
-      element.style.backgroundColor = 'green';
-    } else {
-      element.style.backgroundColor = 'rgba(0, 162, 255, 0.2)';
-    }
-    for (let i = 0; i < this.lastDropCells.length; i++) {
-      if (
-        board[this.lastDropCells[i].col][this.lastDropCells[i].row].value == 1
-      ) {
-        board[this.lastDropCells[i].col][this.lastDropCells[i].row].color =
-          'green';
-      } else {
-        board[this.lastDropCells[i].col][this.lastDropCells[i].row].color =
-          'rgba(0, 162, 255, 0.2)';
-      }
-    }
-
-    return board;
-  }
-
-  public getCell(
-    rotation: number,
-    cellNumber: number,
-    coord: Coordinates,
-    board: BoardCell[][]
-  ): BoardCell {
-    let item: BoardCell =
-      rotation == 0
-        ? ({
-            row: coord.row,
-            col: coord.col + cellNumber,
-            value: 0,
-          } as BoardCell)
-        : ({
-            row: coord.row + cellNumber,
-            col: coord.col,
-            value: 0,
-          } as BoardCell);
-
-    let exists: boolean = board.some((b) =>
-      b.some((c) => c.row == item.row && c.col == item.col)
-    );
-
-    return exists ? item : ({ row: -1, col: -1, value: -1 } as BoardCell);
   }
 
   public hideOpponentsShips(board: BoardCell[][]): BoardCell[][] {
@@ -251,7 +152,7 @@ export class BoardService {
     dropPlace: BoardCell[],
     board: BoardCell[][]
   ): boolean {
-    let forbiddenCells: BoardCell[] = this.getForbiddenCells(dropPlace);
+    let forbiddenCells: BoardCell[] = this.cells.getForbiddenCells(dropPlace);
     let shipArr = this.cells.filterShipCells(board);
 
     return this.cells.filterForbiddenCells(forbiddenCells, shipArr).length < 1;
@@ -261,75 +162,52 @@ export class BoardService {
     return this.cells.filterEmptyBoard(this.getEmptyBoard());
   }
 
-  private getShipsDropCells(
+  public verifyHoveredElement(
     board: BoardCell[][],
-    coord: Coordinates,
+    dropCells: BoardCell[],
     nextShip: ShipComponent
-  ): Array<BoardCell> {
-    return nextShip ? this.pushCells(board, coord, nextShip) : [];
+  ): boolean {
+    let comparison: boolean = this.compareBoardWithForbiddenCells(
+      dropCells,
+      board
+    );
+
+    return this.cells.isDropCellPlaceAllowed(dropCells, nextShip, comparison);
   }
 
-  private pushCells(
+  public updateHoveredElements(
+    dropCells: BoardCell[],
+    board: BoardCell[][],
+    isDropAllowed: boolean,
+    htmlElement: HTMLElement
+  ) {
+    if (isDropAllowed) {
+      board = this.cells.updateHoveredBoardCells(board, dropCells);
+    } else {
+      htmlElement.style.backgroundColor = 'red';
+    }
+  }
+
+  private getCellsArray(
     board: BoardCell[][],
     coord: Coordinates,
     nextShip: ShipComponent
   ): BoardCell[] {
     let result: BoardCell[] = [];
-    for (let cellNumber = 0; cellNumber < nextShip.size; cellNumber++) {
-      let cellModel: BoardCell = this.getCell(
+    for (let i = 0; i < nextShip.size; i++) {
+      let cellModel: BoardCell = this.cells.getCell(
         nextShip.rotation,
-        cellNumber,
+        i,
         coord,
         board
       );
-
-      if (this.validateCell(cellModel)) {
+      let isCellValid: boolean = this.cells.validateCell(cellModel);
+      if (isCellValid) {
         result.push(cellModel);
       }
     }
 
     return result;
-  }
-
-  private validateCell(cellModel: BoardCell): boolean {
-    if (cellModel.col >= 0 && cellModel.row >= 0 && cellModel.value >= 0) {
-      return true;
-    }
-
-    return false;
-  }
-
-  private isDropPlaceAllowed(
-    board: BoardCell[][],
-    dropPlace: BoardCell[],
-    nextShip: ShipComponent
-  ): boolean {
-    if (!nextShip || !this.compareBoardWithForbiddenCells(dropPlace, board)) {
-      return false;
-    }
-
-    if (dropPlace.length !== nextShip.size) {
-      return false;
-    }
-
-    return true;
-  }
-
-  private getForbiddenCells(dropPlace: BoardCell[]): BoardCell[] {
-    let list: BoardCell[] = [];
-
-    list.push.apply(list, this.cells.getCornerCells(dropPlace));
-    list.push.apply(list, this.cells.getSideCells(dropPlace));
-    list.push.apply(list, this.cells.getShipCells(dropPlace));
-
-    return list;
-  }
-
-  private addPossibleTargetsToAvoidList(
-    avoid: BoardCell[],
-    possibleTargets: BoardCell[]
-  ): BoardCell[] {
-    return avoid.push.apply(avoid, possibleTargets);
   }
 
   public deployShipOnBoard(
@@ -342,9 +220,69 @@ export class BoardService {
       coord,
       nextShip
     );
+
+    return this.cells.updateDroppedBoardCells(board, dropCells);
+  }
+
+  public getShipsDropCells(
+    board: BoardCell[][],
+    coord: Coordinates,
+    nextShip: ShipComponent
+  ): Array<BoardCell> {
+    return nextShip ? this.getCellsArray(board, coord, nextShip) : [];
+  }
+
+  //<--------------------------------------------
+
+  public getAutoDeployCoordinates(
+    board: BoardCell[][],
+    ship: ShipComponent
+  ): Coordinates {
+    let isDropAllowed: boolean = false;
+    let emptyCellArray: BoardCell[] = this.cells.filterEmptySeaCells(board);
+    let coord: Coordinates = {
+      row: 0,
+      col: 0,
+    } as Coordinates;
+
+    while (!isDropAllowed) {
+      let dropCells = this.getShipsDropCells(board, coord, ship);
+      let randomIndex: number = this.randomizer.getRandomIndex(emptyCellArray);
+      let randomEmptyCell: BoardCell = emptyCellArray[randomIndex];
+      let dummyHtmlElement: HTMLElement = document.createElement('DIV');
+      coord.row = randomEmptyCell.row;
+      coord.col = randomEmptyCell.col;
+      isDropAllowed = this.verifyHoveredElement(board, dropCells, ship);
+      this.updateHoveredElements(
+        dropCells,
+        board,
+        isDropAllowed,
+        dummyHtmlElement
+      );
+      emptyCellArray.splice(randomIndex, 1);
+    }
+
+    return coord;
+  }
+
+  public resetBoardElement(
+    board: BoardCell[][],
+    element: HTMLElement,
+    coord: Coordinates,
+    dropCells: BoardCell[]
+  ): BoardCell[][] {
+    if (board[coord.col][coord.row].value == 1) {
+      element.style.backgroundColor = 'green';
+    } else {
+      element.style.backgroundColor = 'rgba(0, 162, 255, 0.2)';
+    }
     for (let i = 0; i < dropCells.length; i++) {
-      board[dropCells[i].col][dropCells[i].row].value = 1;
-      board[dropCells[i].col][dropCells[i].row].color = 'green';
+      if (board[dropCells[i].col][dropCells[i].row].value == 1) {
+        board[dropCells[i].col][dropCells[i].row].color = 'green';
+      } else {
+        board[dropCells[i].col][dropCells[i].row].color =
+          'rgba(0, 162, 255, 0.2)';
+      }
     }
 
     return board;

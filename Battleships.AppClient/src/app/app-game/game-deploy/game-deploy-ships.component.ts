@@ -120,7 +120,7 @@ export class GameDeployComponent implements OnInit {
     }
   }
 
-  private initGameSubscription() {
+  private initGameSubscription(): void {
     this._subGame = this.game.gameStateChange.subscribe((game) => {
       this.updateGameValues(game);
     });
@@ -166,27 +166,47 @@ export class GameDeployComponent implements OnInit {
     this.enableDeployBtnIfPossible();
   }
 
-  public resetBoardElement(element: HTMLElement, row: number, col: number) {
+  public resetBoardElement(
+    element: HTMLElement,
+    row: number,
+    col: number
+  ): void {
     let coord: Coordinates = { row: row, col: col } as Coordinates;
+    let dropCells = this.board.getShipsDropCells(
+      this.playersBoard,
+      coord,
+      this.fleetWaiting[0]
+    );
     this.playersBoard = this.board.resetBoardElement(
       this.playersBoard,
       element,
-      coord
+      coord,
+      dropCells
     );
   }
 
   public checkHoveredElement(
     row: number,
     col: number,
-    element: HTMLElement
+    htmlElement: HTMLElement
   ): void {
     let coord: Coordinates = { row: row, col: col } as Coordinates;
     if (this.isDeploymentAllowed) {
-      this.playersBoard = this.board.checkHoveredElement(
+      let dropCells = this.board.getShipsDropCells(
         this.playersBoard,
         coord,
-        element,
         this.fleetWaiting[0]
+      );
+      let isDropAllowed: boolean = this.board.verifyHoveredElement(
+        this.playersBoard,
+        dropCells,
+        this.fleetWaiting[0]
+      );
+      this.board.updateHoveredElements(
+        dropCells,
+        this.playersBoard,
+        isDropAllowed,
+        htmlElement
       );
     }
   }
