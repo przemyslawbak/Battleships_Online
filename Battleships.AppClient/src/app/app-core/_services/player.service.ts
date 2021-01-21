@@ -17,8 +17,6 @@ export class PlayerService {
     return playerNames.indexOf(userName);
   }
 
-  //todo: test below
-
   public checkForWinner(hits: BoardCell[]): boolean {
     return hits.length == 20 ? true : false;
   }

@@ -106,7 +106,7 @@ OK - misc:
 	X - on connection reset redirecting to home page is pissing off a bit,
 	OK - adjusted security method to be async,
 	- any text parsing / formatting methods move to text service,
-	- services unit testing,
+	OK - services unit testing,
 	- components unit testing,
 	- all units test check for `has no expectations` warnings,
 	OK - front-end unit testing: https://angular.io/guide/testing + Freeman

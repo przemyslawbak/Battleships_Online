@@ -5,8 +5,7 @@ import { Injectable } from '@angular/core';
 export class TextService {
   constructor() {}
 
-  //todo: test
-  public getErrorMessage(error: HttpErrorResponse): string {
+  public getErrorMessageText(error: HttpErrorResponse): string {
     if (error != null) {
       switch (error.status) {
         case 400:
@@ -25,7 +24,7 @@ export class TextService {
           return 'The requested service is not available.';
 
         case 422:
-          return 'Validation Error!';
+          return 'Validation Error.';
 
         default:
           return 'Unknown error. Please try again.';
