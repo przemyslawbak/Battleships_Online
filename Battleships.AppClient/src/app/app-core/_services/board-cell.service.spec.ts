@@ -1,11 +1,20 @@
 import { BoardCell } from '@models/board-cell.model';
 import { BoardCellService } from './board-cell.service';
 import { Coordinates } from '@models/coordinates.model';
+import { toBase64String } from '@angular/compiler/src/output/source_map';
 
 describe('BoardCellService', () => {
+  let initialBoard: BoardCell[][];
   let cellService: BoardCellService;
 
   beforeEach(() => {
+    initialBoard = [
+      [
+        { row: 0, col: 0, value: 1 } as BoardCell,
+        { row: 1, col: 0, value: 0 } as BoardCell,
+      ],
+      [{} as BoardCell],
+    ];
     cellService = new BoardCellService();
   });
 
@@ -144,5 +153,36 @@ describe('BoardCellService', () => {
     );
 
     expect(result).toBe(false);
+  });
+
+  it('clearDropedCellsValues_OnCellValues_SetsCorrectColor', () => {
+    let dropCells: BoardCell[] = [
+      { col: 0, row: 0, value: 1 } as BoardCell,
+      { col: 0, row: 1, value: 0 } as BoardCell,
+    ];
+    let result = cellService.clearDropedCellsValues(initialBoard, dropCells);
+
+    expect(result[0][0].color).toBe('green');
+    expect(result[0][1].color).toBe('rgba(0, 162, 255, 0.2)');
+  });
+
+  it('resetElementsBackground_OnCellValues_SetsCorrectColor', () => {
+    let cellWithValue1: BoardCell = { row: 0, col: 0, value: 1 } as BoardCell;
+    let cellWithValue0: BoardCell = { row: 0, col: 0, value: 0 } as BoardCell;
+    let dummyHtmlElement1: HTMLElement = document.createElement('DIV');
+    let dummyHtmlElement0: HTMLElement = document.createElement('DIV');
+    dummyHtmlElement1.style.backgroundColor = 'pink';
+    dummyHtmlElement0.style.backgroundColor = 'pink';
+    let result1 = cellService.resetElementsBackground(
+      dummyHtmlElement1,
+      cellWithValue1
+    );
+    let result0 = cellService.resetElementsBackground(
+      dummyHtmlElement0,
+      cellWithValue0
+    );
+
+    expect(result1.style.backgroundColor).toBe('green');
+    expect(result0.style.backgroundColor).toBe('rgba(0, 162, 255, 0.2)');
   });
 });

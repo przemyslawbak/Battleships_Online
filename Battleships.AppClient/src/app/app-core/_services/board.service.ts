@@ -216,7 +216,7 @@ export class BoardService {
       element,
       board[coord.col][coord.row]
     );
-    board = this.cells.clearDropCellsValues(board, dropCells);
+    board = this.cells.clearDropedCellsValues(board, dropCells);
 
     return board;
   }

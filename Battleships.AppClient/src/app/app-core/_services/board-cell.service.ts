@@ -225,9 +225,7 @@ export class BoardCellService {
     return board;
   }
 
-  //<-----------------------------------
-
-  public clearDropCellsValues(
+  public clearDropedCellsValues(
     board: BoardCell[][],
     dropCells: BoardCell[]
   ): BoardCell[][] {
