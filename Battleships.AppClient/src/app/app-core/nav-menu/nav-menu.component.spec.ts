@@ -78,6 +78,9 @@ describe('NavMenuComponent', () => {
   });
 
   it('template_OnLoggedInUser_DoesNotDisplayJoinSiteElementAndDisplaySeveralElements', () => {
+    const displayName: string = 'some_name';
+    const user = { displayName: displayName };
+    mockAuthService.getAuth.and.returnValue(user);
     mockAuthService.isLoggedIn.and.returnValue(true);
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('.join-site')).toBeNull();
@@ -87,6 +90,9 @@ describe('NavMenuComponent', () => {
   });
 
   it('template_OnLoggedInUser_DoesNotDisplayJoinSiteElementAndNotDisplaySeveralElements', () => {
+    const displayName: string = 'some_name';
+    const user = { displayName: displayName };
+    mockAuthService.getAuth.and.returnValue(user);
     mockAuthService.isLoggedIn.and.returnValue(false);
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('.join-site')).toBeTruthy();
@@ -96,6 +102,9 @@ describe('NavMenuComponent', () => {
   });
 
   it('template_OnAdminLoggedInOrNot_DisplaysOrNotAdminButton', () => {
+    const displayName: string = 'some_name';
+    const user = { displayName: displayName };
+    mockAuthService.getAuth.and.returnValue(user);
     mockAuthService.isLoggedIn.and.returnValue(true);
     mockAuthService.isAdmin.and.returnValue(true);
     fixture.detectChanges();
