@@ -255,4 +255,14 @@ describe('AuthService', () => {
 
     expect(value).toBe(false);
   });
+
+  it('isRoleCorrect_OnRoleNull_ReturnsTrue', () => {
+    let activatedRoute: ActivatedRouteSnapshot = new ActivatedRouteSnapshot();
+    let data: Data = { roles: null } as Data;
+    activatedRoute.data = data;
+
+    let value: boolean = authService.isRoleCorrect(activatedRoute, user);
+
+    expect(value).toBe(true);
+  });
 });
