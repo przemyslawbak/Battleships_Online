@@ -81,9 +81,7 @@ export class FleetService {
     return result;
   }
 
-  //todo: test below
-
-  public randomRotateShip(random: boolean): number {
+  public getRandomRotationValue(random: boolean): number {
     return random ? 90 : 0;
   }
 }

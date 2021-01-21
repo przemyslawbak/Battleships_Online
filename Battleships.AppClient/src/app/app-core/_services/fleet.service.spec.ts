@@ -247,4 +247,12 @@ describe('FleetService', () => {
 
     expect(result).toBe(false);
   });
+
+  it('getRandomRotationValue_OnParameterValue_ReturnsCorrectNumber', () => {
+    let shouldBe90: number = fleetService.getRandomRotationValue(true);
+    let shouldBe0: number = fleetService.getRandomRotationValue(false);
+
+    expect(shouldBe90).toBe(90);
+    expect(shouldBe0).toBe(0);
+  });
 });
