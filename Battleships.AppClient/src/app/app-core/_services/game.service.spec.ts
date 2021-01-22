@@ -4,9 +4,11 @@ import { GameService } from './game.service';
 
 describe('GameService', () => {
   let gameService: GameService;
+  const routerMock = jasmine.createSpyObj('Router', ['navigate']);
+  const authMock = jasmine.createSpyObj('AuthService', ['getAuth']);
 
   beforeEach(() => {
-    gameService = new GameService();
+    gameService = new GameService(routerMock, authMock);
   });
 
   it('Service_ShouldBeCreated', () => {

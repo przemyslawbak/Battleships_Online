@@ -5,7 +5,6 @@ import { GameState } from '@models/game-state.model';
 import { Player } from '@models/player.model';
 import { Subject } from 'rxjs';
 import { AuthService } from './auth.service';
-import { SignalRService } from './signal-r.service';
 
 @Injectable()
 export class GameService {
