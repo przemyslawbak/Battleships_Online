@@ -1,9 +1,9 @@
 <div class="gameHeaderPic col-sm rounded-top"></div>
 <div
-  class="text-center"
+  class="text-center no-players-message"
   *ngIf="this.playersList.length == 0 || !this.playersList; else table"
 >
-  <h4 class="noteDisplay">{{ this.note }}</h4>
+  <h4 class="noteDisplay message-text">{{ this.note }}</h4>
 </div>
 <ng-template #table>
   <table class="table table-bordered table-striped">
@@ -25,6 +25,10 @@
     </tbody>
   </table>
 </ng-template>
-<button type="submit" (click)="onBack()" class="btn btn-md btn-light">
+<button
+  type="submit"
+  (click)="onBack()"
+  class="btn btn-md btn-light go-back-btn"
+>
   Go back
 </button>

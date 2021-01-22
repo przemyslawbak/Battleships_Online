@@ -83,6 +83,7 @@ describe('NavMenuComponent', () => {
     mockAuthService.getAuth.and.returnValue(user);
     mockAuthService.isLoggedIn.and.returnValue(true);
     fixture.detectChanges();
+
     expect(fixture.nativeElement.querySelector('.join-site')).toBeNull();
     expect(fixture.nativeElement.querySelector('.edit-profile')).toBeTruthy();
     expect(fixture.nativeElement.querySelector('.logout-user')).toBeTruthy();
@@ -95,6 +96,7 @@ describe('NavMenuComponent', () => {
     mockAuthService.getAuth.and.returnValue(user);
     mockAuthService.isLoggedIn.and.returnValue(false);
     fixture.detectChanges();
+
     expect(fixture.nativeElement.querySelector('.join-site')).toBeTruthy();
     expect(fixture.nativeElement.querySelector('.edit-profile')).toBeNull();
     expect(fixture.nativeElement.querySelector('.logout-user')).toBeNull();
@@ -108,9 +110,11 @@ describe('NavMenuComponent', () => {
     mockAuthService.isLoggedIn.and.returnValue(true);
     mockAuthService.isAdmin.and.returnValue(true);
     fixture.detectChanges();
+
     expect(fixture.nativeElement.querySelector('.admin-button')).toBeTruthy();
     mockAuthService.isAdmin.and.returnValue(false);
     fixture.detectChanges();
+
     expect(fixture.nativeElement.querySelector('.admin-button')).toBeNull();
   });
 });
