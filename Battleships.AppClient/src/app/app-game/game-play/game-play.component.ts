@@ -64,9 +64,7 @@ export class GamePlayComponent implements OnInit {
   ) {}
 
   ngOnDestroy() {
-    if (this._subGame) {
-      this._subGame.unsubscribe();
-    }
+    this._subGame.unsubscribe();
   }
 
   public ngOnInit(): void {

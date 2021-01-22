@@ -12,7 +12,7 @@ export class GameChatComponent implements OnInit {
   @Input() public multiplayer: boolean = false;
   public chatMessage: string = '';
   private _subMessage: any;
-  public chatMessages: Array<ChatMessage> = [];
+  public chatMessages: ChatMessage[] = [];
   constructor(private signalRService: SignalRService) {}
 
   public ngOnInit(): void {
