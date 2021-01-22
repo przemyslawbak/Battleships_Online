@@ -1,4 +1,5 @@
 import { LoginResponse } from '@models/login-response.model';
+import { of } from 'rxjs';
 import { AuthGuard } from './auth.guard';
 
 describe('AuthGuard', () => {
@@ -17,24 +18,30 @@ describe('AuthGuard', () => {
     expect(authGuard).toBeTruthy();
   });
 
-  it('canActivate_OnNotLoggedInUser_ReturnsFalseAndRedirectsTo[join-site]', () => {
+  it('canActivate_OnNotLoggedInUser_ReturnsFalseAndRedirectsToJoinSite', async () => {
+    let promise: Promise<boolean> = Promise.resolve(true);
+    routerMock.navigate.and.returnValue(promise);
     authMock.getAuth.and.returnValue(null);
-    expect(authGuard.canActivate(<any>{}, <any>{})).toBe(false);
+    let result = await authGuard.canActivate(<any>{}, <any>{});
+    expect(result).toBe(false);
     expect(routerMock.navigate).toHaveBeenCalledWith(['join-site'], {
       queryParams: { returnUrl: undefined },
     });
   });
 
-  it('canActivate_OnLoggedInUserAndNotCorrectRole_ReturnsFalseAndRedirectsToHome', () => {
+  it('canActivate_OnLoggedInUserAndNotCorrectRole_ReturnsTrueAndRedirectsToHome', async () => {
+    let promise: Promise<boolean> = Promise.resolve(true);
+    routerMock.navigate.and.returnValue(promise);
     authMock.getAuth.and.returnValue({} as LoginResponse);
     authMock.isRoleCorrect.and.returnValue(false);
-    expect(authGuard.canActivate(<any>{}, <any>{})).toBe(false);
+    let result = await authGuard.canActivate(<any>{}, <any>{});
+    expect(result).toBe(true);
     expect(routerMock.navigate).toHaveBeenCalledWith(['']);
   });
 
-  it('canActivate_OnLoggedInUserAndCorrectRole_ReturnsTrue', () => {
+  it('canActivate_OnLoggedInUserAndCorrectRole_ReturnsTrue', async () => {
     authMock.getAuth.and.returnValue({} as LoginResponse);
     authMock.isRoleCorrect.and.returnValue(true);
-    expect(authGuard.canActivate(<any>{}, <any>{})).toBe(true);
+    expect(await authGuard.canActivate(<any>{}, <any>{})).toBe(true);
   });
 });

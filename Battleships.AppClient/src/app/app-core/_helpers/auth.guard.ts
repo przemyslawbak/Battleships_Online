@@ -12,28 +12,28 @@ import { AuthService } from '@services/auth.service';
 export class AuthGuard implements CanActivate {
   constructor(private auth: AuthService, private router: Router) {}
 
-  public canActivate(
+  public async canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): boolean {
+  ): Promise<boolean> {
     const user = this.auth.getAuth();
 
     if (user) {
       if (!this.auth.isRoleCorrect(route, user)) {
-        this.router.navigate(['']).then(() => {
+        await this.router.navigate(['']).then(() => {
           return false;
         });
       }
 
       return true;
+    } else {
+      await this.router
+        .navigate(['join-site'], {
+          queryParams: { returnUrl: state.url },
+        })
+        .then(() => {
+          return false;
+        });
     }
-
-    this.router
-      .navigate(['join-site'], {
-        queryParams: { returnUrl: state.url },
-      })
-      .then(() => {
-        return false;
-      });
   }
 }
