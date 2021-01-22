@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { BoardCell } from '@models/board-cell.model';
 import { GameState } from '@models/game-state.model';
+import { Player } from '@models/player.model';
 import { Subject } from 'rxjs';
+import { AuthService } from './auth.service';
+import { SignalRService } from './signal-r.service';
 
 @Injectable()
 export class GameService {
   private gameState: GameState;
   public gameStateChange: Subject<GameState> = new Subject<GameState>();
 
-  constructor() {}
+  constructor(private router: Router, private auth: AuthService) {}
 
   public setGame(game: GameState | null): void {
     this.gameState = game;
@@ -63,5 +67,76 @@ export class GameService {
 
   private isLowDifficulty() {
     return this.gameState.gameDifficulty == 'easy' ? true : false;
+  }
+
+  //todo: test after
+
+  public setPlayerNames(
+    players: Player[],
+    userName: string,
+    displayName: string
+  ): Player[] {
+    if (players[0].userName === '') {
+      players[0].userName = userName;
+      players[0].displayName = displayName;
+    } else {
+      players[1].userName = this.auth.getAuth().user;
+      players[1].displayName = displayName;
+    }
+
+    return players;
+  }
+
+  public getUsersNames(players: Player[]): string[] {
+    return [players[0].userName, players[1].userName];
+  }
+
+  public findIdAndReconnect(): void {
+    if (this.isGameStarted()) {
+      this.router.navigate(['connect-game/' + this.getGame().gameId]);
+    } else {
+      this.router.navigate(['start-game']);
+    }
+  }
+
+  public isGameAlreadyPlayed(gameUsersNames: string[]) {
+    let userName = this.auth.getAuth().user;
+    return gameUsersNames.includes(userName);
+  }
+
+  public isGameMultiplayer(game: GameState): boolean {
+    return game.gameMulti || !this.checkForAnyPlayerConnected(game.players);
+  }
+
+  public setComputerOpponent(players: Player[]): Player[] {
+    for (let i = 0; i < players.length; i++) {
+      if (players[i].userName == '') {
+        players[i].userName = 'COMPUTER';
+        players[i].displayName = 'COMPUTER';
+
+        return players;
+      }
+    }
+  }
+
+  public checkForEmptySlots(game: GameState): boolean {
+    let gameUserNames: string[] = this.getUsersNames(game.players);
+    return gameUserNames.includes('') ? true : false;
+  }
+
+  public async initGame(game: GameState): Promise<void> {
+    this.setGame(game); //set first state
+
+    if (game.players[0].isDeployed && game.players[1].isDeployed) {
+      this.router.navigate(['play-game']);
+    } else {
+      this.router.navigate(['deploy-ships']);
+    }
+  }
+
+  private checkForAnyPlayerConnected(players: Player[]): boolean {
+    return players[0].userName == '' || players[1].userName == ''
+      ? false
+      : true;
   }
 }

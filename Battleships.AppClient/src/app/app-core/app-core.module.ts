@@ -1,6 +1,3 @@
-import { BoardCellService } from './_services/board-cell.service';
-import { RandomizerService } from './_services/randomizer.service';
-import { SpinnerInterceptor } from './_helpers/spinner.interceptor';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -28,10 +25,14 @@ import { FleetService } from '@services/fleet.service';
 import { TextService } from '@services/text.service';
 import { HubConnectionService } from '@services/hub-connection.service';
 import { HubBuilderService } from '@services/hub-builder.service';
+import { GameInitializerService } from './_services/game-initializer.service';
+import { BoardCellService } from './_services/board-cell.service';
+import { RandomizerService } from './_services/randomizer.service';
 
 import { AuthGuard } from './_helpers/auth.guard';
 import { JwtInterceptor } from './_helpers/jwt.interceptor';
 import { ErrorInterceptor } from './_helpers/error.interceptor';
+import { SpinnerInterceptor } from './_helpers/spinner.interceptor';
 
 @NgModule({
   imports: [
@@ -64,6 +65,7 @@ import { ErrorInterceptor } from './_helpers/error.interceptor';
       useClass: SpinnerInterceptor,
       multi: true,
     },
+    GameInitializerService,
     BoardCellService,
     RandomizerService,
     HubBuilderService,
