@@ -1,14 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
-import { AuthService } from '@services/auth.service';
 import { GameService } from '@services/game.service';
 import { HttpService } from '@services/http.service';
-import { ModalService } from '@services/modal.service';
 
 import { GameState } from '@models/game-state.model';
-import { Player } from '@models/player.model';
-import { SignalRService } from '@services/signal-r.service';
+import { GameInitializerService } from '@services/game-initializer.service';
 
 @Component({
   templateUrl: './game-connect.component.html',
@@ -16,148 +13,30 @@ import { SignalRService } from '@services/signal-r.service';
 })
 export class GameConnectComponent implements OnInit {
   constructor(
-    private auth: AuthService,
     private route: ActivatedRoute,
     private game: GameService,
-    private router: Router,
     private http: HttpService,
-    private modalService: ModalService,
-    private signalRService: SignalRService
+    private initializer: GameInitializerService
   ) {}
 
   public async ngOnInit(): Promise<void> {
     const id: string = this.route.snapshot.paramMap.get('id');
-
-    await this.resetHubConnection();
-
-    if (id) {
-      this.getGameStateAndRedirect(id);
-    } else {
-      this.findIdAndReconnect();
-    }
+    this.connectToTheGame(id);
   }
 
-  private async resetHubConnection(): Promise<void> {
-    await this.signalRService.startConnection();
+  private connectToTheGame(id: string): void {
+    id ? this.getGameStateAndRedirect(id) : this.game.findIdAndReconnect();
   }
 
   private getGameStateAndRedirect(id: string): void {
-    const userName: string = this.auth.getAuth().user;
-    const displayName: string = this.auth.getAuth().displayName;
-
-    this.http.getGameState(id).subscribe((game: GameState) => {
+    this.http.getGameState(id).subscribe(async (game: GameState) => {
       if (game) {
-        let gameUserNames: string[] = this.getUserNames(game.players);
-
-        //if game already played by this user
-        if (gameUserNames.includes(userName)) {
-          this.initGame(game, true);
-        } else {
-          //if game is multiplayer or no players assigned
-          if (
-            game.gameMulti ||
-            !this.checkForAnyPlayerConnected(game.players)
-          ) {
-            //if name has empty slot
-            this.checkForEmptySlots(game, userName, displayName);
-          } else {
-            this.modalService.open(
-              'info-modal',
-              'Game is for singe player only.'
-            );
-          }
-        }
-      } else {
-        this.modalService.open('info-modal', 'Could not find game.');
+        let gameUsersNames: string[] = this.game.getUsersNames(game.players);
+        let isPlayed: boolean = this.game.isGameAlreadyPlayed(gameUsersNames);
+        let isMulti: boolean = this.game.isGameMultiplayer(game);
+        let isEmptySlot: boolean = this.game.checkForEmptySlots(game);
+        await this.initializer.initGame(game, isPlayed, isMulti, isEmptySlot);
       }
     });
-  }
-
-  private checkForAnyPlayerConnected(players: Player[]): boolean {
-    return players[0].userName == '' || players[1].userName == ''
-      ? false
-      : true;
-  }
-
-  private checkForEmptySlots(
-    game: GameState,
-    userName: string,
-    displayName: string
-  ): void {
-    let gameUserNames: string[] = this.getUserNames(game.players);
-
-    if (gameUserNames.includes('')) {
-      game.players = this.setPlayerNames(game.players, userName, displayName);
-      this.initGame(game, false);
-    } else {
-      this.informAboutNoEmptySlot();
-    }
-  }
-
-  private async initGame(
-    game: GameState,
-    isJoinedAlready: boolean
-  ): Promise<void> {
-    if (isJoinedAlready) {
-      //
-    }
-    if (!game.gameMulti) {
-      game.players = this.setComputerOpponent(game.players);
-    } else {
-      this.signalRService.broadcastChatMessage('Connected to the game.');
-    }
-    this.game.setGame(game); //set first state
-    if (game.players[0].isDeployed && game.players[1].isDeployed) {
-      this.router.navigate(['play-game']);
-    } else {
-      this.router.navigate(['deploy-ships']);
-    }
-  }
-
-  private setComputerOpponent(players: Player[]): Player[] {
-    for (let i = 0; i < players.length; i++) {
-      if (players[i].userName == '') {
-        players[i].userName = 'COMPUTER';
-        players[i].displayName = 'COMPUTER';
-
-        return players;
-      }
-    }
-  }
-
-  private setPlayerNames(
-    players: Player[],
-    userName: string,
-    displayName: string
-  ): Player[] {
-    if (players[0].userName === '') {
-      players[0].userName = userName;
-      players[0].displayName = displayName;
-    } else {
-      players[1].userName = this.auth.getAuth().user;
-      players[1].displayName = displayName;
-    }
-
-    return players;
-  }
-
-  private informAboutNoEmptySlot(): void {
-    this.modalService.open(
-      'info-modal',
-      'There is no empty player slot available.'
-    );
-    this.router.navigate(['open-game']);
-  }
-
-  private getUserNames(players: Player[]): string[] {
-    return [players[0].userName, players[1].userName];
-  }
-
-  private findIdAndReconnect(): void {
-    if (this.game.isGameStarted()) {
-      this.router.navigate(['connect-game/' + this.game.getGame().gameId]);
-    } else {
-      this.router.navigate(['start-game']);
-    }
   }
 }
