@@ -20,42 +20,62 @@ export class GameInitializerService {
 
   public async initGame(
     game: GameState,
-    isPlayed: boolean,
+    isAlreadyPlayed: boolean,
     isMulti: boolean,
     isEmptySlot: boolean
   ) {
-    if (game) {
-      await this.signalRService.startConnection(); // see if it works?????????
-      const userName: string = this.auth.getAuth().user;
-      const displayName: string = this.auth.getAuth().displayName;
-      if (isPlayed) {
-        this.goForInit(game);
-      } else {
-        if (isMulti) {
-          if (isEmptySlot) {
-            game.players = this.game.setPlayerNames(
-              game.players,
-              userName,
-              displayName
-            );
-            this.goForInit(game);
-          } else {
-            this.informAboutNoEmptySlot();
-          }
-        } else {
-          this.modalService.open(
-            'info-modal',
-            'Game is for singe player only.'
-          );
-        }
-      }
-    } else {
-      this.router.navigate(['']).then(() => {
-        this.modalService.open('info-modal', 'Could not find game.');
-      });
+    const userName: string = this.auth.getAuth().user;
+    const displayName: string = this.auth.getAuth().displayName;
+    if (!game) {
+      this.informAboutGameNotFound();
+      return;
+    }
+    if (game && !isMulti) {
+      this.informAboutSinglePlayerGame();
+      return;
+    }
+    if (game && isAlreadyPlayed) {
+      this.goToInit(game);
+      return;
+    }
+    if (game && !isAlreadyPlayed && isMulti && isEmptySlot) {
+      game.players = this.game.setPlayerNames(
+        game.players,
+        userName,
+        displayName
+      );
+      await this.signalRService.startConnection();
+      this.goToInit(game);
+      return;
+    }
+    if (game && isMulti && !isEmptySlot) {
+      this.informAboutNoEmptySlot();
+      return;
     }
   }
-  goForInit(game: GameState) {
+
+  private informAboutGameNotFound() {
+    this.router.navigate(['']).then(() => {
+      this.modalService.open('info-modal', 'Could not find game.');
+    });
+  }
+
+  private informAboutSinglePlayerGame() {
+    this.router.navigate(['']).then(() => {
+      this.modalService.open('info-modal', 'Game is for singe player only.');
+    });
+  }
+
+  private informAboutNoEmptySlot(): void {
+    this.router.navigate(['']).then(() => {
+      this.modalService.open(
+        'info-modal',
+        'There is no empty player slot available.'
+      );
+    });
+  }
+
+  private goToInit(game: GameState) {
     this.checkForMultiplayer(game);
     this.game.initGame(game);
   }
@@ -66,13 +86,5 @@ export class GameInitializerService {
     } else {
       this.signalRService.broadcastChatMessage('Connected to the game.');
     }
-  }
-
-  private informAboutNoEmptySlot(): void {
-    this.modalService.open(
-      'info-modal',
-      'There is no empty player slot available.'
-    );
-    this.router.navigate(['open-game']);
   }
 }
