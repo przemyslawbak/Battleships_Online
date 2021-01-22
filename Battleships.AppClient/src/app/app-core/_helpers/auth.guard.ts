@@ -20,16 +20,20 @@ export class AuthGuard implements CanActivate {
 
     if (user) {
       if (!this.auth.isRoleCorrect(route, user)) {
-        this.router.navigate(['']);
-        return false;
+        this.router.navigate(['']).then(() => {
+          return false;
+        });
       }
 
       return true;
     }
 
-    this.router.navigate(['join-site'], {
-      queryParams: { returnUrl: state.url },
-    });
-    return false;
+    this.router
+      .navigate(['join-site'], {
+        queryParams: { returnUrl: state.url },
+      })
+      .then(() => {
+        return false;
+      });
   }
 }

@@ -31,7 +31,6 @@ describe('GameBestComponent', () => {
   it('ngOnInit_OnEmptyListOfPlayers_DisplaysMessage', () => {
     let players: BestPlayer[] = [];
     httpServiceMock.getBestPlayers.and.returnValue(of(players));
-    component.ngOnInit();
     fixture.detectChanges();
 
     expect(fixture.nativeElement.querySelector('.table')).toBeNull();
@@ -46,7 +45,6 @@ describe('GameBestComponent', () => {
   it('ngOnInit_OnPopulatedListOfPlayers_DisplaysTable', () => {
     let players: BestPlayer[] = [{} as BestPlayer, {} as BestPlayer];
     httpServiceMock.getBestPlayers.and.returnValue(of(players));
-    component.ngOnInit();
     fixture.detectChanges();
 
     expect(fixture.nativeElement.querySelector('.table')).toBeTruthy();
