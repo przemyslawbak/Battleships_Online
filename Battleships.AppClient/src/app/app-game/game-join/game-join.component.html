@@ -23,16 +23,24 @@
         <td>{{ game.gameTurnNumber }}</td>
         <td>{{ game.playing }} / {{ game.totalPlayers }}</td>
         <td>
-          <div *ngFor="let player of game.players; let i = index">
+          <div
+            class="players-no"
+            *ngFor="let player of game.players; let i = index"
+          >
             {{ i + 1 }})
-            <span *ngIf="player != ''; else empty">{{ player }};</span>
+            <span class="players-name" *ngIf="player != ''; else empty"
+              >{{ player }};</span
+            >
             <ng-template #empty>
               <span class="greenColor">empty; </span>
             </ng-template>
           </div>
         </td>
         <td>
-          <span class="text-danger" *ngIf="this.currentGame == game.gameId">
+          <span
+            *ngIf="this.currentGameId == game.gameId"
+            class="text-danger playing-now-msg"
+          >
             Playing now
           </span>
         </td>
@@ -40,7 +48,7 @@
           <a
             *ngIf="game.playing != game.totalPlayers"
             (click)="redirect(game.gameId)"
-            class="btn btn-md btn-success"
+            class="btn btn-md btn-success play-now-btn"
           >
             Play
           </a>
