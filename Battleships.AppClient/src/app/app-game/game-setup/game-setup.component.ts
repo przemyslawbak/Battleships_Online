@@ -33,31 +33,39 @@ export class GameSetupComponent implements OnInit {
       return 'Join by link only';
     }
 
-    return 'n/a'; //single player
+    return 'n/a';
   }
 
   private getMode(gameMulti: boolean): string {
-    if (gameMulti) {
-      return 'Multi player';
-    }
+    switch (gameMulti) {
+      case true:
+        return 'Multi player';
 
-    return 'Single player'; //single player
+      case false:
+        return 'Single player';
+    }
   }
 
   private getSpeed(gameSpeedDivider: number): string {
-    if (gameSpeedDivider == 1) {
-      return 'Slow';
-    } else if (gameSpeedDivider == 2) {
-      return 'Moderate';
+    switch (gameSpeedDivider) {
+      case 1:
+        return 'Slow';
+
+      case 2:
+        return 'Moderate';
+
+      case 3:
+        return 'Fast';
     }
-    return 'Fast'; //== 3
   }
 
   private getDifficulty(gameDifficulty: string, gameMulti: boolean): string {
-    if (!gameMulti) {
-      return gameDifficulty.charAt(0).toUpperCase() + gameDifficulty.slice(1);
-    }
+    switch (gameMulti) {
+      case true:
+        return 'n/a';
 
-    return 'n/a'; //multi player
+      case false:
+        return gameDifficulty.charAt(0).toUpperCase() + gameDifficulty.slice(1);
+    }
   }
 }
