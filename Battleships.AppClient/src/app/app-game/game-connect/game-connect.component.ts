@@ -21,6 +21,7 @@ export class GameConnectComponent implements OnInit {
 
   public async ngOnInit(): Promise<void> {
     const id: string = this.route.snapshot.paramMap.get('id');
+    console.log(id);
     this.connectToTheGame(id);
   }
 

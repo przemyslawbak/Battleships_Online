@@ -1,8 +1,9 @@
+import { GameState } from '@models/game-state.model';
 import { HttpService } from '@services/http.service';
 import { GameConnectComponent } from './game-connect.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { of } from 'rxjs';
 import { GameService } from '@services/game.service';
 import { GameInitializerService } from '@services/game-initializer.service';
 
@@ -29,7 +30,7 @@ describe('GameConnectComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            params: Observable.of({ id: '666' }),
+            snapshot: { paramMap: convertToParamMap({ id: '666' }) },
           },
         },
         { provide: GameService, useValue: gameServiceMock },
@@ -38,11 +39,50 @@ describe('GameConnectComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(GameConnectComponent);
-    component = fixture.componentInstance;
+    httpServiceMock.getGameState.calls.reset();
   });
 
   it('Component_ShouldBeCreated', () => {
+    fixture = TestBed.createComponent(GameConnectComponent);
+    component = fixture.componentInstance;
     expect(component).toBeTruthy();
+  });
+
+  it('ngOnInit_OnIdNull_CallsGameServiceOnce', () => {
+    TestBed.overrideProvider(ActivatedRoute, {
+      useValue: {
+        snapshot: { paramMap: convertToParamMap({ id: null }) },
+      },
+    });
+    fixture = TestBed.createComponent(GameConnectComponent);
+    component = fixture.componentInstance;
+    component.ngOnInit();
+
+    expect(gameServiceMock.findIdAndReconnect).toHaveBeenCalledTimes(1);
+  });
+
+  it('ngOnInit_OnIdTruthly_CallsHttpService', () => {
+    fixture = TestBed.createComponent(GameConnectComponent);
+    component = fixture.componentInstance;
+    let game: GameState = null;
+    httpServiceMock.getGameState.and.returnValue(of(game));
+    component.ngOnInit();
+
+    expect(httpServiceMock.getGameState).toHaveBeenCalledTimes(1);
+  });
+
+  it('ngOnInit_OnIdAndGameTruthly_CallsGameServiceMethodsAndInitializer', () => {
+    fixture = TestBed.createComponent(GameConnectComponent);
+    component = fixture.componentInstance;
+    let game: GameState = {} as GameState;
+    httpServiceMock.getGameState.and.returnValue(of(game));
+    component.ngOnInit();
+
+    expect(httpServiceMock.getGameState).toHaveBeenCalledTimes(1);
+    expect(gameServiceMock.getUsersNames).toHaveBeenCalledTimes(1);
+    expect(gameServiceMock.isGameAlreadyPlayed).toHaveBeenCalledTimes(1);
+    expect(gameServiceMock.isGameMultiplayer).toHaveBeenCalledTimes(1);
+    expect(gameServiceMock.checkForEmptySlots).toHaveBeenCalledTimes(1);
+    expect(initializerServiceMock.initGame).toHaveBeenCalledTimes(1);
   });
 });
