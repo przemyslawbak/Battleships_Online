@@ -28,6 +28,7 @@ import { HubBuilderService } from '@services/hub-builder.service';
 import { GameInitializerService } from './_services/game-initializer.service';
 import { BoardCellService } from './_services/board-cell.service';
 import { RandomizerService } from './_services/randomizer.service';
+import { AnimationService } from './_services/animation.service';
 
 import { AuthGuard } from './_helpers/auth.guard';
 import { JwtInterceptor } from './_helpers/jwt.interceptor';
@@ -65,6 +66,7 @@ import { SpinnerInterceptor } from './_helpers/spinner.interceptor';
       useClass: SpinnerInterceptor,
       multi: true,
     },
+    AnimationService,
     GameInitializerService,
     BoardCellService,
     RandomizerService,

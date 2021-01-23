@@ -1,38 +1,35 @@
 import {
   Component,
   Output,
-  OnInit,
   Input,
   ElementRef,
   EventEmitter,
   ViewChild,
 } from '@angular/core';
+import { AnimationService } from '@services/animation.service';
 
 @Component({
   selector: 'app-animated-sprite',
   templateUrl: './game-sprite.component.html',
   styleUrls: ['./game-sprite.component.css'],
 })
-export class GameSpriteComponent implements OnInit {
+export class GameSpriteComponent {
   @ViewChild('animationRef', { static: true }) animationRef: ElementRef;
-  constructor() {}
-  //@required method must
+  constructor(private animation: AnimationService) {}
+
   @Input() public url: string;
   @Input() public frameRate: number = 17;
   @Input() public totalRows: number = 8;
   @Input() public totalcols: number = 8;
   @Input() public totalFrames: number = 12;
   @Output() public animationFinish = new EventEmitter<boolean>();
-  //current frame
   @Input() private currentFrame: number = 0;
   @Input() private isLoop: Boolean = true;
-  //all elements
   private frameInterval = 0;
   private startTime = 0;
   private now = 0;
   private then = 0;
   private elapsed = 0;
-  //all elements
   private size = { width: 0, height: 0 };
   public width: number = 5;
   public height: number = 5;
@@ -42,7 +39,26 @@ export class GameSpriteComponent implements OnInit {
   private positionY = 0;
   private stop: boolean = false;
 
-  resetSprite() {
+  ngAfterViewInit() {
+    const image = new Image();
+    image.src = this.url;
+    image.onload = () => {
+      this.size = {
+        width: image.naturalWidth,
+        height: image.naturalHeight,
+      };
+      this.width = this.size.width / this.totalcols;
+      this.height = this.size.height / this.totalRows;
+      this.startAnimating();
+    };
+  }
+
+  public getCssStyle(): string {
+    const defaultStyle = 'ani_style';
+    return defaultStyle;
+  }
+
+  private resetSprite(): void {
     this.currentFrame = 0;
     this.directionX = 0;
     this.directionY = 0;
@@ -54,8 +70,10 @@ export class GameSpriteComponent implements OnInit {
       this.positionY + 'px';
   }
 
-  updateSprite() {
-    if (this.totalFrames <= this.currentFrame) {
+  private updateSprite(): void {
+    if (
+      this.animation.checkForTotalFrames(this.totalFrames, this.currentFrame)
+    ) {
       if (this.isLoop) {
         this.resetSprite();
       } else {
@@ -66,8 +84,6 @@ export class GameSpriteComponent implements OnInit {
     } else {
       this.currentFrame++;
     }
-
-    //check for x direction
 
     if (Math.abs(this.positionY) > this.size.height) {
       this.directionX = 0;
@@ -89,14 +105,14 @@ export class GameSpriteComponent implements OnInit {
       this.positionY + 'px';
   }
 
-  startAnimating() {
+  private startAnimating(): void {
     this.frameInterval = 1000 / this.frameRate;
     this.then = Date.now();
     this.startTime = this.then;
     this.animate();
   }
 
-  animate() {
+  private animate(): void {
     if (this.stop) {
       return;
     }
@@ -105,32 +121,9 @@ export class GameSpriteComponent implements OnInit {
     });
     this.now = Date.now();
     this.elapsed = this.now - this.then;
-    if (this.elapsed > this.frameInterval) {
+    if (this.animation.checkForElapsed(this.elapsed, this.frameInterval)) {
       this.then = this.now - (this.elapsed % this.frameInterval);
       this.updateSprite();
     }
-  }
-
-  ngAfterViewInit() {
-    const image = new Image();
-    image.src = this.url;
-    image.onload = () => {
-      this.size = {
-        width: image.naturalWidth,
-        height: image.naturalHeight,
-      };
-      this.width = this.size.width / this.totalcols;
-      this.height = this.size.height / this.totalRows;
-      this.startAnimating();
-    };
-  }
-
-  ngOnInit() {}
-
-  ngOnDestroy() {}
-
-  getCssStyle() {
-    const defaultStyle = 'ani_style';
-    return defaultStyle;
   }
 }
