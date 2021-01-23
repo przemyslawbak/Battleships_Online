@@ -241,7 +241,7 @@ describe('AuthService', () => {
     let data: Data = { roles: 'User' } as Data;
     activatedRoute.data = data;
 
-    let value: boolean = authService.isRoleCorrect(activatedRoute, user);
+    let value: boolean = authService.isRoleCorrect(activatedRoute, user.role);
 
     expect(value).toBe(true);
   });
@@ -251,7 +251,7 @@ describe('AuthService', () => {
     let data: Data = { roles: 'Admin' } as Data;
     activatedRoute.data = data;
 
-    let value: boolean = authService.isRoleCorrect(activatedRoute, user);
+    let value: boolean = authService.isRoleCorrect(activatedRoute, user.role);
 
     expect(value).toBe(false);
   });
@@ -261,7 +261,7 @@ describe('AuthService', () => {
     let data: Data = { roles: null } as Data;
     activatedRoute.data = data;
 
-    let value: boolean = authService.isRoleCorrect(activatedRoute, user);
+    let value: boolean = authService.isRoleCorrect(activatedRoute, user.role);
 
     expect(value).toBe(true);
   });

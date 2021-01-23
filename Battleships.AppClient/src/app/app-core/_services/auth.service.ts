@@ -103,11 +103,8 @@ export class AuthService {
     return this.getAuth() ? true : false;
   }
 
-  public isRoleCorrect(
-    route: ActivatedRouteSnapshot,
-    user: LoginResponse
-  ): boolean {
-    return route.data.roles && route.data.roles.indexOf(user.role) == -1
+  public isRoleCorrect(route: ActivatedRouteSnapshot, role: string): boolean {
+    return route.data.roles && route.data.roles.indexOf(role) == -1
       ? false
       : true;
   }

@@ -19,7 +19,7 @@ export class AuthGuard implements CanActivate {
     const user = this.auth.getAuth();
 
     if (user) {
-      if (!this.auth.isRoleCorrect(route, user)) {
+      if (!this.auth.isRoleCorrect(route, user.role)) {
         await this.router.navigate(['']).then(() => {
           return false;
         });
@@ -35,5 +35,7 @@ export class AuthGuard implements CanActivate {
           return false;
         });
     }
+
+    return false;
   }
 }
