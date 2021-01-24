@@ -62,16 +62,13 @@ export class GameSpriteComponent implements OnInit {
 
   private animate(): void {
     if (this.animation.stopAnimation(this.sprite.stopped)) {
-      console.log('return');
       return;
     }
-    console.log('not return');
     requestAnimationFrame(() => {
       this.animate();
     });
     this.now = Date.now();
     this.sprite.elapsed = this.now - this.then;
-    console.log('should checkForInterval');
     if (
       this.animation.checkForInterval(this.sprite.elapsed, this.frameInterval)
     ) {
@@ -87,15 +84,12 @@ export class GameSpriteComponent implements OnInit {
         this.sprite.currentFrame
       )
     ) {
-      console.log('before isAnimationElapsed');
       this.sprite = this.animation.updateSpriteOnStopped(this.sprite);
-      console.log('after isAnimationElapsed');
       this.animationFinish.emit(true);
     } else {
       this.sprite = this.animation.updateSpriteCurrentFrame(this.sprite);
     }
 
-    console.log('ending');
     this.sprite = this.animation.updateSpriteFrameOnPosition(
       this.sprite,
       this.imgSize,
