@@ -161,4 +161,8 @@ export class GameService {
       ? false
       : true;
   }
+
+  public getDeployCountdownValue(divider: number): number {
+    return 180 / divider;
+  }
 }

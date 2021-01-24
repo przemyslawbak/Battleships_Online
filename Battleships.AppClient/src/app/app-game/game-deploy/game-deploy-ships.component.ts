@@ -57,7 +57,15 @@ export class GameDeployComponent implements OnInit {
     this.fleetDeployed = [];
   }
 
-  ngOnDestroy() {
+  ngOnInit(): void {
+    if (!this.game.isGameStarted()) {
+      this.router.navigate(['']);
+    } else {
+      this.initDeploying();
+    }
+  }
+
+  ngOnDestroy(): void {
     this.countDown = null;
     if (this._subBoard && this._subGame) {
       this._subGame.unsubscribe();
@@ -65,25 +73,30 @@ export class GameDeployComponent implements OnInit {
     }
   }
 
-  public ngOnInit(): void {
-    this.board.avoidCells = [];
+  ngAfterViewInit(): void {
+    this.clearedBoard = true;
+  }
+
+  //todo: deploying model?
+  private initDeploying() {
+    this.board.resetAvoidCellsArray();
     this.speedDivider = this.game.getGame().gameSpeedDivider;
-    this.count = 180 / this.speedDivider;
-    if (!this.game.isGameStarted()) {
-      this.router.navigate(['']);
-    }
+    this.count = this.game.getDeployCountdownValue(this.speedDivider);
     this.userName = this.auth.getAuth().user;
     this.startCounter();
     this.initGameSubscription();
     this.playersBoard = this.board.getEmptyBoard();
-    this.clearedBoard = false;
+    this.clearedBoard = false; //why?
     this.updateGameValues(this.game.getGame());
   }
 
-  public ngAfterViewInit(): void {
-    this.clearedBoard = true;
+  private initGameSubscription(): void {
+    this._subGame = this.game.gameStateChange.subscribe((game) => {
+      this.updateGameValues(game);
+    });
   }
 
+  //todo: refactoring
   private updateGameValues(game: GameState): void {
     if (game) {
       let p0Deployed: boolean = game.players[0].isDeployed;
@@ -96,7 +109,7 @@ export class GameDeployComponent implements OnInit {
       }
 
       if (!game.gameMulti) {
-        this.aiPlayerNumber = this.findAiPlayerNumber(game.players); //todo: only once
+        this.aiPlayerNumber = this.findComputerPlayerNumber(game.players); //todo: only once
         if (!game.players[this.aiPlayerNumber].isDeployed) {
           this.isDeploymentAllowed = true;
           game.players[this.aiPlayerNumber].board = this.autoDeploy(
@@ -112,7 +125,8 @@ export class GameDeployComponent implements OnInit {
     }
   }
 
-  private findAiPlayerNumber(players: Player[]): number {
+  //todo: service
+  private findComputerPlayerNumber(players: Player[]): number {
     for (let i = 0; i < players.length; i++) {
       if (players[i].userName == 'COMPUTER') {
         return i;
@@ -120,12 +134,7 @@ export class GameDeployComponent implements OnInit {
     }
   }
 
-  private initGameSubscription(): void {
-    this._subGame = this.game.gameStateChange.subscribe((game) => {
-      this.updateGameValues(game);
-    });
-  }
-
+  //todo: refactoring
   private startCounter() {
     this.countDown = timer(0, 1000).subscribe(() => {
       if (this.isDeploymentAllowed && !this.isDeployed) {
@@ -221,6 +230,7 @@ export class GameDeployComponent implements OnInit {
     );
   }
 
+  //todo: fleet service
   private moveFromWaitingToDeployed(): void {
     this.fleetDeployed.push(this.fleetWaiting[0]);
     this.fleetWaiting.splice(0, 1);
@@ -256,6 +266,7 @@ export class GameDeployComponent implements OnInit {
     );
   }
 
+  //todo: service
   public autoDeploy(
     board: BoardCell[][],
     fleet: Array<ShipComponent>,
@@ -280,6 +291,7 @@ export class GameDeployComponent implements OnInit {
     return board;
   }
 
+  //todo: service
   private enableDeployBtnIfPossible(): void {
     if (this.fleetDeployed.length < 10) {
       this.isDeployEnabled = false;
@@ -288,6 +300,7 @@ export class GameDeployComponent implements OnInit {
     }
   }
 
+  //todo: service
   public clearBoard(): void {
     this.fleetWaiting = this.fleet.createFleet();
     this.fleetDeployed = [];
@@ -296,6 +309,7 @@ export class GameDeployComponent implements OnInit {
     this.isDeployEnabled = false;
   }
 
+  //todo: service
   public copyToClipboard(): void {
     document.addEventListener('copy', (e: ClipboardEvent) => {
       e.clipboardData.setData('text/plain', this.gameLink);

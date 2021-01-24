@@ -63,20 +63,24 @@ export class GamePlayComponent implements OnInit {
     private player: PlayerService
   ) {}
 
-  ngOnDestroy() {
-    this._subGame.unsubscribe();
+  ngOnDestroy(): void {
+    this.countDown = null;
+    if (this._subGame) {
+      this._subGame.unsubscribe();
+    }
   }
 
   public ngOnInit(): void {
-    this.speedDivider = this.game.getGame().gameSpeedDivider;
-    this.count = 30 / this.speedDivider;
     if (!this.game.isGameStarted()) {
       this.router.navigate(['']);
+    } else {
+      this.speedDivider = this.game.getGame().gameSpeedDivider;
+      this.count = 30 / this.speedDivider;
+      this.userName = this.auth.getAuth().user;
+      this.startCounter();
+      this.initGameSubscription();
+      this.updateGameValues(this.game.getGame());
     }
-    this.userName = this.auth.getAuth().user;
-    this.startCounter();
-    this.initGameSubscription();
-    this.updateGameValues(this.game.getGame());
   }
 
   private updateGameValues(game: GameState): void {
