@@ -10,10 +10,11 @@ export class AnimationService {
     return elapsed > frameInterval;
   }
 
-  public checkForTotalFrames(
-    totalFrames: number,
-    currentFrame: number
-  ): boolean {
+  public isAnimationEnded(totalFrames: number, currentFrame: number): boolean {
     return totalFrames <= currentFrame;
+  }
+
+  public stopAnimation(stop: boolean) {
+    return stop;
   }
 }
