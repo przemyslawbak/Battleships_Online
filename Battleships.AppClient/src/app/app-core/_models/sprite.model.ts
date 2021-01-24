@@ -4,7 +4,6 @@ export interface Sprite {
   directionY: number;
   positionX: number;
   positionY: number;
-  width: number;
-  height: number;
   elapsed: number;
+  stopped: boolean;
 }
