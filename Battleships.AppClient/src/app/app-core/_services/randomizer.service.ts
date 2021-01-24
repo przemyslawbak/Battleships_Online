@@ -34,4 +34,10 @@ export class RandomizerService {
   public getRandomIndex(emptyCellArray: BoardCell[]): number {
     return Math.floor(Math.random() * Math.floor(emptyCellArray.length));
   }
+
+  public getUniqueId(): number {
+    let min = Math.ceil(100000000);
+    let max = Math.floor(999999999);
+    return Math.floor(Math.random() * (max - min) + min);
+  }
 }

@@ -1,3 +1,4 @@
+import { RandomizerService } from './../../app-core/_services/randomizer.service';
 import { BoardService } from '@services/board.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -8,7 +9,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { GameState } from '@models/game-state.model';
-import { SignalRService } from '@services/signal-r.service';
 import { GameService } from '@services/game.service';
 import { AuthService } from '@services/auth.service';
 import { Player } from '@models/player.model';
@@ -26,17 +26,17 @@ export class GameStartComponent implements OnInit {
   public multiplayer: boolean = false;
   private speedDivider: number = 1;
   private difficulty: string = 'hard';
-  private open: boolean = true;
+  private gameOpen: boolean = true;
 
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
     private http: HttpService,
     private game: GameService,
-    private signalRService: SignalRService,
     public auth: AuthService,
     private board: BoardService,
-    private fleet: FleetService
+    private fleet: FleetService,
+    private random: RandomizerService
   ) {
     this.createForm();
   }
@@ -64,33 +64,19 @@ export class GameStartComponent implements OnInit {
   }
 
   public onChangeMode(e: any): void {
-    if (e.target.value == 'multi') {
-      this.multiplayer = true;
-    } else {
-      this.multiplayer = false;
-    }
+    this.multiplayer = this.game.getMultiplayerValue(e.target.value);
   }
 
   public onChangeSpeed(e: any): void {
-    if (e.target.value == 'slow') {
-      this.speedDivider = 1;
-    } else if (e.target.value == 'moderate') {
-      this.speedDivider = 2;
-    } else if (e.target.value == 'fast') {
-      this.speedDivider = 3;
-    }
+    this.speedDivider = this.game.getSpeedDividerValue(e.target.value);
   }
 
   public onChangeDifficulty(e: any): void {
-    this.difficulty = e.target.value;
+    this.difficulty = this.game.getDifficultyValue(e.target.value);
   }
 
   public onChangeJoining(e: any): void {
-    if (e.target.value == 'open') {
-      this.open = true;
-    } else {
-      this.open = false;
-    }
+    this.gameOpen = this.game.getJoinTypeValue(e.target.value);
   }
 
   public onSubmit() {
@@ -120,11 +106,11 @@ export class GameStartComponent implements OnInit {
     let model = {} as GameState;
     model.fireCol = -1;
     model.fireRow = -1;
-    model.gameId = this.getUniqueId();
+    model.gameId = this.random.getUniqueId();
     model.gameTurnNumber = 1;
     model.gameTurnPlayer = 0;
     model.gameMulti = this.multiplayer;
-    model.gameOpen = this.open;
+    model.gameOpen = this.gameOpen;
     model.gameDifficulty = this.difficulty;
     model.gameSpeedDivider = this.speedDivider;
     model.players = [player1, player2];
@@ -133,11 +119,5 @@ export class GameStartComponent implements OnInit {
     model.displayingResults = false;
     model.fireResult = false;
     return model;
-  }
-
-  private getUniqueId(): number {
-    let min = Math.ceil(100000000);
-    let max = Math.floor(999999999);
-    return Math.floor(Math.random() * (max - min) + min);
   }
 }

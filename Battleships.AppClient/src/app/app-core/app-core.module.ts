@@ -1,4 +1,3 @@
-import { FormService } from './_services/form.service';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -67,7 +66,6 @@ import { SpinnerInterceptor } from './_helpers/spinner.interceptor';
       useClass: SpinnerInterceptor,
       multi: true,
     },
-    FormService,
     AnimationService,
     GameInitializerService,
     BoardCellService,

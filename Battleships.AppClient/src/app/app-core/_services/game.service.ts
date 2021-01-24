@@ -70,6 +70,29 @@ export class GameService {
 
   //todo: test after
 
+  public getDifficultyValue(value: any): string {
+    return value;
+  }
+
+  public getJoinTypeValue(value: any): boolean {
+    return value == 'open' ? true : false;
+  }
+
+  public getSpeedDividerValue(value: any): number {
+    switch (value) {
+      case 'slow':
+        return 1;
+      case 'moderate':
+        return 2;
+      case 'fast':
+        return 3;
+    }
+  }
+
+  public getMultiplayerValue(value: any): boolean {
+    return value == 'multi' ? true : false;
+  }
+
   public setPlayerNames(
     players: Player[],
     userName: string,
