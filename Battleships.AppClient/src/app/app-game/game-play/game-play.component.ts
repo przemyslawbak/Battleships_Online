@@ -2,7 +2,7 @@ import { CommentModel } from '@models/comment.model';
 import { PlayerService } from '@services/player.service';
 import { BoardCell } from '@models/board-cell.model';
 import { AuthService } from '@services/auth.service';
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { GameService } from '@services/game.service';
 import { SignalRService } from '@services/signal-r.service';
@@ -106,14 +106,7 @@ export class GamePlayComponent implements OnInit {
         this.whoseTurnNumber == this.opponentsPlayerNumber &&
         this.isResultBeingDisplayed
       ) {
-        let offsetL: number = this.boards[this.clientsPlayerNumber][
-          game.fireCol
-        ][game.fireRow].elX;
-        let offsetR: number = this.boards[this.clientsPlayerNumber][
-          game.fireCol
-        ][game.fireRow].elY;
-
-        this.animateSprite(game.fireResult, offsetL, offsetR);
+        this.animateSprite(game.fireResult, game.fireCol, game.fireRow);
       }
       //if single player, not ended, not result displayed
       if (!game.gameMulti && !this.isResultBeingDisplayed && !this.gameEnded) {
@@ -262,6 +255,7 @@ export class GamePlayComponent implements OnInit {
   }
 
   public fire(row: number, col: number, ref: HTMLElement): void {
+    console.log('id: ' + ref.id);
     let coord: Coordinates = { row: row, col: col } as Coordinates;
     if (
       !this.isResultBeingDisplayed &&
@@ -278,7 +272,11 @@ export class GamePlayComponent implements OnInit {
         col >= 0 &&
         this.whoseTurnNumber == this.clientsPlayerNumber
       ) {
-        this.animateSprite(isHit, ref.offsetLeft, ref.offsetTop);
+        this.animateSprite(
+          isHit,
+          parseInt(ref.id.split('_')[0]),
+          parseInt(ref.id.split('_')[1])
+        );
       }
       if (isHit) {
         game.fireResult = true;
@@ -461,11 +459,11 @@ export class GamePlayComponent implements OnInit {
     }
   }
 
-  private animateSprite(
-    isHit: boolean,
-    offsetL: number,
-    offsetT: number
-  ): void {
+  private animateSprite(isHit: boolean, col: number, row: number): void {
+    let cell = document.getElementById(col + '_' + row);
+
+    let offsetL: number = cell.offsetLeft;
+    let offsetT: number = cell.offsetTop - 15;
     this.displaySprite = true;
     this.spriteX = offsetL - 55;
     this.spriteY = offsetT - 55;

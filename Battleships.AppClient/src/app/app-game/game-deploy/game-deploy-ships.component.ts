@@ -24,8 +24,6 @@ import { AiService } from '@services/ai.service';
 })
 export class GameDeployComponent implements OnInit {
   private speedDivider: number = 1;
-  private updateCellsXY: boolean = false;
-  private clearedBoard: boolean = true;
   public multiplayer: boolean = false;
   private aiPlayerNumber: number = -1;
   public gameLink: string =
@@ -73,11 +71,6 @@ export class GameDeployComponent implements OnInit {
     }
   }
 
-  ngAfterViewInit(): void {
-    this.clearedBoard = true;
-  }
-
-  //todo: deploying model?
   private initDeploying() {
     this.board.resetAvoidCellsArray();
     this.speedDivider = this.game.getGame().gameSpeedDivider;
@@ -86,7 +79,6 @@ export class GameDeployComponent implements OnInit {
     this.startCounter();
     this.initGameSubscription();
     this.playersBoard = this.board.getEmptyBoard();
-    this.clearedBoard = false; //why?
     this.updateGameValues(this.game.getGame());
   }
 
@@ -109,7 +101,9 @@ export class GameDeployComponent implements OnInit {
       }
 
       if (!game.gameMulti) {
-        this.aiPlayerNumber = this.findComputerPlayerNumber(game.players); //todo: only once
+        this.aiPlayerNumber = this.player.findComputerPlayerNumber(
+          game.players
+        ); //todo: only once
         if (!game.players[this.aiPlayerNumber].isDeployed) {
           this.isDeploymentAllowed = true;
           game.players[this.aiPlayerNumber].board = this.autoDeploy(
@@ -121,15 +115,6 @@ export class GameDeployComponent implements OnInit {
 
           this.signalRService.broadcastGameState(game);
         }
-      }
-    }
-  }
-
-  //todo: service
-  private findComputerPlayerNumber(players: Player[]): number {
-    for (let i = 0; i < players.length; i++) {
-      if (players[i].userName == 'COMPUTER') {
-        return i;
       }
     }
   }
@@ -157,8 +142,13 @@ export class GameDeployComponent implements OnInit {
 
   public setRotation(name: string): void {
     const id: string = this.getIdFromElementName(name);
-    let item: ShipComponent = this.getArrayItem(name, id);
-    item.rotation = item.rotation === 0 ? 90 : 0;
+    let item: ShipComponent = this.fleet.getShipListItem(
+      name,
+      id,
+      this.fleetWaiting,
+      this.fleetDeployed
+    );
+    item.rotation = item.rotation == 0 ? 90 : 0;
   }
 
   public deployShip(row: number, col: number): void {
@@ -230,18 +220,6 @@ export class GameDeployComponent implements OnInit {
     );
   }
 
-  //todo: fleet service
-  private moveFromWaitingToDeployed(): void {
-    this.fleetDeployed.push(this.fleetWaiting[0]);
-    this.fleetWaiting.splice(0, 1);
-  }
-
-  private getArrayItem(name: string, id: string): ShipComponent {
-    return name.split('-')[1] === 'fleetWaiting'
-      ? this.fleetWaiting[+id]
-      : this.fleetDeployed[+id];
-  }
-
   private getIdFromElementName(name: string): string {
     return name.split('-')[0];
   }
@@ -259,6 +237,7 @@ export class GameDeployComponent implements OnInit {
   }
 
   public autoDeploying(): void {
+    console.clear();
     this.playersBoard = this.autoDeploy(
       this.playersBoard,
       this.fleetWaiting,
@@ -305,7 +284,6 @@ export class GameDeployComponent implements OnInit {
     this.fleetWaiting = this.fleet.createFleet();
     this.fleetDeployed = [];
     this.playersBoard = this.board.getEmptyBoard();
-    this.clearedBoard = true;
     this.isDeployEnabled = false;
   }
 
@@ -329,35 +307,14 @@ export class GameDeployComponent implements OnInit {
   public playWithAi(): void {
     let game = this.game.getGame();
     game.gameMulti = false;
-    game.players = this.setComputerOpponent(game.players);
+    game.players = this.player.setComputerOpponent(game.players);
 
     this.signalRService.broadcastGameState(game);
   }
 
-  private setComputerOpponent(players: Player[]): Player[] {
-    for (let i = 0; i < players.length; i++) {
-      if (players[i].userName == '') {
-        players[i].userName = 'COMPUTER';
-        players[i].displayName = 'COMPUTER';
-
-        return players;
-      }
-    }
-  }
-
-  public assignCellXY(row: number, col: number, ref: HTMLElement): void {
-    if (this.clearedBoard && row == 0 && col == 0) {
-      this.updateCellsXY = true;
-      this.clearedBoard = false;
-    }
-
-    if (this.updateCellsXY && !this.clearedBoard) {
-      this.playersBoard[col][row].elX = ref.offsetLeft;
-      this.playersBoard[col][row].elY = ref.offsetTop - 15;
-    }
-
-    if (row == 9 && col == 9) {
-      this.updateCellsXY = false;
-    }
+  //todo: fleet service
+  private moveFromWaitingToDeployed(): void {
+    this.fleetDeployed.push(this.fleetWaiting[0]);
+    this.fleetWaiting.splice(0, 1);
   }
 }

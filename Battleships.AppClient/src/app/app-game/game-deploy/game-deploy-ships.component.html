@@ -118,7 +118,7 @@
         Deploy ships
       </button>
     </div>
-    <!--board1-->
+    <!--board-->
     <div class="board text-center" #board>
       <div
         class="boardRow"
@@ -132,9 +132,7 @@
             (mouseleave)="resetBoardElement(cell, j, i)"
             (mouseover)="checkHoveredElement(j, i, cell)"
             (click)="deployShip(j, i)"
-          >
-            {{ assignCellXY(j, i, cell) }}
-          </div>
+          ></div>
         </div>
       </div>
     </div>
