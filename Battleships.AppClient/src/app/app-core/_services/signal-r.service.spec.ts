@@ -23,6 +23,8 @@ describe('SignalRService', () => {
   const gameServiceMock = jasmine.createSpyObj('GameService', [
     'getGame',
     'isGameStarted',
+    'isGameSinglePlayer',
+    'getPlayersUserNames',
   ]);
 
   beforeEach(() => {
@@ -146,16 +148,15 @@ describe('SignalRService', () => {
   });
 
   it('broadcastChatMessage_OnMessageObjectAndGameMultiplayerAndConnectionStarted_CallsBroadcastChatOnce', () => {
+    gameServiceMock.isGameSinglePlayer.and.returnValue(false);
+    gameServiceMock.getPlayersUserNames.and.returnValue([
+      { userName: 'one' } as Player,
+      { userName: 'two' } as Player,
+    ]);
     let spyIsConnectionStarted = spyOn(hubServiceMock, 'isConnectionStarted');
     spyIsConnectionStarted.and.returnValue(true);
     let spy = spyOn(hubServiceMock, 'broadcastChat');
     let msg = 'any_message';
-    let players: Player[] = [
-      { userName: 'one' } as Player,
-      { userName: 'two' } as Player,
-    ];
-    let game = { gameMulti: true, players: players } as GameState;
-    gameServiceMock.getGame.and.returnValue(game);
     signalrService.broadcastChatMessage(msg);
 
     expect(spy).toHaveBeenCalledTimes(1);
@@ -163,31 +164,28 @@ describe('SignalRService', () => {
 
   it('broadcastChatMessage_OnMessageNullAndGameMultiplayerAndConnectionStarted_CallsBroadcastChatNever', () => {
     let spyIsConnectionStarted = spyOn(hubServiceMock, 'isConnectionStarted');
+    gameServiceMock.getPlayersUserNames.and.returnValue([
+      { userName: 'one' } as Player,
+      { userName: 'two' } as Player,
+    ]);
     spyIsConnectionStarted.and.returnValue(true);
     let spy = spyOn(hubServiceMock, 'broadcastChat');
     let msg = null;
-    let players: Player[] = [
-      { userName: 'one' } as Player,
-      { userName: 'two' } as Player,
-    ];
-    let game = { gameMulti: true, players: players } as GameState;
-    gameServiceMock.getGame.and.returnValue(game);
     signalrService.broadcastChatMessage(msg);
 
     expect(spy).toHaveBeenCalledTimes(0);
   });
 
   it('broadcastChatMessage_OnMessageObjectAndGameSinglePlayerAndConnectionStarted_CallsBroadcastChatNever', () => {
+    gameServiceMock.getPlayersUserNames.and.returnValue([
+      { userName: 'one' } as Player,
+      { userName: 'two' } as Player,
+    ]);
+    gameServiceMock.isGameSinglePlayer.and.returnValue(true);
     let spyIsConnectionStarted = spyOn(hubServiceMock, 'isConnectionStarted');
     spyIsConnectionStarted.and.returnValue(true);
     let spy = spyOn(hubServiceMock, 'broadcastChat');
     let msg = 'any_message';
-    let players: Player[] = [
-      { userName: 'one' } as Player,
-      { userName: 'two' } as Player,
-    ];
-    let game = { gameMulti: false, players: players } as GameState;
-    gameServiceMock.getGame.and.returnValue(game);
     signalrService.broadcastChatMessage(msg);
 
     expect(spy).toHaveBeenCalledTimes(0);
@@ -196,14 +194,12 @@ describe('SignalRService', () => {
   it('broadcastChatMessage_OnMessageObjectAndGameMultiplayerAndConnectionNotStarted_CallsBroadcastChatNever', () => {
     let spyIsConnectionStarted = spyOn(hubServiceMock, 'isConnectionStarted');
     spyIsConnectionStarted.and.returnValue(false);
-    let spy = spyOn(hubServiceMock, 'broadcastChat');
-    let msg = 'any_message';
-    let players: Player[] = [
+    gameServiceMock.getPlayersUserNames.and.returnValue([
       { userName: 'one' } as Player,
       { userName: 'two' } as Player,
-    ];
-    let game = { gameMulti: true, players: players } as GameState;
-    gameServiceMock.getGame.and.returnValue(game);
+    ]);
+    let spy = spyOn(hubServiceMock, 'broadcastChat');
+    let msg = 'any_message';
     signalrService.broadcastChatMessage(msg);
 
     expect(spy).toHaveBeenCalledTimes(0);

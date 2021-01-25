@@ -15,9 +15,10 @@ const httpServiceMock = jasmine.createSpyObj('HttpService', ['getOpenGames']);
 const gameServiceMock = jasmine.createSpyObj('GameService', [
   'isGameStarted',
   'getGame',
+  'getGameId',
 ]);
 
-describe('GameConnectComponent', () => {
+describe('GameJoinComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
@@ -40,6 +41,7 @@ describe('GameConnectComponent', () => {
   });
 
   it('ngOnInit_OnGameStarted_SetsCurrentGameId', () => {
+    gameServiceMock.getGameId.and.returnValue(1);
     gameServiceMock.isGameStarted.and.returnValue(true);
     httpServiceMock.getOpenGames.and.returnValue(of([]));
     component.ngOnInit();
@@ -128,6 +130,7 @@ describe('GameConnectComponent', () => {
   });
 
   it('template_OnFullGameSlots_NotDisplaysPlayBtnMessage', () => {
+    gameServiceMock.getGameId.and.returnValue(1);
     gameServiceMock.isGameStarted.and.returnValue(true);
     httpServiceMock.getOpenGames.and.returnValue(
       of([

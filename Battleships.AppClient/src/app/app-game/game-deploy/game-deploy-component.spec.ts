@@ -10,6 +10,7 @@ import { AuthService } from '@services/auth.service';
 import { AiService } from '@services/ai.service';
 import { TextService } from '@services/text.service';
 import { PlayerService } from '@services/player.service';
+import { GameState } from '@models/game-state.model';
 
 let component: GameDeployComponent;
 let fixture: ComponentFixture<GameDeployComponent>;
@@ -75,11 +76,13 @@ describe('GameDeployComponent', () => {
         { provide: PlayerService, useValue: playerServiceMock },
       ],
     }).compileComponents();
+    gameServiceMock.getGame.and.returnValue({ gameId: 666 } as GameState);
+
+    fixture = TestBed.createComponent(GameDeployComponent);
+    component = fixture.componentInstance;
   });
 
   it('Component_ShouldBeCreated', () => {
-    fixture = TestBed.createComponent(GameDeployComponent);
-    component = fixture.componentInstance;
     expect(component).toBeTruthy();
   });
 });
