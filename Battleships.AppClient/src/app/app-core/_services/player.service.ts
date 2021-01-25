@@ -10,10 +10,7 @@ export class PlayerService {
 
   public getPlayerNumber(): number {
     let userName: string = this.auth.getAuth().user;
-    let playerNames: Array<string> = [
-      this.game.getGame().players[0].userName,
-      this.game.getGame().players[1].userName,
-    ];
+    let playerNames: string[] = this.game.getPlayersUserNames();
 
     return playerNames.indexOf(userName);
   }
@@ -41,5 +38,9 @@ export class PlayerService {
         return players;
       }
     }
+  }
+
+  public arePlayersDeployed(players: Player[]) {
+    return players[0].isDeployed && players[1].isDeployed ? true : false;
   }
 }

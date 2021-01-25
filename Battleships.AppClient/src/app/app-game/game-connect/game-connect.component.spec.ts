@@ -13,7 +13,7 @@ const gameServiceMock = jasmine.createSpyObj('GameService', [
   'findIdAndReconnect',
   'getUsersNames',
   'isGameAlreadyPlayed',
-  'isGameMultiplayer',
+  'isGameMultiplayerAndAnyoneConnected',
   'checkForEmptySlots',
 ]);
 const httpServiceMock = jasmine.createSpyObj('HttpService', ['getGameState']);
@@ -81,7 +81,9 @@ describe('GameConnectComponent', () => {
     expect(httpServiceMock.getGameState).toHaveBeenCalledTimes(1);
     expect(gameServiceMock.getUsersNames).toHaveBeenCalledTimes(1);
     expect(gameServiceMock.isGameAlreadyPlayed).toHaveBeenCalledTimes(1);
-    expect(gameServiceMock.isGameMultiplayer).toHaveBeenCalledTimes(1);
+    expect(
+      gameServiceMock.isGameMultiplayerAndAnyoneConnected
+    ).toHaveBeenCalledTimes(1);
     expect(gameServiceMock.checkForEmptySlots).toHaveBeenCalledTimes(1);
     expect(initializerServiceMock.initGame).toHaveBeenCalledTimes(1);
   });

@@ -126,7 +126,7 @@ export class GameService {
     return gameUsersNames.includes(userName);
   }
 
-  public isGameMultiplayer(game: GameState): boolean {
+  public isGameMultiplayerAndAnyoneConnected(game: GameState): boolean {
     return game.gameMulti || !this.checkForAnyPlayerConnected(game.players);
   }
 
@@ -164,5 +164,28 @@ export class GameService {
 
   public getDeployCountdownValue(divider: number): number {
     return 180 / divider;
+  }
+
+  public isGameSinglePlayer() {
+    return this.getGame().gameMulti ? false : true;
+  }
+
+  public getPlayersUserNames(): string[] {
+    return [
+      this.getGame().players[0].userName,
+      this.getGame().players[1].userName,
+    ];
+  }
+
+  public getGameSpeedDivider(): number {
+    return this.getGame().gameSpeedDivider;
+  }
+
+  public getGameId(): number {
+    return this.getGame().gameId;
+  }
+
+  public getGamePlayers(): Player[] {
+    return this.getGame().players;
   }
 }

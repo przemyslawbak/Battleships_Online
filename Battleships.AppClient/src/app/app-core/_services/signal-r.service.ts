@@ -88,13 +88,12 @@ export class SignalRService {
   }
 
   public broadcastChatMessage(message: string): void {
-    let game: GameState = this.game.getGame();
-    if (message && this.hub.isConnectionStarted() && game.gameMulti) {
-      let playersNames: string[] = [];
-      for (let i = 0; i < game.players.length; i++) {
-        playersNames.push(game.players[i].userName);
-      }
-      this.hub.broadcastChat(message, playersNames);
+    if (
+      message &&
+      this.hub.isConnectionStarted() &&
+      !this.game.isGameSinglePlayer()
+    ) {
+      this.hub.broadcastChat(message, this.game.getPlayersUserNames());
     }
   }
 

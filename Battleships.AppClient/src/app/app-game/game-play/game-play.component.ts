@@ -34,7 +34,7 @@ export class GamePlayComponent implements OnInit {
   public gameEnded: boolean = false;
   public gameBoardComment: CommentModel = this.comments.getInitialComment();
   public gameLink: string =
-    environment.clientUrl + 'connect-game/' + this.game.getGame().gameId;
+    environment.clientUrl + 'connect-game/' + this.game.getGameId();
   public userName: string = '';
   public clientsName: string = '';
   public opponentsName: string = '';
@@ -74,7 +74,7 @@ export class GamePlayComponent implements OnInit {
     if (!this.game.isGameStarted()) {
       this.router.navigate(['']);
     } else {
-      this.speedDivider = this.game.getGame().gameSpeedDivider;
+      this.speedDivider = this.game.getGameSpeedDivider();
       this.count = 30 / this.speedDivider;
       this.userName = this.auth.getAuth().user;
       this.startCounter();
@@ -186,7 +186,7 @@ export class GamePlayComponent implements OnInit {
   }
 
   private checkForWinner(): number {
-    return this.board.isThereAWinner(this.game.getGame().players);
+    return this.board.isThereAWinner(this.game.getGamePlayers());
   }
 
   private weHaveWinner(winnerNumber: number): void {
@@ -205,8 +205,8 @@ export class GamePlayComponent implements OnInit {
 
   private addWonGame(info: string, winnerNumber: number): void {
     const data = {
-      UserName: this.game.getGame().players[winnerNumber].userName,
-      Multiplayer: this.game.getGame().gameMulti,
+      UserName: this.game.getGamePlayers()[winnerNumber].userName,
+      Multiplayer: !this.game.isGameSinglePlayer(),
     };
     this.modalService.open('info-modal', info);
     this.http.postWinner(data);
@@ -230,7 +230,7 @@ export class GamePlayComponent implements OnInit {
           this.count = 30 / this.speedDivider;
         } else {
           if (
-            this.game.getGame() &&
+            this.game.isGameStarted() &&
             this.clientsPlayerNumber == this.whoseTurnNumber &&
             !this.isResultBeingDisplayed
           ) {
@@ -261,10 +261,10 @@ export class GamePlayComponent implements OnInit {
       !this.gameEnded &&
       !this.isCellAlreadyShot(coord)
     ) {
-      let game = this.game.getGame();
-      game.fireCol = col;
-      game.fireRow = row;
-      let isHit: boolean = this.verifyHit(game.gameMulti, coord);
+      let isHit: boolean = this.verifyHit(
+        !this.game.isGameSinglePlayer(),
+        coord
+      );
       //todo: move calling animateSprite to the update Game Values method
       if (
         row >= 0 &&
@@ -277,6 +277,9 @@ export class GamePlayComponent implements OnInit {
           parseInt(ref.id.split('_')[1])
         );
       }
+      let game = this.game.getGame();
+      game.fireCol = col;
+      game.fireRow = row;
       if (isHit) {
         game.fireResult = true;
 

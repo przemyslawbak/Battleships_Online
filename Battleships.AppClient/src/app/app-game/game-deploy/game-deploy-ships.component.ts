@@ -72,7 +72,7 @@ export class GameDeployComponent implements OnInit {
 
   private initDeploying() {
     this.board.resetAvoidCellsArray();
-    this.speedDivider = this.game.getGame().gameSpeedDivider;
+    this.speedDivider = this.game.getGameSpeedDivider();
     this.count = this.game.getDeployCountdownValue(this.speedDivider);
     this.userName = this.auth.getAuth().user;
     this.startCounter();
@@ -89,20 +89,19 @@ export class GameDeployComponent implements OnInit {
 
   private updateGameValues(game: GameState): void {
     this.multiplayer = game.gameMulti;
-    if (this.arePlayersDeployed(game.players)) {
+    if (this.player.arePlayersDeployed(game.players)) {
       this.router.navigate(['play-game']);
     } else {
-      console.log(this.multiplayer);
-      this.isDeploymentAllowed = game.isDeploymentAllowed;
       let aiPlayerNumber: number = this.player.findComputerPlayerNumber(
         game.players
       );
       if (
-        this.isGameSinglePlayer(game.gameMulti) &&
+        this.game.isGameSinglePlayer() &&
         !game.players[aiPlayerNumber].isDeployed
       ) {
+        this.isDeploymentAllowed = game.isDeploymentAllowed;
         game.players = this.setupAiPlayer(game.players, aiPlayerNumber);
-        this.signalRService.broadcastGameState(game); //broadcast for single player only
+        this.signalRService.broadcastGameState(game);
       }
     }
   }
@@ -187,10 +186,6 @@ export class GameDeployComponent implements OnInit {
     );
   }
 
-  private getIdFromElementName(name: string): string {
-    return name.split('-')[0];
-  }
-
   public confirm(): void {
     if (this.fleetDeployed.length == 10 && !this.isDeployed) {
       this.isDeployed = true;
@@ -203,6 +198,7 @@ export class GameDeployComponent implements OnInit {
     }
   }
 
+  //todo: link from text service
   public shareOnFacebook(): void {
     let url: string =
       'https://www.facebook.com/sharer/sharer.php?u=' + this.gameLink;
@@ -219,12 +215,23 @@ export class GameDeployComponent implements OnInit {
   }
 
   public autoDeploying(): void {
-    console.clear();
     this.playersBoard = this.autoDeploy(
       this.playersBoard,
       this.fleetWaiting,
       false
     );
+  }
+
+  public clearBoard(): void {
+    this.fleetWaiting = this.fleet.createFleet();
+    this.fleetDeployed = [];
+    this.playersBoard = this.board.getEmptyBoard();
+    this.isDeployEnabled = false;
+  }
+
+  //todo: text service
+  private getIdFromElementName(name: string): string {
+    return name.split('-')[0];
   }
 
   //todo: service
@@ -276,14 +283,6 @@ export class GameDeployComponent implements OnInit {
   }
 
   //todo: service
-  public clearBoard(): void {
-    this.fleetWaiting = this.fleet.createFleet();
-    this.fleetDeployed = [];
-    this.playersBoard = this.board.getEmptyBoard();
-    this.isDeployEnabled = false;
-  }
-
-  //todo: service
   public copyToClipboard(): void {
     document.addEventListener('copy', (e: ClipboardEvent) => {
       e.clipboardData.setData('text/plain', this.gameLink);
@@ -297,16 +296,6 @@ export class GameDeployComponent implements OnInit {
   private moveFromWaitingToDeployed(): void {
     this.fleetDeployed.push(this.fleetWaiting[0]);
     this.fleetWaiting.splice(0, 1);
-  }
-
-  //todo: service
-  private isGameSinglePlayer(gameMulti: boolean) {
-    return gameMulti ? false : true;
-  }
-
-  //todo: service
-  private arePlayersDeployed(players: Player[]) {
-    return players[0].isDeployed && players[1].isDeployed ? true : false;
   }
 
   //todo: refactoring

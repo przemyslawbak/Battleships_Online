@@ -33,7 +33,9 @@ export class GameConnectComponent implements OnInit {
       if (game) {
         let gameUsersNames: string[] = this.game.getUsersNames(game.players);
         let isPlayed: boolean = this.game.isGameAlreadyPlayed(gameUsersNames);
-        let isMulti: boolean = this.game.isGameMultiplayer(game);
+        let isMulti: boolean = this.game.isGameMultiplayerAndAnyoneConnected(
+          game
+        );
         let isEmptySlot: boolean = this.game.checkForEmptySlots(game);
         await this.initializer.initGame(game, isPlayed, isMulti, isEmptySlot);
       }
