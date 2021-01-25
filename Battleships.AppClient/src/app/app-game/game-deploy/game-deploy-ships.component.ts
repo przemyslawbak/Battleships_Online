@@ -25,7 +25,6 @@ import { AiService } from '@services/ai.service';
 export class GameDeployComponent implements OnInit {
   private speedDivider: number = 1;
   public multiplayer: boolean = false;
-  private aiPlayerNumber: number = -1;
   public gameLink: string =
     environment.clientUrl + 'connect-game/' + this.game.getGame().gameId;
   public isDeployed: boolean = false;
@@ -88,56 +87,24 @@ export class GameDeployComponent implements OnInit {
     });
   }
 
-  //todo: refactoring
   private updateGameValues(game: GameState): void {
-    if (game) {
-      let p0Deployed: boolean = game.players[0].isDeployed;
-      let p1Deployed: boolean = game.players[1].isDeployed;
-      this.multiplayer = game.gameMulti;
+    this.multiplayer = game.gameMulti;
+    if (this.arePlayersDeployed(game.players)) {
+      this.router.navigate(['play-game']);
+    } else {
+      console.log(this.multiplayer);
       this.isDeploymentAllowed = game.isDeploymentAllowed;
-
-      if (p0Deployed && p1Deployed) {
-        this.router.navigate(['play-game']);
-      }
-
-      if (!game.gameMulti) {
-        this.aiPlayerNumber = this.player.findComputerPlayerNumber(
-          game.players
-        ); //todo: only once
-        if (!game.players[this.aiPlayerNumber].isDeployed) {
-          this.isDeploymentAllowed = true;
-          game.players[this.aiPlayerNumber].board = this.autoDeploy(
-            this.board.getEmptyBoard(),
-            this.fleet.createFleet(),
-            true
-          );
-          game.players[this.aiPlayerNumber].isDeployed = true;
-
-          this.signalRService.broadcastGameState(game);
-        }
+      let aiPlayerNumber: number = this.player.findComputerPlayerNumber(
+        game.players
+      );
+      if (
+        this.isGameSinglePlayer(game.gameMulti) &&
+        !game.players[aiPlayerNumber].isDeployed
+      ) {
+        game.players = this.setupAiPlayer(game.players, aiPlayerNumber);
+        this.signalRService.broadcastGameState(game); //broadcast for single player only
       }
     }
-  }
-
-  //todo: refactoring
-  private startCounter() {
-    this.countDown = timer(0, 1000).subscribe(() => {
-      if (this.isDeploymentAllowed && !this.isDeployed) {
-        if (this.count <= 0) {
-          this.playersBoard = this.autoDeploy(
-            this.playersBoard,
-            this.fleetWaiting,
-            false
-          );
-          this.confirm();
-        } else {
-          this.count--;
-        }
-      } else {
-        this.count = 180 / this.speedDivider;
-      }
-      return this.count;
-    });
   }
 
   public setRotation(name: string): void {
@@ -236,6 +203,21 @@ export class GameDeployComponent implements OnInit {
     }
   }
 
+  public shareOnFacebook(): void {
+    let url: string =
+      'https://www.facebook.com/sharer/sharer.php?u=' + this.gameLink;
+    var win = window.open(url, '_blank');
+    win.focus();
+  }
+
+  public playWithAi(): void {
+    let game = this.game.getGame();
+    game.gameMulti = false;
+    game.players = this.player.setComputerOpponent(game.players);
+
+    this.signalRService.broadcastGameState(game);
+  }
+
   public autoDeploying(): void {
     console.clear();
     this.playersBoard = this.autoDeploy(
@@ -243,6 +225,20 @@ export class GameDeployComponent implements OnInit {
       this.fleetWaiting,
       false
     );
+  }
+
+  //todo: service
+  private setupAiPlayer(players: Player[], aiPlayerNumber: number): Player[] {
+    if (!players[aiPlayerNumber].isDeployed) {
+      players[aiPlayerNumber].board = this.autoDeploy(
+        this.board.getEmptyBoard(),
+        this.fleet.createFleet(),
+        true
+      );
+      players[aiPlayerNumber].isDeployed = true;
+    }
+
+    return players;
   }
 
   //todo: service
@@ -297,24 +293,40 @@ export class GameDeployComponent implements OnInit {
     document.execCommand('copy');
   }
 
-  public shareOnFacebook(): void {
-    let url: string =
-      'https://www.facebook.com/sharer/sharer.php?u=' + this.gameLink;
-    var win = window.open(url, '_blank');
-    win.focus();
-  }
-
-  public playWithAi(): void {
-    let game = this.game.getGame();
-    game.gameMulti = false;
-    game.players = this.player.setComputerOpponent(game.players);
-
-    this.signalRService.broadcastGameState(game);
-  }
-
   //todo: fleet service
   private moveFromWaitingToDeployed(): void {
     this.fleetDeployed.push(this.fleetWaiting[0]);
     this.fleetWaiting.splice(0, 1);
+  }
+
+  //todo: service
+  private isGameSinglePlayer(gameMulti: boolean) {
+    return gameMulti ? false : true;
+  }
+
+  //todo: service
+  private arePlayersDeployed(players: Player[]) {
+    return players[0].isDeployed && players[1].isDeployed ? true : false;
+  }
+
+  //todo: refactoring
+  private startCounter() {
+    this.countDown = timer(0, 1000).subscribe(() => {
+      if (this.isDeploymentAllowed && !this.isDeployed) {
+        if (this.count <= 0) {
+          this.playersBoard = this.autoDeploy(
+            this.playersBoard,
+            this.fleetWaiting,
+            false
+          );
+          this.confirm();
+        } else {
+          this.count--;
+        }
+      } else {
+        this.count = 180 / this.speedDivider;
+      }
+      return this.count;
+    });
   }
 }

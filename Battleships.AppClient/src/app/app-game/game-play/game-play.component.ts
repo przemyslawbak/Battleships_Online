@@ -255,7 +255,6 @@ export class GamePlayComponent implements OnInit {
   }
 
   public fire(row: number, col: number, ref: HTMLElement): void {
-    console.log('id: ' + ref.id);
     let coord: Coordinates = { row: row, col: col } as Coordinates;
     if (
       !this.isResultBeingDisplayed &&
@@ -266,7 +265,7 @@ export class GamePlayComponent implements OnInit {
       game.fireCol = col;
       game.fireRow = row;
       let isHit: boolean = this.verifyHit(game.gameMulti, coord);
-      //todo: move calling animateSprite to the updateGameValues method
+      //todo: move calling animateSprite to the update Game Values method
       if (
         row >= 0 &&
         col >= 0 &&

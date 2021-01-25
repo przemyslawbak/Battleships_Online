@@ -75,14 +75,15 @@ namespace Battleships.Services
         private GameStateModel UpdateDeploymentAndStartAllowed(GameStateModel game)
         {
             game.IsDeploymentAllowed = IsDeploymentAllowed(game.Players);
-            game.IsStartAllowed = IsStartAllowed(game.IsDeploymentAllowed, game.Players);
+            game.IsStartAllowed = IsStartAllowed(game.Players);
 
             return game;
         }
 
-        private bool IsStartAllowed(bool isDeploymentAllowed, Player[] players)
+        //todo: check tests
+        private bool IsStartAllowed(Player[] players)
         {
-            if (isDeploymentAllowed && players[0].IsDeployed && players[1].IsDeployed)
+            if (players[0].IsDeployed && players[1].IsDeployed)
             {
                 return true;
             }
