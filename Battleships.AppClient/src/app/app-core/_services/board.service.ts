@@ -11,6 +11,7 @@ import { BoardCellService } from './board-cell.service';
 @Injectable()
 export class BoardService {
   public avoidCells: BoardCell[] = [];
+  public playersBoard: BoardCell[][];
 
   constructor(
     private game: GameService,

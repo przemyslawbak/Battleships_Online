@@ -63,7 +63,7 @@ export class AiService {
     );
   }
 
-  public autoDeployShip(
+  private autoDeployShip(
     board: BoardCell[][],
     ship: ShipComponent
   ): BoardCell[][] {
@@ -71,6 +71,31 @@ export class AiService {
     ship.rotation = this.fleet.getRandomRotationValue(randomHalf);
     let coord: Coordinates = this.board.getAutoDeployCoordinates(board, ship);
     board = this.board.deployShipOnBoard(board, coord, ship);
+    return board;
+  }
+
+  //todo: test below
+
+  public autoDeploy(
+    board: BoardCell[][],
+    fleet: ShipComponent[],
+    computer: boolean,
+    isDeploymentAllowed: boolean
+  ): BoardCell[][] {
+    if (isDeploymentAllowed) {
+      while (fleet.length > 0) {
+        board = this.autoDeployShip(board, fleet[0]);
+        if (computer) {
+          fleet.splice(0, 1);
+        } else {
+          this.fleet.moveFromWaitingToDeployed();
+        }
+      }
+      if (!computer) {
+        board = this.board.resetEmptyCellsColors(board);
+      }
+    }
+
     return board;
   }
 }

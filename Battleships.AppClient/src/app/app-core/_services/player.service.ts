@@ -29,7 +29,7 @@ export class PlayerService {
     }
   }
 
-  public setComputerOpponent(players: Player[]): Player[] {
+  public setComputerPlayerOpponent(players: Player[]): Player[] {
     for (let i = 0; i < players.length; i++) {
       if (players[i].userName == '') {
         players[i].userName = 'COMPUTER';

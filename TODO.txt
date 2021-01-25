@@ -7,6 +7,7 @@ DOUBTS:
 - services with components?
 - should all subscriptions be unsubscribed?
 - shoudl I split services around in separate folders?
+- should I, for example, keep fleet props in fleet service and use them from components?
 
 OK - error service:
 	NO - call delayForBruteForce for each method call, test it,
@@ -242,6 +243,7 @@ OK - in connect component:
 	OK - err: ERROR TypeError: this.thenable is undefined
 	OK - bug: when playing game and joining another, on disconnect just redirects to the main view,
 OK - in game-play component:
+	- load sprites on init,
 	OK - in game-play & game-deploy use time dividers,
 	OK - bug: on opponent disconnects can not see buttons,
 	OK - bug: small size screen long board messages moves board down in relation to animated sprites,
@@ -416,6 +418,7 @@ OK - modal info:
 	OK - big screen: change width of modal message window,
 
 future / next project:
+- split components into smaller files
 - walk through Jasmine docs: https://jasmine.github.io/2.0/introduction.html
 - Pro Angular 9 Animations examples,
 - style: greater font size for small screens,

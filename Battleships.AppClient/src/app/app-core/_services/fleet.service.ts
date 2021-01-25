@@ -2,8 +2,11 @@ import { Injectable } from '@angular/core';
 
 import { ShipComponent } from 'app/app-game/game-ship/ship.component';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class FleetService {
+  public fleetWaiting: ShipComponent[] = [];
+  public fleetDeployed: ShipComponent[] = [];
+
   public createFleet(): Array<ShipComponent> {
     return [
       { size: 4, rotation: 0 },
@@ -96,5 +99,10 @@ export class FleetService {
     return name.split('-')[1] == 'fleetWaiting'
       ? fleetWaiting[+id]
       : fleetDeployed[+id];
+  }
+
+  public moveFromWaitingToDeployed(): void {
+    this.fleetDeployed.push(this.fleetWaiting[0]);
+    this.fleetWaiting.splice(0, 1);
   }
 }
