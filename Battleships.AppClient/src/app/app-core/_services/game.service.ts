@@ -188,4 +188,8 @@ export class GameService {
   public getGamePlayers(): Player[] {
     return this.getGame().players;
   }
+
+  public shouldBeDeployEnabled(length: number): boolean {
+    return length < 10 ? false : true;
+  }
 }

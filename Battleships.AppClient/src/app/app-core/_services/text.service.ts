@@ -39,4 +39,23 @@ export class TextService {
   public replaceSpecialCharacters(token: string): string {
     return token.replace(/\$/g, '/').replace(/\@/g, '=');
   }
+
+  //todo: test below
+
+  public copyLink(gameLink: string) {
+    document.addEventListener('copy', (e: ClipboardEvent) => {
+      e.clipboardData.setData('text/plain', gameLink);
+      e.preventDefault();
+      document.removeEventListener('copy', null);
+    });
+    document.execCommand('copy');
+  }
+
+  public getIdFromElementName(name: string): string {
+    return name.split('-')[0];
+  }
+
+  public getFacebookShareLink(gameLink: string): string {
+    return 'https://www.facebook.com/sharer/sharer.php?u=' + gameLink;
+  }
 }

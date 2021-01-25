@@ -17,6 +17,7 @@ import { BoardCell } from '@models/board-cell.model';
 import { Player } from '@models/player.model';
 import { FleetService } from '@services/fleet.service';
 import { AiService } from '@services/ai.service';
+import { TextService } from '@services/text.service';
 
 @Component({
   templateUrl: './game-deploy-ships.component.html',
@@ -40,6 +41,7 @@ export class GameDeployComponent implements OnInit {
   private _subBoard: any;
 
   constructor(
+    private text: TextService,
     private router: Router,
     private board: BoardService,
     private auth: AuthService,
@@ -107,7 +109,7 @@ export class GameDeployComponent implements OnInit {
   }
 
   public setRotation(name: string): void {
-    const id: string = this.getIdFromElementName(name);
+    const id: string = this.text.getIdFromElementName(name);
     let item: ShipComponent = this.fleet.getShipListItem(
       name,
       id,
@@ -198,11 +200,9 @@ export class GameDeployComponent implements OnInit {
     }
   }
 
-  //todo: link from text service
   public shareOnFacebook(): void {
-    let url: string =
-      'https://www.facebook.com/sharer/sharer.php?u=' + this.gameLink;
-    var win = window.open(url, '_blank');
+    let url: string = this.text.getFacebookShareLink(this.gameLink);
+    let win = window.open(url, '_blank');
     win.focus();
   }
 
@@ -214,14 +214,6 @@ export class GameDeployComponent implements OnInit {
     this.signalRService.broadcastGameState(game);
   }
 
-  public autoDeploying(): void {
-    this.playersBoard = this.autoDeploy(
-      this.playersBoard,
-      this.fleetWaiting,
-      false
-    );
-  }
-
   public clearBoard(): void {
     this.fleetWaiting = this.fleet.createFleet();
     this.fleetDeployed = [];
@@ -229,23 +221,25 @@ export class GameDeployComponent implements OnInit {
     this.isDeployEnabled = false;
   }
 
-  //todo: text service
-  private getIdFromElementName(name: string): string {
-    return name.split('-')[0];
+  private enableDeployBtnIfPossible(): void {
+    this.isDeployEnabled = this.game.shouldBeDeployEnabled(
+      this.fleetDeployed.length
+    );
   }
 
-  //todo: service
-  private setupAiPlayer(players: Player[], aiPlayerNumber: number): Player[] {
-    if (!players[aiPlayerNumber].isDeployed) {
-      players[aiPlayerNumber].board = this.autoDeploy(
-        this.board.getEmptyBoard(),
-        this.fleet.createFleet(),
-        true
-      );
-      players[aiPlayerNumber].isDeployed = true;
-    }
+  public copyToClipboard(): void {
+    this.text.copyLink(this.gameLink);
+  }
 
-    return players;
+  //<-------------------------------------todo:
+
+  //todo: dry
+  public autoDeploying(): void {
+    this.playersBoard = this.autoDeploy(
+      this.playersBoard,
+      this.fleetWaiting,
+      false
+    );
   }
 
   //todo: service
@@ -273,23 +267,18 @@ export class GameDeployComponent implements OnInit {
     return board;
   }
 
-  //todo: service
-  private enableDeployBtnIfPossible(): void {
-    if (this.fleetDeployed.length < 10) {
-      this.isDeployEnabled = false;
-    } else {
-      this.isDeployEnabled = true;
+  //todo: service?? calls autoDeploy
+  private setupAiPlayer(players: Player[], aiPlayerNumber: number): Player[] {
+    if (!players[aiPlayerNumber].isDeployed) {
+      players[aiPlayerNumber].board = this.autoDeploy(
+        this.board.getEmptyBoard(),
+        this.fleet.createFleet(),
+        true
+      );
+      players[aiPlayerNumber].isDeployed = true;
     }
-  }
 
-  //todo: service
-  public copyToClipboard(): void {
-    document.addEventListener('copy', (e: ClipboardEvent) => {
-      e.clipboardData.setData('text/plain', this.gameLink);
-      e.preventDefault();
-      document.removeEventListener('copy', null);
-    });
-    document.execCommand('copy');
+    return players;
   }
 
   //todo: fleet service
