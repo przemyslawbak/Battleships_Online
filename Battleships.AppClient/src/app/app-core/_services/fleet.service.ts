@@ -84,4 +84,17 @@ export class FleetService {
   public getRandomRotationValue(random: boolean): number {
     return random ? 90 : 0;
   }
+
+  //todo: test below
+
+  public getShipListItem(
+    name: string,
+    id: string,
+    fleetWaiting: ShipComponent[],
+    fleetDeployed: ShipComponent[]
+  ): ShipComponent {
+    return name.split('-')[1] == 'fleetWaiting'
+      ? fleetWaiting[+id]
+      : fleetDeployed[+id];
+  }
 }

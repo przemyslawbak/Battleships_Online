@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BoardCell } from '@models/board-cell.model';
+import { Player } from '@models/player.model';
 import { AuthService } from '@services/auth.service';
 import { GameService } from '@services/game.service';
 
@@ -19,5 +20,26 @@ export class PlayerService {
 
   public checkForWinner(hits: BoardCell[]): boolean {
     return hits.length == 20 ? true : false;
+  }
+
+  //todo: test below
+
+  public findComputerPlayerNumber(players: Player[]): number {
+    for (let i = 0; i < players.length; i++) {
+      if (players[i].userName == 'COMPUTER') {
+        return i;
+      }
+    }
+  }
+
+  public setComputerOpponent(players: Player[]): Player[] {
+    for (let i = 0; i < players.length; i++) {
+      if (players[i].userName == '') {
+        players[i].userName = 'COMPUTER';
+        players[i].displayName = 'COMPUTER';
+
+        return players;
+      }
+    }
   }
 }
