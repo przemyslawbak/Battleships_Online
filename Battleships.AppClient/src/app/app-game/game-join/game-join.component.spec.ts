@@ -98,10 +98,10 @@ describe('GameJoinComponent', () => {
 
   it('template_OnCurrentGameIdSameLikePlayed_DisplaysPlayingNowMessage', () => {
     gameServiceMock.isGameStarted.and.returnValue(true);
+    gameServiceMock.getGameId.and.returnValue(1);
     httpServiceMock.getOpenGames.and.returnValue(
       of([{ players: ['one', ''], gameId: 1 } as OpenGames])
     );
-    component.currentGameId = 1;
     component.ngOnInit();
     fixture.detectChanges();
 

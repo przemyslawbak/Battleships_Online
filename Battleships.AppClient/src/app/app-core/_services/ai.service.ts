@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BoardCell } from '@models/board-cell.model';
 import { Coordinates } from '@models/coordinates.model';
+import { Player } from '@models/player.model';
 import { BoardService } from '@services/board.service';
 import { ShipComponent } from 'app/app-game/game-ship/ship.component';
 import { FleetService } from './fleet.service';
@@ -97,5 +98,21 @@ export class AiService {
     }
 
     return board;
+  }
+
+  public setupAiPlayer(
+    players: Player[],
+    aiPlayerNumber: number,
+    isDeploymentAllowed: boolean
+  ): Player[] {
+    players[aiPlayerNumber].board = this.autoDeploy(
+      this.board.getEmptyBoard(),
+      this.fleet.createFleet(),
+      true,
+      isDeploymentAllowed
+    );
+    players[aiPlayerNumber].isDeployed = true;
+
+    return players;
   }
 }

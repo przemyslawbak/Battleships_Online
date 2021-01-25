@@ -13,7 +13,6 @@ import { SignalRService } from '@services/signal-r.service';
 
 import { Coordinates } from '@models/coordinates.model';
 import { GameState } from '@models/game-state.model';
-import { Player } from '@models/player.model';
 import { FleetService } from '@services/fleet.service';
 import { AiService } from '@services/ai.service';
 import { TextService } from '@services/text.service';
@@ -108,7 +107,11 @@ export class GameDeployComponent implements OnInit {
         !game.players[aiPlayerNumber].isDeployed
       ) {
         game.isDeploymentAllowed = true;
-        game.players = this.setupAiPlayer(game.players, aiPlayerNumber);
+        game.players = this.ai.setupAiPlayer(
+          game.players,
+          aiPlayerNumber,
+          this.isDeploymentAllowed
+        );
         this.signalRService.broadcastGameState(game);
       }
     }
@@ -124,6 +127,8 @@ export class GameDeployComponent implements OnInit {
     );
     item.rotation = item.rotation == 0 ? 90 : 0;
   }
+
+  //<---------------------------todo:
 
   public deployShip(row: number, col: number): void {
     let coord: Coordinates = { row: row, col: col } as Coordinates;
@@ -247,20 +252,6 @@ export class GameDeployComponent implements OnInit {
       this.isDeploymentAllowed
     );
     this.enableDeployBtnIfPossible();
-  }
-
-  private setupAiPlayer(players: Player[], aiPlayerNumber: number): Player[] {
-    if (!players[aiPlayerNumber].isDeployed) {
-      players[aiPlayerNumber].board = this.ai.autoDeploy(
-        this.board.getEmptyBoard(),
-        this.fleet.createFleet(),
-        true,
-        this.isDeploymentAllowed
-      );
-      players[aiPlayerNumber].isDeployed = true;
-    }
-
-    return players;
   }
 
   private startCounter(): void {
