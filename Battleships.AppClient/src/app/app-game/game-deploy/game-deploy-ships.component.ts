@@ -48,8 +48,8 @@ export class GameDeployComponent implements OnInit {
     private player: PlayerService
   ) {
     this.isDeployed = false;
-    this.fleet.fleetWaiting = this.fleet.createFleet();
-    this.fleet.fleetDeployed = [];
+    this.fleet.setFleetWaiting = this.fleet.createFleet();
+    this.fleet.setFleetDeployed = [];
   }
 
   ngOnInit(): void {
@@ -68,12 +68,16 @@ export class GameDeployComponent implements OnInit {
     }
   }
 
+  public getFleetDeployed(): ShipComponent[] {
+    return this.fleet.getFleetDeployed;
+  }
+
   public getFleetWaiting(): ShipComponent[] {
-    return this.fleet.fleetWaiting;
+    return this.fleet.getFleetWaiting;
   }
 
   public getPlayersBoard(): BoardCell[][] {
-    return this.board.playersBoard;
+    return this.board.getPlayersBoard;
   }
 
   private initDeploying(): void {
@@ -83,7 +87,7 @@ export class GameDeployComponent implements OnInit {
     this.userName = this.auth.getAuth().user;
     this.startCounter();
     this.initGameSubscription();
-    this.board.playersBoard = this.board.getEmptyBoard();
+    this.board.setPlayersBoard = this.board.getEmptyBoard();
     this.updateGameValues(this.game.getGame());
   }
 
@@ -122,27 +126,37 @@ export class GameDeployComponent implements OnInit {
     let item: ShipComponent = this.fleet.getShipListItem(
       name,
       id,
-      this.fleet.fleetWaiting,
-      this.fleet.fleetDeployed
+      this.fleet.getFleetWaiting,
+      this.fleet.getFleetDeployed
     );
     item.rotation = item.rotation == 0 ? 90 : 0;
   }
-
-  //<---------------------------todo:
 
   public deployShip(row: number, col: number): void {
     let coord: Coordinates = { row: row, col: col } as Coordinates;
     let isDropAllowed: boolean = this.isDroppingShipAllowed(coord);
     if (isDropAllowed && this.isDeploymentAllowed) {
-      this.board.playersBoard = this.board.deployShipOnBoard(
-        this.board.playersBoard,
+      this.board.setPlayersBoard = this.board.deployShipOnBoard(
+        this.board.getPlayersBoard,
         coord,
-        this.fleet.fleetWaiting[0]
+        this.fleet.getFleetWaiting[0]
       );
       this.fleet.moveFromWaitingToDeployed();
     }
-
     this.enableDeployBtnIfPossible();
+  }
+
+  private isDroppingShipAllowed(coord: Coordinates): boolean {
+    let dropCells = this.board.getShipsDropCells(
+      this.board.getPlayersBoard,
+      coord,
+      this.fleet.getFleetWaiting[0]
+    );
+    return this.board.verifyHoveredElement(
+      this.board.getPlayersBoard,
+      dropCells,
+      this.fleet.getFleetWaiting[0]
+    );
   }
 
   public resetBoardElement(
@@ -152,12 +166,12 @@ export class GameDeployComponent implements OnInit {
   ): void {
     let coord: Coordinates = { row: row, col: col } as Coordinates;
     let dropCells = this.board.getShipsDropCells(
-      this.board.playersBoard,
+      this.board.getPlayersBoard,
       coord,
-      this.fleet.fleetWaiting[0]
+      this.fleet.getFleetWaiting[0]
     );
-    this.board.playersBoard = this.board.resetBoardElement(
-      this.board.playersBoard,
+    this.board.setPlayersBoard = this.board.resetBoardElement(
+      this.board.getPlayersBoard,
       element,
       coord,
       dropCells
@@ -173,43 +187,16 @@ export class GameDeployComponent implements OnInit {
     let isDropAllowed: boolean = this.isDroppingShipAllowed(coord);
     if (isDropAllowed && this.isDeploymentAllowed) {
       let dropCells = this.board.getShipsDropCells(
-        this.board.playersBoard,
+        this.board.getPlayersBoard,
         coord,
-        this.fleet.fleetWaiting[0]
+        this.fleet.getFleetWaiting[0]
       );
-      this.board.playersBoard = this.board.updateHoveredElements(
+      this.board.setPlayersBoard = this.board.updateHoveredElements(
         dropCells,
-        this.board.playersBoard,
+        this.board.getPlayersBoard,
         isDropAllowed,
         htmlElement
       );
-    }
-  }
-
-  private isDroppingShipAllowed(coord: Coordinates): boolean {
-    let dropCells = this.board.getShipsDropCells(
-      this.board.playersBoard,
-      coord,
-      this.fleet.fleetWaiting[0]
-    );
-    return this.board.verifyHoveredElement(
-      this.board.playersBoard,
-      dropCells,
-      this.fleet.fleetWaiting[0]
-    );
-  }
-
-  public confirm(): void {
-    if (this.fleet.fleetDeployed.length == 10 && !this.isDeployed) {
-      this.isDeployed = true;
-      this.count = 0;
-      let game: GameState = this.game.getGame();
-      game.players[this.player.getPlayerNumber()].isDeployed = true;
-      game.players[
-        this.player.getPlayerNumber()
-      ].board = this.board.playersBoard;
-      this.signalRService.broadcastChatMessage('Finished deploying ships.');
-      this.signalRService.broadcastGameState(game);
     }
   }
 
@@ -228,15 +215,15 @@ export class GameDeployComponent implements OnInit {
   }
 
   public clearBoard(): void {
-    this.fleet.fleetWaiting = this.fleet.createFleet();
-    this.fleet.fleetDeployed = [];
-    this.board.playersBoard = this.board.getEmptyBoard();
+    this.fleet.setFleetWaiting = this.fleet.createFleet();
+    this.fleet.setFleetDeployed = [];
+    this.board.setPlayersBoard = this.board.getEmptyBoard();
     this.isDeployEnabled = false;
   }
 
   private enableDeployBtnIfPossible(): void {
     this.isDeployEnabled = this.game.shouldBeDeployEnabled(
-      this.fleet.fleetDeployed.length
+      this.fleet.getFleetDeployed.length
     );
   }
 
@@ -245,22 +232,44 @@ export class GameDeployComponent implements OnInit {
   }
 
   public autoDeploying(): void {
-    this.board.playersBoard = this.ai.autoDeploy(
-      this.board.playersBoard,
-      this.fleet.fleetWaiting,
+    this.board.setPlayersBoard = this.ai.autoDeploy(
+      this.board.getPlayersBoard,
+      this.fleet.getFleetWaiting,
       false,
       this.isDeploymentAllowed
     );
     this.enableDeployBtnIfPossible();
   }
 
+  public confirm(): void {
+    if (
+      this.fleet.getFleetDeployed.length >= 10 &&
+      !this.game.isPlayerDeployed(this.player.getPlayerNumber())
+    ) {
+      this.count = 0;
+      let game: GameState = this.game.getGame();
+      game.players[this.player.getPlayerNumber()].isDeployed = true;
+      this.isDeployed = this.game.isPlayerDeployed(
+        this.player.getPlayerNumber()
+      );
+      game.players[
+        this.player.getPlayerNumber()
+      ].board = this.board.getPlayersBoard;
+      this.signalRService.broadcastChatMessage('Finished deploying ships.');
+      this.signalRService.broadcastGameState(game);
+    }
+  }
+
   private startCounter(): void {
     this.countDown = timer(0, 1000).subscribe(() => {
-      if (this.isDeploymentAllowed && !this.isDeployed) {
+      if (
+        this.isDeploymentAllowed &&
+        !this.game.isPlayerDeployed(this.player.getPlayerNumber())
+      ) {
         if (this.count <= 0) {
-          this.board.playersBoard = this.ai.autoDeploy(
-            this.board.playersBoard,
-            this.fleet.fleetWaiting,
+          this.board.setPlayersBoard = this.ai.autoDeploy(
+            this.board.getPlayersBoard,
+            this.fleet.getFleetWaiting,
             false,
             this.isDeploymentAllowed
           );

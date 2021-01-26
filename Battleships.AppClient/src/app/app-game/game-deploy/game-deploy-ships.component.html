@@ -94,8 +94,8 @@
     <!--buttons-->
     <div class="text-center">
       <button
-        [disabled]="isDeployed"
-        [disabled]="!isDeploymentAllowed"
+        [disabled]="this.isDeployed"
+        [disabled]="!this.isDeploymentAllowed"
         type="submit"
         class="btn btn-md btn-light"
         (click)="clearBoard()"
@@ -103,8 +103,8 @@
         Clear board
       </button>
       <button
-        [disabled]="isDeployed"
-        [disabled]="!isDeploymentAllowed"
+        [disabled]="this.isDeployed"
+        [disabled]="!this.isDeploymentAllowed"
         type="submit"
         class="btn btn-md btn-light"
         (click)="autoDeploying()"
@@ -112,7 +112,9 @@
         Auto deploy
       </button>
       <button
-        [disabled]="!isDeployEnabled || isDeployed || !isDeploymentAllowed"
+        [disabled]="
+          !this.isDeployEnabled || this.isDeployed || !this.isDeploymentAllowed
+        "
         type="submit"
         class="btn btn-md btn-success"
         (click)="confirm()"

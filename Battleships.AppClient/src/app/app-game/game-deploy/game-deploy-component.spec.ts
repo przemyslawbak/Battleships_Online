@@ -5,7 +5,6 @@ import { BoardService } from '@services/board.service';
 import { GameDeployComponent } from './game-deploy-ships.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { HttpService } from '@services/http.service';
 import { GameService } from '@services/game.service';
 import { AuthService } from '@services/auth.service';
 import { AiService } from '@services/ai.service';
@@ -16,6 +15,7 @@ import { Observable } from 'rxjs';
 import { Player } from '@models/player.model';
 import { GameSetupComponent } from '../game-setup/game-setup.component';
 import { GameChatComponent } from '../game-chat/game-chat.component';
+import { ShipComponent } from '../game-ship/ship.component';
 
 let component: GameDeployComponent;
 let fixture: ComponentFixture<GameDeployComponent>;
@@ -28,9 +28,10 @@ const gameServiceMock = jasmine.createSpyObj('GameService', [
   'isGameSinglePlayer',
   'shouldBeDeployEnabled',
   'gameStateChange',
+  'isPlayerDeployed',
 ]);
 const authServiceMock = jasmine.createSpyObj('AuthService', ['getAuth']);
-const boardServicemock = jasmine.createSpyObj('BoardService', [
+const boardServiceMock = jasmine.createSpyObj('BoardService', [
   'resetAvoidCellsArray',
   'getEmptyBoard',
   'deployShipOnBoard',
@@ -40,7 +41,7 @@ const boardServicemock = jasmine.createSpyObj('BoardService', [
   'updateHoveredElements',
   'verifyHoveredElement',
 ]);
-const fleetServicemock = jasmine.createSpyObj('FleetService', [
+const fleetServiceMock = jasmine.createSpyObj('FleetService', [
   'createFleet',
   'getShipListItem',
   'moveFromWaitingToDeployed',
@@ -79,17 +80,21 @@ describe('GameDeployComponent', () => {
         { provide: Router, useValue: routerMock },
         { provide: GameService, useValue: gameServiceMock },
         { provide: AuthService, useValue: authServiceMock },
-        { provide: BoardService, useValue: boardServicemock },
-        { provide: FleetService, useValue: fleetServicemock },
+        { provide: BoardService, useValue: boardServiceMock },
+        { provide: FleetService, useValue: fleetServiceMock },
         { provide: AiService, useValue: aiServiceMock },
         { provide: TextService, useValue: textServiceMock },
         { provide: SignalRService, useValue: signalrServiceMock },
         { provide: PlayerService, useValue: playerServiceMock },
       ],
     }).compileComponents();
-    gameServiceMock.getGame.and.returnValue({ gameId: 666 } as GameState);
-    boardServicemock.resetAvoidCellsArray.calls.reset();
-    boardServicemock.getEmptyBoard.calls.reset();
+    gameServiceMock.getGame.and.returnValue({
+      gameId: 666,
+      players: [],
+    } as GameState);
+
+    boardServiceMock.resetAvoidCellsArray.calls.reset();
+    boardServiceMock.getEmptyBoard.calls.reset();
     gameServiceMock.getGameSpeedDivider.calls.reset();
     gameServiceMock.getDeployCountdownValue.calls.reset();
     gameServiceMock.getGame.calls.reset();
@@ -98,6 +103,13 @@ describe('GameDeployComponent', () => {
     routerMock.navigate.calls.reset();
     playerServiceMock.findComputerPlayerNumber.calls.reset();
     gameServiceMock.isGameSinglePlayer.calls.reset();
+    fleetServiceMock.moveFromWaitingToDeployed.calls.reset();
+    boardServiceMock.deployShipOnBoard.calls.reset();
+    gameServiceMock.shouldBeDeployEnabled.calls.reset();
+    boardServiceMock.getShipsDropCells.calls.reset();
+    boardServiceMock.updateHoveredElements.calls.reset();
+    signalrServiceMock.broadcastGameState.calls.reset();
+    signalrServiceMock.broadcastChatMessage.calls.reset();
 
     fixture = TestBed.createComponent(GameDeployComponent);
     component = fixture.componentInstance;
@@ -124,8 +136,8 @@ describe('GameDeployComponent', () => {
     } as LoginResponse);
     component.ngOnInit();
 
-    expect(boardServicemock.resetAvoidCellsArray).toHaveBeenCalledTimes(1);
-    expect(boardServicemock.getEmptyBoard).toHaveBeenCalledTimes(1);
+    expect(boardServiceMock.resetAvoidCellsArray).toHaveBeenCalledTimes(1);
+    expect(boardServiceMock.getEmptyBoard).toHaveBeenCalledTimes(1);
     expect(gameServiceMock.getGameSpeedDivider).toHaveBeenCalledTimes(1);
     expect(gameServiceMock.getDeployCountdownValue).toHaveBeenCalledTimes(1);
     expect(gameServiceMock.getGame).toHaveBeenCalledTimes(2);
@@ -153,5 +165,195 @@ describe('GameDeployComponent', () => {
 
     expect(playerServiceMock.findComputerPlayerNumber).toHaveBeenCalledTimes(2);
     expect(gameServiceMock.isGameSinglePlayer).toHaveBeenCalledTimes(2);
+  });
+
+  it('deployShip_OnDropAndDeploymentNotAllowed_CallsNeverTwoServiceMethods', () => {
+    boardServiceMock.verifyHoveredElement.and.returnValue(false);
+    component.isDeploymentAllowed = false;
+    (boardServiceMock as any).getPlayersBoard = [[]];
+    (fleetServiceMock as any).getFleetWaiting = [];
+    (fleetServiceMock as any).getFleetDeployed = [];
+    component.deployShip(0, 3);
+
+    expect(fleetServiceMock.moveFromWaitingToDeployed).toHaveBeenCalledTimes(0);
+    expect(boardServiceMock.deployShipOnBoard).toHaveBeenCalledTimes(0);
+    expect(gameServiceMock.shouldBeDeployEnabled).toHaveBeenCalledTimes(1);
+  });
+
+  it('deployShip_OnDropNotAllowed_CallsNeverTwoServiceMethods', () => {
+    boardServiceMock.verifyHoveredElement.and.returnValue(false);
+    component.isDeploymentAllowed = true;
+    (boardServiceMock as any).getPlayersBoard = [[]];
+    (fleetServiceMock as any).getFleetWaiting = [];
+    (fleetServiceMock as any).getFleetDeployed = [];
+    component.deployShip(0, 3);
+
+    expect(fleetServiceMock.moveFromWaitingToDeployed).toHaveBeenCalledTimes(0);
+    expect(boardServiceMock.deployShipOnBoard).toHaveBeenCalledTimes(0);
+    expect(gameServiceMock.shouldBeDeployEnabled).toHaveBeenCalledTimes(1);
+  });
+
+  it('deployShip_OnDeploymentNotAllowed_CallsNeverTwoServiceMethods', () => {
+    boardServiceMock.verifyHoveredElement.and.returnValue(true);
+    component.isDeploymentAllowed = false;
+    (boardServiceMock as any).getPlayersBoard = [[]];
+    (fleetServiceMock as any).getFleetWaiting = [];
+    (fleetServiceMock as any).getFleetDeployed = [];
+    component.deployShip(0, 3);
+
+    expect(fleetServiceMock.moveFromWaitingToDeployed).toHaveBeenCalledTimes(0);
+    expect(boardServiceMock.deployShipOnBoard).toHaveBeenCalledTimes(0);
+    expect(gameServiceMock.shouldBeDeployEnabled).toHaveBeenCalledTimes(1);
+  });
+
+  it('deployShip_OnDropAndDeploymentAllowed_CallsTwoServiceMethods', () => {
+    boardServiceMock.verifyHoveredElement.and.returnValue(true);
+    component.isDeploymentAllowed = true;
+    (boardServiceMock as any).getPlayersBoard = [[]];
+    (fleetServiceMock as any).getFleetWaiting = [];
+    (fleetServiceMock as any).getFleetDeployed = [];
+    component.deployShip(0, 3);
+
+    expect(fleetServiceMock.moveFromWaitingToDeployed).toHaveBeenCalledTimes(1);
+    expect(boardServiceMock.deployShipOnBoard).toHaveBeenCalledTimes(1);
+    expect(gameServiceMock.shouldBeDeployEnabled).toHaveBeenCalledTimes(1);
+  });
+
+  it('checkHoveredElement_OnDropAndDeploymentNotAllowed_NeverCallsSecondServiceMethod', () => {
+    boardServiceMock.verifyHoveredElement.and.returnValue(false);
+    component.isDeploymentAllowed = false;
+    (boardServiceMock as any).getPlayersBoard = [[]];
+    (fleetServiceMock as any).getFleetWaiting = [];
+    (fleetServiceMock as any).getFleetDeployed = [];
+    let dummyHtmlElement: HTMLElement = document.createElement('DIV');
+    component.checkHoveredElement(0, 3, dummyHtmlElement);
+
+    expect(boardServiceMock.getShipsDropCells).toHaveBeenCalledTimes(1);
+    expect(boardServiceMock.updateHoveredElements).toHaveBeenCalledTimes(0);
+  });
+
+  it('checkHoveredElement_OnDropNotAllowed_NeverCallsSecondServiceMethod', () => {
+    boardServiceMock.verifyHoveredElement.and.returnValue(false);
+    component.isDeploymentAllowed = true;
+    (boardServiceMock as any).getPlayersBoard = [[]];
+    (fleetServiceMock as any).getFleetWaiting = [];
+    (fleetServiceMock as any).getFleetDeployed = [];
+    let dummyHtmlElement: HTMLElement = document.createElement('DIV');
+    component.checkHoveredElement(0, 3, dummyHtmlElement);
+
+    expect(boardServiceMock.getShipsDropCells).toHaveBeenCalledTimes(1);
+    expect(boardServiceMock.updateHoveredElements).toHaveBeenCalledTimes(0);
+  });
+
+  it('checkHoveredElement_OnDeploymentNotAllowed_NeverCallsSecondServiceMethod', () => {
+    boardServiceMock.verifyHoveredElement.and.returnValue(true);
+    component.isDeploymentAllowed = false;
+    (boardServiceMock as any).getPlayersBoard = [[]];
+    (fleetServiceMock as any).getFleetWaiting = [];
+    (fleetServiceMock as any).getFleetDeployed = [];
+    let dummyHtmlElement: HTMLElement = document.createElement('DIV');
+    component.checkHoveredElement(0, 3, dummyHtmlElement);
+
+    expect(boardServiceMock.getShipsDropCells).toHaveBeenCalledTimes(1);
+    expect(boardServiceMock.updateHoveredElements).toHaveBeenCalledTimes(0);
+  });
+
+  it('checkHoveredElement_OnDropAndDeploymentAllowed_CallsTwoServiceMethods', () => {
+    boardServiceMock.verifyHoveredElement.and.returnValue(true);
+    component.isDeploymentAllowed = true;
+    (boardServiceMock as any).getPlayersBoard = [[]];
+    (fleetServiceMock as any).getFleetWaiting = [];
+    (fleetServiceMock as any).getFleetDeployed = [];
+    let dummyHtmlElement: HTMLElement = document.createElement('DIV');
+    component.checkHoveredElement(0, 3, dummyHtmlElement);
+
+    expect(boardServiceMock.getShipsDropCells).toHaveBeenCalledTimes(2);
+    expect(boardServiceMock.updateHoveredElements).toHaveBeenCalledTimes(1);
+  });
+
+  it('confirm_OnFleetArrayLength10AndNotDeployedPlayer_CallsBroadcastGame', () => {
+    (fleetServiceMock as any).getFleetDeployed = [
+      {} as ShipComponent,
+      {} as ShipComponent,
+      {} as ShipComponent,
+      {} as ShipComponent,
+      {} as ShipComponent,
+      {} as ShipComponent,
+      {} as ShipComponent,
+      {} as ShipComponent,
+      {} as ShipComponent,
+      {} as ShipComponent,
+    ];
+    gameServiceMock.isPlayerDeployed.and.returnValue(false);
+    playerServiceMock.getPlayerNumber.and.returnValue(0);
+    gameServiceMock.getGame.and.returnValue({
+      players: [
+        { isDeployed: false } as Player,
+        { isDeployed: false } as Player,
+      ],
+    } as GameState);
+    component.confirm();
+
+    expect(signalrServiceMock.broadcastGameState).toHaveBeenCalledTimes(1);
+    expect(signalrServiceMock.broadcastChatMessage).toHaveBeenCalledTimes(1);
+  });
+
+  it('confirm_OnFleetArrayLengthLessThan10AndNotDeployedPlayer_CallsNeverBroadcastGame', () => {
+    (fleetServiceMock as any).getFleetDeployed = [{} as ShipComponent];
+    gameServiceMock.isPlayerDeployed.and.returnValue(false);
+    playerServiceMock.getPlayerNumber.and.returnValue(0);
+    gameServiceMock.getGame.and.returnValue({
+      players: [
+        { isDeployed: false } as Player,
+        { isDeployed: false } as Player,
+      ],
+    } as GameState);
+    component.confirm();
+
+    expect(signalrServiceMock.broadcastGameState).toHaveBeenCalledTimes(0);
+    expect(signalrServiceMock.broadcastChatMessage).toHaveBeenCalledTimes(0);
+  });
+
+  it('confirm_OnFleetArrayLength10DeployedPlayer_CallsNeverBroadcastGame', () => {
+    (fleetServiceMock as any).getFleetDeployed = [
+      {} as ShipComponent,
+      {} as ShipComponent,
+      {} as ShipComponent,
+      {} as ShipComponent,
+      {} as ShipComponent,
+      {} as ShipComponent,
+      {} as ShipComponent,
+      {} as ShipComponent,
+      {} as ShipComponent,
+      {} as ShipComponent,
+    ];
+    gameServiceMock.isPlayerDeployed.and.returnValue(true);
+    playerServiceMock.getPlayerNumber.and.returnValue(0);
+    gameServiceMock.getGame.and.returnValue({
+      players: [
+        { isDeployed: false } as Player,
+        { isDeployed: false } as Player,
+      ],
+    } as GameState);
+    component.confirm();
+
+    expect(signalrServiceMock.broadcastGameState).toHaveBeenCalledTimes(0);
+    expect(signalrServiceMock.broadcastChatMessage).toHaveBeenCalledTimes(0);
+  });
+
+  it('confirm_OnFleetArrayLengthLessThan10AndDeployedPlayer_CallsNeverBroadcastGame', () => {
+    (fleetServiceMock as any).getFleetDeployed = [{} as ShipComponent];
+    gameServiceMock.isPlayerDeployed.and.returnValue(true);
+    playerServiceMock.getPlayerNumber.and.returnValue(0);
+    gameServiceMock.getGame.and.returnValue({
+      players: [
+        { isDeployed: false } as Player,
+        { isDeployed: false } as Player,
+      ],
+    } as GameState);
+    component.confirm();
+
+    expect(signalrServiceMock.broadcastGameState).toHaveBeenCalledTimes(0);
+    expect(signalrServiceMock.broadcastChatMessage).toHaveBeenCalledTimes(0);
   });
 });

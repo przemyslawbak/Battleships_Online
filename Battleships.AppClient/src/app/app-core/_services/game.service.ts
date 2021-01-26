@@ -192,4 +192,8 @@ export class GameService {
   public shouldBeDeployEnabled(length: number): boolean {
     return length < 10 ? false : true;
   }
+
+  public isPlayerDeployed(playerNumber: number): boolean {
+    return this.getGame().players[playerNumber].isDeployed;
+  }
 }
