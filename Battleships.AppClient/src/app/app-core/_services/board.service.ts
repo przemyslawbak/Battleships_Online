@@ -20,6 +20,14 @@ export class BoardService {
     private cells: BoardCellService
   ) {}
 
+  get getPlayersBoard(): BoardCell[][] {
+    return this.playersBoard;
+  }
+
+  set setPlayersBoard(board: BoardCell[][]) {
+    this.playersBoard = board;
+  }
+
   public isThereAWinner(players: Player[]): number {
     for (let i = 0; i < players.length; i++) {
       let hits = this.cells.filterHitCells(players[i].board);

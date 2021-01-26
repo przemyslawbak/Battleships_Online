@@ -7,6 +7,22 @@ export class FleetService {
   public fleetWaiting: ShipComponent[] = [];
   public fleetDeployed: ShipComponent[] = [];
 
+  get getFleetWaiting(): ShipComponent[] {
+    return this.fleetWaiting;
+  }
+
+  set setFleetWaiting(fleet: ShipComponent[]) {
+    this.fleetWaiting = fleet;
+  }
+
+  get getFleetDeployed(): ShipComponent[] {
+    return this.fleetDeployed;
+  }
+
+  set setFleetDeployed(fleet: ShipComponent[]) {
+    this.fleetDeployed = fleet;
+  }
+
   public createFleet(): Array<ShipComponent> {
     return [
       { size: 4, rotation: 0 },
