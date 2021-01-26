@@ -12,11 +12,9 @@ import { AuthService } from '@services/auth.service';
 export class CloseComponent implements OnInit {
   constructor(private route: ActivatedRoute, private auth: AuthService) {}
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     let loginResponse = this.getTokenResponse();
-    if (loginResponse) {
-      this.auth.setAuth(loginResponse);
-    }
+    this.auth.setAuth(loginResponse);
 
     parent.window.close();
   }
