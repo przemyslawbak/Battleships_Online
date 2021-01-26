@@ -41,16 +41,6 @@ export class JoinComponent implements OnInit {
     return e && e.valid;
   }
 
-  public isChanged(name: string) {
-    const e = this.getFormControl(name);
-    return e && (e.dirty || e.touched);
-  }
-
-  public hasError(name: string) {
-    const e = this.getFormControl(name);
-    return e && (e.dirty || e.touched) && !e.valid;
-  }
-
   private getFormControl(name: string) {
     return this.form.get(name);
   }
@@ -64,5 +54,17 @@ export class JoinComponent implements OnInit {
 
   public onBack() {
     this.router.navigate(['']);
+  }
+
+  //todo: test below
+
+  public isChanged(name: string) {
+    const e = this.getFormControl(name);
+    return e && (e.dirty || e.touched);
+  }
+
+  public hasError(name: string) {
+    const e = this.getFormControl(name);
+    return e && (e.dirty || e.touched) && !e.valid;
   }
 }

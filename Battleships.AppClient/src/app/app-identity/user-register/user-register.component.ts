@@ -31,21 +31,6 @@ export class RegisterComponent {
     this.createForm();
   }
 
-  public isValid(name: string) {
-    const e = this.getFormControl(name);
-    return e && e.valid;
-  }
-
-  public isChanged(name: string) {
-    const e = this.getFormControl(name);
-    return e && (e.dirty || e.touched);
-  }
-
-  public hasError(name: string) {
-    const e = this.getFormControl(name);
-    return e && (e.dirty || e.touched) && !e.valid;
-  }
-
   public beforeSubmittingForm(): void {
     this.recaptchaV3Service.execute('formSubmit').subscribe((token) => {
       this.onSubmit(token);
@@ -104,5 +89,22 @@ export class RegisterComponent {
       this.onRegisteredLogin(model);
       this.securityService.delayForBruteForce(10);
     });
+  }
+
+  //todo: test below
+
+  public isValid(name: string) {
+    const e = this.getFormControl(name);
+    return e && e.valid;
+  }
+
+  public isChanged(name: string) {
+    const e = this.getFormControl(name);
+    return e && (e.dirty || e.touched);
+  }
+
+  public hasError(name: string) {
+    const e = this.getFormControl(name);
+    return e && (e.dirty || e.touched) && !e.valid;
   }
 }

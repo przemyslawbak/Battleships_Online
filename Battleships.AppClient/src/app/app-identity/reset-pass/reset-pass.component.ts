@@ -43,11 +43,6 @@ export class ForgottenComponent {
     });
   }
 
-  public hasError(name: string) {
-    const e = this.getFormControl(name);
-    return e && (e.dirty || e.touched) && !e.valid;
-  }
-
   public onBack() {
     this.router.navigate(['join-site']);
   }
@@ -60,5 +55,12 @@ export class ForgottenComponent {
     this.form = this.formBuilder.group({
       Email: ['', [Validators.required, Validators.email]],
     });
+  }
+
+  //todo: test below
+
+  public hasError(name: string) {
+    const e = this.getFormControl(name);
+    return e && (e.dirty || e.touched) && !e.valid;
   }
 }

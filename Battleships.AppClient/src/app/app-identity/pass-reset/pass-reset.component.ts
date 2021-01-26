@@ -65,7 +65,7 @@ export class PassResetComponent implements OnInit {
     );
   }
 
-  private passwordConfirmValidator(control: FormControl): any {
+  public passwordConfirmValidator(control: FormControl): any {
     const p = control.root.get('Password');
     const pc = control.root.get('PasswordConfirm');
     if (p && pc) {
@@ -89,7 +89,7 @@ export class PassResetComponent implements OnInit {
     const model = {} as PassResetModel;
     model.email = email;
     model.password = '';
-    model.token = token.replace(/\$/g, '/');
+    model.token = token.replace(/\$/g, '/'); //todo: text service
 
     return model;
   }
