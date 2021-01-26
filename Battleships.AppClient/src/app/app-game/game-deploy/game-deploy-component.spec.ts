@@ -7,7 +7,6 @@ import {
   ComponentFixture,
   discardPeriodicTasks,
   fakeAsync,
-  flush,
   TestBed,
   tick,
 } from '@angular/core/testing';
@@ -23,6 +22,8 @@ import { Player } from '@models/player.model';
 import { GameSetupComponent } from '../game-setup/game-setup.component';
 import { GameChatComponent } from '../game-chat/game-chat.component';
 import { ShipComponent } from '../game-ship/ship.component';
+import { ChatMessage } from '@models/chat-message.model';
+import { FormsModule } from '@angular/forms';
 
 let component: GameDeployComponent;
 let fixture: ComponentFixture<GameDeployComponent>;
@@ -65,7 +66,6 @@ const textServiceMock = jasmine.createSpyObj('TextService', [
 const signalrServiceMock = jasmine.createSpyObj('SignalRService', [
   'broadcastChatMessage',
   'broadcastGameState',
-  'messageChange',
 ]);
 const playerServiceMock = jasmine.createSpyObj('PlayerService', [
   'arePlayersDeployed',
@@ -77,7 +77,7 @@ const playerServiceMock = jasmine.createSpyObj('PlayerService', [
 describe('GameDeployComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [],
+      imports: [FormsModule],
       declarations: [
         GameDeployComponent,
         GameSetupComponent,
@@ -405,4 +405,74 @@ describe('GameDeployComponent', () => {
     component.ngOnDestroy;
     expect(component.count).toBe(180);
   }));
+
+  it('template_OnDeploymentAllowed_HidingNotDeployingDisplayingDeployingElements', () => {
+    (boardServiceMock as any).getPlayersBoard = [[]];
+    (fleetServiceMock as any).getFleetWaiting = [];
+    gameServiceMock.getGame.and.returnValue({ gameId: 1 } as GameState);
+    fleetServiceMock.createFleet.and.returnValue([]);
+    const spy1: any = TestBed.inject(SignalRService);
+    spy1.messageChange = Observable.of({} as ChatMessage);
+    const spy2: any = TestBed.inject(GameService);
+    spy2.gameStateChange = Observable.of({} as GameState);
+    component.isDeploymentAllowed = true;
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.deploying-view')).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('.waiting-view')).toBeNull();
+  });
+
+  it('template_OnDeploymentNotAllowed_ShowingNotDeployingAndHidinDeployingElements', () => {
+    (boardServiceMock as any).getPlayersBoard = [[]];
+    (fleetServiceMock as any).getFleetWaiting = [];
+    gameServiceMock.getGame.and.returnValue({ gameId: 1 } as GameState);
+    fleetServiceMock.createFleet.and.returnValue([]);
+    const spy1: any = TestBed.inject(SignalRService);
+    spy1.messageChange = Observable.of({} as ChatMessage);
+    const spy2: any = TestBed.inject(GameService);
+    spy2.gameStateChange = Observable.of({} as GameState);
+    component.isDeploymentAllowed = false;
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.deploying-view')).toBeNull();
+    expect(fixture.nativeElement.querySelector('.waiting-view')).toBeTruthy();
+  });
+
+  it('template_OnDeploymentAllowedAndDeployed_ShowingDeployed', () => {
+    (boardServiceMock as any).getPlayersBoard = [[]];
+    (fleetServiceMock as any).getFleetWaiting = [];
+    gameServiceMock.getGame.and.returnValue({ gameId: 1 } as GameState);
+    fleetServiceMock.createFleet.and.returnValue([]);
+    const spy1: any = TestBed.inject(SignalRService);
+    spy1.messageChange = Observable.of({} as ChatMessage);
+    const spy2: any = TestBed.inject(GameService);
+    spy2.gameStateChange = Observable.of({} as GameState);
+    component.isDeploymentAllowed = true;
+    component.isDeployed = true;
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.deployed-view')).toBeTruthy();
+    expect(
+      fixture.nativeElement.querySelector('.not-deployed-view')
+    ).toBeNull();
+  });
+
+  it('template_OnDeploymentAllowedAndNotDeployed_ShowingDeployed', () => {
+    (boardServiceMock as any).getPlayersBoard = [[]];
+    (fleetServiceMock as any).getFleetWaiting = [];
+    const spy1: any = TestBed.inject(SignalRService);
+    spy1.messageChange = Observable.of({} as ChatMessage);
+    const spy2: any = TestBed.inject(GameService);
+    spy2.gameStateChange = Observable.of({} as GameState);
+    gameServiceMock.getGame.and.returnValue({ gameId: 1 } as GameState);
+    fleetServiceMock.createFleet.and.returnValue([]);
+    component.isDeploymentAllowed = true;
+    component.isDeployed = false;
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.deployed-view')).toBeNull();
+    expect(
+      fixture.nativeElement.querySelector('.not-deployed-view')
+    ).toBeTruthy();
+  });
 });
