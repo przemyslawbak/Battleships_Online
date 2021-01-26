@@ -61,10 +61,14 @@ export class GameDeployComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.countDown = null;
-    if (this._subBoard && this._subGame) {
-      this._subGame.unsubscribe();
+    if (this._subBoard) {
       this._subBoard.unsubscribe();
+    }
+    if (this._subGame) {
+      this._subGame.unsubscribe();
+    }
+    if (this.countDown) {
+      this.countDown.unsubscribe();
     }
   }
 

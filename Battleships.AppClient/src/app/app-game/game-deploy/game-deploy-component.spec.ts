@@ -3,7 +3,14 @@ import { SignalRService } from '@services/signal-r.service';
 import { FleetService } from '@services/fleet.service';
 import { BoardService } from '@services/board.service';
 import { GameDeployComponent } from './game-deploy-ships.component';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  discardPeriodicTasks,
+  fakeAsync,
+  flush,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { GameService } from '@services/game.service';
 import { AuthService } from '@services/auth.service';
@@ -356,4 +363,46 @@ describe('GameDeployComponent', () => {
     expect(signalrServiceMock.broadcastGameState).toHaveBeenCalledTimes(0);
     expect(signalrServiceMock.broadcastChatMessage).toHaveBeenCalledTimes(0);
   });
+
+  it('ngOnInit_OnDeploymentAlloweOrPlayerNotDeployed_StartsCountdown', fakeAsync(() => {
+    gameServiceMock.isGameStarted.and.returnValue(true);
+    gameServiceMock.isPlayerDeployed.and.returnValue(false);
+    playerServiceMock.arePlayersDeployed.and.returnValue(true);
+    gameServiceMock.getGameSpeedDivider.and.returnValue(1);
+    gameServiceMock.getGame.and.returnValue({
+      isDeploymentAllowed: true,
+    } as GameState);
+    gameServiceMock.getDeployCountdownValue.and.returnValue(31);
+    const spy: any = TestBed.inject(GameService);
+    spy.gameStateChange = Observable.of({} as GameState);
+    authServiceMock.getAuth.and.returnValue({
+      user: 'any_user',
+    } as LoginResponse);
+    component.ngOnInit();
+    tick(1000);
+    discardPeriodicTasks();
+    component.ngOnDestroy;
+    expect(component.count).toBe(29);
+  }));
+
+  it('ngOnInit_OnDeploymentNotAlloweOrPlayerDeployed_ResetsCountValue', fakeAsync(() => {
+    gameServiceMock.isGameStarted.and.returnValue(true);
+    gameServiceMock.isPlayerDeployed.and.returnValue(true);
+    playerServiceMock.arePlayersDeployed.and.returnValue(true);
+    gameServiceMock.getGameSpeedDivider.and.returnValue(1);
+    gameServiceMock.getGame.and.returnValue({
+      isDeploymentAllowed: false,
+    } as GameState);
+    gameServiceMock.getDeployCountdownValue.and.returnValue(31);
+    const spy: any = TestBed.inject(GameService);
+    spy.gameStateChange = Observable.of({} as GameState);
+    authServiceMock.getAuth.and.returnValue({
+      user: 'any_user',
+    } as LoginResponse);
+    component.ngOnInit();
+    tick(1000);
+    discardPeriodicTasks();
+    component.ngOnDestroy;
+    expect(component.count).toBe(180);
+  }));
 });
