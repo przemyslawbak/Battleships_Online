@@ -3,10 +3,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { AuthService } from '@services/auth.service';
 
-const signalrServiceMock = jasmine.createSpyObj('SignalRService', [
-  'broadcastChatMessage',
-  'messageChange',
-]);
 let component: CloseComponent;
 let fixture: ComponentFixture<CloseComponent>;
 const authServiceMock = jasmine.createSpyObj('AuthService', ['setAuth']);
@@ -37,7 +33,6 @@ describe('CloseComponent', () => {
 
     fixture = TestBed.createComponent(CloseComponent);
     component = fixture.componentInstance;
-    signalrServiceMock.broadcastChatMessage.calls.reset();
   });
 
   it('Component_ShouldBeCreated', () => {

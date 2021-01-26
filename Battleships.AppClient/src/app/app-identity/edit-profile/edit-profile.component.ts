@@ -1,5 +1,6 @@
+import { LoginResponse } from './../../app-core/_models/login-response.model';
 import { EditUser } from '@models/edit-user.model';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '@services/auth.service';
@@ -11,16 +12,18 @@ import { HttpService } from '@services/http.service';
   templateUrl: './edit-profile.component.html',
   styleUrls: ['./edit-profile.component.css'],
 })
-export class EditProfileComponent {
+export class EditProfileComponent implements OnInit {
   public form: FormGroup;
+
   constructor(
     private modalService: ModalService,
     private router: Router,
     private formBuilder: FormBuilder,
     private auth: AuthService,
     private http: HttpService
-  ) {
-    // initialize the form
+  ) {}
+
+  ngOnInit(): void {
     this.createForm();
   }
 
@@ -38,7 +41,7 @@ export class EditProfileComponent {
   }
 
   private createForm() {
-    let user = this.auth.getAuth();
+    let user: LoginResponse = this.auth.getAuth();
     this.form = this.formBuilder.group({
       Email: [user.email, [Validators.required, Validators.email]],
       DisplayName: [user.displayName, Validators.required],

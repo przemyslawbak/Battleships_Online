@@ -28,7 +28,6 @@ export class RegisterComponent {
     private recaptchaV3Service: ReCaptchaV3Service,
     private securityService: SecurityService
   ) {
-    // initialize the form
     this.createForm();
   }
 
