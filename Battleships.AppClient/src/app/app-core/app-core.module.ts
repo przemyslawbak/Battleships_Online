@@ -1,3 +1,4 @@
+import { WindowService } from './_services/window.service';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -66,6 +67,7 @@ import { SpinnerInterceptor } from './_helpers/spinner.interceptor';
       useClass: SpinnerInterceptor,
       multi: true,
     },
+    WindowService,
     AnimationService,
     GameInitializerService,
     BoardCellService,
