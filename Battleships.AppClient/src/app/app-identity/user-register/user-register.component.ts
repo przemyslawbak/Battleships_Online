@@ -91,8 +91,6 @@ export class RegisterComponent {
     });
   }
 
-  //todo: test below
-
   public isValid(name: string) {
     const e = this.getFormControl(name);
     return e && e.valid;

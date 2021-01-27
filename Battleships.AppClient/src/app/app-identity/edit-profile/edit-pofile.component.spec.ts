@@ -5,6 +5,7 @@ import { ModalService } from '@services/modal.service';
 import { Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
 import { HttpService } from '@services/http.service';
+import { LoginResponse } from '@models/login-response.model';
 let component: EditProfileComponent;
 let fixture: ComponentFixture<EditProfileComponent>;
 const authServiceMock = jasmine.createSpyObj('AuthService', [
@@ -36,5 +37,39 @@ describe('EditProfileComponent', () => {
 
   it('Component_ShouldBeCreated', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('ngOnInit_OnVariousFormValues_SetsFormValidOrNot', () => {
+    let user: LoginResponse = {
+      email: 'is_not_email',
+      displayName: 'any_name',
+    } as LoginResponse;
+    authServiceMock.getAuth.and.returnValue(user);
+    component.ngOnInit();
+    expect(component.form.status).toBe('INVALID');
+
+    user = {
+      email: '',
+      displayName: 'any_name',
+    } as LoginResponse;
+    authServiceMock.getAuth.and.returnValue(user);
+    component.ngOnInit();
+    expect(component.form.status).toBe('INVALID');
+
+    user = {
+      email: 'is@email.com',
+      displayName: 'any_name',
+    } as LoginResponse;
+    authServiceMock.getAuth.and.returnValue(user);
+    component.ngOnInit();
+    expect(component.form.status).toBe('VALID');
+
+    user = {
+      email: 'is@email.com',
+      displayName: '',
+    } as LoginResponse;
+    authServiceMock.getAuth.and.returnValue(user);
+    component.ngOnInit();
+    expect(component.form.status).toBe('INVALID');
   });
 });

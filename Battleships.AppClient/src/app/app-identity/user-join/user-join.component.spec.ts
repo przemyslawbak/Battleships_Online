@@ -74,4 +74,44 @@ describe('JoinComponent', () => {
 
     expect(routerMock.navigate).toHaveBeenCalledTimes(0);
   });
+
+  it('ngOnInit_OnProperEmailAndPassValues_SetsValidFormStatus', () => {
+    authServiceMock.isLoggedIn.and.returnValue(false);
+    let join: any = { Password: 'any_pass', Email: 'proper@email.com' };
+    component.ngOnInit();
+    component.form.controls['Password'].setValue(join.Password);
+    component.form.controls['Email'].setValue(join.Email);
+
+    expect(component.form.status).toBe('VALID');
+  });
+
+  it('ngOnInit_OnProperEmptyEmailAndProperPassValues_SetsInValidFormStatus', () => {
+    authServiceMock.isLoggedIn.and.returnValue(false);
+    let join: any = { Password: 'any_pass', Email: '' };
+    component.ngOnInit();
+    component.form.controls['Password'].setValue(join.Password);
+    component.form.controls['Email'].setValue(join.Email);
+
+    expect(component.form.status).toBe('INVALID');
+  });
+
+  it('ngOnInit_OnProperProperEmailAndEmptyPassValues_SetsInValidFormStatus', () => {
+    authServiceMock.isLoggedIn.and.returnValue(false);
+    let join: any = { Password: '', Email: 'proper@email.com' };
+    component.ngOnInit();
+    component.form.controls['Password'].setValue(join.Password);
+    component.form.controls['Email'].setValue(join.Email);
+
+    expect(component.form.status).toBe('INVALID');
+  });
+
+  it('ngOnInit_OnProperInvalidEmailAndProperPassValues_SetsInValidFormStatus', () => {
+    authServiceMock.isLoggedIn.and.returnValue(false);
+    let join: any = { Password: 'any_pass', Email: 'not_email' };
+    component.ngOnInit();
+    component.form.controls['Password'].setValue(join.Password);
+    component.form.controls['Email'].setValue(join.Email);
+
+    expect(component.form.status).toBe('INVALID');
+  });
 });

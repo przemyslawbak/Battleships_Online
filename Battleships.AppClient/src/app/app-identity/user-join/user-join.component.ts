@@ -16,15 +16,13 @@ export class JoinComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private route: ActivatedRoute
-  ) {
-    this.createForm();
-  }
+  ) {}
 
   public ngOnInit() {
     if (this.authService.isLoggedIn()) {
-      console.log('should navigate');
       this.router.navigate(['']);
     } else {
+      this.createForm();
       this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
   }
