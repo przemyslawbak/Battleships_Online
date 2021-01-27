@@ -22,10 +22,11 @@ export class JoinComponent implements OnInit {
 
   public ngOnInit() {
     if (this.authService.isLoggedIn()) {
+      console.log('should navigate');
       this.router.navigate(['']);
+    } else {
+      this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
-
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   public onSubmit() {
