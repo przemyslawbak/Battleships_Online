@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { environment } from '@environments/environment';
 
-import { AuthService } from '@services/auth.service';
 import { TextService } from '@services/text.service';
 import { WindowService } from '@services/window.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 declare let window: any;
 
@@ -21,12 +19,9 @@ export class LoginExternalProvidersComponent implements OnInit {
   constructor(
     private windows: WindowService,
     private text: TextService,
-    private auth: AuthService,
     private spinner: NgxSpinnerService,
     private route: ActivatedRoute
   ) {}
-
-  //todo: test below
 
   public ngOnInit() {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
@@ -45,7 +40,6 @@ export class LoginExternalProvidersComponent implements OnInit {
       window,
       url
     );
-
     const checkIntervalId: NodeJS.Timeout = setInterval(() => {
       if (this.externalProviderWindow.closed) {
         clearInterval(checkIntervalId);
