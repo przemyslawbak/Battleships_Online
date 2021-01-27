@@ -11,6 +11,7 @@ import { ModalService } from '@services/modal.service';
 
 import { PassResetModel } from '@models/password-reset.model';
 import { HttpService } from '@services/http.service';
+import { TextService } from '@services/text.service';
 
 @Component({
   templateUrl: './pass-reset.component.html',
@@ -19,17 +20,18 @@ import { HttpService } from '@services/http.service';
 export class PassResetComponent implements OnInit {
   public form: FormGroup;
   public passModel: PassResetModel;
+
   constructor(
+    private text: TextService,
     private router: Router,
     private formBuilder: FormBuilder,
     private http: HttpService,
     private route: ActivatedRoute,
     private modalService: ModalService
-  ) {
-    this.createForm();
-  }
+  ) {}
 
   public ngOnInit(): void {
+    this.createForm();
     this.passModel = this.getPassResetModel();
   }
 
@@ -65,7 +67,7 @@ export class PassResetComponent implements OnInit {
     );
   }
 
-  public passwordConfirmValidator(control: FormControl): any {
+  private passwordConfirmValidator(control: FormControl): any {
     const p = control.root.get('Password');
     const pc = control.root.get('PasswordConfirm');
     if (p && pc) {
@@ -89,7 +91,7 @@ export class PassResetComponent implements OnInit {
     const model = {} as PassResetModel;
     model.email = email;
     model.password = '';
-    model.token = token.replace(/\$/g, '/'); //todo: text service
+    model.token = this.text.replaceSpecialCharacters(token);
 
     return model;
   }

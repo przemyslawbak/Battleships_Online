@@ -5,8 +5,6 @@ import { ModalService } from '@services/modal.service';
 import { Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
 import { HttpService } from '@services/http.service';
-import { LoginResponse } from '@models/login-response.model';
-
 let component: EditProfileComponent;
 let fixture: ComponentFixture<EditProfileComponent>;
 const authServiceMock = jasmine.createSpyObj('AuthService', [
