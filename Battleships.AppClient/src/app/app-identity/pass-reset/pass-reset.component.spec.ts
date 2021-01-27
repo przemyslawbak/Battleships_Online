@@ -1,11 +1,5 @@
 import { PassResetComponent } from './pass-reset.component';
-import {
-  ComponentFixture,
-  discardPeriodicTasks,
-  fakeAsync,
-  TestBed,
-  tick,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { TextService } from '@services/text.service';
 import { FormBuilder } from '@angular/forms';

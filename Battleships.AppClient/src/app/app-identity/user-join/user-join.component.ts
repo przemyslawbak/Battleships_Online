@@ -56,8 +56,6 @@ export class JoinComponent implements OnInit {
     this.router.navigate(['']);
   }
 
-  //todo: test below
-
   public isChanged(name: string) {
     const e = this.getFormControl(name);
     return e && (e.dirty || e.touched);

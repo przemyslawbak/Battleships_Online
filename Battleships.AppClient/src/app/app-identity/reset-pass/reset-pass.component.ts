@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -12,7 +12,7 @@ import { HttpService } from '@services/http.service';
   templateUrl: './reset-pass.component.html',
   styleUrls: ['./reset-pass.component.css'],
 })
-export class ForgottenComponent {
+export class ForgottenComponent implements OnInit {
   public form: FormGroup;
   constructor(
     private router: Router,
@@ -20,7 +20,9 @@ export class ForgottenComponent {
     private http: HttpService,
     private modalService: ModalService,
     private recaptchaV3Service: ReCaptchaV3Service
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.createForm();
   }
 
@@ -56,8 +58,6 @@ export class ForgottenComponent {
       Email: ['', [Validators.required, Validators.email]],
     });
   }
-
-  //todo: test below
 
   public hasError(name: string) {
     const e = this.getFormControl(name);
