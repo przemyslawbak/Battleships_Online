@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormGroup,
   FormControl,
@@ -18,7 +18,7 @@ import { HttpService } from '@services/http.service';
   templateUrl: './user-register.component.html',
   styleUrls: ['./user-register.component.css'],
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   public form: FormGroup;
   constructor(
     private router: Router,
@@ -27,7 +27,9 @@ export class RegisterComponent {
     private auth: AuthService,
     private recaptchaV3Service: ReCaptchaV3Service,
     private securityService: SecurityService
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.createForm();
   }
 

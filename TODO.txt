@@ -418,6 +418,7 @@ OK - modal info:
 	OK - big screen: change width of modal message window,
 
 future / next project:
+- testing all templates
 - split components into smaller files
 - walk through Jasmine docs: https://jasmine.github.io/2.0/introduction.html
 - Pro Angular 9 Animations examples,
