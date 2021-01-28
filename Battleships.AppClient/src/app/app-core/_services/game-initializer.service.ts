@@ -16,14 +16,12 @@ export class GameInitializerService {
     private signalRService: SignalRService
   ) {}
 
-  //todo: unit test all
-
   public async initGame(
     game: GameState,
     isAlreadyPlayed: boolean,
     isMulti: boolean,
     isEmptySlot: boolean
-  ) {
+  ): Promise<void> {
     const userName: string = this.auth.getAuth().user;
     const displayName: string = this.auth.getAuth().displayName;
     if (!game) {

@@ -1,5 +1,4 @@
 import { LoginResponse } from '@models/login-response.model';
-import { of } from 'rxjs';
 import { AuthGuard } from './auth.guard';
 
 describe('AuthGuard', () => {
