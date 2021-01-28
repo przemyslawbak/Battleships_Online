@@ -281,8 +281,6 @@ export class BoardService {
     return result;
   }
 
-  //todo: test below
-
   public resetAvoidCellsArray() {
     this.avoidCells = [];
   }

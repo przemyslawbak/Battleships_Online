@@ -11,6 +11,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpService } from '@services/http.service';
 import { CommentsService } from '@services/comments.service';
 import { ModalService } from '@services/modal.service';
+import { GameSetupComponent } from '../game-setup/game-setup.component';
+import { GameChatComponent } from '../game-chat/game-chat.component';
 
 let component: GamePlayComponent;
 let fixture: ComponentFixture<GamePlayComponent>;
@@ -61,7 +63,7 @@ describe('GamePlayComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule],
-      declarations: [GamePlayComponent],
+      declarations: [GamePlayComponent, GameSetupComponent, GameChatComponent],
       providers: [
         { provide: ModalService, useValue: modalServiceMock },
         { provide: Router, useValue: routerMock },

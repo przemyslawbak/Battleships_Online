@@ -60,19 +60,16 @@ export class AnimationService {
     spriteHeight: number
   ): Sprite {
     if (Math.abs(sprite.positionY) > imgSize.height) {
-      console.log('1');
       sprite.directionX = 0;
       sprite.directionY = 0;
       sprite.positionX = sprite.directionX * spriteWidth;
       sprite.positionY = sprite.directionY * spriteHeight;
     } else if (Math.abs(sprite.positionX) > imgSize.width - 300) {
-      console.log('2');
       sprite.directionX = 0;
       sprite.directionY -= 1;
       sprite.positionX = 0;
       sprite.positionY = sprite.directionY * spriteHeight;
     } else {
-      console.log('3');
       sprite.directionX -= 1;
       sprite.positionX = sprite.directionX * spriteWidth;
     }

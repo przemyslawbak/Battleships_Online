@@ -1,3 +1,5 @@
+import { Component } from '@angular/core';
+import { ShipComponent } from 'app/app-game/game-ship/ship.component';
 import { FleetService } from './fleet.service';
 
 describe('FleetService', () => {
@@ -254,5 +256,40 @@ describe('FleetService', () => {
 
     expect(shouldBe90).toBe(90);
     expect(shouldBe0).toBe(0);
+  });
+
+  it('getShipListItem_OnCertainStringParameter_ReturnsCenrtainArray', () => {
+    let fleetWaiting: ShipComponent[] = [{ size: 2 } as ShipComponent];
+    let fleetDeployed: ShipComponent[] = [
+      { size: 1 } as ShipComponent,
+      { size: 1 } as ShipComponent,
+    ];
+    let result: ShipComponent = fleetService.getShipListItem(
+      'x-fleetWaiting',
+      '0',
+      fleetWaiting,
+      fleetDeployed
+    );
+
+    expect(result.size).toBe(2);
+  });
+
+  it('getShipListItem_OnCertainStringParameter_ReturnsCenrtainArray', () => {
+    let fleetWaiting: ShipComponent[] = [
+      { size: 2 } as ShipComponent,
+      { size: 2 } as ShipComponent,
+    ];
+    let fleetDeployed: ShipComponent[] = [
+      { size: 1 } as ShipComponent,
+      { size: 1 } as ShipComponent,
+    ];
+    let result: ShipComponent = fleetService.getShipListItem(
+      'x-fleetDeployed',
+      '0',
+      fleetWaiting,
+      fleetDeployed
+    );
+
+    expect(result.size).toBe(1);
   });
 });

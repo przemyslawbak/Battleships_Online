@@ -104,7 +104,10 @@ export class FleetService {
     return random ? 90 : 0;
   }
 
-  //todo: test below
+  public moveFromWaitingToDeployed(): void {
+    this.fleetDeployed.push(this.fleetWaiting[0]);
+    this.fleetWaiting.splice(0, 1);
+  }
 
   public getShipListItem(
     name: string,
@@ -115,10 +118,5 @@ export class FleetService {
     return name.split('-')[1] == 'fleetWaiting'
       ? fleetWaiting[+id]
       : fleetDeployed[+id];
-  }
-
-  public moveFromWaitingToDeployed(): void {
-    this.fleetDeployed.push(this.fleetWaiting[0]);
-    this.fleetWaiting.splice(0, 1);
   }
 }
