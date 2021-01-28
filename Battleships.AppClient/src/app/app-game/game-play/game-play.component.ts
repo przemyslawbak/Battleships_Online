@@ -110,7 +110,7 @@ export class GamePlayComponent implements OnInit {
       }
       //if single player, not ended, not result displayed
       if (!game.gameMulti && !this.isResultBeingDisplayed && !this.gameEnded) {
-        this.aiPlayerNumber = this.findAiPlayerNumber(game.players); //todo: only once
+        this.aiPlayerNumber = this.findAiPlayerNumber(game.players);
         if (this.whoseTurnNumber == this.aiPlayerNumber) {
           let coord: Coordinates = this.ai.getFireCoordinates(
             this.boards[this.clientsPlayerNumber]
@@ -265,7 +265,6 @@ export class GamePlayComponent implements OnInit {
         !this.game.isGameSinglePlayer(),
         coord
       );
-      //todo: move calling animateSprite to the update Game Values method
       if (
         row >= 0 &&
         col >= 0 &&

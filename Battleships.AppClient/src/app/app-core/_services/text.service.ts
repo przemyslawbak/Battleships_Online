@@ -41,8 +41,6 @@ export class TextService {
     return token.replace(/\$/g, '/').replace(/\@/g, '=');
   }
 
-  //todo: test below
-
   public copyLink(gameLink: string) {
     document.addEventListener('copy', (e: ClipboardEvent) => {
       e.clipboardData.setData('text/plain', gameLink);
