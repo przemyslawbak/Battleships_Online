@@ -6,8 +6,6 @@ import { Observable, Subject } from 'rxjs';
 export class AnimationService {
   constructor() {}
 
-  //todo: unit test
-
   public checkForInterval(elapsed: number, frameInterval: number): boolean {
     return elapsed > frameInterval;
   }
@@ -22,6 +20,7 @@ export class AnimationService {
   public stopAnimation(stop: boolean) {
     return stop;
   }
+
   public createNewSprite(frame: number): Sprite {
     return {
       currentFrame: frame,
@@ -31,30 +30,6 @@ export class AnimationService {
       positionY: 0,
       stopped: false,
     } as Sprite;
-  }
-
-  public updateSpriteFrameOnPosition(
-    sprite: Sprite,
-    imgSize: { width: number; height: number },
-    spriteWidth: number,
-    spriteHeight: number
-  ): Sprite {
-    if (Math.abs(sprite.positionY) > imgSize.height) {
-      sprite.directionX = 0;
-      sprite.directionY = 0;
-      sprite.positionX = sprite.directionX * spriteWidth;
-      sprite.positionY = sprite.directionY * spriteHeight;
-    } else if (Math.abs(sprite.positionX) > imgSize.width - 300) {
-      sprite.directionX = 0;
-      sprite.directionY -= 1;
-      sprite.positionX = 0;
-      sprite.positionY = sprite.directionY * spriteHeight;
-    } else {
-      sprite.directionX -= 1;
-      sprite.positionX = sprite.directionX * spriteWidth;
-    }
-
-    return sprite;
   }
 
   public updateSpriteOnStopped(sprite: Sprite): Sprite {
@@ -76,5 +51,32 @@ export class AnimationService {
     };
 
     return subject.asObservable();
+  }
+
+  public updateSpriteFrameOnPosition(
+    sprite: Sprite,
+    imgSize: { width: number; height: number },
+    spriteWidth: number,
+    spriteHeight: number
+  ): Sprite {
+    if (Math.abs(sprite.positionY) > imgSize.height) {
+      console.log('1');
+      sprite.directionX = 0;
+      sprite.directionY = 0;
+      sprite.positionX = sprite.directionX * spriteWidth;
+      sprite.positionY = sprite.directionY * spriteHeight;
+    } else if (Math.abs(sprite.positionX) > imgSize.width - 300) {
+      console.log('2');
+      sprite.directionX = 0;
+      sprite.directionY -= 1;
+      sprite.positionX = 0;
+      sprite.positionY = sprite.directionY * spriteHeight;
+    } else {
+      console.log('3');
+      sprite.directionX -= 1;
+      sprite.positionX = sprite.directionX * spriteWidth;
+    }
+
+    return sprite;
   }
 }
