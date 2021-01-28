@@ -13,7 +13,10 @@ const textServiceMock = jasmine.createSpyObj('TextService', [
 ]);
 const routerMock = jasmine.createSpyObj('Router', ['navigate']);
 const httpServiceMock = jasmine.createSpyObj('HttpService', ['postGameState']);
-const modalServiceMock = jasmine.createSpyObj('ServiceMock', ['add', 'remove']);
+const modalServiceMock = jasmine.createSpyObj('ModalService', [
+  'add',
+  'remove',
+]);
 
 describe('PassResetComponent', () => {
   beforeEach(() => {
