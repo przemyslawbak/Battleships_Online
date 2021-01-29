@@ -106,9 +106,9 @@ OK - misc:
 	OK - update signalr-service tests: Cannot read property 'subscribe' of undefined,
 	X - on connection reset redirecting to home page is pissing off a bit,
 	OK - adjusted security method to be async,
-	- any text parsing / formatting methods move to text service,
+	OK - any text parsing / formatting methods move to text service,
 	OK - services unit testing,
-	- components unit testing,
+	OK - components unit testing,
 	- all units test check for `has no expectations` warnings,
 	OK - front-end unit testing: https://angular.io/guide/testing + Freeman
 	NO - sanitize inputs in front end?

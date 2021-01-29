@@ -213,7 +213,7 @@ export class GameDeployComponent implements OnInit {
   public playWithAi(): void {
     let game = this.game.getGame();
     game.gameMulti = false;
-    game.players = this.player.setComputerPlayerOpponent(game.players);
+    game.players = this.game.setComputerOpponent(game.players);
 
     this.signalRService.broadcastGameState(game);
   }

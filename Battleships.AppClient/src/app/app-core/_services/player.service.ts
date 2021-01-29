@@ -30,15 +30,4 @@ export class PlayerService {
   public arePlayersDeployed(players: Player[]) {
     return players[0].isDeployed && players[1].isDeployed ? true : false;
   }
-
-  public setComputerPlayerOpponent(players: Player[]): Player[] {
-    for (let i = 0; i < players.length; i++) {
-      if (players[i].userName == '') {
-        players[i].userName = 'COMPUTER';
-        players[i].displayName = 'COMPUTER';
-
-        return players;
-      }
-    }
-  }
 }

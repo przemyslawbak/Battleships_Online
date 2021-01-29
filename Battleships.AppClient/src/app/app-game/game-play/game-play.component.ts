@@ -444,20 +444,9 @@ export class GamePlayComponent implements OnInit {
   public playWithAi(): void {
     let game = this.game.getGame();
     game.gameMulti = false;
-    game.players = this.setComputerOpponent(game.players);
+    game.players = this.game.setComputerOpponent(game.players);
 
     this.signalRService.broadcastGameState(game);
-  }
-
-  private setComputerOpponent(players: Player[]): Player[] {
-    for (let i = 0; i < players.length; i++) {
-      if (players[i].userName == '') {
-        players[i].userName = 'COMPUTER';
-        players[i].displayName = 'COMPUTER';
-
-        return players;
-      }
-    }
   }
 
   private animateSprite(isHit: boolean, col: number, row: number): void {

@@ -73,15 +73,4 @@ describe('PlayerService', () => {
 
     expect(result).toBe(false);
   });
-
-  it('setComputerPlayerOpponent_OnEmptyGameSlot_SetsNamesForComputer', () => {
-    let players: Player[] = [
-      { isDeployed: false, userName: 'human' } as Player,
-      { isDeployed: true, userName: '' } as Player,
-    ];
-    let result: Player[] = playerService.setComputerPlayerOpponent(players);
-
-    expect(result[1].userName).toBe('COMPUTER');
-    expect(result[1].displayName).toBe('COMPUTER');
-  });
 });

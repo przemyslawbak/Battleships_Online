@@ -68,17 +68,15 @@ export class GameService {
     return this.gameState.gameDifficulty == 'easy' ? true : false;
   }
 
-  //todo: test after
-
   public getDifficultyValue(value: any): string {
     return value;
   }
 
-  public getJoinTypeValue(value: any): boolean {
+  public getJoinTypeValue(value: string): boolean {
     return value == 'open' ? true : false;
   }
 
-  public getSpeedDividerValue(value: any): number {
+  public getSpeedDividerValue(value: string): number {
     switch (value) {
       case 'slow':
         return 1;
@@ -102,7 +100,7 @@ export class GameService {
       players[0].userName = userName;
       players[0].displayName = displayName;
     } else {
-      players[1].userName = this.auth.getAuth().user;
+      players[1].userName = userName;
       players[1].displayName = displayName;
     }
 
@@ -126,10 +124,6 @@ export class GameService {
     return gameUsersNames.includes(userName);
   }
 
-  public isGameMultiplayerAndAnyoneConnected(game: GameState): boolean {
-    return game.gameMulti || !this.checkForAnyPlayerConnected(game.players);
-  }
-
   public setComputerOpponent(players: Player[]): Player[] {
     for (let i = 0; i < players.length; i++) {
       if (players[i].userName == '') {
@@ -141,8 +135,8 @@ export class GameService {
     }
   }
 
-  public checkForEmptySlots(game: GameState): boolean {
-    let gameUserNames: string[] = this.getUsersNames(game.players);
+  public checkForEmptySlots(players: Player[]): boolean {
+    let gameUserNames: string[] = this.getUsersNames(players);
     return gameUserNames.includes('') ? true : false;
   }
 
@@ -154,12 +148,6 @@ export class GameService {
     } else {
       this.router.navigate(['deploy-ships']);
     }
-  }
-
-  private checkForAnyPlayerConnected(players: Player[]): boolean {
-    return players[0].userName == '' || players[1].userName == ''
-      ? false
-      : true;
   }
 
   public getDeployCountdownValue(divider: number): number {
