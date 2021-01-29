@@ -1,4 +1,5 @@
 import { BoardCell } from '@models/board-cell.model';
+import { Player } from '@models/player.model';
 import { PlayerService } from '@services/player.service';
 import { AuthService } from './auth.service';
 import { GameService } from './game.service';
@@ -31,5 +32,56 @@ describe('PlayerService', () => {
     let result = playerService.checkForWinner(hits);
 
     expect(result).toBe(true);
+  });
+
+  it('findComputerPlayerNumber_OnComputersName_ReturnPlayerNumber', () => {
+    let players: Player[] = [
+      { userName: 'COMPUTER' } as Player,
+      { userName: 'human' } as Player,
+    ];
+    let result: number = playerService.findComputerPlayerNumber(players);
+
+    expect(result).toBe(0);
+  });
+
+  it('findComputerPlayerNumber_OnComputersName_ReturnPlayerNumber', () => {
+    let players: Player[] = [
+      { userName: 'COMPUTER' } as Player,
+      { userName: 'human' } as Player,
+    ];
+    let result: number = playerService.findComputerPlayerNumber(players);
+
+    expect(result).toBe(0);
+  });
+
+  it('arePlayersDeployed_OnBothDeployed_ReturnsTrue', () => {
+    let players: Player[] = [
+      { isDeployed: true } as Player,
+      { isDeployed: true } as Player,
+    ];
+    let result: boolean = playerService.arePlayersDeployed(players);
+
+    expect(result).toBe(true);
+  });
+
+  it('arePlayersDeployed_OnAnyNotDeployed_ReturnsFalse', () => {
+    let players: Player[] = [
+      { isDeployed: false } as Player,
+      { isDeployed: true } as Player,
+    ];
+    let result: boolean = playerService.arePlayersDeployed(players);
+
+    expect(result).toBe(false);
+  });
+
+  it('setComputerPlayerOpponent_OnEmptyGameSlot_SetsNamesForComputer', () => {
+    let players: Player[] = [
+      { isDeployed: false, userName: 'human' } as Player,
+      { isDeployed: true, userName: '' } as Player,
+    ];
+    let result: Player[] = playerService.setComputerPlayerOpponent(players);
+
+    expect(result[1].userName).toBe('COMPUTER');
+    expect(result[1].displayName).toBe('COMPUTER');
   });
 });

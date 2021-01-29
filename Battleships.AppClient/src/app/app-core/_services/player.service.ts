@@ -19,14 +19,16 @@ export class PlayerService {
     return hits.length == 20 ? true : false;
   }
 
-  //todo: test below
-
   public findComputerPlayerNumber(players: Player[]): number {
     for (let i = 0; i < players.length; i++) {
       if (players[i].userName == 'COMPUTER') {
         return i;
       }
     }
+  }
+
+  public arePlayersDeployed(players: Player[]) {
+    return players[0].isDeployed && players[1].isDeployed ? true : false;
   }
 
   public setComputerPlayerOpponent(players: Player[]): Player[] {
@@ -38,9 +40,5 @@ export class PlayerService {
         return players;
       }
     }
-  }
-
-  public arePlayersDeployed(players: Player[]) {
-    return players[0].isDeployed && players[1].isDeployed ? true : false;
   }
 }
