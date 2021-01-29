@@ -75,24 +75,22 @@ export class AiService {
     return board;
   }
 
-  //todo: test below
-
   public autoDeploy(
     board: BoardCell[][],
-    fleet: ShipComponent[],
-    computer: boolean,
+    fleetWaiting: ShipComponent[],
+    computersFleet: boolean,
     isDeploymentAllowed: boolean
   ): BoardCell[][] {
     if (isDeploymentAllowed) {
-      while (fleet.length > 0) {
-        board = this.autoDeployShip(board, fleet[0]);
-        if (computer) {
-          fleet.splice(0, 1);
+      while (fleetWaiting.length > 0) {
+        board = this.autoDeployShip(board, fleetWaiting[0]);
+        if (computersFleet) {
+          fleetWaiting.splice(0, 1);
         } else {
           this.fleet.moveFromWaitingToDeployed();
         }
       }
-      if (!computer) {
+      if (!computersFleet) {
         board = this.board.resetEmptyCellsColors(board);
       }
     }
