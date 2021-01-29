@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { LoginResponse } from '@models/login-response.model';
 import { HttpService } from './http.service';
 import { HttpRequest } from '@angular/common/http';
 import { TextService } from './text.service';
+import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -23,12 +24,12 @@ export class AuthService {
       Password: password,
       GrantType: 'password',
     };
-    let subject = new Subject<LoginResponse>();
-    this.http.postForLoginResponse(data).subscribe((user) => {
-      this.setAuth(user);
-      subject.next(user);
-    });
-    return subject.asObservable();
+    return this.http.postForLoginResponse(data).pipe(
+      map((user) => {
+        this.setAuth(user);
+        return user;
+      })
+    );
   }
 
   public addAuthHeader(request: HttpRequest<any>): HttpRequest<any> {

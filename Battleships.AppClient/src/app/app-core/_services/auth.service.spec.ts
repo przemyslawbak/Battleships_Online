@@ -76,18 +76,21 @@ describe('AuthService', () => {
     expect(localStorage.getItem('foo')).toBe('bar');
   });
 
+  //todo: has no expectations
   it('login_OnNotReceivedUser_DoesNotSetAuth', (done) => {
     user = null;
     httpServiceMock.postForLoginResponse.and.returnValue(of(user));
     localStorage.setItem('auth', 'bar');
 
+    let x: LoginResponse;
     authService.login('some_email', 'some_pass').subscribe((data) => {
-      expect(data).toBeFalse;
+      expect(data).toBe(null);
       expect(localStorage.getItem('auth')).toBe(null);
+      done();
     });
-    done();
   });
 
+  //todo: has no expectations
   it('login_OnReceivedUser_DoesSetAuth', (done) => {
     httpServiceMock.postForLoginResponse.and.returnValue(of(user));
     httpServiceMock.postForRefreshToken.and.returnValue(of(user));
@@ -102,8 +105,8 @@ describe('AuthService', () => {
       expect(value.refreshToken).toBe(user.refreshToken);
       expect(value.displayName).toBe(user.displayName);
       expect(value.role).toBe(user.role);
+      done();
     });
-    done();
   });
 
   it('addAuthHeader_OnNullUser_NotCallsAddAuthHeader', () => {
@@ -127,7 +130,7 @@ describe('AuthService', () => {
     localStorage.clear();
     let value: LoginResponse = authService.getAuth();
 
-    expect(value).toBeNull;
+    expect(value).toBe(null);
   });
 
   it('getAuth_OnUserValue_ReturnsUser', () => {

@@ -53,7 +53,6 @@ OK - identity:
 	OK - bug: after refreshing token timer does not start again,
 	OK - bug: route.data.roles is undefined,
 	OK - bug: in auth guard on canActivate fail display info,
-	- in external login components use proper Angular events,
 	OK - switch off spinner for refreshing token, in the interceptor, use logic from error-interceptor,
 	OK - refactored auth-service completly and changed refresh-token system,
 	OK - bug: refresh timer works, need to set up correctly,
@@ -100,7 +99,7 @@ OK - identity:
 	OK - bug 2x hits RefreshToken
 OK - misc:
 	OK - bug: auto drop cell not works properly,
-	- remove all `===`,
+	OK - remove all `===`,
 	OK - signalr service spec test error: Cannot read property 'and' of undefined,
 	OK - update spinner-interceptor tests for refresh-token case,
 	OK - update signalr-service tests: Cannot read property 'subscribe' of undefined,
@@ -109,7 +108,7 @@ OK - misc:
 	OK - any text parsing / formatting methods move to text service,
 	OK - services unit testing,
 	OK - components unit testing,
-	- all units test check for `has no expectations` warnings,
+	OK - all units test check for `has no expectations` warnings,
 	OK - front-end unit testing: https://angular.io/guide/testing + Freeman
 	NO - sanitize inputs in front end?
 	OK - remove all console.log();

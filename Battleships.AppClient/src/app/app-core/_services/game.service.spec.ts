@@ -46,7 +46,7 @@ describe('GameService', () => {
     gameService.setGame(game);
     let result: GameState = gameService.getGame();
 
-    expect(result).toBeNull;
+    expect(result).toBe(null);
   });
 
   it('getGame_OnGameObject_ReturnsGameObject', () => {
