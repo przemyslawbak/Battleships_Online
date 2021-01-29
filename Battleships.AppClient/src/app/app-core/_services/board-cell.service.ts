@@ -52,7 +52,7 @@ export class BoardCellService {
     shipArr: BoardCell[]
   ): BoardCell[] {
     return forbiddenCells.filter((x) =>
-      shipArr.some((y) => x.col === y.col && x.row === y.row)
+      shipArr.some((y) => x.col == y.col && x.row == y.row)
     );
   }
 

@@ -33,11 +33,11 @@ export class ErrorInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): any {
-    if (error.status === 0) {
+    if (error.status == 0) {
       this.error.handleBackendError(error);
-    } else if (error.status === 401 || error.status === 403) {
+    } else if (error.status == 401 || error.status == 403) {
       this.error.handleAuthError(error);
-    } else if (error.status === 429) {
+    } else if (error.status == 429) {
       this.error.handleBotError(error);
     } else {
       this.error.handleOtherError(error);

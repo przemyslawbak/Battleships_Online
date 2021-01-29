@@ -24,12 +24,12 @@ export class ModalService {
   }
 
   public open(id: string, message: string): void {
-    const modal = this.modals.find((arr) => arr.id === id);
+    const modal = this.modals.find((arr) => arr.id == id);
     modal.open(message);
   }
 
   public close(id: string): void {
-    const modal = this.modals.find((arr) => arr.id === id);
+    const modal = this.modals.find((arr) => arr.id == id);
     modal.close();
   }
 }

@@ -96,7 +96,7 @@ export class GameService {
     userName: string,
     displayName: string
   ): Player[] {
-    if (players[0].userName === '') {
+    if (players[0].userName == '') {
       players[0].userName = userName;
       players[0].displayName = displayName;
     } else {
