@@ -1,10 +1,4 @@
-import { GameService } from '@services/game.service';
-import { AuthService } from '@services/auth.service';
-import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
 import { GameInitializerService } from './game-initializer.service';
-import { ModalService } from './modal.service';
-import { SignalRService } from './signal-r.service';
 import { GameState } from '@models/game-state.model';
 import { LoginResponse } from '@models/login-response.model';
 
@@ -24,16 +18,6 @@ describe('GameInitializerService', () => {
   ]);
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        GameInitializerService,
-        { provide: ModalService, useValue: modalServiceMock },
-        { provide: Router, useValue: routerMock },
-        { provide: AuthService, useValue: authServiceMock },
-        { provide: GameService, useValue: gameServiceMock },
-        { provide: SignalRService, useValue: signalrServiceMock },
-      ],
-    });
     service = new GameInitializerService(
       modalServiceMock,
       routerMock,

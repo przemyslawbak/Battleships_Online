@@ -30,10 +30,6 @@ describe('AiService', () => {
   ]);
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      providers: [],
-    });
     aiService = new AiService(
       boardServiceMock,
       fleetServiceMock,
