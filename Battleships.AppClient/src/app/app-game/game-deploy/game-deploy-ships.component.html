@@ -16,26 +16,24 @@
                   {{ count }} s.
                 </h4>
                 <div>Remaining ships:</div>
-                <h4>{{ fleet.getFleetWaiting.length }}</h4>
+                <h4>{{ getFleetWaiting().length }}</h4>
               </div>
               <div class="ships col-sm-6">
                 <div>(click to rotate)</div>
                 <div class="droplist col-sm-6">
                   <div
-                    *ngIf="fleet.getFleetWaiting.length > 0"
+                    *ngIf="getFleetWaiting().length > 0"
                     class="fleet-waiting"
                   >
-                    <div
-                      [style.size]="30 * fleet.getFleetWaiting[0].size + 'px'"
-                    >
+                    <div [style.size]="30 * getFleetWaiting()[0].size + 'px'">
                       <app-ship
                         #nextItem
                         [ngClass]="
-                          fleet.getFleetWaiting[0].rotation == 90
+                          getFleetWaiting()[0].rotation == 90
                             ? 'rotate'
                             : 'rotateNot'
                         "
-                        [size]="fleet.getFleetWaiting[0].size"
+                        [size]="getFleetWaiting()[0].size"
                         (click)="setRotation(0 + '-fleetWaiting')"
                       ></app-ship>
                     </div>
@@ -124,7 +122,7 @@
     <div class="board text-center" #board>
       <div
         class="boardRow"
-        *ngFor="let row of board.getPlayersBoard; let i = index"
+        *ngFor="let row of getPlayersBoard(); let i = index"
       >
         <div *ngFor="let box of row; let j = index">
           <div

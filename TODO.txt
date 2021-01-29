@@ -44,7 +44,7 @@ OK - footer:
 	OK - footer styles,
 	OK - fill up footer with data,
 OK - identity:
-	- if 401/409, log off and communicate to login again,
+	NO - if 401/409, log off and inform to login again,
 	OK - updated auth-service login_OnReceivedUser_DoesSetAuth: Async function did not complete within 5000ms,
 	OK - updated auth-service login_OnNotReceivedUser_DoesNotSetAuth: Async function did not complete within 5000ms,
 	OK - what about refresh timer when browser refreshed?
