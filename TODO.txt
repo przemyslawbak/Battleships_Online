@@ -9,6 +9,15 @@ DOUBTS:
 - shoudl I split services around in separate folders?
 - should I, for example, keep fleet props in fleet service and use them from components?
 
+!!!!!!!!
+	- bug: when joining game again - game is null in signalr service,
+	- bug: mayebe need to reset hub connection only when joining to new game?
+	- bug: when starting single player game twice, something is wrong, need to check it,
+	- bug: when rejoining game disconnects the hub,
+	- bug: when can not refresh token, empty game is displayed - removes only one empty game,
+	- bug: on connection reset redirecting to home page is pissing off a bit,
+	- bug: errors on connecting to multiplayer game,
+
 OK - error service:
 	NO - call delayForBruteForce for each method call, test it,
 	OK - after refactoring - bug: can not return Observable<boolean>,
@@ -103,7 +112,6 @@ OK - misc:
 	OK - signalr service spec test error: Cannot read property 'and' of undefined,
 	OK - update spinner-interceptor tests for refresh-token case,
 	OK - update signalr-service tests: Cannot read property 'subscribe' of undefined,
-	X - on connection reset redirecting to home page is pissing off a bit,
 	OK - adjusted security method to be async,
 	OK - any text parsing / formatting methods move to text service,
 	OK - services unit testing,
@@ -188,6 +196,7 @@ OK - update game status with:
 	OK - can be game started?
 	OK - update backend
 OK - in deploy view and component:
+	OK - bug: problem with board service prop accessing,
 	OK - remove not needed code from `getAutoDeployCoordinates`
 	OK - bug: ship deploy click did not work,
 	OK - in game-play & game-deploy use time dividers,
@@ -230,8 +239,6 @@ OK - in deploy view and component:
 	OK - bug: deployed ships are not visible,
 	OK - bug: status data display is shifted, why?
 OK - in connect component:
-	X - bug: when joining game again - game is null i signalr service,
-	X - bug: maebe need to reset hub connection only when joining to new game?
 	OK - bug: can not join played game,
 	OK - what with played games if player joins other game? - disconnect signalr first, show message, clear gamestate,
 	OK - what with played games if player creates new game? - disconnect signalr first, show message, clear gamestate,
@@ -242,7 +249,7 @@ OK - in connect component:
 	OK - err: ERROR TypeError: this.thenable is undefined
 	OK - bug: when playing game and joining another, on disconnect just redirects to the main view,
 OK - in game-play component:
-	- load sprites on init,
+	OK - load sprites on init,
 	OK - in game-play & game-deploy use time dividers,
 	OK - bug: on opponent disconnects can not see buttons,
 	OK - bug: small size screen long board messages moves board down in relation to animated sprites,
@@ -310,7 +317,6 @@ OK - in game-play component:
 	OK - adjust: when displaying hit result, do not allow to fire,
 	OK - adjust: what if shooting cell already shot?
 OK - single player:
-	X - bug: when starting single player game twice, something is wrong, need to check it,
 	OK - bug: on easy difficulty computer is playing at least medium,
 	OK - bug: when logged out and game is null, single player game counter is still running,
 	OK - set default difficulty to hard,
@@ -383,8 +389,6 @@ OK - privacy component:
 	NO - cookies popup/modal,
 	OK - link in nav menu
 OK - open games list component:
-	X - bug: when rejoining game disconnects the hub,
-	X - bug: when can not refresh token, empty game is displayed - removes only one empty game,
 	OK - on game list load check for empty games and remove them,
 	OK - empty game slot - green,
 	OK - in chrome table first column has still wrong size,

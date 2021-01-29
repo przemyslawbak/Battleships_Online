@@ -16,6 +16,7 @@ import { Player } from '@models/player.model';
 import { AiService } from '@services/ai.service';
 import { Coordinates } from '@models/coordinates.model';
 import { HttpService } from '@services/http.service';
+import { AnimationService } from '@services/animation.service';
 
 @Component({
   templateUrl: './game-play.component.html',
@@ -51,6 +52,7 @@ export class GamePlayComponent implements OnInit {
   private _subGame: any;
 
   constructor(
+    private animation: AnimationService,
     private ai: AiService,
     private http: HttpService,
     private comments: CommentsService,
@@ -70,7 +72,14 @@ export class GamePlayComponent implements OnInit {
     }
   }
 
+  //todo: add `animation` to spec constructor
+  private loadSprites(): void {
+    this.animation.loadImage('https://i.ibb.co/H4f84Wn/explode.png');
+    this.animation.loadImage('https://i.ibb.co/c3WLWN1/splash.png');
+  }
+
   public ngOnInit(): void {
+    this.loadSprites();
     if (!this.game.isGameStarted()) {
       this.router.navigate(['']);
     } else {
