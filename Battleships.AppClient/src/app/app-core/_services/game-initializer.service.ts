@@ -28,15 +28,11 @@ export class GameInitializerService {
       this.informAboutGameNotFound();
       return;
     }
-    if (game && !isMulti) {
-      this.informAboutSinglePlayerGame();
-      return;
-    }
     if (game && isAlreadyPlayed) {
       this.goToInit(game);
       return;
     }
-    if (game && !isAlreadyPlayed && isMulti && isEmptySlot) {
+    if (game && !isAlreadyPlayed && isEmptySlot) {
       game.players = this.game.setPlayerNames(
         game.players,
         userName,
@@ -55,12 +51,6 @@ export class GameInitializerService {
   private informAboutGameNotFound() {
     this.router.navigate(['']).then(() => {
       this.modalService.open('info-modal', 'Could not find game.');
-    });
-  }
-
-  private informAboutSinglePlayerGame() {
-    this.router.navigate(['']).then(() => {
-      this.modalService.open('info-modal', 'Game is for singe player only.');
     });
   }
 
