@@ -11,8 +11,6 @@ export class WindowService {
     private modalService: ModalService
   ) {}
 
-  //todo: test below
-
   public openExternalLoginWindow(
     externalProviderWindow: Window,
     params: string,
@@ -34,10 +32,10 @@ export class WindowService {
   public handleCloseExternalProvider(
     returnUrl: string,
     externalProviderWindow: Window
-  ) {
+  ): void {
     if (this.auth.isLoggedIn()) {
-      this.router.navigateByUrl(returnUrl);
       this.closePopUpWindow(externalProviderWindow);
+      this.router.navigateByUrl(returnUrl);
     } else {
       this.modalService.open(
         'info-modal',
@@ -47,7 +45,7 @@ export class WindowService {
     }
   }
 
-  public closePopUpWindow(externalProviderWindow: Window) {
+  public closePopUpWindow(externalProviderWindow: Window): void {
     if (externalProviderWindow) {
       externalProviderWindow.close();
     }
