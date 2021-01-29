@@ -33,13 +33,13 @@ namespace Battleships.Services
             }
         }
 
-        public async Task SendChatMessageToUsersInGame(string message, string[] playerNames, IHubCallerClients clients)
+        public async Task SendChatMessageToUsersInGame(string message, string[] playerNames, IHubCallerClients clients, string callersUserName)
         {
             foreach (string name in playerNames)
             {
                 if (_nameValidator.IsValidUserName(name))
                 {
-                    await _sender.SendChatMesssage(name, message, clients);
+                    await _sender.SendChatMesssage(name, message, clients, callersUserName);
                 }
             }
         }

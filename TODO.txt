@@ -1,22 +1,21 @@
 DOUBTS:
 - using user service - user manager + repo?
-- is my DAL a DAL or Repo layer?
+- is my DAL used correctly?
 - do I need method comments in service classes?
 - sanitize inputs with EF, I dont think so.
 - unit test one scenario/result if there is no logic?
-- services with components?
+- services with components in same folder?
 - should all subscriptions be unsubscribed?
 - shoudl I split services around in separate folders?
 - should I, for example, keep fleet props in fleet service and use them from components?
 
 !!!!!!!!
 	- bug: when joining game again - game is null in signalr service,
-	- bug: mayebe need to reset hub connection only when joining to new game?
+	- bug: maybe need to reset hub connection only when joining to new game?
 	- bug: when starting single player game twice, something is wrong, need to check it,
 	- bug: when rejoining game disconnects the hub,
 	- bug: when can not refresh token, empty game is displayed - removes only one empty game,
 	- bug: on connection reset redirecting to home page is pissing off a bit,
-	- bug: errors on connecting to multiplayer game,
 
 OK - error service:
 	NO - call delayForBruteForce for each method call, test it,
@@ -30,6 +29,7 @@ OK - http serice:
 OK - security service:
 	OK - .pipe(delay(5000)) w security service?
 OK - backend:
+	OK - bug: errors on connecting to multiplayer game, backend service methods called with wrong params after refactoring,
 	OK - game service unit testing,
 	OK - clean up models / vm,
 	OK - verify proper use of DAL and repo,

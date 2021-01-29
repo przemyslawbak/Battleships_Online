@@ -7,6 +7,6 @@ namespace Battleships.Services
     public interface IMessenger
     {
         Task SendGameStateToUsersInGame(GameStateModel game, IHubCallerClients clients);
-        Task SendChatMessageToUsersInGame(string message, string[] playersNames, IHubCallerClients clients);
+        Task SendChatMessageToUsersInGame(string message, string[] playersNames, IHubCallerClients clients, string callersDisplayName);
     }
 }

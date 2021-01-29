@@ -141,8 +141,6 @@ export class GameService {
   }
 
   public async initGame(game: GameState): Promise<void> {
-    this.setGame(game); //set first state
-
     if (game.players[0].isDeployed && game.players[1].isDeployed) {
       this.router.navigate(['play-game']);
     } else {

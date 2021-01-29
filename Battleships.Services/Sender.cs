@@ -24,10 +24,10 @@ namespace Battleships.Services
             await clients.Client(id).SendAsync("ReceiveGameState", game);
         }
 
-        public async Task SendChatMesssage(string name, string message, IHubCallerClients clients)
+        public async Task SendChatMesssage(string name, string message, IHubCallerClients clients, string callersUserName)
         {
             string id = GetConnectionId(name);
-            ChatMessageViewModel model = await GenerateChatMessageAsync(message, name);
+            ChatMessageViewModel model = await GenerateChatMessage(message, name, callersUserName);
             await clients.Client(id).SendAsync("ReceiveChatMessage", model);
         }
 
@@ -37,15 +37,14 @@ namespace Battleships.Services
             return ids[name].ToString();
         }
 
-        private async Task<ChatMessageViewModel> GenerateChatMessageAsync(string message, string name)
+        private async Task<ChatMessageViewModel> GenerateChatMessage(string message, string name, string callersUserName)
         {
-            string displayName = await _userService.GetUserDisplayByName(name);
-
+            string callersDisplayName = await _userService.GetDisplayNameByUserName(callersUserName);
             return new ChatMessageViewModel()
             {
-                DisplayName = displayName,
+                DisplayName = callersDisplayName,
                 Message = message,
-                UserName = name,
+                UserName = callersUserName,
                 Time = DateTime.UtcNow.ToLongTimeString()
             };
         }

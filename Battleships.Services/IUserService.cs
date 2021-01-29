@@ -26,6 +26,6 @@ namespace Battleships.Services
         Task<bool> UpdateUser(EditUserViewModel model);
         bool AddWonGame(GameWinner model);
         List<BestPlayersViewModel> GetTop10Players();
-        Task<string> GetUserDisplayByName(string name);
+        Task<string> GetDisplayNameByUserName(string callersUserName);
     }
 }

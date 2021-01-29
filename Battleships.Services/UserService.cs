@@ -172,9 +172,9 @@ namespace Battleships.Services
             };
         }
 
-        public async Task<string> GetUserDisplayByName(string name)
+        public async Task<string> GetDisplayNameByUserName(string callersUserName)
         {
-            AppUser user = await _userManager.FindByNameAsync(name);
+            AppUser user = await _userManager.FindByNameAsync(callersUserName);
             return user.DisplayName;
         }
     }

@@ -64,6 +64,8 @@ export class GameInitializerService {
   }
 
   private goToInit(game: GameState) {
+    this.game.setGame(game); //set first state
+    this.signalRService.broadcastGameState(game);
     this.checkForMultiplayer(game);
     this.game.initGame(game);
   }
