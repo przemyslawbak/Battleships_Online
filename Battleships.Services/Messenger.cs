@@ -19,11 +19,6 @@ namespace Battleships.Services
 
         public async Task SendGameStateToUsersInGame(GameStateModel game, IHubCallerClients clients)
         {
-            if (!game.GameMulti)
-            {
-                _cache.RemoveGameFromMemory(game.GameId);
-            }
-
             foreach (Player player in game.Players)
             {
                 if (_nameValidator.IsValidUserName(player.UserName))

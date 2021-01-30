@@ -10,12 +10,13 @@ DOUBTS:
 - should I, for example, keep fleet props in fleet service and use them from components?
 
 !!!!!!!!
-	- bug: when joining game again - game is null in signalr service,
+	- bug: when joining game again, diconnects hub,
 	- bug: maybe need to reset hub connection only when joining to new game?
 	- bug: when starting single player game twice, something is wrong, need to check it,
 	- bug: when rejoining game disconnects the hub,
 	- bug: when can not refresh token, empty game is displayed - removes only one empty game,
 	- bug: on connection reset redirecting to home page is pissing off a bit,
+	- bug: faults with listing open games, check it,
 
 OK - error service:
 	OK - bug: status 0 error, when backend is off, gives now unknow error,
@@ -30,6 +31,7 @@ OK - http serice:
 OK - security service:
 	OK - .pipe(delay(5000)) w security service?
 OK - backend:
+	OK - bug: when joining game again - game is null in signalr service,
 	OK - bug: errors on connecting to multiplayer game, backend service methods called with wrong params after refactoring,
 	OK - game service unit testing,
 	OK - clean up models / vm,

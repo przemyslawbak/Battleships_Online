@@ -67,7 +67,7 @@ namespace Battleships.Services
         public GameStateModel UpdateGame(GameStateModel game)
         {
             game = UpdateDeploymentAndStartAllowed(game);
-            UpdateExistingGame(game);
+            //todo: remove empty games?
 
             return game;
         }
@@ -99,18 +99,6 @@ namespace Battleships.Services
             }
 
             return true;
-        }
-
-        private void UpdateExistingGame(GameStateModel game)
-        {
-            List<GameStateModel> games = GetGameList();
-            GameStateModel thisGame = games.Where(g => g.GameId == game.GameId).FirstOrDefault();
-            if (thisGame != null)
-            {
-                games.Remove(thisGame);
-            }
-            games.Add(game);
-            SetGameList(games);
         }
     }
 }
