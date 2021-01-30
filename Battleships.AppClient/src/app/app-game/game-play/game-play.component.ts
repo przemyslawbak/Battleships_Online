@@ -259,7 +259,6 @@ export class GamePlayComponent implements OnInit {
 
   private initGameSubscription() {
     this._subGame = this.game.gameStateChange.subscribe((game) => {
-      console.log(game);
       this.updateGameValues(game);
     });
   }
