@@ -1,5 +1,6 @@
 ﻿using Battleships.Models;
 using Microsoft.Extensions.Caching.Memory;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -59,6 +60,14 @@ namespace Battleships.Services
             SetGameList(games);
         }
 
+        private void UpdateGameInMemory(GameStateModel gameToUpdate)
+        {
+            List<GameStateModel> games = GetGameList();
+            games.RemoveAll(game => game.GameId == gameToUpdate.GameId);
+            games.Add(gameToUpdate);
+            SetGameList(games);
+        }
+
         public GameStateModel GetGameById(int id)
         {
             return GetGameList().Where(g => g.GameId == id).FirstOrDefault();
@@ -67,6 +76,7 @@ namespace Battleships.Services
         public GameStateModel UpdateGame(GameStateModel game)
         {
             game = UpdateDeploymentAndStartAllowed(game);
+            UpdateGameInMemory(game);
             //todo: remove empty games?
 
             return game;
