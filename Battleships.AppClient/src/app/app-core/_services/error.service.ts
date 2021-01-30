@@ -29,9 +29,10 @@ export class ErrorService {
     this.modalService.displayErrorMessage(error);
   }
 
-  public handleAuthError(error: HttpErrorResponse): void {
+  public handleAuthError(error: any): void {
     this.securityService.delayForBruteForce(10);
     if (this.auth.isLoggedIn()) {
+      error.error = 'Authentication problems. Try to login again.';
       this.modalService.displayErrorMessage(error);
     } else {
       this.router.navigate(['join-site']);

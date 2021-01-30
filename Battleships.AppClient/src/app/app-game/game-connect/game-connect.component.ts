@@ -40,6 +40,8 @@ export class GameConnectComponent implements OnInit {
           game.gameMulti,
           isEmptySlot
         );
+      } else {
+        //todo: redirect to the home view
       }
     });
   }

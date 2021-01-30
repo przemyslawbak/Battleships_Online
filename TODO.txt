@@ -10,15 +10,10 @@ DOUBTS:
 - should I, for example, keep fleet props in fleet service and use them from components?
 
 !!!!!!!!
-	
-	- bug: maybe need to reset hub connection only when joining to new game?
-	- bug: when starting single player game twice, something is wrong, need to check it,
-	- bug: when rejoining game disconnects the hub,
-	- bug: when can not refresh token, empty game is displayed - removes only one empty game,
-	- bug: on connection reset redirecting to home page is pissing off a bit,
-	- bug: faults with listing open games, check it,
+	- bug: on player disconnected does not wait for new one,
 
 OK - error service:
+	OK - bug: on connection reset redirecting to home page is pissing off a bit,
 	OK - bug: status 0 error, when backend is off, gives now unknow error,
 	NO - call delayForBruteForce for each method call, test it,
 	OK - after refactoring - bug: can not return Observable<boolean>,
@@ -57,7 +52,8 @@ OK - footer:
 	OK - footer styles,
 	OK - fill up footer with data,
 OK - identity:
-	NO - if 401/409, log off and inform to login again,
+	OK - if 401 status error, inform to login again,
+	OK - bug: when can not refresh token, empty game is displayed - removes only one empty game,
 	OK - updated auth-service login_OnReceivedUser_DoesSetAuth: Async function did not complete within 5000ms,
 	OK - updated auth-service login_OnNotReceivedUser_DoesNotSetAuth: Async function did not complete within 5000ms,
 	OK - what about refresh timer when browser refreshed?
@@ -180,6 +176,7 @@ OK - navbar:
 	NO - should on logout erase game service data?
 	OK - bug: on `game` click TypeError: this.game.getGame() is null,
 OK - game start component:
+	OK - bug: maybe need to reset hub connection only when joining to new game?
 	OK - bug: on `game open for all` sets `link only`,
 	OK - speed modes,
 	OK - bug: choosing game difficulty you will pick up game speed,
@@ -322,6 +319,7 @@ OK - in game-play component:
 	OK - adjust: when displaying hit result, do not allow to fire,
 	OK - adjust: what if shooting cell already shot?
 OK - single player:
+	OK - bug: when starting single player game twice, something is wrong, need to check it,
 	OK - bug: in single player game, after deploying can not proceed to game-play,
 	OK - bug: on easy difficulty computer is playing at least medium,
 	OK - bug: when logged out and game is null, single player game counter is still running,
