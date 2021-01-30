@@ -10,8 +10,14 @@ export class ModalService {
 
   constructor(private text: TextService) {}
 
+  //todo: unit test case if (error.error)
   public displayErrorMessage(error: HttpErrorResponse) {
-    let message: string = this.text.getErrorMessageText(error);
+    let message: string;
+    if (error.error == null) {
+      message = this.text.getErrorMessageText(error);
+    } else {
+      message = error.error;
+    }
     this.open('info-modal', message);
   }
 

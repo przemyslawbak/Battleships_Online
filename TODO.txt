@@ -10,7 +10,6 @@ DOUBTS:
 - should I, for example, keep fleet props in fleet service and use them from components?
 
 !!!!!!!!
-	- bug: status 0 error, when backend is off, gives now unknow error,
 	- bug: when joining game again - game is null in signalr service,
 	- bug: maybe need to reset hub connection only when joining to new game?
 	- bug: when starting single player game twice, something is wrong, need to check it,
@@ -19,6 +18,7 @@ DOUBTS:
 	- bug: on connection reset redirecting to home page is pissing off a bit,
 
 OK - error service:
+	OK - bug: status 0 error, when backend is off, gives now unknow error,
 	NO - call delayForBruteForce for each method call, test it,
 	OK - after refactoring - bug: can not return Observable<boolean>,
 	OK - troubles with testing Handling Failed requests,
