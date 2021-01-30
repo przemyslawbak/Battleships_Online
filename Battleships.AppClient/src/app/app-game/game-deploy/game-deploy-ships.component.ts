@@ -102,8 +102,8 @@ export class GameDeployComponent implements OnInit {
   }
 
   private updateGameValues(game: GameState): void {
-    this.isDeploymentAllowed = game.isDeploymentAllowed;
     this.multiplayer = game.gameMulti;
+    this.isDeploymentAllowed = game.isDeploymentAllowed;
     if (this.player.arePlayersDeployed(game.players)) {
       this.router.navigate(['play-game']);
     } else {
@@ -115,10 +115,11 @@ export class GameDeployComponent implements OnInit {
         !game.players[aiPlayerNumber].isDeployed
       ) {
         game.isDeploymentAllowed = true;
+        this.isDeploymentAllowed = true;
         game.players = this.ai.setupAiPlayer(
           game.players,
           aiPlayerNumber,
-          this.isDeploymentAllowed
+          game.isDeploymentAllowed
         );
         this.signalRService.broadcastGameState(game);
       }

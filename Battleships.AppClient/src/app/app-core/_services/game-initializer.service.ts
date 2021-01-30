@@ -65,16 +65,17 @@ export class GameInitializerService {
 
   private goToInit(game: GameState) {
     this.game.setGame(game); //set first state
-    this.signalRService.broadcastGameState(game);
-    this.checkForMultiplayer(game);
+    game = this.checkForMultiplayer(game);
     this.game.initGame(game);
   }
 
-  private checkForMultiplayer(game: GameState) {
+  private checkForMultiplayer(game: GameState): GameState {
     if (!game.gameMulti) {
       game.players = this.game.setComputerOpponent(game.players);
     } else {
       this.signalRService.broadcastChatMessage('Connected to the game.');
     }
+    this.signalRService.broadcastGameState(game);
+    return game;
   }
 }

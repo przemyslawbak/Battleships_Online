@@ -10,6 +10,7 @@ DOUBTS:
 - should I, for example, keep fleet props in fleet service and use them from components?
 
 !!!!!!!!
+	- bug: status 0 error, when backend is off, gives now unknow error,
 	- bug: when joining game again - game is null in signalr service,
 	- bug: maybe need to reset hub connection only when joining to new game?
 	- bug: when starting single player game twice, something is wrong, need to check it,
@@ -249,6 +250,7 @@ OK - in connect component:
 	OK - err: ERROR TypeError: this.thenable is undefined
 	OK - bug: when playing game and joining another, on disconnect just redirects to the main view,
 OK - in game-play component:
+	OK - bug: in multiplayer after player joining can not start deploying ships,
 	OK - load sprites on init,
 	OK - in game-play & game-deploy use time dividers,
 	OK - bug: on opponent disconnects can not see buttons,
@@ -317,6 +319,7 @@ OK - in game-play component:
 	OK - adjust: when displaying hit result, do not allow to fire,
 	OK - adjust: what if shooting cell already shot?
 OK - single player:
+	OK - bug: in single player game, after deploying can not proceed to game-play,
 	OK - bug: on easy difficulty computer is playing at least medium,
 	OK - bug: when logged out and game is null, single player game counter is still running,
 	OK - set default difficulty to hard,
@@ -421,6 +424,7 @@ OK - modal info:
 	OK - big screen: change width of modal message window,
 
 future / next project:
+- updating game state only at the hub somewhere
 - testing all templates
 - split components into smaller files
 - walk through Jasmine docs: https://jasmine.github.io/2.0/introduction.html
