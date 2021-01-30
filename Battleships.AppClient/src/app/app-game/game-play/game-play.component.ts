@@ -259,6 +259,7 @@ export class GamePlayComponent implements OnInit {
 
   private initGameSubscription() {
     this._subGame = this.game.gameStateChange.subscribe((game) => {
+      console.log(game);
       this.updateGameValues(game);
     });
   }
@@ -268,7 +269,8 @@ export class GamePlayComponent implements OnInit {
     if (
       !this.isResultBeingDisplayed &&
       !this.gameEnded &&
-      !this.isCellAlreadyShot(coord)
+      !this.isCellAlreadyShot(coord) &&
+      this.isStartAllowed
     ) {
       let isHit: boolean = this.verifyHit(
         !this.game.isGameSinglePlayer(),

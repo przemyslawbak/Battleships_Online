@@ -93,7 +93,7 @@ namespace Battleships.Services
         //todo: check tests
         private bool IsStartAllowed(Player[] players)
         {
-            if (players[0].IsDeployed && players[1].IsDeployed)
+            if (players[0].IsDeployed && players[1].IsDeployed && !string.IsNullOrEmpty(players[0].UserName) && !string.IsNullOrEmpty(players[1].UserName))
             {
                 return true;
             }

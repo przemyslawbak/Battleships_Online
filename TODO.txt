@@ -9,9 +9,6 @@ DOUBTS:
 - shoudl I split services around in separate folders?
 - should I, for example, keep fleet props in fleet service and use them from components?
 
-!!!!!!!!
-	- bug: on player disconnected does not wait for new one,
-
 OK - error service:
 	OK - bug: on connection reset redirecting to home page is pissing off a bit,
 	OK - bug: status 0 error, when backend is off, gives now unknow error,
@@ -250,6 +247,7 @@ OK - in connect component:
 	OK - err: ERROR TypeError: this.thenable is undefined
 	OK - bug: when playing game and joining another, on disconnect just redirects to the main view,
 OK - in game-play component:
+	OK - bug: on player disconnected does not wait for new one,
 	OK - bug: in multiplayer after player joining can not start deploying ships,
 	OK - load sprites on init,
 	OK - in game-play & game-deploy use time dividers,
