@@ -155,7 +155,8 @@ export class BoardCellService {
     avoid: BoardCell[],
     possibleTargets: BoardCell[]
   ): BoardCell[] {
-    return avoid.push.apply(avoid, possibleTargets);
+    avoid.push.apply(avoid, possibleTargets);
+    return avoid;
   }
 
   public validateCellBoundary(cellModel: BoardCell): boolean {

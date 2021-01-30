@@ -317,6 +317,7 @@ OK - in game-play component:
 	OK - adjust: when displaying hit result, do not allow to fire,
 	OK - adjust: what if shooting cell already shot?
 OK - single player:
+	OK - bug: not pushing cells to be avoided to the array,
 	OK - bug: when starting single player game twice, something is wrong, need to check it,
 	OK - bug: in single player game, after deploying can not proceed to game-play,
 	OK - bug: on easy difficulty computer is playing at least medium,
