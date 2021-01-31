@@ -1,10 +1,10 @@
-﻿using Battleships.DAL;
-using Battleships.Helpers;
+﻿using Battleships.Helpers;
 using Battleships.Models;
 using Battleships.Models.ViewModels;
 using Battleships.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,13 +13,18 @@ namespace Battleships.AppWeb.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
+        private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
         private readonly IEmailSender _emailSender;
 
-        public UserController(IUserService userService, IEmailSender emailSender)
+        public UserController(
+            IUserService userService,
+            IEmailSender emailSender,
+            IConfiguration config)
         {
             _userService = userService;
             _emailSender = emailSender;
+            _configuration = config;
         }
 
         /// <summary>
@@ -93,8 +98,9 @@ namespace Battleships.AppWeb.Controllers
             }
 
             string token = await _userService.GetPassResetToken(user);
+            string passResetUrl = _configuration["Data:PassReset_url"];
 
-            string resetLink = "http://localhost:4200/pass-reset/" + model.Email + "/" + token;
+            string resetLink = passResetUrl + model.Email + "/" + token;
 
             if (!await _emailSender.SendEmailAsync(model.Email, "Reset your password", "Please click or copy the password reset link to your browser: " + resetLink))
             {

@@ -5,6 +5,7 @@ using Battleships.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -14,15 +15,18 @@ namespace Battleships.AppWeb.Controllers
     [ApiController]
     public class TokenController : Controller
     {
+        private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
         private readonly ITokenService _tokenService;
 
         public TokenController(
             ITokenService tokenService,
-            IUserService userService)
+            IUserService userService,
+            IConfiguration config)
         {
             _tokenService = tokenService;
             _userService = userService;
+            _configuration = config;
         }
 
         /// <summary>
@@ -101,11 +105,12 @@ namespace Battleships.AppWeb.Controllers
         [ServiceFilter(typeof(SanitizeModelAttribute))]
         public IActionResult ExternalLoginAsync(string provider, string returnUrl = null)
         {
+            string appUrl = _configuration["Data:App_url"];
             TempData["requestIp"] = _userService.GetIpAddress(HttpContext);
 
             string redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Token", new { ReturnUrl = returnUrl });
 
-            AuthenticationProperties properties = _userService.GetExternalAuthenticationProperties(provider, "http://localhost:50962" + redirectUrl);
+            AuthenticationProperties properties = _userService.GetExternalAuthenticationProperties(provider, appUrl + redirectUrl);
 
             return new ChallengeResult(provider, properties);
         }

@@ -36,7 +36,7 @@ namespace Battleships_Online
                 options.AddPolicy("CorsPolicy",
                     builder => builder
                     .SetIsOriginAllowedToAllowWildcardSubdomains()
-                    .WithOrigins("*localhost:4200", "*.facebook.com")
+                    .WithOrigins("*localhost:4200", "*.facebook.com", "*testuj-strone.com.pl")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials()
@@ -131,16 +131,7 @@ namespace Battleships_Online
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {/*
-            app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "AppClient";
-
-                if (env.IsDevelopment())
-                {
-                    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200"); //https://stackoverflow.com/a/60146427/12603542
-                }
-            });*/
+        {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
