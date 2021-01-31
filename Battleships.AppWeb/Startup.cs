@@ -139,6 +139,8 @@ namespace Battleships_Online
 
             app.UseCors("CorsPolicy");
             app.UseAuthentication();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
             app.UseSignalR(routes =>
             {
                 routes.MapHub<MessageHub>("/messageHub");
