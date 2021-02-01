@@ -9,9 +9,6 @@ DOUBTS:
 - shoudl I split services around in separate folders?
 - should I, for example, keep fleet props in fleet service and use them from components?
 
-!!!!!!
-- google recaptcha for production,
-
 OK - error service:
 	OK - bug: on connection reset redirecting to home page is pissing off a bit,
 	OK - bug: status 0 error, when backend is off, gives now unknow error,
@@ -107,6 +104,7 @@ OK - identity:
 	OK - bug: if no email in DB for `forgotten pass`, freezes
 	OK - bug 2x hits RefreshToken
 OK - misc:
+	OK - deployed API + Client App,
 	OK - bug: auto drop cell not works properly,
 	OK - remove all `===`,
 	OK - signalr service spec test error: Cannot read property 'and' of undefined,
