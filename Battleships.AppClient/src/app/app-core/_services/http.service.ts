@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 
 import { environment } from '@environments/environment';
@@ -67,7 +67,8 @@ export class HttpService {
   public putUpdatedUser(model: EditUser): Observable<any> {
     const url = environment.apiUrl + 'api/user/edit';
     let subject = new Subject<any>();
-    this.http.put<any>(url, model).subscribe((res) => subject.next(res));
+
+    this.http.post(url, model).subscribe((res) => subject.next(res));
 
     return subject.asObservable();
   }

@@ -98,7 +98,7 @@ namespace Battleships.AppWeb.Controllers
             {
                 if (model.Email == "clicker1@email.com" || model.Email == "clicker2@email.com")
                 {
-                    return new ObjectResult("Clicker account can not be modified. Please create new one to test this feature.") { StatusCode = 423 };
+                    return new ObjectResult("Clicker account can not be modified. Please create new user account to test this feature.") { StatusCode = 423 };
                 }
             }
             AppUser user = await _userService.FindUserByEmail(model.Email);
@@ -178,16 +178,16 @@ namespace Battleships.AppWeb.Controllers
         /// PUT: api/user/edit
         /// </summary>
         /// <returns>Status code.</returns>
-        [HttpPut("edit")]
+        [HttpPost("edit")]
         [ValidateModel]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin, User")]
-        public async Task<IActionResult> EditUser([FromBody] EditUserViewModel model)
+        public async Task<IActionResult> EditUser([FromBody]EditUserViewModel model)
         {
             if (_hostingEnv.IsEnvironment("Production"))
             {
                 if (model.Email == "clicker1@email.com" || model.Email == "clicker2@email.com")
                 {
-                    return new ObjectResult("Clicker account can not be modified. Please create new one to test this feature.") { StatusCode = 423 };
+                    return new ObjectResult("Clicker account can not be modified. Please create new user account to test this feature.") { StatusCode = 423 };
                 }
             }
             bool result = await _userService.UpdateUser(model);
