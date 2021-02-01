@@ -3,6 +3,7 @@ using Battleships.Models;
 using Battleships.Models.ViewModels;
 using Battleships.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace Battleships.AppWeb.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
+        private IHostingEnvironment _hostingEnv;
         private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
         private readonly IEmailSender _emailSender;
@@ -20,11 +22,13 @@ namespace Battleships.AppWeb.Controllers
         public UserController(
             IUserService userService,
             IEmailSender emailSender,
-            IConfiguration config)
+            IConfiguration config,
+            IHostingEnvironment hostingEnv)
         {
             _userService = userService;
             _emailSender = emailSender;
             _configuration = config;
+            _hostingEnv = hostingEnv;
         }
 
         /// <summary>
@@ -90,6 +94,13 @@ namespace Battleships.AppWeb.Controllers
         [ValidateModel]
         public async Task<IActionResult> PassChange([FromBody]PassResetEmailViewModel model)
         {
+            if (_hostingEnv.IsEnvironment("Production"))
+            {
+                if (model.Email == "clicker1@email.com" || model.Email == "clicker2@email.com")
+                {
+                    return new ObjectResult("Clicker account can not be modified. Please create new one to test this feature.") { StatusCode = 423 };
+                }
+            }
             AppUser user = await _userService.FindUserByEmail(model.Email);
 
             if (user == null)
@@ -172,6 +183,13 @@ namespace Battleships.AppWeb.Controllers
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin, User")]
         public async Task<IActionResult> EditUser([FromBody] EditUserViewModel model)
         {
+            if (_hostingEnv.IsEnvironment("Production"))
+            {
+                if (model.Email == "clicker1@email.com" || model.Email == "clicker2@email.com")
+                {
+                    return new ObjectResult("Clicker account can not be modified. Please create new one to test this feature.") { StatusCode = 423 };
+                }
+            }
             bool result = await _userService.UpdateUser(model);
 
             if (!result)

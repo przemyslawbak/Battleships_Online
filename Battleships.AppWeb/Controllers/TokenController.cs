@@ -3,6 +3,7 @@ using Battleships.Models;
 using Battleships.Models.ViewModels;
 using Battleships.Services;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -15,6 +16,7 @@ namespace Battleships.AppWeb.Controllers
     [ApiController]
     public class TokenController : Controller
     {
+        private IHostingEnvironment _hostingEnv;
         private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
         private readonly ITokenService _tokenService;
@@ -22,11 +24,13 @@ namespace Battleships.AppWeb.Controllers
         public TokenController(
             ITokenService tokenService,
             IUserService userService,
-            IConfiguration config)
+            IConfiguration config,
+            IHostingEnvironment hostingEnv)
         {
             _tokenService = tokenService;
             _userService = userService;
             _configuration = config;
+            _hostingEnv = hostingEnv;
         }
 
         /// <summary>
@@ -105,14 +109,21 @@ namespace Battleships.AppWeb.Controllers
         [ServiceFilter(typeof(SanitizeModelAttribute))]
         public IActionResult ExternalLoginAsync(string provider, string returnUrl = null)
         {
-            string appUrl = _configuration["Data:App_url"];
-            TempData["requestIp"] = _userService.GetIpAddress(HttpContext);
+            if (_hostingEnv.IsEnvironment("Production"))
+            {
+                return new ObjectResult("I am sorry, in testing of 'Battleships Online' without SSL, external login providers ain't gonna work, only in developers environment. Please close this window to continue and register your account with email and password.") { StatusCode = 503 };
+            }
+            else
+            {
+                string appUrl = _configuration["Data:App_url"];
+                TempData["requestIp"] = _userService.GetIpAddress(HttpContext);
 
-            string redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Token", new { ReturnUrl = returnUrl });
+                string redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Token", new { ReturnUrl = returnUrl });
 
-            AuthenticationProperties properties = _userService.GetExternalAuthenticationProperties(provider, appUrl + redirectUrl);
+                AuthenticationProperties properties = _userService.GetExternalAuthenticationProperties(provider, appUrl + redirectUrl);
 
-            return new ChallengeResult(provider, properties);
+                return new ChallengeResult(provider, properties);
+            }
         }
 
         /// <summary>
