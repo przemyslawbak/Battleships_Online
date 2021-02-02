@@ -109,7 +109,7 @@ namespace Battleships.AppWeb.Controllers
         [ServiceFilter(typeof(SanitizeModelAttribute))]
         public IActionResult ExternalLoginAsync(string provider, string returnUrl = null)
         {
-            if (_hostingEnv.IsEnvironment("Production"))
+            if (_hostingEnv.IsProduction())
             {
                 return new ObjectResult("I am sorry, in testing of 'Battleships Online' without SSL, external login providers ain't gonna work, only in developers environment. Please close this window to continue and register your account with email and password.") { StatusCode = 503 };
             }

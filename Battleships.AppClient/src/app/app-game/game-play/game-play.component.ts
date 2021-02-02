@@ -1,3 +1,4 @@
+import { GameWinner } from './../../app-core/_models/game-winner.model';
 import { CommentModel } from '@models/comment.model';
 import { PlayerService } from '@services/player.service';
 import { BoardCell } from '@models/board-cell.model';
@@ -213,12 +214,13 @@ export class GamePlayComponent implements OnInit {
   }
 
   private addWonGame(info: string, winnerNumber: number): void {
-    const data = {
-      UserName: this.game.getGamePlayers()[winnerNumber].userName,
-      Multiplayer: !this.game.isGameSinglePlayer(),
+    let winner: GameWinner = {
+      userName: this.game.getGamePlayers()[winnerNumber].userName,
+      multiplayer: !this.game.isGameSinglePlayer(),
     };
-    this.modalService.open('info-modal', info);
-    this.http.postWinner(data);
+    this.http.postWinner(winner).subscribe(() => {
+      this.modalService.open('info-modal', info);
+    });
   }
 
   private resetBoardColors(): void {

@@ -53,7 +53,7 @@ export class EditProfileComponent implements OnInit {
     model.userName = this.auth.getAuth().user;
     model.displayName = this.form.value.DisplayName;
     model.email = this.form.value.Email;
-    this.http.putUpdatedUser(model).subscribe(() => {
+    this.http.postUpdatedUser(model).subscribe(() => {
       this.auth.logout();
       this.modalService.open(
         'info-modal',

@@ -65,7 +65,7 @@ namespace Battleships.AppWeb.Controllers
         }
 
         /// <summary>
-        /// GET: api/user/winner
+        /// POST: api/user/winner
         /// </summary>
         /// <returns>Status code.</returns>
         [HttpPost("winner")]
@@ -94,7 +94,7 @@ namespace Battleships.AppWeb.Controllers
         [ValidateModel]
         public async Task<IActionResult> PassChange([FromBody]PassResetEmailViewModel model)
         {
-            if (_hostingEnv.IsEnvironment("Production"))
+            if (_hostingEnv.IsProduction())
             {
                 if (model.Email == "clicker1@email.com" || model.Email == "clicker2@email.com")
                 {
@@ -175,7 +175,7 @@ namespace Battleships.AppWeb.Controllers
         }
 
         /// <summary>
-        /// PUT: api/user/edit
+        /// POST: api/user/edit
         /// </summary>
         /// <returns>Status code.</returns>
         [HttpPost("edit")]
@@ -183,7 +183,7 @@ namespace Battleships.AppWeb.Controllers
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin, User")]
         public async Task<IActionResult> EditUser([FromBody]EditUserViewModel model)
         {
-            if (_hostingEnv.IsEnvironment("Production"))
+            if (_hostingEnv.IsProduction())
             {
                 if (model.Email == "clicker1@email.com" || model.Email == "clicker2@email.com")
                 {

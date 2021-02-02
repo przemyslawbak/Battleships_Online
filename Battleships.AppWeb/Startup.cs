@@ -136,11 +136,14 @@ namespace Battleships_Online
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseDefaultFiles();
+                app.UseStaticFiles();
+            }
 
             app.UseCors("CorsPolicy");
             app.UseAuthentication();
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
             app.UseSignalR(routes =>
             {
                 routes.MapHub<MessageHub>("/messageHub");

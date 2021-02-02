@@ -1,3 +1,4 @@
+import { GameWinner } from './../_models/game-winner.model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
@@ -51,9 +52,13 @@ export class HttpService {
     return subject.asObservable();
   }
 
-  public postWinner(data: { UserName: string; Multiplayer: boolean }): void {
+  public postWinner(model: GameWinner): Observable<any> {
     const url = environment.apiUrl + 'api/user/winner';
-    this.http.post(url, data);
+    let subject = new Subject<any>();
+    this.http
+      .post<GameWinner>(url, model)
+      .subscribe((res) => subject.next(res));
+    return subject.asObservable();
   }
 
   public postGameState(model: GameState): Observable<GameState[]> {
@@ -64,7 +69,7 @@ export class HttpService {
     return subject.asObservable();
   }
 
-  public putUpdatedUser(model: EditUser): Observable<any> {
+  public postUpdatedUser(model: EditUser): Observable<any> {
     const url = environment.apiUrl + 'api/user/edit';
     let subject = new Subject<any>();
 

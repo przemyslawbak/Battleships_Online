@@ -104,6 +104,7 @@ OK - identity:
 	OK - bug: if no email in DB for `forgotten pass`, freezes
 	OK - bug 2x hits RefreshToken
 OK - misc:
+	OK - bug: does not save winner,
 	OK - deployed API + Client App,
 	OK - bug: auto drop cell not works properly,
 	OK - remove all `===`,
@@ -318,6 +319,7 @@ OK - in game-play component:
 	OK - adjust: when displaying hit result, do not allow to fire,
 	OK - adjust: what if shooting cell already shot?
 OK - single player:
+	- bug: after lost single player game the player is the winner,
 	OK - bug: not pushing cells to be avoided to the array,
 	OK - bug: when starting single player game twice, something is wrong, need to check it,
 	OK - bug: in single player game, after deploying can not proceed to game-play,
@@ -374,6 +376,7 @@ OK - game rules component:
 	OK - set a reference to wiki,
 	OK - nicely format rules view,
 OK - edit profile component:
+	OK - bug: can not edit profile: `A non-empty request body is required..`,
 	OK - `back to main` btn,
 	OK - create folder with files,
 	OK - load current data: display name, email, change pass btn,
@@ -418,6 +421,7 @@ OK - game chat:
 	OK - chat info when player joins game
 	NO - rearrange game-play view: chat on the right side, game status horizontal. And mobile view?
 OK - best players component:
+	- bug: after game won does not save the winner,
 	OK - in chrome table first column has still wrong size,
 	OK - style: No games found! a bit lower,
 	OK - if best players list empty, display in view something about it,
