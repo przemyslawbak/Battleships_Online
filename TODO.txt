@@ -104,6 +104,7 @@ OK - identity:
 	OK - bug: if no email in DB for `forgotten pass`, freezes
 	OK - bug 2x hits RefreshToken
 OK - misc:
+	OK - added game end logic pattern,
 	OK - bug: does not save winner,
 	OK - deployed API + Client App,
 	OK - bug: auto drop cell not works properly,

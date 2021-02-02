@@ -40,14 +40,12 @@
         </div>
       </ng-template>
       <ng-template #waiting>
-        <div class="row">
+        <div *ngIf="!this.gameEnded" class="row">
           <h4 class="col-sm-12 redColor">
             Waiting for second player to join this game...
           </h4>
           <div class="text-center">
-            <div class="col-sm-12 link">
-              You can
-            </div>
+            <div class="col-sm-12 link">You can</div>
             <button
               [disabled]="this.isStartAllowed"
               type="submit"
@@ -56,9 +54,7 @@
             >
               Play vs AI
             </button>
-            <div class="col-sm-12 link">
-              or send a link to your friend
-            </div>
+            <div class="col-sm-12 link">or send a link to your friend</div>
             <button
               type="button"
               class="btn btn-md btn-primary linkBtn"

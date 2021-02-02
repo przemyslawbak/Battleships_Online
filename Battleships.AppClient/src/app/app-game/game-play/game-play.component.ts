@@ -207,6 +207,11 @@ export class GamePlayComponent implements OnInit {
         : 'You lost this battle.';
     this.gameEnded = true;
     this.isStartAllowed = false;
+    this.modalService.open('info-modal', info);
+    this.gameBoardComment = {
+      text: 'Game is finished',
+      color: 'black',
+    } as CommentModel;
 
     if (winnerNumber == this.clientsPlayerNumber) {
       this.addWonGame(info, winnerNumber);
@@ -218,9 +223,7 @@ export class GamePlayComponent implements OnInit {
       userName: this.game.getGamePlayers()[winnerNumber].userName,
       multiplayer: !this.game.isGameSinglePlayer(),
     };
-    this.http.postWinner(winner).subscribe(() => {
-      this.modalService.open('info-modal', info);
-    });
+    this.http.postWinner(winner).subscribe();
   }
 
   private resetBoardColors(): void {
@@ -384,7 +387,9 @@ export class GamePlayComponent implements OnInit {
       }
     }
 
-    this.signalRService.broadcastGameState(game);
+    if (!this.gameEnded) {
+      this.signalRService.broadcastGameState(game);
+    }
   }
 
   private verifyHit(gameMulti: boolean, coord: Coordinates): boolean {
