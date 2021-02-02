@@ -12,8 +12,7 @@
 *.user
 *.userosscache
 *.sln.docstates
-**/appsettings.Development.json
-**/appsettings.json
+**/appsettings*.json
 **/launchSettings.json
 **/environment.prod.ts
 
