@@ -10,6 +10,5 @@ namespace Battleships.DAL
 
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<BlacklistedToken> BlacklistedTokens { get; set; }
-
     }
 }
